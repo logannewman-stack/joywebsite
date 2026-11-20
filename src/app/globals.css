@@ -1,0 +1,165 @@
+@import "tailwindcss";
+
+/* ==========================================================================
+   Design tokens
+   Dark, editorial, high-contrast. Violet is the single accent.
+   Change the brand color here and it flows everywhere.
+   ========================================================================== */
+@theme {
+  --color-ink: #0c0c0f;
+  --color-coal: #131316;
+  --color-graphite: #1c1c21;
+  --color-steel: #2a2a31;
+  --color-porcelain: #efefed;
+  --color-paper: #f6f6f4;
+  --color-mute: #a0a0a9;
+  --color-mute-dark: #5d5d65;
+
+  --color-violet: #7c3aed;
+  --color-violet-hi: #9b6dff;
+  --color-violet-soft: #bda5ff;
+  --color-violet-deep: #4c1d95;
+
+  --font-display: var(--font-clash), "Arial Black", Arial, sans-serif;
+  --font-sans: var(--font-dm-sans), system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-serif: var(--font-instrument), "Iowan Old Style", "Times New Roman", serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, "SF Mono", Menlo, monospace;
+
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  --animate-marquee: marquee var(--marquee-duration, 40s) linear infinite;
+  --animate-marquee-reverse: marquee-reverse var(--marquee-duration, 40s) linear infinite;
+  --animate-float: float 6s ease-in-out infinite;
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  @keyframes marquee-reverse {
+    from { transform: translateX(-50%); }
+    to { transform: translateX(0); }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+}
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: var(--color-ink);
+}
+
+body {
+  background: var(--color-ink);
+  color: var(--color-porcelain);
+  font-family: var(--font-sans);
+  font-weight: 500;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--color-violet);
+  color: #fff;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-violet-hi);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ==========================================================================
+   Reusable surfaces
+   ========================================================================== */
+
+/* Subtle architectural grid, like a blueprint at night */
+.bg-grid {
+  background-color: var(--color-ink);
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 44px 44px;
+  background-position: center top;
+}
+
+/* Soft violet glow you can drop behind anything */
+.glow {
+  position: absolute;
+  pointer-events: none;
+  border-radius: 9999px;
+  background: radial-gradient(closest-side, rgba(139, 92, 246, 0.35), rgba(139, 92, 246, 0) 100%);
+  filter: blur(10px);
+}
+
+/* Film grain to keep gradients from banding and to add warmth */
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.07;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+/* Stage lighting: violet beams falling from above */
+.stage-beams {
+  background:
+    radial-gradient(60% 50% at 50% 0%, rgba(124, 58, 237, 0.55), transparent 70%),
+    conic-gradient(from 180deg at 18% -10%, transparent 0deg, rgba(155, 109, 255, 0.22) 12deg, transparent 26deg),
+    conic-gradient(from 180deg at 82% -10%, transparent 0deg, rgba(155, 109, 255, 0.22) 12deg, transparent 26deg) ,
+    conic-gradient(from 168deg at 50% -20%, transparent 0deg, rgba(189, 165, 255, 0.16) 10deg, transparent 22deg),
+    linear-gradient(180deg, #160a33 0%, #0c0c0f 100%);
+}
+
+/* Outline text, for marquees */
+.text-outline {
+  color: transparent;
+  -webkit-text-stroke: 1.2px currentColor;
+}
+.text-outline-dark {
+  color: transparent;
+  -webkit-text-stroke: 1.2px rgba(12, 12, 15, 0.55);
+}
+
+/* Arch top, the signature frame */
+.arch {
+  border-radius: 999px 999px 0 0;
+}
+
+/* Eyebrow label: [ 01 ] SECTION */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+/* Marquee masks */
+.mask-x {
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+}
+
+/* Faux-italic for the display face, which has no italic cut */
+.display-italic {
+  font-style: normal;
+  display: inline-block;
+  transform: skewX(-9deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
