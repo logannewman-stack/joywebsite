@@ -1,161 +1,183 @@
 import type { Metadata } from "next";
-import Image from "next/image";
-import { FileText } from "lucide-react";
+import { ArrowDown } from "lucide-react";
 import { speaking } from "@/content/speaking";
-import { links, site } from "@/content/site";
 import { Photo } from "@/components/ui/Photo";
-import { ArrowLink, ButtonLink, Label, ReviewSlot } from "@/components/ui/Links";
+import { ArrowLink, ButtonLink, Label, focusRing } from "@/components/ui/Links";
 import { ImageReveal, LineReveal, Reveal } from "@/components/ui/Reveal";
 import { Quote } from "@/components/ui/Quote";
+import { typeset } from "@/components/ui/Typeset";
 import { InquiryButton } from "@/components/inquiry/InquiryProvider";
 import { NextPage } from "@/components/layout/NextPage";
+import { CourseIndex } from "@/components/speaking/CourseIndex";
+import { DetailsLink } from "@/components/speaking/DetailsLink";
+import { PlannerResources } from "@/components/speaking/PlannerResources";
+import { RoomBand } from "@/components/speaking/RoomBand";
+import { SpokenAt, showSpokenAt } from "@/components/speaking/SpokenAt";
+import { site } from "@/content/site";
 
 export const metadata: Metadata = {
   title: "Speaking",
-  description: speaking.hero.paragraphs[0],
+  // Approved sentence, short enough not to be cut off in search results.
+  description: speaking.hero.paragraphs[1],
 };
 
-/** Course-detail PDF link. Hidden until an approved PDF exists. */
-function DetailsLink({ pdf, label = "Course Details" }: { pdf: string | null; label?: string }) {
-  if (!pdf) return null;
-  return (
-    <a href={pdf} target="_blank" rel="noopener noreferrer" className="group mt-4 inline-flex min-h-11 items-center gap-2 text-[14px] font-medium">
-      <FileText className="size-4" aria-hidden />
-      <span className="link-draw">{label}</span>
-      <span className="sr-only"> (PDF, opens in a new tab)</span>
-    </a>
-  );
+/** "Caregiver. Strategist. Owner." sets one sentence per line; other titles wrap naturally. */
+function stackedTitle(title: string) {
+  const parts = title.split(/(?<=\.)\s+/);
+  if (parts.length < 2) return typeset(title);
+  // The trailing space keeps the sentences apart in the text content.
+  return parts.map((p) => (
+    <span key={p} className="block">
+      {typeset(p)}{" "}
+    </span>
+  ));
 }
 
 export default function SpeakingPage() {
-  const { hero, clinical, teams, keynotes, p3, spokenAt, testimonial, resources, planning } = speaking;
+  const { hero, clinical, teams, keynotes, p3, testimonial, planning } = speaking;
+  const contents = [
+    { href: "#topics", label: clinical.heading },
+    { href: "#teams", label: teams.heading },
+    { href: "#keynotes", label: keynotes.heading },
+    { href: "#p3", label: p3.heading },
+  ];
+  // Quote renders in review mode, or at launch once permission is granted.
+  const quoteShown = testimonial.permission === "granted" || site.showPlaceholders;
+  const proof = showSpokenAt() || quoteShown;
+
   return (
     <>
-      {/* Opening */}
+      {/* Opening: the headline, then Dr. Joy on stage at full height */}
       <section className="bg-paper pt-[76px]">
-        <div className="mx-auto max-w-[1440px] px-5 pt-12 md:px-10 md:pt-20">
-          <div className="grid gap-10 md:grid-cols-12 md:gap-x-6">
-            <div className="md:col-span-8">
-              <Label index="02">Speaking</Label>
-              <h1 className="display mt-8 text-[clamp(3.2rem,7.4vw,8rem)] leading-[0.9]">
-                <LineReveal lines={["Presentations grounded", <em key="a">in clinical practice.</em>]} delay={0.1} />
-              </h1>
-            </div>
-            <Reveal immediate delay={0.4} className="flex flex-col gap-5 md:col-span-4 md:self-end">
-              {hero.paragraphs.map((p) => (
-                <p key={p} className="text-[17px] leading-relaxed text-stone">
+        <div className="mx-auto grid max-w-[1440px] px-5 md:px-10 lg:grid-cols-12 lg:gap-x-6">
+          <div className="pt-12 md:pt-16 lg:col-span-6 lg:row-start-1 lg:pt-14 xl:col-span-7">
+            <Label index="02">Speaking</Label>
+            <h1 className="display mt-7 text-[clamp(2.75rem,8.6vw,5.25rem)] leading-[0.92] md:text-[clamp(4.5rem,10vw,6.5rem)] lg:text-[clamp(3.6rem,6.3vw,6.75rem)]">
+              {/* Trailing spaces keep the words apart in the text content; they collapse visually. */}
+              <LineReveal lines={["Presentations ", "grounded in ", <em key="c">clinical practice.</em>]} />
+            </h1>
+          </div>
+
+          <div className="-mx-5 mt-10 md:mx-0 md:mt-12 lg:col-span-6 lg:col-start-7 lg:row-span-2 lg:row-start-1 lg:-mr-10 lg:mt-0 xl:col-span-5 xl:col-start-8">
+            <ImageReveal immediate delay={0.1}>
+              <Photo
+                slot={hero.photo}
+                priority
+                className="aspect-[4/5] w-full md:aspect-auto md:h-[min(70svh,44rem)] lg:aspect-[3/4] lg:h-auto lg:max-h-[calc(100svh-76px)] xl:aspect-[4/5]"
+                sizes="(max-width: 767px) 100vw, (max-width: 1023px) calc(100vw - 80px), (max-width: 1279px) 49vw, (max-width: 1440px) 42vw, 610px"
+              />
+            </ImageReveal>
+          </div>
+
+          <Reveal immediate delay={0.25} className="pt-10 pb-20 md:pt-12 md:pb-24 lg:col-span-6 lg:row-start-2 lg:self-end lg:pt-12 lg:pb-10">
+            <div className="flex max-w-[36rem] flex-col gap-5">
+              {hero.paragraphs.map((p, i) => (
+                <p key={p} className={`leading-relaxed ${i === 0 ? "text-[18px] text-ink" : "text-[17px] text-stone"}`}>
                   {p}
                 </p>
               ))}
-              <div className="mt-2 flex flex-wrap items-center gap-x-6 gap-y-3">
-                <ButtonLink href={hero.primary.href}>{hero.primary.label}</ButtonLink>
-                <InquiryButton type="speaking" variant="text">
-                  {hero.secondary.label}
-                </InquiryButton>
-              </div>
-            </Reveal>
-          </div>
-        </div>
-        <div className="mx-auto mt-16 max-w-[1440px] md:mt-20 md:px-10">
-          <ImageReveal immediate delay={0.2}>
-            <Photo slot={hero.photo} priority className="aspect-[4/3] w-full md:aspect-[21/9]" sizes="100vw" />
-          </ImageReveal>
+            </div>
+            <div className="mt-8 flex flex-wrap items-center gap-x-7 gap-y-3">
+              <ButtonLink href={hero.primary.href}>{hero.primary.label}</ButtonLink>
+              <InquiryButton type="speaking" variant="text">
+                {hero.secondary.label}
+              </InquiryButton>
+            </div>
+            <nav aria-label="On this page" className="mt-12 lg:mt-14">
+              <ul className="grid grid-cols-1 border-t border-line sm:grid-cols-2">
+                {contents.map((c, i) => (
+                  <li key={c.href} className={`border-b border-line ${i % 2 === 0 ? "sm:pr-6" : "sm:pl-6"}`}>
+                    <a
+                      href={c.href}
+                      className={`group flex min-h-12 items-center justify-between gap-4 py-2.5 text-[14.5px] font-medium ${focusRing.light}`}
+                    >
+                      <span className="link-draw pb-0.5">{c.label}</span>
+                      <ArrowDown className="size-4 shrink-0 text-stone transition-transform duration-300 group-hover:translate-y-0.5 group-hover:text-ink" aria-hidden />
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </Reveal>
         </div>
       </section>
 
-      {/* Featured Clinical Courses */}
-      <section id="topics" className="scroll-mt-20 bg-paper">
-        <div className="mx-auto max-w-[1440px] px-5 py-24 md:px-10 md:py-36">
-          <div className="grid gap-8 md:grid-cols-12 md:gap-x-6">
-            <Reveal className="md:col-span-6">
-              <Label index="A">Clinical</Label>
-              <h2 className="display mt-6 text-[clamp(2.6rem,5vw,4.8rem)]">{clinical.heading}</h2>
+      {/* Featured Clinical Courses: an editorial index */}
+      <section className="bg-paper">
+        <div className="mx-auto max-w-[1440px] px-5 pt-20 pb-24 md:px-10 md:pt-32 md:pb-32">
+          <div id="topics" className="grid gap-6 lg:grid-cols-12 lg:gap-x-6">
+            <Reveal className="lg:col-span-7">
+              <h2 className="display text-[clamp(2.75rem,5.6vw,5.4rem)]">{clinical.heading}</h2>
             </Reveal>
-            <Reveal delay={0.1} className="md:col-span-4 md:col-start-9 md:self-end">
-              <p className="text-[17px] leading-relaxed text-stone">{clinical.intro}</p>
+            <Reveal delay={0.06} className="lg:col-span-4 lg:col-start-9 lg:self-end">
+              <p className="max-w-[46ch] text-[17px] leading-relaxed text-stone">{clinical.intro}</p>
             </Reveal>
           </div>
+          <CourseIndex courses={clinical.courses} className="mt-14 md:mt-20" />
+        </div>
+      </section>
 
-          <ol className="mt-16 grid gap-px border-t border-ink bg-line md:grid-cols-2 lg:grid-cols-3">
-            {clinical.courses.map((c, i) => (
-              <li key={c.title} className="bg-paper">
-                <Reveal delay={(i % 3) * 0.06} className="flex h-full flex-col p-6 md:p-8">
-                  <span className="label text-stone tabular-nums">{String(i + 1).padStart(2, "0")}</span>
-                  <h3 className="display mt-10 text-[clamp(1.8rem,2.6vw,2.4rem)] leading-[1.02]">{c.title}</h3>
-                  <p className="mt-4 text-[15.5px] leading-relaxed text-stone">{c.text}</p>
-                  <DetailsLink pdf={c.pdf} />
+      {/* A real room: stage and audience (and the speaker reel, once supplied) */}
+      <RoomBand />
+
+      {/* For Dental Teams & Organizations: a staggered spread on ivory */}
+      <section className="bg-ivory">
+        <div className="mx-auto max-w-[1440px] px-5 py-24 md:px-10 md:py-36">
+          <div id="teams" className="max-w-[60rem]">
+            <Reveal>
+              <h2 className="display text-[clamp(2.75rem,5.6vw,5.4rem)]">{teams.heading}</h2>
+            </Reveal>
+            <Reveal delay={0.06}>
+              <p className="mt-6 max-w-[46ch] text-[17px] leading-relaxed text-stone">{teams.intro}</p>
+            </Reveal>
+          </div>
+          <ol className="mt-16 grid gap-16 md:mt-24 lg:grid-cols-12 lg:gap-x-6">
+            {teams.programs.map((p, i) => (
+              <li key={p.title} className={i === 0 ? "lg:col-span-5" : "lg:col-span-6 lg:col-start-7 lg:mt-40"}>
+                <Reveal className="border-t border-ink pt-7">
+                  <span className="label text-stone tabular-nums" aria-hidden>
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <h3 className="display mt-8 text-[clamp(2.75rem,5vw,5rem)] leading-[0.94]">{stackedTitle(p.title)}</h3>
+                  <p className="mt-6 max-w-[30ch] font-serif text-[clamp(1.35rem,1.9vw,1.7rem)] leading-snug italic">{p.subtitle}</p>
+                  <p className="mt-5 max-w-[46ch] text-[16.5px] leading-relaxed text-stone">{p.text}</p>
+                  <DetailsLink pdf={p.pdf} title={p.title} className="mt-4" />
                 </Reveal>
               </li>
             ))}
-            {/* Closing tile fills the grid and routes to the inquiry */}
-            <li className="bg-ivory lg:col-span-2">
-              <div className="flex h-full flex-col justify-between gap-8 p-6 md:p-8">
-                <p className="label text-stone">{planning.heading}</p>
-                <div>
-                  <InquiryButton type="speaking">{planning.cta}</InquiryButton>
-                </div>
-              </div>
-            </li>
           </ol>
-          <div className="h-px bg-line" />
         </div>
       </section>
 
-      {/* For Dental Teams & Organizations */}
-      <section className="bg-ivory">
-        <div className="mx-auto max-w-[1440px] px-5 py-24 md:px-10 md:py-32">
-          <div className="grid gap-8 md:grid-cols-12 md:gap-x-6">
-            <Reveal className="md:col-span-6">
-              <Label index="B">Teams</Label>
-              <h2 className="display mt-6 text-[clamp(2.6rem,5vw,4.8rem)]">{teams.heading}</h2>
-            </Reveal>
-            <Reveal delay={0.1} className="md:col-span-4 md:col-start-9 md:self-end">
-              <p className="text-[17px] leading-relaxed text-stone">{teams.intro}</p>
-            </Reveal>
-          </div>
-          <div className="mt-16 grid gap-6 md:grid-cols-2">
-            {teams.programs.map((p, i) => (
-              <Reveal key={p.title} delay={i * 0.1}>
-                <article className="flex h-full flex-col bg-paper p-8 md:p-12">
-                  <h3 className="display text-[clamp(2.2rem,3.6vw,3.4rem)] leading-[1]">{p.title}</h3>
-                  <p className="mt-4 font-serif text-[21px] leading-snug italic">{p.subtitle}</p>
-                  <p className="mt-8 border-t border-line pt-6 text-[16px] leading-relaxed text-stone">{p.text}</p>
-                  <DetailsLink pdf={p.pdf} label="Program Details" />
-                </article>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Keynote Presentations */}
+      {/* Keynote Presentations: the black chapter */}
       <section className="grain grain-light bg-ink text-white">
-        <div className="mx-auto grid max-w-[1440px] gap-14 px-5 py-24 md:grid-cols-12 md:gap-x-6 md:px-10 md:py-36">
-          <div className="md:col-span-4">
+        <div className="mx-auto grid max-w-[1440px] px-5 py-24 md:px-10 md:py-36 lg:grid-cols-12 lg:gap-x-6">
+          <div id="keynotes" className="lg:col-span-7 lg:row-start-1">
             <Reveal>
-              <Label index="C" className="text-ash">
-                Keynotes
-              </Label>
-              <h2 className="display mt-6 text-[clamp(2.6rem,4.6vw,4.4rem)]">{keynotes.heading}</h2>
+              <h2 className="display text-[clamp(2.4rem,3.6vw,3.6rem)]">{keynotes.heading}</h2>
             </Reveal>
-            <ImageReveal className="mt-12 hidden md:block">
-              <Photo slot={keynotes.photo} tone="dark" className="aspect-[4/5] w-full" sizes="30vw" />
+          </div>
+          <div className="-mx-5 mt-10 md:mx-0 md:mt-14 lg:col-span-5 lg:col-start-8 lg:row-span-2 lg:row-start-1 lg:mt-0">
+            <ImageReveal className="lg:sticky lg:top-28">
+              <Photo
+                slot={keynotes.photo}
+                tone="dark"
+                className="aspect-[4/5] w-full md:max-w-[34rem] lg:max-w-none"
+                sizes="(max-width: 767px) 100vw, (max-width: 1023px) 544px, (max-width: 1440px) 39vw, 560px"
+              />
             </ImageReveal>
           </div>
-          <div className="md:col-span-7 md:col-start-6">
+          <div className="mt-6 lg:col-span-7 lg:row-start-2 lg:mt-12 lg:pr-10">
             {keynotes.items.map((k, i) => (
-              <Reveal key={k.title} delay={i * 0.1}>
-                <article className={`py-12 ${i === 0 ? "border-t border-line-dark" : ""} border-b border-line-dark`}>
-                  <span className="label text-blush tabular-nums">Keynote {String(i + 1).padStart(2, "0")}</span>
-                  <h3 className="display mt-6 text-[clamp(2.6rem,5.2vw,5rem)] leading-[0.95]">{k.title}</h3>
-                  <p className="mt-5 font-serif text-[22px] leading-snug text-blush italic">{k.subtitle}</p>
-                  <p className="mt-6 max-w-xl text-[16.5px] leading-relaxed text-ash">{k.text}</p>
-                  {k.pdf && (
-                    <a href={k.pdf} target="_blank" rel="noopener noreferrer" className="mt-5 inline-flex min-h-11 items-center gap-2 text-[14px] font-medium">
-                      <FileText className="size-4" aria-hidden />
-                      <span className="link-draw">Keynote Details</span>
-                    </a>
-                  )}
+              <Reveal key={k.title}>
+                <article className="border-t border-line-dark py-10 md:py-14">
+                  <span className="label text-blush tabular-nums" aria-hidden>
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <h3 className="display mt-6 text-[clamp(2.75rem,5.4vw,5.6rem)] leading-[0.95]">{typeset(k.title)}</h3>
+                  <p className="mt-5 max-w-[34ch] font-serif text-[clamp(1.35rem,1.9vw,1.7rem)] leading-snug text-blush italic">{k.subtitle}</p>
+                  <p className="mt-5 max-w-[48ch] text-[16.5px] leading-relaxed text-ash">{k.text}</p>
+                  <DetailsLink pdf={k.pdf} title={k.title} label="Keynote Details" tone="dark" className="mt-4" />
                 </article>
               </Reveal>
             ))}
@@ -164,22 +186,24 @@ export default function SpeakingPage() {
       </section>
 
       {/* Dr. Joy's P3: kept minimal */}
-      <section id="p3" className="scroll-mt-20 bg-paper">
-        <div className="mx-auto max-w-[1440px] px-5 py-24 md:px-10 md:py-32">
-          <Reveal>
-            <h2 className="display text-[clamp(2.6rem,5vw,4.8rem)]">{p3.heading}</h2>
-          </Reveal>
-          <div className="mt-12 grid border-t border-ink md:grid-cols-2">
-            <Reveal className="border-b border-line py-10 md:border-r md:pr-10">
-              <h3 className="font-serif text-[30px] leading-tight">{p3.bring.title}</h3>
-              <p className="mt-3 max-w-md text-[16px] leading-relaxed text-stone">{p3.bring.text}</p>
-              <InquiryButton type="p3_conference" variant="text" className="mt-4">
+      <section className="bg-paper">
+        <div className="mx-auto grid max-w-[1440px] gap-10 px-5 py-24 md:px-10 md:py-32 lg:grid-cols-12 lg:gap-x-6">
+          <div id="p3" className="lg:col-span-4">
+            <Reveal>
+              <h2 className="display text-[clamp(2.75rem,4.6vw,4.6rem)]">{p3.heading}</h2>
+            </Reveal>
+          </div>
+          <div className="grid border-t border-ink md:grid-cols-2 lg:col-span-8">
+            <Reveal className="border-b border-line py-9 md:border-r md:pr-10">
+              <h3 className="font-serif text-[clamp(1.75rem,2.4vw,2.1rem)] leading-tight">{p3.bring.title}</h3>
+              <p className="mt-3 max-w-md text-[16.5px] leading-relaxed text-stone">{p3.bring.text}</p>
+              <InquiryButton type="p3_conference" variant="text" className="mt-4 !min-h-11 !gap-2">
                 {p3.bring.cta}
               </InquiryButton>
             </Reveal>
-            <Reveal delay={0.08} className="border-b border-line py-10 md:pl-10">
-              <h3 className="font-serif text-[30px] leading-tight">{p3.attend.title}</h3>
-              <p className="mt-3 max-w-md text-[16px] leading-relaxed text-stone">{p3.attend.text}</p>
+            <Reveal delay={0.06} className="border-b border-line py-9 md:pl-10">
+              <h3 className="font-serif text-[clamp(1.75rem,2.4vw,2.1rem)] leading-tight">{p3.attend.title}</h3>
+              <p className="mt-3 max-w-md text-[16.5px] leading-relaxed text-stone">{p3.attend.text}</p>
               <ArrowLink href={p3.attend.cta.href} className="mt-4">
                 {p3.attend.cta.label}
               </ArrowLink>
@@ -188,70 +212,23 @@ export default function SpeakingPage() {
         </div>
       </section>
 
-      {/* Where I've Spoken */}
-      {(spokenAt.logos.length > 0 || spokenAt.verified || site.showPlaceholders) && (
-        <section className="bg-paper">
-          <div className="mx-auto max-w-[1440px] px-5 pb-24 md:px-10 md:pb-32">
-            {spokenAt.logos.length > 0 ? (
-              <>
-                <h2 className="label text-stone">{spokenAt.heading}</h2>
-                <ul className="mt-10 grid grid-cols-2 items-center gap-x-10 gap-y-12 sm:grid-cols-3 lg:grid-cols-6">
-                  {spokenAt.logos.map((l) => (
-                    <li key={l.name} className="relative h-12">
-                      <Image src={l.src} alt={l.name} fill sizes="160px" className="object-contain grayscale" />
-                    </li>
-                  ))}
-                </ul>
-              </>
-            ) : (
-              <>
-                <div className="flex flex-wrap items-baseline justify-between gap-4 border-t border-ink pt-6">
-                  <h2 className="label">{spokenAt.heading}</h2>
-                  {!spokenAt.verified && site.showPlaceholders && (
-                    <p className="label !text-[9.5px] text-stone">From Testimonials.pdf (partial listing) · confirm before launch</p>
-                  )}
-                </div>
-                <ul className="mt-8 columns-1 gap-x-10 sm:columns-2 lg:columns-3">
-                  {spokenAt.venues.map((v) => (
-                    <li key={v} className="break-inside-avoid border-b border-line py-3 font-serif text-[21px] leading-snug">
-                      {v}
-                    </li>
-                  ))}
-                </ul>
-              </>
-            )}
-          </div>
-        </section>
-      )}
+      {/* Proof, on ivory: where she has spoken, and what planners say */}
+      <SpokenAt className={quoteShown ? "" : "pb-24 md:pb-36"} />
+      <Quote {...testimonial} tone="light" />
 
-      <Quote {...testimonial} />
+      <PlannerResources ruled={!proof} />
 
-      {/* Resources + Planning */}
-      <section className="bg-paper">
-        <div className="mx-auto grid max-w-[1440px] gap-6 px-5 py-24 md:grid-cols-2 md:px-10 md:py-32">
-          <Reveal className="flex h-full flex-col justify-between gap-10 bg-ivory p-8 md:p-12">
-            <div>
-              <h2 className="display text-[clamp(2.2rem,3.8vw,3.6rem)]">{resources.heading}</h2>
-              <p className="mt-5 max-w-md text-[16px] leading-relaxed text-stone">{resources.text}</p>
-            </div>
-            <div>
-              {links.speakerResources ? (
-                <ButtonLink href={links.speakerResources}>{resources.cta}</ButtonLink>
-              ) : (
-                <ReviewSlot className="!min-h-0 !py-4">{resources.cta}: speaker packet link pending</ReviewSlot>
-              )}
-            </div>
+      {/* Planning an Event?: the finale */}
+      <section className="grain grain-light bg-ink text-white">
+        <div className="mx-auto grid max-w-[1440px] gap-10 px-5 py-28 md:px-10 md:py-40 lg:grid-cols-12 lg:gap-x-6">
+          <Reveal className="lg:col-span-8">
+            <h2 className="display text-[clamp(3.6rem,9.6vw,9.5rem)] leading-[0.88]">{planning.heading}</h2>
           </Reveal>
-          <Reveal delay={0.08} className="grain grain-light flex h-full flex-col justify-between gap-10 bg-ink p-8 text-white md:p-12">
-            <div>
-              <h2 className="display text-[clamp(2.2rem,3.8vw,3.6rem)]">{planning.heading}</h2>
-              <p className="mt-5 max-w-md text-[16px] leading-relaxed text-ash">{planning.text}</p>
-            </div>
-            <div>
-              <InquiryButton type="speaking" tone="dark">
-                {planning.cta}
-              </InquiryButton>
-            </div>
+          <Reveal delay={0.08} className="lg:col-span-4 lg:self-end">
+            <p className="max-w-[34ch] text-[17px] leading-relaxed text-ash">{planning.text}</p>
+            <InquiryButton type="speaking" tone="dark" className="mt-8">
+              {planning.cta}
+            </InquiryButton>
           </Reveal>
         </div>
       </section>

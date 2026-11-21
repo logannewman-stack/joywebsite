@@ -14,12 +14,25 @@ export const speaking = {
     ],
     primary: { label: "View Speaking Topics", href: "#topics" },
     secondary: { label: "Submit a Speaking Inquiry" },
+    // Event photograph: color in both photo styles, so no black-and-white twin.
     photo: {
-      src: "/photos/speaking-hero.jpg",
+      src: "/photos/speaking-hero-stage.jpg",
+      alt: "Dr. Joy on a conference stage in a white blazer, mid-presentation",
+      treatment: "color",
+      direction: "Color stage photograph: Dr. Joy at full height, the protagonist of the frame.",
+      focus: "50% 38%",
+      original: "54708125748",
+    } satisfies PhotoSlot,
+  },
+
+  /** Full-bleed proof of a real room, between the courses and the team programs. */
+  room: {
+    photo: {
+      src: "/photos/speaking-room.jpg",
       alt: "Dr. Joy on stage in front of a conference audience",
       treatment: "color",
-      direction: "Color stage photograph of Dr. Joy that proves presence in a real room.",
-      focus: "55% 45%",
+      direction: "Wide color photograph of the stage and the audience.",
+      focus: "52% 46%",
       original: "54708146349",
     } satisfies PhotoSlot,
   },
@@ -74,14 +87,16 @@ export const speaking = {
         pdf: "/pdfs/boundaries-burnout-and-breakthrough.pdf" as string | null,
       },
     ],
+    // Stage frame cropped to 4:5. The black-and-white twin (red-weighted mix,
+    // so the curtain falls to black) is used when site.photoStyle is "bw".
     photo: {
-      src: "/photos/speaking-keynote.jpg",
-      srcBw: "/photos/speaking-keynote-bw.jpg",
-      alt: "Dr. Joy in a white blazer",
-      treatment: "bw",
-      direction: "Monochrome headshot to support the keynote typography. White blazer, high tonal detail.",
-      focus: "50% 30%",
-      original: "JVH-126",
+      src: "/photos/speaking-keynote-stage.jpg",
+      srcBw: "/photos/speaking-keynote-stage-bw.jpg",
+      alt: "Dr. Joy delivering a keynote on stage",
+      treatment: "color",
+      direction: "Stage photograph to carry the keynote typography: profile, mid-sentence.",
+      focus: "40% 30%",
+      original: "54708146684",
     } satisfies PhotoSlot,
   },
 
@@ -105,7 +120,9 @@ export const speaking = {
     logos: [] as { name: string; src: string }[],
     /**
      * Until logos are cleared, venues are set as type. Source: "Presentations
-     * (partial listing)" in Testimonials.pdf. Set verified: true once confirmed.
+     * (partial listing)" in Testimonials.pdf. Review mode shows the list with a
+     * "confirm before launch" tag; at launch it appears only once Dr. Joy has
+     * confirmed it: set verified: true (or remove venues she wants left out).
      */
     verified: false,
     venues: [
@@ -148,6 +165,21 @@ export const speaking = {
     heading: "Meeting Planner Resources",
     text: "Access my speaker packet, professional biography, approved headshots, and detailed course information.",
     cta: "View Speaker Resources",
+    /**
+     * Until links.speakerResources is set, "View Speaker Resources" opens this
+     * list: the four things the approved line names, in its order, each with
+     * what exists today. The supplied speaker packet and "Meet Dr. Joy.pdf"
+     * carry the retired P3 wording, so they are NOT linked: the packet and
+     * headshots are sent on request until a clean packet is supplied.
+     * "On request" is a UI label awaiting Dr. Joy's approval.
+     */
+    kit: {
+      packet: "Speaker packet",
+      biography: "Professional biography",
+      headshots: "Approved headshots",
+      courses: "Detailed course information",
+      onRequest: "On request",
+    },
   },
 
   planning: {
@@ -156,3 +188,13 @@ export const speaking = {
     cta: "Submit a Speaking Inquiry",
   },
 };
+
+/**
+ * Every bookable program title, in page order (clinical courses, team
+ * programs, keynotes). For the speaking inquiry's "Program of interest" field.
+ */
+export const programTitles: string[] = [
+  ...speaking.clinical.courses.map((c) => c.title),
+  ...speaking.teams.programs.map((p) => p.title),
+  ...speaking.keynotes.items.map((k) => k.title),
+];

@@ -36,7 +36,7 @@ export default function NotFound() {
 
         <div className="md:col-span-6 md:col-start-7 md:pt-3">
           <Label as="h2" className="text-stone">
-            {home.perspective.cta.label}
+            {home.work.heading}
           </Label>
           <ol className="mt-6 border-t border-ink">
             {home.pathways.map((p, i) => {
