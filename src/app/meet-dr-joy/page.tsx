@@ -36,7 +36,7 @@ export default function MeetPage() {
             </h1>
           </div>
 
-          <div className="mt-10 md:mt-14 md:ml-auto md:w-2/3 lg:col-span-6 lg:col-start-7 lg:row-span-2 lg:mt-0 lg:mr-[calc(-1*max(2.5rem,(100vw-1440px)/2+2.5rem))] lg:ml-0 lg:w-auto">
+          <div className="mt-10 md:mt-14 md:ml-auto md:w-2/3 lg:col-span-6 lg:col-start-7 lg:row-span-2 lg:mt-0 lg:bleed-right lg:ml-0 lg:w-auto">
             <ImageReveal immediate delay={0.1}>
               <Photo
                 slot={hero.portrait}
