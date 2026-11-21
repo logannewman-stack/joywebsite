@@ -212,6 +212,7 @@ html.js [data-reveal=""] {
     opacity var(--duration-text) var(--ease-expo) var(--reveal-delay, 0s),
     transform var(--duration-text) var(--ease-expo) var(--reveal-delay, 0s);
 }
+html.js [data-reveal=""]:focus-within,
 html.js [data-reveal=""][data-in] {
   opacity: 1;
   transform: none;

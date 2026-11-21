@@ -34,12 +34,11 @@ export function Marquee({
   const style: Vars = {
     "--marquee-duration": `${duration}s`,
     "--marquee-travel": `${-travel}%`,
-    "--marquee-dir": reverse ? -1 : 1,
     "--marquee-anim-dir": reverse ? "reverse" : "normal",
   };
   const view = auto ? {} : { "data-view": "" };
   return (
-    <div {...view} className={`marquee ${auto ? "marquee-auto" : ""} ${className}`} style={style}>
+    <div {...view} className={`marquee ${auto ? "marquee-auto" : reverse ? "marquee-reverse" : ""} ${className}`} style={style}>
       <div className="marquee-track">
         <div className="marquee-group">{children}</div>
         <div className="marquee-group" aria-hidden="true" inert>

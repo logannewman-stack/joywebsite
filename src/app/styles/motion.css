@@ -10,13 +10,14 @@
      motion:   only when the page is animated          (html.motion)
      pinned:   only while an ancestor scene is pinned  ([data-pinned])
      seen:     once an ancestor [data-inview] has been seen ([data-in])
+     step-on:  inside the current step of a scene ([data-active])
    A hidden starting state must sit under motion: (e.g. motion:opacity-0
    motion:seen:opacity-100), or it would stay hidden without JavaScript.
    ========================================================================== */
 @custom-variant motion (html.motion &);
 @custom-variant pinned ([data-pinned] &);
 @custom-variant seen ([data-in] &);
-@custom-variant active ([data-active] &);
+@custom-variant step-on ([data-active] &);
 
 :root {
   --ease-soft: cubic-bezier(0.22, 0.61, 0.36, 1);
@@ -208,6 +209,16 @@ html.motion [data-inview][data-in].stagger > * {
 .stagger > :nth-child(11) { --si: 10; }
 .stagger > :nth-child(n + 12) { --si: 11; }
 
+/* Keyboard focus never waits for an entrance: a focused control shows at once, ring included. */
+html.motion [data-inview] .rise:focus-within,
+html.motion [data-inview].rise:focus-within,
+html.motion [data-inview] .stagger > *:focus-within,
+html.motion [data-inview].stagger > *:focus-within {
+  opacity: 1;
+  transform: none;
+  transition: none;
+}
+
 /* A hairline that draws itself from the left. */
 html.motion [data-inview] .rule-draw {
   transform: scaleX(0);
@@ -257,8 +268,12 @@ html.motion [data-inview][data-in] .settle {
 html.motion .marquee-track {
   flex-wrap: nowrap;
   width: max-content;
-  transform: translate3d(calc((var(--v, 0.5) - 0.5) * var(--marquee-travel, -30%) * var(--marquee-dir, 1)), 0, 0);
+  /* Travels left from flush with the left edge (or, reversed, back toward it), so no gap ever opens. */
+  transform: translate3d(calc(var(--v, 0) * var(--marquee-travel, -30%)), 0, 0);
   will-change: transform;
+}
+html.motion .marquee-reverse .marquee-track {
+  transform: translate3d(calc((1 - var(--v, 0)) * var(--marquee-travel, -30%)), 0, 0);
 }
 html.motion .marquee-group {
   flex-wrap: nowrap;
@@ -309,8 +324,32 @@ html.motion .magnetic {
   .wr-in,
   .rise,
   .stagger > *,
-  .word-light > span {
+  .word-light > span,
+  .rule-draw,
+  .settle,
+  .parallax-inner {
     opacity: 1 !important;
     transform: none !important;
+  }
+  .wipe {
+    clip-path: none !important;
+  }
+  .hl-light {
+    background-size: 100% 0.34em !important;
+  }
+  /* A marquee prints as a wrapped line, once. */
+  .marquee-track {
+    transform: none !important;
+    animation: none !important;
+    flex-wrap: wrap !important;
+    width: auto !important;
+  }
+  .marquee-group {
+    flex-wrap: wrap !important;
+    flex-shrink: 1 !important;
+  }
+  .marquee-group[aria-hidden="true"],
+  .marquee-pause {
+    display: none !important;
   }
 }

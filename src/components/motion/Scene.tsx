@@ -16,7 +16,7 @@ type Vars = CSSProperties & Record<`--${string}`, string | number>;
  */
 export function Scene({
   children,
-  length = 3,
+  length,
   steps,
   from = "all",
   dark = false,
@@ -26,7 +26,11 @@ export function Scene({
   as: Tag = "section",
 }: {
   children: ReactNode;
-  /** How many screens of scrolling the scene lasts while pinned. */
+  /**
+   * How many screens of scrolling the scene lasts while pinned (default 3).
+   * Leave it out to set the length per breakpoint in className instead,
+   * e.g. "[--scene-length:4] lg:[--scene-length:3]".
+   */
   length?: number;
   /** Number of <SceneStep> children, if the scene has steps. */
   steps?: number;
@@ -38,7 +42,7 @@ export function Scene({
   pinClassName?: string;
   as?: ElementType;
 }) {
-  const style: Vars = { "--scene-length": length };
+  const style: Vars | undefined = length === undefined ? undefined : { "--scene-length": length };
   return (
     <Tag id={id} data-scene={from} data-steps={steps} data-header={dark ? "dark" : undefined} className={className} style={style}>
       <div data-scene-pin className={pinClassName}>
