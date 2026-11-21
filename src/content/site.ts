@@ -84,14 +84,20 @@ export const links = {
  *
  * `smsOptIn`: whether any form offers the text-message opt-in. The root
  * layout passes it from the opt-in wording in integrations.ts.
+ * `insightsEmpty`: whether /insights would show no confirmed record (computed in the layout).
  */
-export function launchBlockers({ smsOptIn = true }: { smsOptIn?: boolean } = {}): string[] {
+export function launchBlockers({ smsOptIn = true, insightsEmpty = false }: { smsOptIn?: boolean; insightsEmpty?: boolean } = {}): string[] {
   if (site.showPlaceholders) return [];
   const missing: string[] = [];
   if (!links.instrumental) missing.push("links.instrumental: Consulting must link to the Instrumental site.");
   if (smsOptIn && !links.privacy)
     missing.push("links.privacy: the P3 interest list offers text messages, so it must link a privacy policy.");
   if (!/^https:\/\/[^/]+$/.test(site.url)) missing.push("site.url: set the production address, e.g. https://www.drjoyrdh.com (no trailing slash).");
+  if (insightsEmpty)
+    missing.push("insights: no confirmed publication or original article. Set verified: true on at least the feature record, or /insights launches empty.");
+  // On Vercel's production build, forms need the GoHighLevel webhook (GHL_WEBHOOK_URL, or per-type GHL_WEBHOOK_URL_<TYPE>).
+  if (process.env.VERCEL_ENV === "production" && !Object.keys(process.env).some((k) => k.startsWith("GHL_WEBHOOK_URL") && process.env[k]))
+    missing.push("GHL_WEBHOOK_URL: set it for Production in Vercel, or every form replies that it can't send right now.");
   return missing;
 }
 

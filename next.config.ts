@@ -27,9 +27,22 @@ function oldSiteRedirects(): Redirect[] {
     ...to("/speaking", [
       "/speaking-inquiry",
       "/speaking/speaking-schedule",
+    ]),
+    // Meeting-planner resources, and the files the old page linked (bios, logistics, headshots).
+    ...to("/speaking#resources", [
       "/speaking/resources-for-meeting-planners",
       "/download-my-speaking-kit",
+      "/wp-content/uploads/2026/04/Dr-Joy-Short-Form-Bio.pdf",
+      "/wp-content/uploads/2026/04/Dr-Joy-Long-Form-Bio.pdf",
+      "/wp-content/uploads/2026/04/Dr-Joy-Last-Minute-Logistics.docx",
+      ...["111", "117", "124", "132", "138", "145", "155"].map((n) => `/wp-content/uploads/2026/05/JVH-${n}.jpg`),
     ]),
+    // The old speaker kit (it carries retired wording): the new packet once it exists, else the resources.
+    {
+      source: "/wp-content/uploads/2026/05/Final-Web-Version-J-Void-Holmes-SP.pdf",
+      destination: links.speakerResources || "/speaking#resources",
+      permanent: false,
+    },
     // Clinical training for hygienists (P3 certification and workshops, 1:1 instrumentation coaching).
     ...to("/hands-on-education", [
       "/workshops",

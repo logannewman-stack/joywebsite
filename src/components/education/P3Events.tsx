@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
-import { education, eventEndsAt, type FeaturedEvent } from "@/content/education";
+import { education, eventEndsAt, isListed, type FeaturedEvent } from "@/content/education";
+import { EventStructuredData } from "@/components/ui/StructuredData";
 import type { PhotoSlot } from "@/content/site";
 import { Photo } from "@/components/ui/Photo";
 import { ButtonLink, Label } from "@/components/ui/Links";
@@ -26,8 +27,9 @@ export async function P3Events() {
   // Once the server knows the event is over, it never ships its link again.
   // Until then, EventWindow takes it down in the browser the moment it ends.
   let body: ReactNode = interest;
-  if (ev && !(await hasEnded(eventEndsAt(ev)))) {
+  if (ev && isListed(ev) && !(await hasEnded(eventEndsAt(ev)))) {
     body = (
+      <>
       <EventWindow
         endsAt={eventEndsAt(ev)}
         live={
@@ -37,11 +39,14 @@ export async function P3Events() {
         }
         fallback={interest}
       />
+      {/* Search engines see the event only while it is live. */}
+      <EventStructuredData />
+      </>
     );
   }
 
   return (
-    <section id="events" className="grain grain-light bg-ink text-white">
+    <section id="events" data-header="dark" className="grain grain-light bg-ink text-white">
       <div className="mx-auto max-w-[1440px] px-5 py-24 md:px-10 md:py-32">{body}</div>
     </section>
   );

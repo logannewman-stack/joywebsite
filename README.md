@@ -2,7 +2,7 @@
 
 A six-page, photo-led personal website for Dr. Joy RDH. It has separate pathways for speaking, hands-on education, industry collaborations and consulting (which links out to Instrumental).
 
-Built with Next.js 16, Tailwind CSS 4 and Motion. The look is a black-and-white editorial foundation, with ivory for warmth and blush as a restrained accent. Type is Instrument Serif for display and Geist for text.
+Built with Next.js 16 and Tailwind CSS 4. The look is a black-and-white editorial foundation, with ivory for warmth and blush as a restrained accent. Type is Instrument Serif for display and Geist for text.
 
 ## Run it
 
@@ -85,8 +85,9 @@ The share image (`src/app/opengraph-image.jpg`, also `twitter-image.jpg`, 1200×
 - Never overwrite a photo: give a replacement a new filename. Optimized images are cached for 31 days, keyed on the filename.
 - Portraits have a black-and-white twin (`srcBw`); `photoStyle` in `site.ts` switches every portrait at once. The conversions use a skin-preserving channel mix and a gentle curve. If the photographer supplies their own conversions, drop them in under the same names.
 - After adding or replacing photos, run `npm run photos:blur`. It writes a tiny preview of each JPEG to `src/content/blur.json`; while a photo loads, its frame shows that soft color preview and the photo fades in over it. Photos without a preview simply wait for the photo before revealing.
-- Color grade: _to be documented after the shared grade is applied to the color photographs._
-- Meet Dr. Joy uses a candid frame from the portrait shoot (JVH-167) as its life photo. When Dr. Joy supplies a Bowie Boys and Girls Club photo, set it as `meet.guides.photo` (color, no B&W twin needed). An empty slot is hidden at launch and the story column takes its place.
+- Color grade: every color photo carries one shared, restrained grade, so the set reads as one shoot. Violet and blue stage light is calmed (hues around 262°; skin and whites are untouched), saturation is 8% lower overall, the black point is lifted about 3%, and the white balance leans neutral-warm. `npm run photos:grade` (Python 3 with Pillow and NumPy) grades every color photo referenced in `src/` into a new `-g` file, never overwriting, and updates the references. Black-and-white twins and PNG cutouts are not graded. Then run `npm run photos:blur`. The recipe lives in `scripts/grade_photos.py`.
+- Black-and-white twins: `npm run photos:bw -- public/photos/<name>-g.jpg public/photos/<name>-bw.jpg` (`scripts/bw_twin.py`).
+- Meet Dr. Joy uses a candid frame from the portrait shoot (JVH-167) as its life photo. When Dr. Joy supplies a Bowie Boys and Girls Club photo, set it as `meet.guides.photo` (color, no B&W twin needed) and grade it with `npm run photos:grade`. An empty slot is hidden at launch and the story column takes its place.
 
 ## Motion
 
@@ -113,20 +114,20 @@ The general flow asks what the visitor needs:
 
 The footer also opens the P3 conference, interest-list and clinical-launch forms. The footer newsletter is hidden on `/insights` and `/insights/*`, which have their own signup.
 
-Besides the form fields and `tags`, the payload carries `program` (speaking: the program of interest), `sponsor_consent_text` and `sms_consent_text` (the exact wording agreed to), `consent_version` and `consent_recorded_at`. Bump `optInsVersion` in `integrations.ts` whenever the opt-in wording changes. The route returns 422 for a text-message opt-in without a phone number. The webhook call times out after 10 seconds, and the error message offers a prefilled email instead.
+Besides the form fields and `tags`, the payload carries `program` (speaking: the program of interest), `sponsor_consent_text` and `sms_consent_text` (the exact wording agreed to), `consent_version` and `consent_recorded_at`. Bump `optInsVersion` in `integrations.ts` whenever the opt-in wording changes. `sponsor_opt_in` and `sms_opt_in` are sent only for the P3 interest list, the one form that asks. The route returns 422 for a text-message opt-in without a phone number. The webhook call times out after 10 seconds, and the error message offers a prefilled email instead.
 
 The P3 interest list has two separate opt-ins: sponsor communications and text messages. Both are unchecked by default. Choosing text messages requires a phone number. **The opt-in language in `integrations.ts` needs review before launch**, and because text-message consent is collected, the site needs a published privacy policy (`links.privacy`).
 
 ### P3 event
 
-Set `education.events.featured` (in `src/content/education.ts`) to the next event, using Hazel's landing-page URL as `registrationUrl`; the comments there describe the other fields, including when a past event falls back on its own. While it is `null`, the page shows the approved "not yet available" message and the interest-list form, so there is never a dead registration link.
+Set `education.events.featured` (in `src/content/education.ts`) to the next event, using Hazel's live landing-page URL (https) as `registrationUrl` (the build stops if it is not a live https address); the comments there describe the other fields, including when a past event falls back on its own. While it is `null`, the page shows the approved "not yet available" message and the interest-list form, so there is never a dead registration link. While an event is live, Hands-On also carries its schema.org Event data, and it comes down with the event.
 
 ## Search and sharing
 
 - Titles use the page name plus "| Dr. Joy RDH". Descriptions come from approved copy. Every page has its own canonical URL and share URL, built from `site.url`.
 - `sitemap.xml` lists the six pages; `robots.txt` points to it. `/directions` is never listed.
-- Structured data (schema.org Person and WebSite) is rendered once, in the root layout. It uses approved copy only; `site.fullName` stays empty until Dr. Joy confirms her full name may be used, and `links.profiles` can list her public profiles.
-- `next.config.ts` redirects every address of the old WordPress site (46 URLs from its sitemap) to the closest new page. Consulting addresses go to Instrumental once `links.instrumental` is set; the old privacy and terms pages go to `links.privacy` and `links.terms` once set.
+- Structured data (schema.org Person and WebSite) is rendered once, in the root layout, plus an Event on Hands-On while a featured event is live. It uses approved copy only; `site.fullName` stays empty until Dr. Joy confirms her full name may be used, and `links.profiles` can list her public profiles.
+- `next.config.ts` redirects every address of the old WordPress site (46 URLs from its sitemap) to the closest new page. Consulting addresses go to Instrumental once `links.instrumental` is set; the old privacy and terms pages go to `links.privacy` and `links.terms` once set. The files the old meeting-planner page linked (bios, logistics, headshots, speaker kit) land on the Speaking resources (`/speaking#resources`); the speaker kit goes to `links.speakerResources` once it is set.
 
 ## Before launch
 
@@ -136,8 +137,10 @@ Set `education.events.featured` (in `src/content/education.ts`) to the next even
    - [x] Shortlist identified by original filename; color, monochrome and cutout treatments tested for the opening screen (`/directions`)
    - [ ] Optional: Boys and Girls Club photo for Meet Dr. Joy (a candid portrait stands in)
    - [ ] If Direction B uses the cutout: matte refined by a retoucher (`home.hero.bStyle`)
+   - [ ] Dr. Joy approves the final photo set, including JVH-111 (the opening), JVH-123, 54708288935, 54707956836 and 3Z4A3971 (clinical close-up, brand name cropped out)
 2. Logos
    - [ ] Approved manufacturer logos with written clearance, five at most (`industry.collaborations.logos`)
+   - [ ] Sponsor branding visible in photographs cleared or retouched: PHILIPS lanyards and LM instrument boxes in the P3 room photos (`education-band`, `education-room`, `education-annual`, `education-session`)
    - [ ] **Launch blocker for the Speaking proof section:** conference logos with clearance, or the "Where I've Spoken" venue list confirmed (`speaking.spokenAt`)
 3. Testimonial permissions
    - [ ] **Launch blocker for the Speaking proof section:** Anne Duffy's permission to republish
@@ -152,11 +155,11 @@ Set `education.events.featured` (in `src/content/education.ts`) to the next even
    - [ ] GoHighLevel interest/waitlist form tested from the fallback
 6. Opt-in disclosures
    - [ ] Sponsor and text-message wording approved (separate, unchecked by default) in `integrations.ts`
-   - [ ] Privacy policy published and `links.privacy` set (the build fails without it while text messages are offered). The old site's privacy page may be the one listed in the GoHighLevel text-message registration; once `links.privacy` is set, the old address redirects there
+   - [ ] Privacy policy published and `links.privacy` set (the build fails without it while text messages are offered). The old site's privacy page may be the one listed in the GoHighLevel text-message registration; once `links.privacy` is set, the old address redirects there. `links.privacy` must be the new policy's address, not the old `/privacy-policy-2/` (that would redirect to itself); if the text-message registration lists the old privacy or terms URLs, both must keep resolving, so set `links.terms` if a terms page exists
 7. Articles
    - [ ] Two original articles added for voice review; each goes in with a `slug` and `body` (it then gets its own page under /insights and joins the sitemap)
    - [ ] Published-article URLs, dates and image rights confirmed, at least "Perfectly Placed, Perfectly Sealed" and "Uniting through Diversity"; the single strongest feature article chosen
-   - [ ] Set `verified: true` on each confirmed Insights record; nothing shows at launch until then
+   - [ ] **Launch blocker for Insights:** set `verified: true` on each confirmed Insights record; nothing shows at launch until then, and the launch build stops while no record or original article is confirmed ("No empty blog")
    - [ ] The Crest + Oral-B article: its real headline and URL before `titleConfirmed: false` comes off
    - [ ] Book contributions: title, publisher and year
 8. Newsletter
@@ -166,6 +169,8 @@ Set `education.events.featured` (in `src/content/education.ts`) to the next even
    - [ ] Redirects: old addresses spot-checked after the domain moves (for example `/about/`, `/speaking-topics/`, `/p3-waitlist/`, `/consulting/`)
    - [ ] Mobile image crops, contrast, alt text, keyboard and screen-reader pass on the final photography
    - [ ] Usage rights for the event frames 54708147463 and _DSC1299 (the sponsor lettering in the Industry partnership photo was retouched out)
+   - [ ] info@DrJoyRDH.com approved for public display (footer, email links, structured data)
+   - [ ] Added interface labels approved: "On request" and the resource items on Speaking, "Inquire" on each speaking program, and the Home search title and description
 10. Launch newsletter
    - [ ] The launch edition is timed to the public launch date; the site does not wait for a new edition
 
@@ -176,9 +181,9 @@ Set `education.events.featured` (in `src/content/education.ts`) to the next even
 - [ ] Optional: `links.speakerReel` (YouTube or Vimeo) plays in the Speaking room band
 - [ ] `npm run photos:blur` after the last photo change
 - [ ] `showPlaceholders` set to `false`, and the build passes its launch checks
-- [ ] Vercel: `GHL_WEBHOOK_URL` set for Production
+- [ ] Vercel: `GHL_WEBHOOK_URL` set for Production (the production build stops without it)
 - [ ] Vercel → Domains: `www.drjoyrdh.com` is the primary domain and `drjoyrdh.com` redirects to it (`site.url` must match). Until the domain is attached, share Preview deployment links for review: they are not indexed and their share images work
-- [ ] Before the DNS change, export the old site's addresses (its sitemap or the Search Console Pages report) and compare them with the list in `next.config.ts`
+- [ ] Before the DNS change, export the old site's addresses (its sitemap or the Search Console Pages report), including files linked under `/wp-content/uploads` (bios, speaker kit, logistics, headshots), not just the sitemap pages, and compare them with the list in `next.config.ts`
 - [ ] Google Search Console verified (DNS TXT record in Vercel) and `https://www.drjoyrdh.com/sitemap.xml` submitted; site imported into Bing Webmaster Tools
 - [ ] Share cards checked: LinkedIn Post Inspector, Facebook Sharing Debugger, a test iMessage
 - [ ] Optional: Vercel Web Analytics and Speed Insights (`npm i @vercel/analytics @vercel/speed-insights`, then render `<Analytics />` and `<SpeedInsights />` in `src/app/layout.tsx`)

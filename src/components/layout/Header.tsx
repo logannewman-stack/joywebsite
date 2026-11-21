@@ -204,7 +204,7 @@ export function Header() {
 
           <nav aria-label="Main" className="hidden items-center gap-7 xl:flex">
             {nav.map((item) => {
-              const active = pathname === item.href;
+              const active = pathname === item.href || pathname.startsWith(`${item.href}/`);
               return (
                 <Link
                   key={item.href}
@@ -275,7 +275,7 @@ export function Header() {
         <nav aria-label="Menu" className="flex flex-1 flex-col">
           <ul>
             {menu.map((item, i) => {
-              const current = pathname === item.href;
+              const current = pathname === item.href || pathname.startsWith(`${item.href}/`);
               return (
                 <li
                   key={item.href}

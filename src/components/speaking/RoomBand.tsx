@@ -14,7 +14,7 @@ export function RoomBand() {
   const { photo } = speaking.room;
   const reel = links.speakerReel;
   return (
-    <div className="relative bg-ink">
+    <div data-header="dark" className="relative bg-ink">
       <ImageReveal>
         <Photo slot={photo} className="aspect-[4/3] w-full sm:aspect-[3/2] md:aspect-[2/1] lg:aspect-[21/9]" sizes="100vw" />
       </ImageReveal>

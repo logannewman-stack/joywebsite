@@ -40,7 +40,6 @@ export function Feature({ item, cta }: { item: FeatureItem; cta: string }) {
             {item.excerpt && <p className="mt-6 max-w-[56ch] text-[17px] leading-relaxed text-stone">{item.excerpt}</p>}
             <ButtonLink href={item.href} className="mt-10">
               {cta}
-              {item.external && <span className="sr-only"> (opens in a new tab)</span>}
             </ButtonLink>
           </Reveal>
         </article>

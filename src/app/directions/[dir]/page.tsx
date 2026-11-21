@@ -3,13 +3,16 @@ import { notFound } from "next/navigation";
 import { heroes } from "@/components/home/Heroes";
 import { site } from "@/content/site";
 
+// Every page of this route is listed by generateStaticParams; navigations into it need not be instant.
+export const instant = false;
+
 /**
  * One opening-screen direction on its own, as Home would show it. Embedded in
  * the /directions review page (desktop and phone previews). Review only:
  * never indexed, and gone at launch.
  */
 export const metadata: Metadata = {
-  title: "Opening-screen preview",
+  title: site.showPlaceholders ? "Opening-screen preview" : "Page not found",
   robots: { index: false, follow: false },
 };
 

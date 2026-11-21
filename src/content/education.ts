@@ -160,10 +160,19 @@ export function eventEndsAt(ev: Pick<FeaturedEvent, "endsOn">): number {
  */
 export function currentEvent(now: number = Date.now()): FeaturedEvent | null {
   const ev = education.events.featured;
-  return ev && now < eventEndsAt(ev) ? ev : null;
+  return ev && isListed(ev) && now < eventEndsAt(ev) ? ev : null;
+}
+
+/** A featured event is listed only once its registration page is live (an https address). */
+export function isListed(ev: Pick<FeaturedEvent, "registrationUrl">): boolean {
+  return /^https:\/\//.test(ev.registrationUrl);
 }
 
 // Build guard: an event without a readable end date would never come down.
 if (education.events.featured && Number.isNaN(eventEndsAt(education.events.featured))) {
   throw new Error("education.events.featured.endsOn must be the event's last day as YYYY-MM-DD.");
+}
+// Build guard: keep featured null until its registration page is live.
+if (education.events.featured && !isListed(education.events.featured)) {
+  throw new Error("education.events.featured.registrationUrl must be the live https landing page; keep featured null until it is.");
 }

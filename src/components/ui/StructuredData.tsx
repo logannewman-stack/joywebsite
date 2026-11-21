@@ -36,7 +36,7 @@ export function StructuredData() {
         "@id": personId,
         name,
         alternateName,
-        honorificPrefix: "Dr.",
+        ...(site.fullName ? { honorificPrefix: "Dr." } : {}),
         honorificSuffix: "RDH",
         url: site.url,
         image: `${site.url}/photos/home-hero-g.jpg`,

@@ -28,7 +28,7 @@ export function reelEmbedUrl(url: string): string | null {
     const m = u.pathname.match(/(?:^|\/)(\d{6,})(?:\/([\da-f]+))?/);
     if (m) {
       const hash = m[2] ?? u.searchParams.get("h");
-      return `https://player.vimeo.com/video/${m[1]}?autoplay=1&dnt=1&title=0&byline=0&portrait=0${hash ? `&h=${hash}` : ""}`;
+      return `https://player.vimeo.com/video/${m[1]}?autoplay=1&dnt=1&texttrack=en&title=0&byline=0&portrait=0${hash ? `&h=${hash}` : ""}`;
     }
   }
   return null;

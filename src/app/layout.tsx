@@ -5,13 +5,17 @@ import { optIns } from "@/content/integrations";
 import { InquiryProvider } from "@/components/inquiry/InquiryProvider";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
-import { Providers } from "@/components/layout/Providers";
 import { REVEAL_BODY_SCRIPT, REVEAL_HEAD_SCRIPT } from "@/components/ui/Reveal";
 import { StructuredData } from "@/components/ui/StructuredData";
+import { insights } from "@/content/insights";
+import { isShown } from "@/components/insights/records";
 import "./globals.css";
 
 // Launch build (site.showPlaceholders false): stop here, with a list, if anything required is missing.
-const blockers = launchBlockers({ smsOptIn: Boolean(optIns.sms) });
+// Insights must not launch empty ("No empty blog"): at least one confirmed record or original article.
+const insightsEmpty =
+  !insights.published.articles.some(isShown) && !insights.original.articles.some((a) => a.href || a.body?.length);
+const blockers = launchBlockers({ smsOptIn: Boolean(optIns.sms), insightsEmpty });
 if (blockers.length) {
   throw new Error(`Not ready to launch (site.showPlaceholders is false):\n- ${blockers.join("\n- ")}`);
 }
@@ -47,21 +51,19 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${instrument.variable} ${geist.variable}`} suppressHydrationWarning>
+    <html lang="en" data-scroll-behavior="smooth" className={`${instrument.variable} ${geist.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: REVEAL_HEAD_SCRIPT }} />
         <StructuredData />
       </head>
       <body>
-        <Providers>
-          <InquiryProvider>
-            <Header />
-            <main id="main" tabIndex={-1} className="outline-none">
-              {children}
-            </main>
-            <Footer />
-          </InquiryProvider>
-        </Providers>
+        <InquiryProvider>
+          <Header />
+          <main id="main" tabIndex={-1} className="outline-none">
+            {children}
+          </main>
+          <Footer />
+        </InquiryProvider>
         <script dangerouslySetInnerHTML={{ __html: REVEAL_BODY_SCRIPT }} />
       </body>
     </html>

@@ -16,7 +16,7 @@ const textLink = `group inline-flex min-h-11 items-center gap-2 text-[15px] font
 export function PlannerResources({ ruled = false }: { ruled?: boolean }) {
   const { heading, text, cta } = speaking.resources;
   return (
-    <section className={`bg-paper ${ruled ? "border-t border-line" : ""}`}>
+    <section id="resources" className={`bg-paper ${ruled ? "border-t border-line" : ""}`}>
       <div className="mx-auto grid max-w-[1440px] gap-8 px-5 py-24 md:px-10 md:py-32 lg:grid-cols-12 lg:gap-x-6">
         <Reveal className="lg:col-span-6">
           <h2 className="display text-[clamp(2.6rem,4.8vw,4.6rem)]">{heading}</h2>

@@ -7,7 +7,6 @@ import { typeset } from "@/components/ui/Typeset";
 import { NextPage } from "@/components/layout/NextPage";
 import { AttendeeVoice } from "@/components/education/AttendeeVoice";
 import { P3Events } from "@/components/education/P3Events";
-import { EventStructuredData } from "@/components/ui/StructuredData";
 
 export const metadata: Metadata = {
   title: "Hands-On Education",
@@ -112,7 +111,6 @@ export default function EducationPage() {
       <AttendeeVoice />
 
       <P3Events />
-      <EventStructuredData />
 
       {/* Other routes: a compact index, so they read as wayfinding, not as the page's offer. */}
       <section className="bg-paper">

@@ -155,7 +155,7 @@ export default function SpeakingPage() {
       </section>
 
       {/* Keynote Presentations: the black chapter */}
-      <section className="grain grain-light bg-ink text-white">
+      <section data-header="dark" className="grain grain-light bg-ink text-white">
         <div className="mx-auto grid max-w-[1440px] px-5 pt-28 pb-24 md:px-10 md:py-36 lg:grid-cols-12 lg:gap-x-6">
           <div id="keynotes" className="lg:col-span-7 lg:row-start-1">
             <Reveal>
@@ -229,7 +229,7 @@ export default function SpeakingPage() {
       <PlannerResources ruled={!proof} />
 
       {/* Planning an Event?: the finale */}
-      <section className="grain grain-light bg-ink text-white">
+      <section data-header="dark" className="grain grain-light bg-ink text-white">
         <div className="mx-auto grid max-w-[1440px] gap-10 px-5 py-28 md:px-10 md:py-40 lg:grid-cols-12 lg:gap-x-6">
           <Reveal className="lg:col-span-8">
             <h2 className="display text-[clamp(3.6rem,9.6vw,9.5rem)] leading-[0.88]">{planning.heading}</h2>

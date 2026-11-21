@@ -83,7 +83,7 @@ export default function IndustryPage() {
       </section>
 
       {/* Clinical Launch Strategy: heading, then the lead as the page's big statement */}
-      <section id="clinical-launch" className="grain grain-light bg-ink text-white">
+      <section id="clinical-launch" data-header="dark" className="grain grain-light bg-ink text-white">
         <div className="mx-auto max-w-[1440px] px-5 py-24 md:px-10 md:py-28 lg:py-36">
           <Reveal>
             <h2 className="display max-w-[12ch] text-[clamp(2.6rem,4.6vw,4.6rem)] leading-[0.95]">{launch.heading}</h2>

@@ -37,6 +37,9 @@ export async function POST(request: Request) {
   } catch {
     return Response.json({ error: "bad_request" }, { status: 400 });
   }
+  if (!body || typeof body !== "object" || Array.isArray(body)) {
+    return Response.json({ error: "bad_request" }, { status: 400 });
+  }
 
   const type = body.type as InquiryType;
   if (!type || !Object.hasOwn(inquiryTypes, type)) {
@@ -50,7 +53,8 @@ export async function POST(request: Request) {
   }
 
   const fields: Record<string, string | string[]> = {};
-  for (const [key, value] of Object.entries(raw)) {
+  // Form field names only (lowercase words), and no more than a form could hold.
+  for (const [key, value] of Object.entries(raw).slice(0, 40)) {
     if (key === "company_website" || !/^[a-z_]{1,40}$/.test(key)) continue;
     const v = clean(value);
     if (v !== undefined && v !== "" && !(Array.isArray(v) && !v.length)) fields[key] = v;
@@ -87,8 +91,8 @@ export async function POST(request: Request) {
   const submittedAt = new Date().toISOString();
   const payload = {
     ...fields,
-    sponsor_opt_in: sponsor,
-    sms_opt_in: sms,
+    // Opt-in answers exist only on forms that ask (the P3 interest list).
+    ...(offersOptIns ? { sponsor_opt_in: sponsor, sms_opt_in: sms } : {}),
     ...(sponsor ? { sponsor_consent_text: optIns.sponsor } : {}),
     ...(sms ? { sms_consent_text: optIns.sms } : {}),
     ...(sponsor || sms ? { consent_version: optInsVersion, consent_recorded_at: submittedAt } : {}),

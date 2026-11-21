@@ -5,7 +5,7 @@ import { ArrowUpRight } from "lucide-react";
 import { site } from "@/content/site";
 
 export const metadata: Metadata = {
-  title: "Opening-screen directions",
+  title: site.showPlaceholders ? "Opening-screen directions" : "Page not found",
   robots: { index: false, follow: false },
 };
 

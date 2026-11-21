@@ -27,8 +27,7 @@ const pill =
 
 /** The featured P3 event, while its registration page is live (it comes down after its `endsOn` day, US Eastern). */
 function liveEvent() {
-  const ev = currentEvent();
-  return ev && ev.registrationUrl ? ev : null;
+  return currentEvent();
 }
 
 export default function InquiryPanel({ request, closing, close }: PanelProps) {

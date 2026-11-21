@@ -87,7 +87,7 @@ export default function MeetPage() {
       </section>
 
       {/* Education, Leadership, and Service, opened by a full-bleed pause */}
-      <section className="grain grain-light bg-ink text-white">
+      <section data-header="dark" className="grain grain-light bg-ink text-white">
         <ImageReveal>
           <Photo
             slot={interlude}

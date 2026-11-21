@@ -6,6 +6,9 @@ import { Article } from "@/components/insights/Article";
 import { StayConnected } from "@/components/insights/StayConnected";
 import { NextPage } from "@/components/layout/NextPage";
 
+// Every page of this route is listed by generateStaticParams; navigations into it need not be instant.
+export const instant = false;
+
 /** Original articles published on this site (those with a slug and a body). */
 function onSite() {
   return insights.original.articles.filter((a) => a.slug && a.body && a.body.length > 0);
