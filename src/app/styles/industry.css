@@ -170,7 +170,7 @@ html.motion .partner-photo .parallax-inner {
    grid cell on the right where the lead and then the details appear.
    ========================================================================== */
 .launch-lead-p {
-  font-size: clamp(2.4rem, 5vw, 4.5rem);
+  font-size: clamp(2.4rem, 7.6vw, 4.5rem);
 }
 /* The sentence is set as two balanced line groups: the statement, then its
    closing phrase in blush italic. */
@@ -300,6 +300,10 @@ html.motion .launch-lead .launch-word {
     opacity: 1;
     transform: none;
     transition-delay: calc(0.12s + var(--k, 0) * 90ms);
+  }
+  /* Keyboard focus brings the step up at once: no waiting on the cascade. */
+  html.motion .launch[data-pinned] .launch-details:focus-within .launch-item {
+    transition-delay: 0s;
   }
   html.motion .launch[data-pinned] .launch-details .launch-rule {
     opacity: 1;

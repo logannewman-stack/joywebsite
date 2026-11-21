@@ -102,7 +102,8 @@ export default function IndustryPage() {
               <Photo
                 slot={partnerships.photo}
                 className="settle h-full w-full"
-                sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1023px) 70vw, (max-width: 1440px) 50vw, calc(50vw - 12px)"
+                // The frame shows the photograph at 1.24x (see .partner-photo), so it asks for a wider file than its box.
+                sizes="(max-width: 767px) 120vw, (max-width: 1023px) 87vw, 62vw"
               />
             </Parallax>
           </InView>
