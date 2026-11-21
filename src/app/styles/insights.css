@@ -49,6 +49,15 @@ html.motion .insights-band-inner {
   will-change: transform;
 }
 
+@media print {
+  html.motion .insights-band {
+    clip-path: none;
+  }
+  html.motion .insights-band-inner {
+    transform: none;
+  }
+}
+
 /* ==========================================================================
    Stay Connected: the JD monogram, pressed into the black like the mark on
    her card. The mark is the brand SVG used as a mask over a tone one step
@@ -56,7 +65,7 @@ html.motion .insights-band-inner {
    below-right give it the embossed relief of the brand board.
    ========================================================================== */
 .stay-seal {
-  filter: drop-shadow(-1px -1px 0 rgb(231 211 203 / 0.16)) drop-shadow(1.5px 2px 1px rgb(0 0 0 / 0.95));
+  filter: drop-shadow(-0.0625rem -0.0625rem 0 rgb(231 211 203 / 0.16)) drop-shadow(0.09375rem 0.125rem 0.0625rem rgb(0 0 0 / 0.95));
 }
 html.motion .stay-seal {
   transform: translate3d(0, calc((0.5 - var(--v, 0.5)) * 3rem), 0);

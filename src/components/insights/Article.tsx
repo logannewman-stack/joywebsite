@@ -1,4 +1,3 @@
-import type { CSSProperties } from "react";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import type { OriginalArticle } from "@/content/insights";
@@ -6,8 +5,6 @@ import { Label } from "@/components/ui/Links";
 import { Reveal } from "@/components/ui/Reveal";
 import { InView } from "@/components/motion/InView";
 import { WordLight, WordRise } from "@/components/motion/Text";
-
-type Vars = CSSProperties & Record<`--${string}`, string>;
 
 /**
  * An original article by Dr. Joy, set for long reading: the title at display

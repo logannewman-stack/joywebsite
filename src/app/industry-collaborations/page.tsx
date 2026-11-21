@@ -186,7 +186,7 @@ export default function IndustryPage() {
                 {closing.text}
               </p>
               <div className="rise lg:col-span-4 lg:col-start-9 lg:justify-self-end" style={{ "--d": "0.25s" } as Vars}>
-                <Magnetic strength={0.25}>
+                <Magnetic strength={0.18}>
                   <InquiryButton choices={["partnership", "clinical_launch", "general"]} intro={closing.text} className="min-h-14! px-8! text-[1.0625rem]!">
                     {closing.cta}
                   </InquiryButton>

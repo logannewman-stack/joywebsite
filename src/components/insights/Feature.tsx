@@ -55,11 +55,8 @@ export function Feature({ item, cta }: { item: FeatureItem; cta: string }) {
         <article className="cover group relative bg-paper px-6 pt-7 pb-8 has-[a:focus-visible]:outline-2 has-[a:focus-visible]:outline-offset-4 has-[a:focus-visible]:outline-ink md:px-12 md:pt-10 md:pb-12 lg:px-16 lg:pt-12 lg:pb-16">
           {/* Masthead: the publication, the issue date, and in review the confirm tag */}
           <InView as="header" className="relative flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2 pb-6 md:pb-8">
-            {item.publication ? (
-              <p className="rise font-serif text-[clamp(1.6rem,2.3vw,2.25rem)] leading-tight italic">{item.publication}</p>
-            ) : (
-              <span />
-            )}
+            {/* One of her own pieces has no publication: its date leads the masthead instead. */}
+            {item.publication && <p className="rise font-serif text-[clamp(1.6rem,2.3vw,2.25rem)] leading-tight italic">{item.publication}</p>}
             <div className="rise flex flex-wrap items-center gap-3" style={{ "--d": "0.08s" } as Vars}>
               {item.date && <p className="label text-stone tabular-nums">{item.date}</p>}
               {!item.verified && <ConfirmTag />}

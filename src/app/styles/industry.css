@@ -319,4 +319,37 @@ html.motion .launch-lead .launch-word {
     grid-area: 3 / 1 / 4 / -1;
     padding-top: 1.5rem;
   }
+
+  /* A short window (a laptop with the browser half height): the stage tightens so nothing is clipped. */
+  @media (max-height: 640px) {
+    .launch[data-pinned] .launch-stage {
+      padding-top: calc(var(--header-height) + 0.75rem);
+      padding-bottom: 1.25rem;
+    }
+    .launch[data-pinned] .launch-details-inner {
+      gap: 1rem;
+    }
+    .launch[data-pinned] .launch-details p {
+      font-size: 1.0625rem;
+      line-height: 1.55;
+    }
+    .launch[data-pinned] .launch-details .launch-item:last-child {
+      margin-top: 0.25rem;
+    }
+    .launch[data-pinned] .launch-foot {
+      padding-top: 1rem;
+    }
+  }
+}
+
+/* Printed from a wide page that was pinned: the engine still stacks the two
+   steps in one grid cell, so they are put back in their places in the plain
+   layout (below lg the section is a simple column and this does nothing). */
+@media print {
+  .launch[data-pinned] [data-scene-step="0"] {
+    grid-area: auto / 2 / auto / span 11;
+  }
+  .launch[data-pinned] [data-scene-step="1"] {
+    grid-area: auto / 7 / auto / span 5;
+  }
 }
