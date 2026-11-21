@@ -1,1 +1,759 @@
-/* home: styles owned by the home work stream. Loaded from globals.css. */
+/* home: styles owned by the home work stream. Loaded from globals.css.
+
+   Everything that moves here reads the scroll engine's variables (--p, --v,
+   data-step, data-pinned: see motion.css) and is scoped to html.motion or to
+   [data-pinned], which only the engine sets. Without JavaScript, with
+   reduced motion and in print, Home is its plain static layout.
+
+   This file loads before the rest of globals.css and outside Tailwind's
+   layers: its rules beat utilities, but lose to a later global rule of the
+   same weight (.display, .label), so selectors carry a parent class. */
+
+/* ==========================================================================
+   Opening (Direction B, the black stage). The composition is not touched:
+   only motion is added on top.
+   ========================================================================== */
+
+/* The portrait settles from slightly large. It is painted from the first frame. */
+@keyframes hero-settle {
+  from {
+    transform: scale(1.055);
+  }
+  to {
+    transform: none;
+  }
+}
+html.motion .hero-settle {
+  transform-origin: 62% 32%;
+  animation: hero-settle 2.8s cubic-bezier(0.25, 0.6, 0.3, 1) both;
+}
+
+/* "Scroll": arrives after the headline; its hairline draws once. */
+@keyframes hero-cue-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 0.5rem, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes hero-cue-draw {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: none;
+  }
+}
+html.motion .hero-cue > .label {
+  animation: hero-cue-in var(--duration-text) var(--ease-soft) 1.2s both;
+}
+html.motion .hero-cue-line {
+  transform-origin: left center;
+  animation: hero-cue-draw 1.2s var(--ease-expo) 1.35s both;
+}
+
+/* The wrapper is a scene only to receive --p: it keeps its natural height. */
+.hero-hold[data-scene] {
+  height: auto;
+}
+
+/* Landscape from 1024px, where the stage is exactly one screen: it holds while
+   the story slides up over it, dims as it is covered, and the cue fades. */
+@media screen and (min-width: 1024px) and (orientation: landscape) {
+  html.motion .hero-hold .hero-stage {
+    position: sticky;
+    top: 0;
+  }
+  html.motion .hero-hold[data-pinned] .hero-dim {
+    opacity: calc(clamp(0, var(--p, 0) * var(--hold-n, 6), 1) * 0.58);
+  }
+  html.motion .hero-hold[data-pinned] .hero-cue {
+    opacity: calc(1 - clamp(0, var(--p, 0) * var(--hold-n, 6) * 7, 1));
+  }
+}
+
+/* ==========================================================================
+   Perspective: "A perspective shaped by every side of dentistry."
+   Static first (the layout without motion), then the pinned story.
+   ========================================================================== */
+.persp .persp-mark-pinned,
+.persp .persp-meter {
+  display: none;
+}
+.persp .persp-say {
+  max-width: 27ch;
+  font-size: clamp(1.7rem, 3.3vw, 3rem);
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+}
+/* Static: a numbered list, a hairline above each statement. */
+.persp .persp-step {
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--color-line-dark);
+}
+/* The marker sits behind the lower half of the words, not under them. */
+.persp .persp-heading .hl-light {
+  background-position: 0 66%;
+}
+
+@media screen {
+  /* The scene has --n steps (set in Perspective.tsx): step 0 is the opening,
+     then one step per statement, then a last step that holds the final
+     statement while the next section slides up over the stage.
+     --at:   progress counted in steps (0 to n).
+     --open: the photograph's frame opening to the full screen (0 to 1).
+     --dark: the light going down for the white type (0 to 1).
+     --exit: 1 during the last step. */
+  .persp[data-pinned] .persp-set {
+    --at: calc(var(--p, 0) * var(--n));
+    --open: clamp(0, var(--at) / 0.62, 1);
+    --shut: calc(1 - var(--open));
+    --dark: clamp(0, (var(--at) - 0.46) / 0.44, 1);
+    --exit: clamp(0, (var(--at) - var(--n) + 1) * 1000, 1);
+    --win-top: max(45svh, 13.25rem);
+    --win-x: 2.5rem;
+    --win-shift: 25svh;
+  }
+
+  /* Title spread: the heading sits on the page, above the framed photograph. */
+  .persp[data-pinned] .persp-title {
+    position: absolute;
+    inset: 0 0 auto;
+    z-index: 0;
+    padding-top: clamp(5.75rem, 11.5svh, 7.25rem);
+    padding-bottom: 0;
+  }
+  .persp[data-pinned] .persp-title > .rule-draw {
+    margin-bottom: clamp(0.75rem, 2.4svh, 1.75rem);
+  }
+  .persp[data-pinned] .persp-heading {
+    max-width: 19ch;
+    font-size: clamp(2.5rem, min(7.9vw, 13svh), 8rem);
+    line-height: 0.92;
+  }
+
+  /* The photograph: a window that opens to the full screen, then a slow push-in. */
+  .persp[data-pinned] .persp-photo {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    width: auto;
+    height: auto;
+    aspect-ratio: auto;
+    clip-path: inset(calc(var(--shut) * var(--win-top)) calc(var(--shut) * var(--win-x)) 0 calc(var(--shut) * var(--win-x)));
+  }
+  /* Phones: when the browser's toolbar slides away the screen grows past the
+     pinned stage. The photograph runs to the taller height, so no strip of the
+     page shows under it. */
+  @supports (height: 100lvh) {
+    .persp[data-pinned] > .persp-stage {
+      overflow: visible;
+    }
+    .persp[data-pinned] .persp-photo {
+      inset: 0 0 auto;
+      height: 100lvh;
+    }
+  }
+  .persp[data-pinned] .persp-img {
+    transform: translate3d(0, calc(var(--shut) * var(--win-shift)), 0) scale(calc(1.03 + var(--p, 0) * 0.12));
+    transform-origin: 100% 36%;
+    will-change: transform;
+  }
+  .persp[data-pinned] .persp-shade {
+    opacity: var(--dark);
+    background:
+      linear-gradient(0deg, rgb(11 11 11 / 0.5) 0%, rgb(11 11 11 / 0) 30%),
+      linear-gradient(
+        90deg,
+        rgb(11 11 11 / 0.3) 0%,
+        rgb(11 11 11 / 0.34) 22%,
+        rgb(11 11 11 / 0.48) 38%,
+        rgb(11 11 11 / 0.7) 52%,
+        rgb(11 11 11 / 0.84) 66%,
+        rgb(11 11 11 / 0.9) 100%
+      );
+  }
+
+  /* The statements: one at a time, over the photograph. */
+  .persp[data-pinned] .persp-copy {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background: transparent;
+  }
+  .persp[data-pinned] .persp-mark-static {
+    display: none;
+  }
+  .persp[data-pinned] .persp-copy-inner {
+    display: grid;
+    grid-template-rows: minmax(0, 1fr) auto;
+    height: 100%;
+    max-width: none;
+    padding: calc(var(--header-height) + 1rem) 2.5rem 2.25rem;
+  }
+  .persp[data-pinned] .persp-steps {
+    align-items: center;
+    align-self: center;
+    justify-self: end;
+    width: min(41rem, 45vw);
+  }
+  .persp[data-pinned] .persp-step {
+    display: block;
+    padding-top: 0;
+    border-top: 0;
+  }
+  .persp[data-pinned] .persp-num {
+    display: none;
+  }
+  .persp[data-pinned] .persp-say {
+    max-width: none;
+    font-size: clamp(1.8rem, min(4.1vw, 7svh), 4rem);
+    line-height: 1.04;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+  .persp[data-pinned] .persp-say-short {
+    font-size: clamp(2.2rem, min(5.6vw, 9.6svh), 5.5rem);
+    line-height: 0.98;
+  }
+  .persp[data-pinned] .persp-say-long {
+    font-size: clamp(1.6rem, min(3.5vw, 6svh), 3.4rem);
+    line-height: 1.06;
+  }
+
+  /* One statement leaves as a whole; the next arrives word by word. */
+  html.motion .persp[data-pinned] [data-scene-step] {
+    transform: none;
+    transition: opacity 0.3s var(--ease-soft);
+  }
+  html.motion .persp[data-pinned] [data-scene-step] .wr-in {
+    transform: translate3d(0, 115%, 0);
+    transition: transform 0s linear 0.32s;
+  }
+  html.motion .persp[data-pinned] [data-scene-step][data-active] {
+    transition: opacity 0.25s var(--ease-soft) 0.18s;
+  }
+  html.motion .persp[data-pinned] [data-scene-step][data-active] .wr-in {
+    transform: none;
+    transition: transform var(--duration-image) var(--ease-expo) calc(0.18s + var(--i, 0) * 20ms);
+  }
+  /* The last statement stays while the next section covers the stage. */
+  html.motion .persp[data-pinned] .persp-step-last:not([data-active]) {
+    opacity: var(--exit);
+  }
+  html.motion .persp[data-pinned] .persp-step-last:not([data-active]) .wr-in {
+    transform: translate3d(0, calc((1 - var(--exit)) * 115%), 0);
+  }
+
+  /* "01 / 05" and the progress line. */
+  .persp[data-pinned] .persp-meter {
+    display: flex;
+    align-items: center;
+    font-size: 0.75rem;
+    opacity: var(--dark);
+  }
+  .persp .persp-count {
+    display: inline-block;
+    height: 1em;
+    overflow: hidden;
+    line-height: 1;
+  }
+  .persp .persp-roll {
+    display: flex;
+    flex-direction: column;
+    transition: transform var(--duration-scene) var(--ease-expo);
+  }
+  .persp .persp-roll > span {
+    height: 1em;
+    line-height: 1;
+  }
+  /* Written out for five statements; browsers with round() follow --n instead. */
+  .persp[data-step="2"] .persp-roll {
+    transform: translate3d(0, -1em, 0);
+  }
+  .persp[data-step="3"] .persp-roll {
+    transform: translate3d(0, -2em, 0);
+  }
+  .persp[data-step="4"] .persp-roll {
+    transform: translate3d(0, -3em, 0);
+  }
+  .persp[data-step="5"] .persp-roll,
+  .persp[data-step="6"] .persp-roll {
+    transform: translate3d(0, -4em, 0);
+  }
+  @supports (transform: translateY(calc(round(down, 1.4) * 1em))) {
+    .persp[data-pinned] .persp-roll {
+      transform: translate3d(0, calc(clamp(0, round(down, var(--at)) - 1, var(--n) - 3) * -1em), 0);
+    }
+  }
+  .persp .persp-rule {
+    position: relative;
+    flex: 1;
+    height: 1px;
+    margin-left: 1.5rem;
+    overflow: hidden;
+    background: rgb(255 255 255 / 0.22);
+  }
+  /* Fills across the statements (steps 1 to n - 2). */
+  .persp .persp-rule > span {
+    position: absolute;
+    inset: 0;
+    background: var(--color-gold);
+    transform: scaleX(clamp(0, (var(--at, 0) - 1) / (var(--n, 7) - 2), 1));
+    transform-origin: left center;
+  }
+
+  /* The header's dark marker: in place once the photograph has reached the top
+     of the screen, and gone again when the next section has covered the stage. */
+  .persp[data-pinned] .persp-mark-pinned {
+    --lit: clamp(0, (var(--open) - 0.8) * 1000, 1);
+    --gone: clamp(0, (var(--p, 0) - 0.9985) * 100000, 1);
+    display: block;
+    position: absolute;
+    inset: 0 0 auto;
+    height: var(--header-height);
+    transform: translate3d(0, calc((1 - var(--lit) * (1 - var(--gone))) * -200%), 0);
+  }
+
+  /* Portrait screens (phones, upright tablets): she fills the screen and the words sit low, on a deep shade. */
+  @media (max-aspect-ratio: 1/1) {
+    .persp[data-pinned] .persp-set {
+      --win-top: max(38svh, 14.5rem);
+      --win-x: 1.25rem;
+      --win-shift: 17svh;
+    }
+    .persp[data-pinned] .persp-heading {
+      font-size: clamp(2.5rem, min(11.4vw, 7.4svh), 5.5rem);
+    }
+    .persp[data-pinned] .persp-img {
+      transform-origin: 38% 30%;
+    }
+    .persp[data-pinned] .persp-shade {
+      background: linear-gradient(
+        0deg,
+        rgb(11 11 11 / 0.95) 0%,
+        rgb(11 11 11 / 0.9) 34%,
+        rgb(11 11 11 / 0.62) 50%,
+        rgb(11 11 11 / 0.26) 66%,
+        rgb(11 11 11 / 0.14) 80%,
+        rgb(11 11 11 / 0.3) 100%
+      );
+    }
+    .persp[data-pinned] .persp-copy-inner {
+      padding: calc(var(--header-height) + 1rem) 1.25rem 1.5rem;
+    }
+    .persp[data-pinned] .persp-steps {
+      align-items: end;
+      align-self: end;
+      justify-self: stretch;
+      width: auto;
+      padding-bottom: 1.75rem;
+    }
+    .persp[data-pinned] .persp-say {
+      font-size: clamp(1.7rem, min(8vw, 4.9svh), 3.4rem);
+    }
+    .persp[data-pinned] .persp-say-short {
+      font-size: clamp(2.1rem, min(10.6vw, 6.5svh), 4.6rem);
+    }
+    .persp[data-pinned] .persp-say-long {
+      font-size: clamp(1.5rem, min(6.9vw, 4.2svh), 3rem);
+    }
+  }
+  @media (max-aspect-ratio: 1/1) and (min-width: 768px) {
+    .persp[data-pinned] .persp-set {
+      --win-x: 2.5rem;
+    }
+    .persp[data-pinned] .persp-copy-inner {
+      padding-inline: 2.5rem;
+      padding-bottom: 2.25rem;
+    }
+    .persp[data-pinned] .persp-steps {
+      max-width: 46rem;
+    }
+  }
+
+  /* The next section slides up over the held stage, as the story did over the opening. */
+  html.motion .work-sheet {
+    margin-top: -100svh;
+  }
+  html.motion .work-sheet::before {
+    content: "";
+    position: absolute;
+    inset: -5rem 0 auto;
+    height: 5rem;
+    background: linear-gradient(0deg, rgb(11 11 11 / 0.3), rgb(11 11 11 / 0));
+    pointer-events: none;
+  }
+}
+
+@media print {
+  .persp [data-scene-step] {
+    grid-area: auto !important;
+  }
+  .persp [data-scene-steps] {
+    display: flex !important;
+  }
+}
+
+/* ==========================================================================
+   Explore My Work
+   ========================================================================== */
+.work .work-count,
+.work .work-progress,
+.work .work-numeral,
+.work .work-swipe {
+  display: none;
+}
+
+/* "01 / 04": a number that rolls, shared by the pinned row and the swipe row. */
+.work .roll-count {
+  display: inline-block;
+  height: 1em;
+  overflow: hidden;
+  line-height: 1;
+}
+.work .roll {
+  display: flex;
+  flex-direction: column;
+  transition: transform var(--duration-scene) var(--ease-expo);
+}
+.work .roll > span {
+  height: 1em;
+  line-height: 1;
+}
+
+/* Phones and tablets: the swipe row's progress. Shown only when the script that drives it runs. */
+@media (max-width: 1023px) {
+  html.js .work .work-swipe {
+    display: flex;
+  }
+}
+.work .work-swipe-rule {
+  position: relative;
+  flex: 1;
+  height: 1px;
+  margin-left: 1.25rem;
+  overflow: hidden;
+  background: var(--color-line);
+}
+/* One quarter per card: full when the fourth card is in place. */
+.work .work-swipe-rule > span {
+  position: absolute;
+  inset: 0;
+  background: var(--color-gold-deep);
+  transform: scaleX(calc(0.25 + var(--cx, 0) * 0.75));
+  transform-origin: left center;
+}
+.work .work-swipe[data-i="1"] .roll {
+  transform: translate3d(0, -1em, 0);
+}
+.work .work-swipe[data-i="2"] .roll {
+  transform: translate3d(0, -2em, 0);
+}
+.work .work-swipe[data-i="3"] .roll {
+  transform: translate3d(0, -3em, 0);
+}
+
+@media screen {
+  /* Pinned (from 1024px, animated): the heading stays; the row slides past. */
+  .work[data-pinned] .work-stage {
+    display: flex;
+    flex-direction: column;
+    padding: calc(var(--header-height) + clamp(1rem, 3svh, 2rem)) 0 0;
+    container-type: inline-size;
+  }
+  .work[data-pinned] .work-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    width: 100%;
+    max-width: none;
+    padding-inline: 2.5rem;
+  }
+  .work[data-pinned] .work-title {
+    font-size: clamp(2.75rem, min(6.4vw, 9.5svh), 6.5rem);
+  }
+  .work[data-pinned] .work-rule {
+    margin-bottom: clamp(0.75rem, 2.2svh, 1.5rem);
+  }
+  .work[data-pinned] .work-count {
+    display: flex;
+    align-items: center;
+    padding-bottom: 0.6em;
+  }
+  .work[data-pinned] .work-list {
+    margin-top: clamp(1.25rem, 4svh, 2.75rem);
+  }
+  .work[data-pinned] .work-track {
+    display: flex;
+    gap: 7rem;
+    width: max-content;
+    max-width: none;
+    margin: 0;
+    padding: 0 2.5rem;
+    overflow: visible;
+    transform: translate3d(calc(var(--p, 0) * (100cqw - 100%)), 0, 0);
+  }
+  .work[data-pinned] .work-panel {
+    --ph: min(36rem, calc(100svh - var(--header-height) - 15rem));
+    --pw: calc(var(--ph) * 0.8);
+    display: grid;
+    grid-template-columns: var(--pw) 23.5rem;
+    column-gap: 3rem;
+    width: auto;
+    margin-top: 0;
+    isolation: isolate;
+  }
+  .work[data-pinned] .work-photo {
+    height: var(--ph);
+  }
+  .work[data-pinned] .work-photo-in {
+    height: 100%;
+    aspect-ratio: auto;
+  }
+  /* Depth: each photograph drifts a little inside its frame as the row passes. */
+  .work[data-pinned] .work-photo-in > img {
+    transform: translate3d(calc((var(--p, 0) - var(--c, 0)) * 5%), 0, 0) scale(1.1);
+    will-change: transform;
+  }
+  /* The words stand on the photograph's foot. */
+  .work[data-pinned] .work-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    height: var(--ph);
+  }
+  /* The large outlined numeral, in gold: texture at the head of the words' column, drifting slower than the row. */
+  .work[data-pinned] .work-numeral {
+    display: block;
+    position: absolute;
+    top: -0.07em;
+    left: calc(var(--pw) + 3rem - 0.05em);
+    z-index: -1;
+    font-family: var(--font-sans);
+    font-size: min(15rem, calc(var(--ph) * 0.4));
+    font-weight: 500;
+    line-height: 0.8;
+    letter-spacing: -0.05em;
+    font-variant-numeric: tabular-nums;
+    color: transparent;
+    -webkit-text-stroke: 1px color-mix(in srgb, var(--color-gold-deep) 62%, transparent);
+    transform: translate3d(calc((var(--p, 0) - var(--c, 0)) * 7rem), 0, 0);
+    will-change: transform;
+    transition: -webkit-text-stroke-color var(--duration-ui) var(--ease-soft);
+    user-select: none;
+    pointer-events: none;
+  }
+  .work[data-pinned] .work-panel:hover .work-numeral,
+  .work[data-pinned] .work-panel:has(:focus-visible) .work-numeral {
+    -webkit-text-stroke-color: var(--color-gold-deep);
+  }
+  /* Where a short screen brings the two together, the numeral passes behind the words. */
+  .work[data-pinned] .work-words {
+    background: var(--color-paper);
+  }
+  .work[data-pinned] .work-kicker {
+    margin-top: 0;
+  }
+  .work[data-pinned] .work-index {
+    display: none;
+  }
+  .work[data-pinned] .work-heading {
+    font-size: clamp(1.8rem, min(2.6vw, 4.6svh), 2.6rem);
+  }
+
+  /* Upright screens from 1024px (a large tablet): the row sits midway between the heading and the progress line. */
+  @media (max-aspect-ratio: 1/1) {
+    .work[data-pinned] .work-list {
+      margin-top: auto;
+    }
+  }
+
+  /* Progress: a gold hairline along the foot of the stage, with a dot at its head. */
+  .work[data-pinned] .work-progress {
+    display: block;
+    position: relative;
+    height: 1px;
+    margin: auto 2.5rem clamp(1.5rem, 4.5svh, 2.75rem);
+    background: var(--color-line);
+    container-type: inline-size;
+  }
+  .work .work-progress-fill {
+    position: absolute;
+    inset: 0;
+    background: var(--color-gold-deep);
+    transform: scaleX(var(--p, 0));
+    transform-origin: left center;
+  }
+  .work .work-progress-dot {
+    position: absolute;
+    top: -0.1875rem;
+    left: -0.1875rem;
+    width: 0.4375rem;
+    height: 0.4375rem;
+    border-radius: 50%;
+    background: var(--color-gold-deep);
+    transform: translate3d(calc(var(--p, 0) * 100cqw), 0, 0);
+  }
+
+  /* The counter follows the panel nearest the middle of the screen. */
+  .work[data-step="1"] .work-count .roll {
+    transform: translate3d(0, -1em, 0);
+  }
+  .work[data-step="2"] .work-count .roll {
+    transform: translate3d(0, -2em, 0);
+  }
+  .work[data-step="3"] .work-count .roll {
+    transform: translate3d(0, -3em, 0);
+  }
+  @supports (transform: translateY(calc(round(1.4) * 1em))) {
+    .work[data-pinned] .work-count .roll {
+      transform: translate3d(0, calc(round(var(--p, 0) * 3) * -1em), 0);
+    }
+  }
+}
+
+/* Wide but very short screens: the pinned row would not fit, so the section is
+   the plain grid there (as it is without motion). */
+@media screen and (max-height: 640px) {
+  .work[data-scene][data-pinned] {
+    height: auto;
+  }
+  .work[data-scene][data-pinned] > .work-stage {
+    display: block;
+    position: static;
+    height: auto;
+    padding: 8rem 0 10rem;
+    overflow: visible;
+  }
+  .work[data-pinned] .work-head {
+    display: block;
+    max-width: 90rem;
+    margin-inline: auto;
+  }
+  .work[data-pinned] .work-count,
+  .work[data-pinned] .work-progress,
+  .work[data-pinned] .work-numeral {
+    display: none;
+  }
+  .work[data-pinned] .work-list {
+    margin-top: 5rem;
+  }
+  .work[data-scene][data-pinned] .work-track {
+    display: grid;
+    gap: 5rem 2rem;
+    width: auto;
+    max-width: 90rem;
+    margin-inline: auto;
+    transform: none;
+  }
+  .work[data-pinned] .work-panel {
+    display: block;
+  }
+  .work[data-pinned] .work-photo,
+  .work[data-pinned] .work-text {
+    height: auto;
+  }
+  .work[data-pinned] .work-photo-in {
+    height: auto;
+    aspect-ratio: 4 / 5;
+  }
+  .work[data-pinned] .work-photo-in > img {
+    transform: none;
+  }
+  .work[data-pinned] .work-kicker {
+    margin-top: 1.5rem;
+  }
+  .work[data-pinned] .work-index {
+    display: inline;
+  }
+}
+
+/* Print: the four cards as a plain two-column grid, whatever the screen was showing. */
+@media print {
+  .work [data-scene-track] {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 3rem 2rem !important;
+    width: auto !important;
+    max-width: none !important;
+    overflow: visible !important;
+    transform: none !important;
+  }
+  .work .work-panel {
+    width: auto !important;
+    margin-top: 0 !important;
+    break-inside: avoid;
+  }
+  .work .work-swipe {
+    display: none !important;
+  }
+}
+
+/* ==========================================================================
+   What Others Are Saying: more of the room around the words.
+   ========================================================================== */
+@media (min-width: 768px) {
+  .home-quote > div:last-child {
+    padding-block: clamp(8rem, 19svh, 13rem);
+  }
+}
+
+/* ==========================================================================
+   Finale: "Let's start a conversation."
+   ========================================================================== */
+/* The JD monogram, pressed into the ivory in pale gold and lit from the upper
+   left. The sheen crosses it as the section scrolls past, like foil turning. */
+.finale .finale-mark {
+  width: min(46rem, 96vw, 98svh);
+  aspect-ratio: 771.4 / 702.9;
+  filter: drop-shadow(-1px -1px 0.5px rgb(255 255 255 / 0.9)) drop-shadow(1.5px 2px 2.5px rgb(148 117 63 / 0.22));
+}
+.finale .finale-mark-shape {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #dfcba0;
+  -webkit-mask: url("/brand/dr-joy-monogram-charcoal.svg") center / contain no-repeat;
+  mask: url("/brand/dr-joy-monogram-charcoal.svg") center / contain no-repeat;
+}
+/* The sheen: a wide band of lighter gold inside the mark. */
+.finale .finale-mark-shape::before {
+  content: "";
+  position: absolute;
+  inset: 0 -70%;
+  background: linear-gradient(112deg, #d9c495 0%, #e5d4ae 30%, #f5ead0 50%, #e5d4ae 70%, #d9c495 100%);
+}
+html.motion .finale .finale-mark-shape::before {
+  transform: translate3d(calc((var(--v, 0.5) - 0.5) * 56%), 0, 0);
+  will-change: transform;
+}
+/* It drifts a little slower than the page and arrives with the heading. */
+html.motion .finale .finale-mark-frame {
+  transform: translate3d(0, calc((0.5 - var(--v, 0.5)) * 9rem), 0);
+  will-change: transform;
+}
+html.motion .finale .finale-mark[data-inview] {
+  opacity: 0;
+  transform: scale(1.06);
+  transition:
+    opacity 1.4s var(--ease-soft),
+    transform 2s var(--ease-expo);
+}
+html.motion .finale .finale-mark[data-inview][data-in] {
+  opacity: 1;
+  transform: none;
+}
+.finale .finale-heading {
+  --rise-stagger: 90ms;
+}
+@media print {
+  .finale .finale-mark {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
