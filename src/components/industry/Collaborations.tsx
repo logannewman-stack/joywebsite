@@ -22,7 +22,7 @@ export function Collaborations({ heading, logos }: { heading: string; logos: { n
             <ul className="grid grid-cols-2 border-t border-line sm:flex sm:border-y">
               {shown.map((l) => (
                 <li key={l.name} className="relative h-28 border-b border-line odd:border-r sm:flex-1 sm:border-b-0 sm:odd:border-r-0 sm:[&:not(:first-child)]:border-l md:h-32">
-                  <Image src={l.src} alt={l.name} fill sizes="(max-width: 639px) 45vw, 220px" className="object-contain px-8 py-9 md:px-10 md:py-9" />
+                  <Image src={l.src} alt={l.name} fill sizes="(max-width: 639px) 45vw, 220px" className="object-contain px-8 py-9 md:px-10" />
                 </li>
               ))}
             </ul>
