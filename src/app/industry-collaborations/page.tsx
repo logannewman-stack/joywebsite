@@ -115,8 +115,8 @@ export default function IndustryPage() {
               <Photo
                 slot={partnerships.photo}
                 className="settle h-full w-full"
-                // The frame shows the photograph at 1.24x (see .partner-photo), so it asks for a wider file than its box.
-                sizes="(max-width: 767px) 120vw, (max-width: 1023px) 87vw, 62vw"
+                // The frame shows the photograph at 1.3x (see .partner-photo), so it asks for a wider file than its box.
+                sizes="(max-width: 767px) 125vw, (max-width: 1023px) 91vw, 65vw"
               />
             </Parallax>
           </InView>
@@ -125,11 +125,14 @@ export default function IndustryPage() {
 
       {/*
         Clinical Launch Strategy: the page's cinematic beat. From lg the black
-        stage pins: the lead lights up word by word while the photograph drifts,
-        then the two paragraphs and the action take its place. Below lg, without
-        JavaScript and with reduced motion it is the plain section, in order.
+        stage pins: the lead lights up word by word while the photograph drifts
+        and comes up to full light, holds, then the two paragraphs and the action
+        take its place. The scene runs in thirds (lighting, holding, details):
+        the lead is step 0 and stays for the second third (see industry.css);
+        the details are step 2. Below lg, without JavaScript and with reduced
+        motion it is the plain section, in order.
       */}
-      <Scene id="clinical-launch" from="lg" steps={2} length={2.5} dark className="launch grain grain-light bg-ink text-white">
+      <Scene id="clinical-launch" from="lg" steps={3} length={2.6} dark className="launch grain grain-light bg-ink text-white">
         <div className="launch-stage mx-auto max-w-[90rem] px-5 pt-36 pb-24 md:px-10 md:pt-48 md:pb-28 lg:grid lg:grid-cols-12 lg:gap-x-6 lg:pt-56 lg:pb-36">
           <header className="launch-head lg:col-span-12">
             <Index n="02" tone="dark" />
@@ -155,7 +158,7 @@ export default function IndustryPage() {
             </Parallax>
           </InView>
 
-          <SceneStep index={1} className="launch-step launch-details mt-12 md:ml-auto md:w-[78%] lg:col-span-5 lg:col-start-7 lg:mt-24 lg:ml-0 lg:w-auto lg:self-end">
+          <SceneStep index={2} className="launch-step launch-details mt-12 md:ml-auto md:w-[78%] lg:col-span-5 lg:col-start-7 lg:mt-24 lg:ml-0 lg:w-auto lg:self-end">
             <InView className="launch-details-inner flex flex-col gap-6">
               <span aria-hidden className="launch-item launch-rule hidden h-px bg-gold/70" style={{ "--k": 0 } as Vars} />
               {launch.paragraphs.map((p, i) => (
