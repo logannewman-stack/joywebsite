@@ -16,7 +16,7 @@ export const home = {
     bStyle: "photo" as "photo" | "cutout",
     /** Direction B stage, 768px and up: the full landscape frame, bleeding off the right edge. */
     stage: {
-      src: "/photos/home-hero-stage.jpg",
+      src: "/photos/home-hero-stage-g.jpg",
       srcBw: "/photos/home-hero-stage-bw.jpg",
       alt: "Dr. Joy in a black suit, smiling, seated on steps",
       treatment: "bw",
@@ -27,7 +27,7 @@ export const home = {
     } satisfies PhotoSlot,
     /** Direction B stage on phones: a taller crop of the same frame, so the face stays sharp and centered. */
     stageTall: {
-      src: "/photos/home-hero-stage-tall.jpg",
+      src: "/photos/home-hero-stage-tall-g.jpg",
       srcBw: "/photos/home-hero-stage-tall-bw.jpg",
       alt: "Dr. Joy in a black suit, smiling, seated on steps",
       treatment: "bw",
@@ -38,7 +38,7 @@ export const home = {
 
     /** Direction A portrait. */
     portrait: {
-      src: "/photos/home-hero.jpg",
+      src: "/photos/home-hero-g.jpg",
       srcBw: "/photos/home-hero-bw.jpg",
       alt: "Dr. Joy in a black suit, arms crossed, smiling",
       treatment: "bw",
@@ -59,7 +59,7 @@ export const home = {
     } satisfies PhotoSlot,
     /** Direction C photograph: a warm workshop room. */
     color: {
-      src: "/photos/home-hero-room.jpg",
+      src: "/photos/home-hero-room-g.jpg",
       alt: "Dr. Joy teaching a room of dental professionals",
       treatment: "color",
       direction: "Color photograph from a real room, mid-presentation. Warm, natural light.",
@@ -78,7 +78,7 @@ export const home = {
     ],
     /** Full-bleed band inside the section, 768px and up. */
     photo: {
-      src: "/photos/home-perspective-band.jpg",
+      src: "/photos/home-perspective-band-g.jpg",
       srcBw: "/photos/home-perspective-band-bw.jpg",
       alt: "Dr. Joy in a white blazer, looking away and smiling",
       treatment: "bw",
@@ -88,7 +88,7 @@ export const home = {
     } satisfies PhotoSlot,
     /** The same band on phones: a 4:5 crop. */
     photoTall: {
-      src: "/photos/home-perspective-band-tall.jpg",
+      src: "/photos/home-perspective-band-tall-g.jpg",
       srcBw: "/photos/home-perspective-band-tall-bw.jpg",
       alt: "Dr. Joy in a white blazer, looking away and smiling",
       treatment: "bw",
@@ -110,7 +110,7 @@ export const home = {
       body: "Evidence-based presentations that connect clinical knowledge with real-world experience. Topics run from periodontal care to the business of hygiene, and every program gives clinicians something to use the next clinic day.",
       link: { label: "Speaking Topics", href: "/speaking#topics" },
       photo: {
-        src: "/photos/path-speaking-4x5.jpg",
+        src: "/photos/path-speaking-4x5-g.jpg",
         alt: "Dr. Joy speaking on stage",
         treatment: "color",
         direction: "Color stage photograph of Dr. Joy presenting.",
@@ -124,7 +124,7 @@ export const home = {
       body: "Workshops and certificate courses built around clinical decision-making, instrumentation, and prevention. Participants practice each skill and refine how they perform it.",
       link: { label: "Courses and Workshops", href: "/hands-on-education" },
       photo: {
-        src: "/photos/path-hands-on-4x5.jpg",
+        src: "/photos/path-hands-on-4x5-g.jpg",
         alt: "Dr. Joy teaching a workshop with an instrument in hand",
         treatment: "color",
         direction: "Color photograph from a P3 workshop: instruments in hand, coaching.",
@@ -138,7 +138,7 @@ export const home = {
       body: "I work with dental manufacturers to build education programs, support product launches, and bring the clinician’s perspective into product decisions.",
       link: { label: "Industry Collaborations", href: "/industry-collaborations" },
       photo: {
-        src: "/photos/path-industry-4x5.jpg",
+        src: "/photos/path-industry-4x5-g.jpg",
         alt: "Dr. Joy holding a dental instrument and a dental model",
         treatment: "color",
         direction: "Authentic product, training or demonstration photograph.",
@@ -153,7 +153,7 @@ export const home = {
       link: { label: "Consulting", href: "instrumental" }, // resolved through instrumentalLink()
       external: true,
       photo: {
-        src: "/photos/path-consulting-4x5.jpg",
+        src: "/photos/path-consulting-4x5-g.jpg",
         alt: "Dr. Joy in a black suit in a modern lounge",
         treatment: "color",
         direction: "Practice environment or team photograph.",

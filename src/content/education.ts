@@ -47,7 +47,7 @@ export const education = {
     ],
     cta: { label: "Explore P3 Events", href: "#events" },
     photo: {
-      src: "/photos/education-room.jpg",
+      src: "/photos/education-room-g.jpg",
       alt: "Dr. Joy teaching a P3 workshop, participants at their tables",
       treatment: "color",
       direction: "Color photograph of an actual P3 workshop: instruments, coaching, participants. Keep the room in frame.",
@@ -56,7 +56,7 @@ export const education = {
       original: "54707956526",
     } satisfies PhotoSlot,
     detail: {
-      src: "/photos/education-hands.jpg",
+      src: "/photos/education-hands-g.jpg",
       alt: "Dr. Joy guiding a participant’s instrument grip on a dental model",
       treatment: "color",
       direction: "Close-up of hands and instruments during practice.",
@@ -78,7 +78,7 @@ export const education = {
       },
     ],
     photo: {
-      src: "/photos/education-annual.jpg",
+      src: "/photos/education-annual-g.jpg",
       alt: "Dr. Joy demonstrating a technique while participants work with their instrument kits",
       treatment: "color",
       direction: "The whole room at work: participants with instruments and kits on the tables.",
@@ -89,7 +89,7 @@ export const education = {
 
   /** Full-width photograph between the P3 family and the attendee voice. */
   interlude: {
-    src: "/photos/education-band.jpg",
+    src: "/photos/education-band-g.jpg",
     alt: "A participant smiling, an instrument in hand, at a P3 workshop table",
     treatment: "color",
     direction: "Participants practicing at their tables, instruments in hand.",
@@ -110,7 +110,7 @@ export const education = {
     heading: "P3 Events",
     /** Shown with the interest list, and with a featured event that has no photograph of its own. */
     photo: {
-      src: "/photos/education-session.jpg",
+      src: "/photos/education-session-g.jpg",
       alt: "Dr. Joy teaching a P3 session, seen from the participants’ tables",
       treatment: "color",
       direction: "A P3 session from a participant’s seat.",

@@ -53,7 +53,7 @@ export const insights = {
     // A no-break space keeps "I am" together, so no line ends on a lone "I".
     text: "Published articles, clinical perspectives, and what I\u00a0am seeing across the profession.",
     photo: {
-      src: "/photos/insights-hero-142.jpg",
+      src: "/photos/insights-hero-142-g.jpg",
       srcBw: "/photos/insights-hero-142-bw.jpg",
       alt: "Dr. Joy in a black blazer, smiling with her eyes lowered",
       treatment: "bw",
@@ -65,7 +65,7 @@ export const insights = {
 
   /** A quiet editorial transition: the conversation after a session. */
   band: {
-    src: "/photos/insights-conversation.jpg",
+    src: "/photos/insights-conversation-g.jpg",
     alt: "Dr. Joy, in a white blazer, talking with attendees in their seats after a session",
     treatment: "color",
     direction: "Quiet editorial transition: Dr. Joy with attendees after a presentation.",

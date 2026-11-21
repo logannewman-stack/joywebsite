@@ -7,7 +7,7 @@ export const industry = {
     text: "I work with dental manufacturers to connect their products with clinical practice through education, advisory work, and long-term partnerships.",
     photo: {
       // 4:5 crop: she reads larger and the ceiling pendants no longer compete with the headline.
-      src: "/photos/industry-hero-4x5.jpg",
+      src: "/photos/industry-hero-4x5-g.jpg",
       srcBw: "/photos/industry-hero-4x5-bw.jpg",
       alt: "Dr. Joy seated in a black suit",
       treatment: "bw",
@@ -24,7 +24,7 @@ export const industry = {
     photo: {
       // 4:5 crop. The sponsor's out-of-focus lettering on the backdrop was removed
       // (logos need clearance); export the untouched original if clearance is given.
-      src: "/photos/industry-partnership-stage.jpg",
+      src: "/photos/industry-partnership-stage-g.jpg",
       alt: "Dr. Joy presenting at a sponsored education program, mid-sentence, with a headset microphone",
       treatment: "color",
       direction: "Authentic photograph of sponsored education or teaching, in color.",
@@ -44,7 +44,7 @@ export const industry = {
     photo: {
       // 4:5 crop around her face, gloved hands and the model. Ungraded: the integrator
       // grades all color photos together after the merge.
-      src: "/photos/industry-launch-4x5.jpg",
+      src: "/photos/industry-launch-4x5-g.jpg",
       alt: "Dr. Joy in gloves and glasses, working an instrument on a dental model",
       treatment: "color",
       direction: "Authentic product work or clinical training photograph.",

@@ -16,7 +16,7 @@ export const speaking = {
     secondary: { label: "Submit a Speaking Inquiry" },
     // Event photograph: color in both photo styles, so no black-and-white twin.
     photo: {
-      src: "/photos/speaking-hero-stage.jpg",
+      src: "/photos/speaking-hero-stage-g.jpg",
       alt: "Dr. Joy on a conference stage in a white blazer, mid-presentation",
       treatment: "color",
       direction: "Color stage photograph: Dr. Joy at full height, the protagonist of the frame.",
@@ -28,7 +28,7 @@ export const speaking = {
   /** Full-bleed proof of a real room, between the courses and the team programs. */
   room: {
     photo: {
-      src: "/photos/speaking-room.jpg",
+      src: "/photos/speaking-room-g.jpg",
       alt: "Dr. Joy on stage in front of a conference audience",
       treatment: "color",
       direction: "Wide color photograph of the stage and the audience.",
@@ -90,7 +90,7 @@ export const speaking = {
     // Stage frame cropped to 4:5. The black-and-white twin (red-weighted mix,
     // so the curtain falls to black) is used when site.photoStyle is "bw".
     photo: {
-      src: "/photos/speaking-keynote-stage.jpg",
+      src: "/photos/speaking-keynote-stage-g.jpg",
       srcBw: "/photos/speaking-keynote-stage-bw.jpg",
       alt: "Dr. Joy delivering a keynote on stage",
       treatment: "color",

@@ -21,7 +21,7 @@ export const meet = {
     ],
     couplet: ["In lecture halls, I studied.", "In the operatory, I tested and refined."],
     portrait: {
-      src: "/photos/meet-hero.jpg",
+      src: "/photos/meet-hero-g.jpg",
       srcBw: "/photos/meet-hero-bw.jpg",
       alt: "Dr. Joy seated on stone steps in a black suit, smiling, her chin resting on her hand",
       treatment: "bw",
@@ -35,7 +35,7 @@ export const meet = {
 
   /** Clinical close-up set beside "In the operatory, I tested and refined." */
   operatory: {
-    src: "/photos/meet-operatory.jpg",
+    src: "/photos/meet-operatory-g.jpg",
     alt: "Dr. Joy in glasses and teal gloves, pointing to the settings on a clinical handpiece",
     treatment: "color",
     direction: "Color close-up from clinical work: hands, instruments, the operatory. No legible product branding.",
@@ -46,7 +46,7 @@ export const meet = {
 
   /** Full-bleed pause between the opening story and the credentials. */
   interlude: {
-    src: "/photos/meet-interlude.jpg",
+    src: "/photos/meet-interlude-g.jpg",
     srcBw: "/photos/meet-interlude-bw.jpg",
     alt: "Dr. Joy sitting on a long stone staircase in a black suit, smiling",
     treatment: "bw",
@@ -112,7 +112,7 @@ export const meet = {
      * claim it does. Swap in a Boys and Girls Club photo when Dr. Joy has one.
      */
     photo: {
-      src: "/photos/meet-life.jpg",
+      src: "/photos/meet-life-g.jpg",
       alt: "Dr. Joy laughing outdoors in a teal blouse",
       treatment: "color",
       direction: "One authentic contextual/life photograph, in color. Human, not posed: on the sideline, with the board, or with students at the club.",

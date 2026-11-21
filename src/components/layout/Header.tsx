@@ -27,7 +27,9 @@ const BAR = 76;
  * flashes: add a path when a page's first section carries data-header="dark".
  */
 function opensDark(pathname: string) {
-  // Home opens on the black stage unless one of the light directions is chosen.
+  // Home opens on the black stage unless one of the light directions is chosen;
+  // the /directions/b preview always does.
+  if (pathname === "/directions/b") return true;
   return pathname === "/" && site.homeHero !== "a" && site.homeHero !== "c";
 }
 

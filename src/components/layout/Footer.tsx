@@ -121,7 +121,7 @@ export function Footer() {
         {/* Signed off with the script wordmark, set large. */}
         <div className="mt-24 flex flex-col gap-8 border-t border-line-dark pt-12 md:mt-32 md:flex-row md:items-end md:justify-between md:pt-16">
           <Link href="/" aria-label={`${site.name}, home`} className={`self-start ${ring}`}>
-            <Wordmark tone="dark" className="!h-[clamp(4.5rem,10vw,8.5rem)]" />
+            <Wordmark tone="dark" loading="lazy" className="!h-[clamp(4.5rem,10vw,8.5rem)]" />
           </Link>
           <div className="flex flex-wrap items-center gap-x-6 gap-y-1 text-[13px] text-ash md:pb-3">
             <span>
