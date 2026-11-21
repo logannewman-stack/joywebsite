@@ -18,15 +18,11 @@ type HeroProps = { id?: string; as?: "h1" | "h2" };
  * Opening motion, one move each and in sequence: photo first, then the
  * headline lines, then the sub-line and buttons.
  */
-const lines = (accent = "") => [
+const lines = [
   "The work has",
   "always been",
-  <em key="a" className={accent}>
-    bigger than
-  </em>,
-  <em key="b" className={accent}>
-    the chair.
-  </em>,
+  <em key="a">bigger than</em>,
+  <em key="b">the chair.</em>,
 ];
 
 function Actions({ dark = false }: { dark?: boolean }) {
@@ -48,7 +44,7 @@ export function HeroA({ id = "hero-heading", as: H = "h1" }: HeroProps) {
     <section className="relative overflow-hidden bg-paper pt-[76px]" aria-labelledby={id}>
       <div className="mx-auto grid max-w-[1440px] grid-cols-1 px-5 pt-6 pb-14 md:px-10 md:pt-10 lg:min-h-[calc(100svh-76px)] lg:grid-cols-[minmax(0,1fr)_minmax(0,0.74fr)] lg:grid-rows-[auto_1fr] lg:gap-x-12 lg:pt-8 lg:pb-10">
         <H id={id} className="display relative z-10 text-[clamp(3.4rem,min(9vw,15.5svh),10.4rem)] leading-[0.88] lg:col-start-1 lg:row-start-1">
-          <LineReveal lines={lines()} delay={0.05} />
+          <LineReveal lines={lines} delay={0.05} />
         </H>
         {/* Below lg the portrait follows the headline, so her face is on the first phone screen. */}
         <div className="relative mt-8 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:-mr-10 lg:mt-0">
@@ -73,9 +69,8 @@ export function HeroA({ id = "hero-heading", as: H = "h1" }: HeroProps) {
 /**
  * B: black stage. On landscape screens from 1024px the photograph bleeds off
  * the right edge; on phones and portrait tablets it rises under the headline.
- * Either way it dissolves into black on its inner edge. The
- * section is marked data-header="dark" so the header keeps its dark style
- * while it overlaps the stage.
+ * Either way it dissolves into black on its inner edge. The section is marked
+ * data-header="dark" so the header keeps its dark style while over it.
  */
 export function HeroB({ id = "hero-heading", as: H = "h1" }: HeroProps) {
   const photographic = hero.bStyle === "photo";
@@ -155,7 +150,7 @@ export function HeroC({ id = "hero-heading", as: H = "h1" }: HeroProps) {
         {/* Phones: headline, photo, then the sub-line (order). lg: headline and sub-line centered beside the photo. */}
         <div className="contents lg:col-start-1 lg:row-start-1 lg:flex lg:flex-col lg:justify-center">
           <H id={id} className="display order-1 text-[clamp(3.4rem,min(7.4vw,13svh),8.4rem)] leading-[0.9]">
-            <LineReveal lines={lines()} delay={0.05} />
+            <LineReveal lines={lines} delay={0.05} />
           </H>
           <Reveal immediate delay={0.25} className="order-3 mt-8 max-w-md lg:mt-10">
             <p className="text-[18px] leading-relaxed text-stone md:text-[19px]">{hero.sub}</p>
