@@ -1,0 +1,63 @@
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
+import type { OriginalArticle } from "@/content/insights";
+import { Label } from "@/components/ui/Links";
+import { LineReveal, Reveal } from "@/components/ui/Reveal";
+import { typeset } from "@/components/ui/Typeset";
+
+/**
+ * An original article by Dr. Joy, set for long reading: the title at display
+ * scale, an excerpt as the standfirst, and a 66-character measure. Pull quotes
+ * break out of the column; subheadings stay in it.
+ */
+export function Article({ article, section }: { article: OriginalArticle; section: string }) {
+  return (
+    <article className="bg-paper pt-[76px]">
+      <header className="mx-auto max-w-[1440px] px-5 pt-12 md:px-10 md:pt-20">
+        <Link href="/insights" className="group label inline-flex min-h-11 items-center gap-2 text-stone hover:text-ink">
+          <ArrowLeft className="size-3.5 transition-transform duration-200 group-hover:-translate-x-0.5" aria-hidden />
+          Insights
+        </Link>
+        <div className="mt-10 grid grid-cols-1 gap-y-8 lg:grid-cols-12 lg:gap-x-6">
+          <div className="lg:col-span-10">
+            <Label>{section}</Label>
+            <h1 className="display mt-8 max-w-[16ch] text-[clamp(2.8rem,6vw,6.4rem)] leading-[0.94]">
+              <LineReveal lines={[typeset(article.title)]} />
+            </h1>
+          </div>
+          <Reveal immediate delay={0.25} className="lg:col-span-7 lg:col-start-4">
+            {article.date && <p className="label text-stone tabular-nums">{article.date}</p>}
+            <p className="mt-6 font-serif text-[clamp(1.45rem,2.1vw,1.9rem)] leading-snug text-ink/80 italic">{article.excerpt}</p>
+          </Reveal>
+        </div>
+      </header>
+
+      <div className="mx-auto max-w-[1440px] px-5 pt-16 pb-24 md:px-10 md:pt-20 md:pb-32 lg:pb-40">
+        <div className="grid grid-cols-1 lg:grid-cols-12 lg:gap-x-6">
+          <div className="border-t border-ink pt-10 lg:col-span-7 lg:col-start-4">
+            {(article.body ?? []).map((block, i) =>
+              typeof block === "string" ? (
+                <p key={i} className="mt-6 max-w-[66ch] text-[19px] leading-[1.7] first:mt-0">
+                  {block}
+                </p>
+              ) : "heading" in block ? (
+                <h2 key={i} className="display mt-14 text-[clamp(1.9rem,3vw,2.6rem)] leading-[1.05]">
+                  {typeset(block.heading)}
+                </h2>
+              ) : (
+                <blockquote key={i} className="my-14 lg:-ml-[16%] lg:w-[125%]">
+                  <p className="display relative text-[clamp(1.9rem,3.4vw,3.2rem)] leading-[1.08] italic">
+                    <span aria-hidden className="text-blush-deep md:absolute md:top-0 md:-left-[0.5em]">
+                      “
+                    </span>
+                    {typeset(block.quote)}
+                  </p>
+                </blockquote>
+              ),
+            )}
+          </div>
+        </div>
+      </div>
+    </article>
+  );
+}

@@ -26,6 +26,26 @@ export type Publication = {
   note?: string;
 };
 
+/** One block of an original article: a paragraph, a subheading or a pull quote. */
+export type ArticleBlock = string | { heading: string } | { quote: string };
+
+/**
+ * One of Dr. Joy's original articles. To publish it on this site, give it a
+ * `slug` and its full `body`: it then lives at /insights/<slug> and `href`
+ * should be that path. If it lives elsewhere (e.g. LinkedIn), leave out the
+ * body and set `href` to the full URL; it opens in a new tab.
+ */
+export type OriginalArticle = {
+  title: string;
+  excerpt: string;
+  href: string;
+  date?: string;
+  /** The single strongest piece, set as the feature at the top of the page. One article only. */
+  feature?: boolean;
+  slug?: string;
+  body?: ArticleBlock[];
+};
+
 /** INSIGHTS: approved working structure. */
 export const insights = {
   hero: {
@@ -58,7 +78,7 @@ export const insights = {
   original: {
     heading: "From Dr. Joy",
     /** Two original articles. Empty = section hidden at launch. */
-    articles: [] as { title: string; excerpt: string; href: string; date?: string; feature?: boolean }[],
+    articles: [] as OriginalArticle[],
     cta: "Read Article",
   },
 

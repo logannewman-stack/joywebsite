@@ -9,7 +9,7 @@ import { Feature, type FeatureItem } from "@/components/insights/Feature";
 import { OriginalArticles } from "@/components/insights/OriginalArticles";
 import { PublishedList } from "@/components/insights/PublishedList";
 import { StayConnected } from "@/components/insights/StayConnected";
-import { isShown } from "@/components/insights/records";
+import { articleHref, isShown } from "@/components/insights/records";
 
 export const metadata: Metadata = {
   title: "Insights",
@@ -26,7 +26,14 @@ export default function InsightsPage() {
   const featuredOriginal = originals.find((a) => a.feature);
   const featuredRecord = featuredOriginal ? undefined : records.find((a) => a.feature && a.kind !== "book" && a.url);
   const feature: FeatureItem | null = featuredOriginal
-    ? { title: featuredOriginal.title, date: featuredOriginal.date, excerpt: featuredOriginal.excerpt, href: featuredOriginal.href, external: /^https?:/.test(featuredOriginal.href), verified: true }
+    ? {
+        title: featuredOriginal.title,
+        date: featuredOriginal.date,
+        excerpt: featuredOriginal.excerpt,
+        href: articleHref(featuredOriginal),
+        external: /^https?:/.test(articleHref(featuredOriginal)),
+        verified: true,
+      }
     : featuredRecord
       ? {
           title: featuredRecord.title,
