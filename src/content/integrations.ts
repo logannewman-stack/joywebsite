@@ -1,3 +1,6 @@
+import { industry } from "./industry";
+import { programTitles } from "./speaking";
+
 /**
  * ============================================================================
  *  FORMS AND GOHIGHLEVEL TAGS
@@ -31,7 +34,9 @@ export const inquiryTypes = {
     tag: "clinical-launch-strategy",
     label: "Clinical launch strategy",
     title: "Discuss a Clinical Launch Project",
-    intro: "Tell me what you are building: a clinical education program, a professional partnership, or a product launch.",
+    // The approved lead of the Clinical Launch Strategy section, so this form
+    // stays about launches and never mentions the partnership category.
+    intro: industry.launch.lead,
   },
   p3_interest: {
     tag: "p3-interest-list",
@@ -72,11 +77,24 @@ export const consultingChoice = {
 };
 
 /**
+ * "Program of interest" on the speaking form: every program on the Speaking
+ * page, in page order, then "Not sure yet". Sent to GoHighLevel as `program`.
+ */
+export const programNotSure = "Not sure yet";
+export const programChoices: string[] = [...programTitles, programNotSure];
+
+/**
  * DRAFT opt-in language for the P3 interest list. Both boxes are unchecked
  * by default. Language must be reviewed before launch (brief, section 04).
+ * The exact wording a person agreed to is stored with their submission
+ * (sponsor_consent_text / sms_consent_text), so change `optInsVersion`
+ * whenever the wording changes.
  */
 export const optIns = {
-  sponsor:
-    "Yes, I’d like to receive occasional communications about P3 education from event sponsors. (Optional)",
-  sms: "Yes, send me text messages about P3 event announcements and registration. Message and data rates may apply. Reply STOP to opt out. (Optional)",
+  sponsor: "Yes, I’d like to receive occasional communications about P3 education from event sponsors.",
+  sms: "Yes, send me text messages from Dr. Joy RDH about P3 event announcements and registration. Message frequency varies. Message and data rates may apply. Reply STOP to opt out or HELP for help.",
 };
+export const optInsVersion = "draft-2026-11-21";
+
+/** Inquiry types whose form shows the opt-ins above. */
+export const optInTypes: readonly InquiryType[] = ["p3_interest"];
