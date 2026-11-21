@@ -131,7 +131,10 @@ a:focus-visible > .sp-toc-arrow > svg + svg {
   .sp-rail-clip {
     display: block;
     position: absolute;
-    inset: 0;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 2.5rem;
     z-index: 10;
     clip-path: inset(0);
     pointer-events: none;
@@ -381,6 +384,10 @@ html.motion .sp-keynote-zoom {
   background: var(--color-blush-deep);
   vertical-align: 0.26em;
 }
+/* Still: the run ends on a name, not on a mark. */
+html:not(.motion) .sp-wall-row:last-child .sp-wall-name:last-child .sp-wall-mark {
+  display: none;
+}
 html.motion .sp-wall {
   max-width: none;
   padding-inline: 0;
@@ -427,6 +434,21 @@ html.motion .sp-finale-line {
 .sp-finale-cta {
   margin: -1rem;
   padding: 1rem;
+}
+
+/* --------------------------------------------------------------------------
+   Keyboard focus never waits for an entrance: whatever holds the focus is
+   shown at once, with its ring.
+   -------------------------------------------------------------------------- */
+html.motion .sp-page [data-inview] .rise:focus-within {
+  opacity: 1;
+  transform: none;
+  transition-delay: 0s;
+  transition-duration: 0.15s;
+}
+/* ...and a control focused at the foot of the screen keeps some air (and its row's rule) below it. */
+.sp-page :is(a, button, summary) {
+  scroll-margin-bottom: 2.5rem;
 }
 
 @media print {

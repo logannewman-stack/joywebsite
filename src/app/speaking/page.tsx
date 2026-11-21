@@ -46,7 +46,8 @@ export default function SpeakingPage() {
   const planningLast = planningWords[planningWords.length - 1];
 
   return (
-    <>
+    // sp-page scopes this page's own rules in speaking.css.
+    <div className="sp-page">
       {/* Opening: the headline, then Dr. Joy on stage at full height */}
       <section className="sp-open overflow-x-clip bg-paper pt-[4.75rem]">
         <div className="mx-auto grid max-w-[90rem] px-5 md:px-10 lg:grid-cols-12 lg:gap-x-6">
@@ -93,7 +94,7 @@ export default function SpeakingPage() {
             </div>
 
             {/* The chapter list: the page's four chapters, on hairlines that draw on load. */}
-            <nav aria-label="On this page" className="sp-toc relative mt-12">
+            <nav aria-label="On this page" className="sp-toc relative isolate mt-12">
               <ul className="grid auto-rows-fr grid-cols-1 sm:grid-cols-2">
                 {chapters.map((c, i) => (
                   <li key={c.href} className={i % 2 === 0 ? "sm:pr-6" : "sm:pl-6"}>
@@ -110,7 +111,7 @@ export default function SpeakingPage() {
                 ))}
               </ul>
               {/* Hairlines: five on phones (one list), three from sm (two columns). */}
-              <span aria-hidden className="pointer-events-none absolute inset-0">
+              <span aria-hidden className="pointer-events-none absolute inset-0 -z-10">
                 {[0, 1, 2, 3, 4].map((n) => (
                   <span key={n} className="sp-toc-rule" style={{ "--i": n } as CSSProperties} />
                 ))}
@@ -195,7 +196,8 @@ export default function SpeakingPage() {
           {/* Above the section's grain (z-1), so the part of the photo that rises into the ivory matches the rest. */}
           <div data-view className="sp-keynote-col relative z-[1] -mx-5 mt-10 md:mx-0 md:mt-14 lg:col-span-5 lg:col-start-8 lg:row-span-2 lg:row-start-1 lg:-mt-56">
             <ImageReveal className="lg:sticky lg:top-28">
-              <div className="aspect-[4/5] w-full overflow-clip md:max-w-[34rem] lg:max-w-none">
+              {/* Short desktop screens: the pinned photo never runs past the fold (7rem above it, 1.5rem below). */}
+              <div className="aspect-[4/5] w-full overflow-clip md:max-w-[34rem] lg:max-h-[calc(100svh-8.5rem)] lg:max-w-none">
                 <div className="sp-keynote-zoom h-full w-full">
                   <Photo
                     slot={keynotes.photo}
@@ -298,6 +300,6 @@ export default function SpeakingPage() {
       </section>
 
       <NextPage current="/speaking" />
-    </>
+    </div>
   );
 }

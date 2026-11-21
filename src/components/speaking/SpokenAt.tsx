@@ -71,7 +71,7 @@ export function SpokenAt({ className = "" }: { className?: string }) {
           {/* The wall of names (decorative copy of the list above). */}
           <div aria-hidden className="sp-wall mt-12 hidden md:block lg:mt-16 print:!hidden">
             {rows(venues, 3).map((row, r) => (
-              <Marquee key={r} reverse={r % 2 === 1} travel={5} className="sp-wall-row">
+              <Marquee key={r} reverse={r % 2 === 1} travel={7} className="sp-wall-row">
                 {row.map((v) => (
                   <span key={v} className="sp-wall-name">
                     {v}
