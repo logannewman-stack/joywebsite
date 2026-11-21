@@ -248,6 +248,15 @@ html.motion .launch-lead .launch-word {
   html.motion .launch[data-pinned] .launch-photo .parallax-inner {
     transform: translate3d(0, calc((0.5 - var(--p, 0)) * 9%), 0) scale(1.14);
   }
+  /* It arrives in half light and comes up as the sentence is lit. */
+  html.motion .launch[data-pinned] .launch-photo > .parallax::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--color-ink);
+    opacity: calc(0.42 - clamp(0, var(--p, 0) / 0.38, 1) * 0.42);
+    pointer-events: none;
+  }
 
   /* The lead, then the details, share one cell. The engine shows one at a time. */
   .launch[data-pinned] .launch-step {

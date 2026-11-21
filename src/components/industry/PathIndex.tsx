@@ -21,7 +21,7 @@ export function PathIndex({ items, className = "" }: { items: { label: string; h
         <ol className="stagger">
           {items.map((item, i) => (
             <li key={item.href}>
-              <a href={item.href} className="group relative flex min-h-16 items-center gap-5 py-3.5">
+              <a href={item.href} className="group relative flex min-h-[3.75rem] items-center gap-5 py-3">
                 <span className="label w-6 shrink-0 text-stone tabular-nums transition-colors duration-(--duration-ui) group-hover:text-ink group-focus-visible:text-ink">
                   {String(i + 1).padStart(2, "0")}
                 </span>

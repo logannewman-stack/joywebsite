@@ -43,9 +43,10 @@ export default function IndustryPage() {
   const [closingA, closingB] = lastTwo(closing.heading);
   return (
     <>
-      {/* Opening: headline first on phones, then the portrait, then the two ways in */}
+      {/* Opening: headline first on phones, then the portrait, then the two ways in.
+          On short, wide screens the top padding gives way so the index stays in the first screen. */}
       <section className="bg-paper pt-[4.75rem]">
-        <div className="mx-auto grid max-w-[90rem] grid-cols-1 gap-y-12 px-5 pt-12 pb-20 md:px-10 md:pt-20 md:pb-28 lg:grid-cols-12 lg:grid-rows-[auto_1fr] lg:gap-x-6 lg:gap-y-8 lg:pb-32">
+        <div className="mx-auto grid max-w-[90rem] grid-cols-1 gap-y-12 px-5 pt-12 pb-20 md:px-10 md:pt-20 md:pb-28 lg:grid-cols-12 lg:grid-rows-[auto_1fr] lg:gap-x-6 lg:gap-y-8 lg:pt-[min(5rem,6.5svh)] lg:pb-32">
           <div className="lg:col-span-7 lg:col-start-6 lg:row-start-1">
             <Label index="04">Industry Collaborations</Label>
             <h1 className="display mt-8 text-[clamp(2.6rem,13vw,4.4rem)] leading-[0.92] md:text-[clamp(2.6rem,7.4vw,6.4rem)] lg:text-[clamp(2.6rem,5.1vw,4.59rem)]">
@@ -169,7 +170,7 @@ export default function IndustryPage() {
       {/* Let's Discuss Your Project: the picker offers only the manufacturer topics */}
       <section className="bg-ivory">
         <div className="mx-auto max-w-[90rem] px-5 py-24 md:px-10 md:py-32 lg:py-40">
-          <h2 className="display text-[clamp(2.75rem,13.4vw,9.5rem)] leading-[0.9] lg:text-[clamp(2.75rem,10.6vw,9.5rem)]">
+          <h2 className="display text-[clamp(2.75rem,13.4vw,9.5rem)] leading-[0.9] lg:text-[clamp(2.75rem,12.4vw,11.25rem)]">
             <span className="block">
               <WordRise>{closingA}</WordRise>{" "}
             </span>
