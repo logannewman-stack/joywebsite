@@ -12,9 +12,10 @@ import {
   type MouseEvent,
   type ReactNode,
 } from "react";
-import { ArrowRight, X } from "lucide-react";
+import { X } from "lucide-react";
 import type { InquiryType } from "@/content/integrations";
 import { site } from "@/content/site";
+import { SwapArrow } from "@/components/ui/Links";
 import { focusFirst, inertOutside, lockScroll, prefersReducedMotion, trapTab } from "./modal";
 
 /*
@@ -179,7 +180,7 @@ function PanelUnavailable({ close }: { close: () => void }) {
         type="button"
         onClick={close}
         aria-label="Close"
-        className="ml-auto inline-flex size-11 items-center justify-center rounded-full border border-line focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+        className="press ml-auto inline-flex size-11 items-center justify-center rounded-full border border-line hover:border-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
       >
         <X className="size-5" aria-hidden />
       </button>
@@ -233,13 +234,14 @@ export function InquiryButton({
   const dark = tone === "dark";
   const ring = `focus-visible:outline-2 focus-visible:outline-offset-[3px] ${dark ? "focus-visible:outline-white" : "focus-visible:outline-ink"}`;
   const styles = {
-    solid: `min-h-12 max-w-full gap-3 whitespace-nowrap rounded-full px-6 motion-safe:active:scale-[0.98] max-[359px]:whitespace-normal ${
-      dark ? "bg-white text-ink hover:bg-ivory" : "bg-ink text-white hover:bg-charcoal"
+    // Pills share one hover and press (.press in styles/chrome.css): a soft fill change and a small scale.
+    solid: `press min-h-12 max-w-full gap-3 whitespace-nowrap rounded-full px-6 max-[359px]:whitespace-normal ${
+      dark ? "bg-white text-ink hover:bg-gold-soft" : "bg-ink text-white hover:bg-charcoal"
     }`,
-    outline: `min-h-12 max-w-full gap-3 whitespace-nowrap rounded-full border px-6 motion-safe:active:scale-[0.98] max-[359px]:whitespace-normal ${
+    outline: `press min-h-12 max-w-full gap-3 whitespace-nowrap rounded-full border px-6 max-[359px]:whitespace-normal ${
       dark ? "border-white/40 text-white hover:border-white hover:bg-white/10" : "border-ink/30 text-ink hover:border-ink hover:bg-ink/[0.04]"
     }`,
-    text: "min-h-11 gap-2",
+    text: "min-h-11 gap-2 transition-opacity duration-[var(--duration-hover,180ms)] active:opacity-70",
   }[variant];
   const onClick = (e: MouseEvent<HTMLButtonElement>) =>
     open(type ?? (program ? "speaking" : undefined), { choices, preset, program, intro, returnFocus: e.currentTarget });
@@ -250,7 +252,7 @@ export function InquiryButton({
       onPointerEnter={preload}
       onFocus={preload}
       aria-haspopup="dialog"
-      className={`group inline-flex items-center text-left text-[0.9375rem] font-medium transition-[background-color,border-color,color,transform] duration-[var(--duration-hover,180ms)] ${ring} ${styles} ${className}`}
+      className={`group inline-flex items-center text-left text-[0.9375rem] font-medium ${ring} ${styles} ${className}`}
     >
       {variant === "text" ? (
         // The arrow follows the last word when the label wraps (a word joiner keeps them together).
@@ -259,19 +261,14 @@ export function InquiryButton({
           {arrow && (
             <span className="whitespace-nowrap">
               {"\u2060"}
-              <ArrowRight
-                className="ml-2 inline size-4 align-[-0.15em] transition-transform duration-[var(--duration-hover,180ms)] group-hover:translate-x-1"
-                aria-hidden
-              />
+              <SwapArrow className="ml-2 size-4 align-[-0.15em]" />
             </span>
           )}
         </span>
       ) : (
         <>
           <span>{children}</span>
-          {arrow && (
-            <ArrowRight className="size-4 shrink-0 transition-transform duration-[var(--duration-hover,180ms)] group-hover:translate-x-1" aria-hidden />
-          )}
+          {arrow && <SwapArrow />}
         </>
       )}
     </button>

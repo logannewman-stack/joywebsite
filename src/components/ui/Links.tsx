@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { ArrowRight, ArrowUpRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, ArrowUp, ArrowUpRight } from "lucide-react";
 import { links, site } from "@/content/site";
 
 /**
@@ -79,20 +79,46 @@ export const focusRing = {
 };
 
 /**
- * Shared interaction states. Solid buttons: a visible hover (ink to the logo
- * charcoal, or white to ivory on dark) and a small press. Text links: one
- * size, gap and icon size everywhere (ArrowLink, and InquiryButton's text variant).
+ * Shared interaction states (styles in src/app/styles/chrome.css).
+ *
+ * Pills: a soft fill change on hover (ink to the logo charcoal; white to
+ * champagne gold on black), the arrow swap below, and one press state
+ * everywhere: `press` (a small, quick scale). Text links: the underline draws
+ * (`link-draw`) and the same arrow swap; pressed, they dim.
  */
-export const buttonStates =
-  "transition-[background-color,scale] duration-(--duration-hover) ease-out motion-safe:active:scale-[0.98]";
+export const press = "press";
+export const buttonStates = press;
 export const textLink = "group inline-flex min-h-11 items-center gap-2 text-[0.9375rem] font-medium";
-
-const solid = {
-  light: `bg-ink text-white hover:bg-charcoal ${focusRing.light}`,
-  dark: `bg-white text-ink hover:bg-ivory ${focusRing.dark}`,
+/** Fill for a solid pill, by the surface it sits on. */
+export const solidFill = {
+  light: "bg-ink text-white hover:bg-charcoal",
+  dark: "bg-white text-ink hover:bg-gold-soft",
 };
 
-const arrowMove = "size-4 shrink-0 transition-transform duration-(--duration-ui) ease-expo";
+const solid = {
+  light: `${solidFill.light} ${focusRing.light}`,
+  dark: `${solidFill.dark} ${focusRing.dark}`,
+};
+
+type ArrowDirection = "right" | "up-right" | "up" | "left";
+const arrowIcon = { right: ArrowRight, "up-right": ArrowUpRight, up: ArrowUp, left: ArrowLeft };
+const arrowTravel: Record<ArrowDirection, string> = { right: "", "up-right": "swap-ne", up: "swap-n", left: "swap-w" };
+
+/**
+ * The arrow swap: on hover or keyboard focus of the nearest `group`, the arrow
+ * travels out of its own small frame and a second arrow enters from the
+ * opposite side. Decorative; without motion the two arrows are identical, so
+ * nothing changes. Use it wherever a button or link carries an arrow.
+ */
+export function SwapArrow({ direction = "right", className = "size-4" }: { direction?: ArrowDirection; className?: string }) {
+  const Icon = arrowIcon[direction];
+  return (
+    <span aria-hidden className={`swap ${arrowTravel[direction]} ${className}`}>
+      <Icon className="size-full" />
+      <Icon className="size-full" />
+    </span>
+  );
+}
 
 /** Solid, high-contrast button. Large hit area, plain words. */
 export function ButtonLink({
@@ -113,11 +139,7 @@ export function ButtonLink({
   const inner = (
     <>
       {children}
-      {r.external ? (
-        <ArrowUpRight className={`${arrowMove} group-hover:translate-x-0.5 group-hover:-translate-y-0.5`} aria-hidden />
-      ) : (
-        <ArrowRight className={`${arrowMove} group-hover:translate-x-1`} aria-hidden />
-      )}
+      <SwapArrow direction={r.external ? "up-right" : "right"} />
     </>
   );
   if (r.pending) {
@@ -158,11 +180,7 @@ export function ArrowLink({
   const inner = (
     <>
       <span className="link-draw pb-0.5">{children}</span>
-      {r.external ? (
-        <ArrowUpRight className={`${arrowMove} group-hover:translate-x-0.5 group-hover:-translate-y-0.5`} aria-hidden />
-      ) : (
-        <ArrowRight className={`${arrowMove} group-hover:translate-x-1`} aria-hidden />
-      )}
+      <SwapArrow direction={r.external ? "up-right" : "right"} />
     </>
   );
   if (r.pending) {
@@ -203,7 +221,8 @@ export function Label({
   return (
     <Tag className={`label flex items-center gap-3 ${className}`}>
       {index && <span className="tabular-nums">{index}</span>}
-      {index && <span className="h-px w-8 bg-current opacity-40" aria-hidden />}
+      {/* The short rule is gold: gold-deep on light surfaces, gold on black (.label-rule in styles/chrome.css). */}
+      {index && <span className="label-rule h-px w-8" aria-hidden />}
       <span>{children}</span>
     </Tag>
   );

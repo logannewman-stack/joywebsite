@@ -166,7 +166,7 @@ export function CheckGroup({
         {options.map((o) => (
           <label key={o} className="cursor-pointer">
             <input type="checkbox" name={name} value={o} defaultChecked={defaultValues.includes(o)} className="peer sr-only" />
-            <span className="inline-flex min-h-11 items-center rounded-full border border-ink/25 px-4 text-[0.875rem] transition-colors duration-[var(--duration-hover,180ms)] select-none peer-checked:border-ink peer-checked:bg-ink peer-checked:text-white forced-colors:peer-checked:border-[Highlight] forced-colors:peer-checked:bg-[Highlight] forced-colors:peer-checked:text-[HighlightText] peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-ink hover:border-ink/60 active:scale-[0.98] motion-reduce:active:scale-100">
+            <span className="inline-flex min-h-11 items-center rounded-full border border-ink/25 px-4 text-[0.875rem] press select-none peer-checked:border-ink peer-checked:bg-ink peer-checked:text-white forced-colors:peer-checked:border-[Highlight] forced-colors:peer-checked:bg-[Highlight] forced-colors:peer-checked:text-[HighlightText] peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-ink hover:border-ink/60">
               {o}
             </span>
           </label>

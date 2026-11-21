@@ -1,1 +1,723 @@
-/* chrome: styles owned by the chrome work stream. Loaded from globals.css. */
+/* ==========================================================================
+   Chrome: everything that frames every page (header, menu, inquiry panel,
+   footer, the link to the next page, buttons and links, page transitions and
+   the first-visit signature). Loaded from globals.css.
+
+   The same rule as motion.css: every moving effect is scoped to
+   <html class="motion"> (JavaScript on, reduced motion off) or to something
+   only a script sets, so without it the frame is plain and complete.
+   The small script that feeds a few of these rules is
+   src/components/chrome/script.ts.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Finishers
+   -------------------------------------------------------------------------- */
+/* A thin scrollbar in the site's own ink, where the browser allows styling. */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(11 11 11 / 0.3) transparent;
+}
+.thin-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(11 11 11 / 0.22) transparent;
+}
+/* No grey flash on tap: every control has its own pressed state. */
+a,
+button,
+[role="link"],
+label,
+summary {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* --------------------------------------------------------------------------
+   Accents in the frame: gold for structure (the progress line, short rules,
+   rings on arrow circles over black, the footer's rules), pale pink for
+   emphasis in type (the marker behind the current page in the menu).
+   The short rule in a Label is gold-deep on light surfaces and gold on black.
+   -------------------------------------------------------------------------- */
+.label-rule {
+  background: var(--color-gold-deep);
+}
+:is([data-header="dark"], [data-tone="dark"], .bg-ink, .text-white, .text-ash) .label-rule {
+  background: var(--color-gold);
+}
+
+/* --------------------------------------------------------------------------
+   Buttons and links
+   -------------------------------------------------------------------------- */
+/* Pills and circles: a soft fill change, and one press state everywhere. */
+.press {
+  transition:
+    background-color var(--duration-ui) ease-out,
+    border-color var(--duration-ui) ease-out,
+    color var(--duration-ui) ease-out,
+    scale 140ms ease-out;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .press:active:not([aria-disabled="true"]) {
+    scale: 0.97;
+  }
+}
+
+/* The arrow swap (SwapArrow in ui/Links.tsx): the arrow leaves its small
+   frame and a second one enters from the opposite side. */
+.swap {
+  --sx: 135%;
+  --sy: 0%;
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+  overflow: clip;
+}
+.swap-ne {
+  --sx: 115%;
+  --sy: -115%;
+}
+.swap-n {
+  --sx: 0%;
+  --sy: -135%;
+}
+.swap-w {
+  --sx: -135%;
+}
+.swap > * {
+  transition: transform 0.5s var(--ease-expo);
+}
+.swap > :last-child {
+  position: absolute;
+  inset: 0;
+  transform: translate3d(calc(var(--sx) * -1), calc(var(--sy) * -1), 0);
+}
+.group:focus-visible .swap > :first-child {
+  transform: translate3d(var(--sx), var(--sy), 0);
+}
+.group:focus-visible .swap > :last-child {
+  transform: none;
+  transition-delay: 60ms;
+}
+@media (hover: hover) {
+  .group:hover .swap > :first-child {
+    transform: translate3d(var(--sx), var(--sy), 0);
+  }
+  .group:hover .swap > :last-child {
+    transform: none;
+    transition-delay: 60ms;
+  }
+}
+
+/* Text links: the underline draws in from the left and leaves to the right.
+   (Refines .link-draw from globals.css; :root lifts it over that rule.) */
+:root .link-draw {
+  background-position: 100% 100%;
+  transition: background-size 0.45s var(--ease-expo);
+}
+:root .link-draw:hover,
+:root .link-draw:focus-visible,
+:root .group:hover .link-draw,
+:root .group:focus-visible .link-draw {
+  background-position: 0 100%;
+}
+
+/* --------------------------------------------------------------------------
+   Scroll progress: a hairline under the header that fills with the page
+   (--page-p from the scroll engine). When the header slides away it rides at
+   the top edge of the screen. Gold over black sections, gold-deep over light.
+   -------------------------------------------------------------------------- */
+.page-progress {
+  position: fixed;
+  inset-inline: 0;
+  top: 0;
+  z-index: 50;
+  height: 2px;
+  pointer-events: none;
+  transition:
+    translate var(--duration-ui) var(--ease-expo),
+    opacity var(--duration-ui) ease-out,
+    color var(--duration-ui) ease-out;
+}
+.page-progress > span {
+  display: block;
+  height: 100%;
+  background: currentColor;
+  will-change: transform;
+}
+html:not(.motion) .page-progress {
+  display: none;
+}
+
+/* --------------------------------------------------------------------------
+   Mobile menu: a sheet that drops from under the bar; its links rise one
+   after another and their hairlines draw. Instant with reduced motion.
+   -------------------------------------------------------------------------- */
+.menu-sheet {
+  visibility: hidden;
+  opacity: 0;
+}
+.menu-sheet[data-open="true"] {
+  visibility: visible;
+  opacity: 1;
+}
+.menu-item {
+  position: relative;
+}
+.menu-item::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--color-line);
+}
+html.motion .menu-sheet {
+  transition:
+    opacity 0.24s ease-out,
+    visibility 0s 0.24s;
+}
+html.motion .menu-sheet[data-open="true"] {
+  transition: visibility 0s;
+  animation: menu-drop 0.7s var(--ease-expo) both;
+}
+@keyframes menu-drop {
+  from {
+    clip-path: inset(0 0 100% 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+html.motion .menu-sheet .menu-rise {
+  transform: translate3d(0, 112%, 0);
+  transition: transform 0s 0.24s;
+}
+html.motion .menu-sheet[data-open="true"] .menu-rise {
+  transform: none;
+  transition: transform 0.9s var(--ease-expo) calc(0.14s + var(--i, 0) * 0.055s);
+}
+html.motion .menu-sheet .menu-fade {
+  opacity: 0;
+  transform: translate3d(0, 0.75rem, 0);
+  transition:
+    opacity 0s 0.24s,
+    transform 0s 0.24s;
+}
+html.motion .menu-sheet[data-open="true"] .menu-fade {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity var(--duration-text) var(--ease-soft) calc(0.2s + var(--i, 0) * 0.055s),
+    transform var(--duration-image) var(--ease-expo) calc(0.2s + var(--i, 0) * 0.055s);
+}
+/* The pale pink marker behind the current page draws once its name has risen. */
+html.motion .menu-sheet .hl-light {
+  background-size: 0% 0.34em;
+  transition: background-size 0s 0.24s;
+}
+html.motion .menu-sheet[data-open="true"] .hl-light {
+  background-size: 100% 0.34em;
+  transition: background-size var(--duration-image) var(--ease-expo) calc(0.5s + var(--i, 0) * 0.055s);
+}
+html.motion .menu-sheet .menu-item::after {
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0s 0.24s;
+}
+html.motion .menu-sheet[data-open="true"] .menu-item::after {
+  transform: none;
+  transition: transform 1.1s var(--ease-expo) calc(0.1s + var(--i, 0) * 0.055s);
+}
+
+/* --------------------------------------------------------------------------
+   Inquiry panel: each view's content settles in, one block after another.
+   -------------------------------------------------------------------------- */
+html.motion .panel-settle > *,
+html.motion .panel-settle-list > * {
+  animation: panel-settle var(--duration-text) var(--ease-expo) calc(var(--settle, 0.16s) + var(--si, 0) * 0.05s) both;
+}
+html.motion .panel-settle-list {
+  --settle: 0.28s;
+}
+@keyframes panel-settle {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 1rem, 0);
+  }
+}
+.panel-settle > :nth-child(2),
+.panel-settle-list > :nth-child(2) { --si: 1; }
+.panel-settle > :nth-child(3),
+.panel-settle-list > :nth-child(3) { --si: 2; }
+.panel-settle > :nth-child(4),
+.panel-settle-list > :nth-child(4) { --si: 3; }
+.panel-settle > :nth-child(5),
+.panel-settle-list > :nth-child(5) { --si: 4; }
+.panel-settle > :nth-child(6),
+.panel-settle-list > :nth-child(6) { --si: 5; }
+.panel-settle > :nth-child(7),
+.panel-settle-list > :nth-child(7) { --si: 6; }
+.panel-settle > :nth-child(8),
+.panel-settle-list > :nth-child(8) { --si: 7; }
+.panel-settle > :nth-child(n + 9),
+.panel-settle-list > :nth-child(n + 9) { --si: 8; }
+
+/* --------------------------------------------------------------------------
+   The page shell (main + footer) and the footer finale.
+
+   With motion on, the footer is sticky under the page: it sits still while
+   the page's last section scrolls away and uncovers it. A footer taller than
+   the screen sticks with its top at the top instead, shows its first screen
+   the same way, then scrolls on normally (--foot-h is measured by the chrome
+   script). Without motion it is an ordinary footer.
+   -------------------------------------------------------------------------- */
+.page-shell {
+  position: relative;
+  min-height: 100svh;
+  background: var(--color-paper);
+}
+/* Stands where the footer sits in the flow, so the header can tell when the
+   black footer is really behind it (the sticky footer itself always is). */
+.foot-ghost {
+  position: absolute;
+  inset-inline: 0;
+  height: var(--foot-h, 0px);
+  pointer-events: none;
+  visibility: hidden;
+}
+html.motion .page-shell > main {
+  position: relative;
+  z-index: 1;
+  background: var(--color-paper);
+}
+html.motion .site-footer {
+  position: sticky;
+  bottom: min(0px, calc(100svh - var(--foot-h, 0px)));
+}
+/* Depth while it is uncovered: the content rises a little slower than the
+   page and comes up out of the dark (--foot-p: 0 covered, 1 in the open). */
+html.motion .foot-inner {
+  transform: translate3d(0, calc((1 - var(--foot-p, 1)) * 4.5rem), 0);
+  opacity: calc(0.3 + 0.7 * var(--foot-p, 1));
+}
+/* With keyboard focus inside, it is at rest and fully lit, so the focus ring is where it will stay. */
+html.motion .site-footer:has(:focus-visible) .foot-inner {
+  transform: none;
+  opacity: 1;
+}
+
+/* The script wordmark, signed large. From 1280px the footer is one screen
+   tall and the wordmark takes the height that is left. */
+.foot-mark-link {
+  width: 100%;
+}
+@media (min-width: 48rem) {
+  .foot-mark-link {
+    flex: 1 1 0;
+    width: auto;
+  }
+}
+.foot-mark {
+  display: block;
+  width: 100%;
+  max-width: none;
+  height: auto;
+}
+@media (min-width: 80rem) {
+  /* Height left on the screen: 100svh less the footer's own paddings (the same
+     min() values as its classes) and 24.25rem for the columns and their gap.
+     The artwork is 3.07:1. */
+  .foot-mark {
+    --foot-cols: 24.25rem;
+    width: min(100%, calc(clamp(6rem, 100svh - min(7rem, 11svh) - min(3rem, 5svh) - min(2.5rem, 4svh) - var(--foot-cols), 21rem) * 3.07));
+  }
+  /* Without the newsletter (Insights) the link lists sit in two columns and take less height. */
+  .site-footer:not(:has(#footer-newsletter)) .foot-mark {
+    --foot-cols: 14.75rem;
+  }
+}
+/* It writes itself in, left to right, once it is in the open ([data-foot-in]
+   is set by the chrome script), and the rule above it draws. */
+@property --ink-wipe {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 115%;
+}
+html.motion .foot-sign .foot-mark {
+  --ink-wipe: 0%;
+  mask-image: linear-gradient(90deg, #000 calc(var(--ink-wipe) - 14%), transparent var(--ink-wipe));
+}
+html.motion .foot-sign[data-foot-in] .foot-mark {
+  --ink-wipe: 115%;
+  transition: --ink-wipe 1.7s var(--ease-soft) 0.1s;
+}
+html.motion .foot-sign .foot-rule {
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+html.motion .foot-sign[data-foot-in] .foot-rule {
+  transform: none;
+  transition: transform 1.3s var(--ease-expo);
+}
+
+/* --------------------------------------------------------------------------
+   NextPage: the link to the next page, set as a moment of its own.
+   -------------------------------------------------------------------------- */
+.next-page {
+  position: relative;
+  display: block;
+  background: var(--color-paper);
+}
+.next-page:focus-visible {
+  outline-offset: -0.5rem;
+}
+/* The preview: the next page's opening photograph, uncovered from its bottom
+   edge on hover or keyboard focus. Pointer devices only; on touch the link is
+   simply large type and an arrow. */
+.next-preview {
+  display: none;
+}
+@media (hover: hover) and (min-width: 64rem) {
+  /* At rest it is only transparent (not clipped), so the browser still loads it ahead of the hover. */
+  .next-preview {
+    display: block;
+    opacity: 0;
+    transition:
+      opacity 0.35s ease-out,
+      transform 0.9s var(--ease-expo);
+  }
+  .next-preview img {
+    transform: scale(1.14);
+    transition: transform 0.9s var(--ease-soft);
+  }
+  .next-page:hover .next-preview,
+  .next-page:focus-visible .next-preview {
+    opacity: 1;
+    transition:
+      opacity 0s,
+      transform 0.9s var(--ease-expo);
+    animation: next-uncover 0.9s var(--ease-expo) both;
+  }
+  .next-page:hover .next-preview img,
+  .next-page:focus-visible .next-preview img {
+    transform: none;
+    transition: transform 1.4s var(--ease-expo);
+  }
+  /* It leans a few pixels toward the pointer (--mx/--my from the engine's magnet on the link). */
+  html.motion .next-preview {
+    transform: translate3d(var(--mx, 0px), var(--my, 0px), 0);
+  }
+  .next-page .next-title {
+    transition: transform 0.9s var(--ease-expo);
+  }
+  .next-page:hover .next-title,
+  .next-page:focus-visible .next-title {
+    transform: translate3d(0.75rem, 0, 0);
+  }
+}
+@keyframes next-uncover {
+  from {
+    clip-path: inset(100% 0 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+.next-circle {
+  transition:
+    background-color var(--duration-ui) ease-out,
+    border-color var(--duration-ui) ease-out,
+    color var(--duration-ui) ease-out,
+    scale 140ms ease-out;
+}
+.next-page:focus-visible .next-circle {
+  border-color: var(--color-ink);
+  background: var(--color-ink);
+  color: #fff;
+}
+@media (hover: hover) {
+  .next-page:hover .next-circle {
+    border-color: var(--color-ink);
+    background: var(--color-ink);
+    color: #fff;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .next-page:active .next-circle {
+    scale: 0.95;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   First-visit signature (Curtain in components/chrome): on the first page of
+   a visit a black curtain carries the script wordmark, which writes itself
+   in; then the curtain lifts into the page. The page underneath renders at
+   once; its on-load entrances wait for the lift (html.intro-hold).
+   html.intro is only ever set by the head script (JavaScript on, motion on,
+   first page of the session), so without it there is no curtain at all.
+   -------------------------------------------------------------------------- */
+.intro-curtain {
+  display: none;
+}
+html.intro .intro-curtain {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: grid;
+  place-items: center;
+  background: var(--color-ink);
+  /* A gold hem: one hairline along the curtain's lower edge, seen as it lifts. */
+  box-shadow: 0 1px 0 var(--color-gold);
+  will-change: transform;
+}
+html.intro .intro-mark {
+  --ink-wipe: 0%;
+  width: min(64vw, 30rem);
+  height: auto;
+  mask-image: linear-gradient(90deg, #000 calc(var(--ink-wipe) - 14%), transparent var(--ink-wipe));
+}
+html.intro-write .intro-mark {
+  animation: intro-write 0.68s var(--ease-soft) both;
+}
+html.intro-lift .intro-curtain {
+  animation: intro-lift 0.52s cubic-bezier(0.72, 0, 0.18, 1) both;
+}
+html.intro-lift .intro-mark {
+  --ink-wipe: 115%;
+  animation: intro-mark-out 0.4s var(--ease-soft) both;
+}
+/* As the curtain clears the top of the screen, the header settles into place. */
+html.intro-lift .site-header > div {
+  animation: intro-header 0.9s var(--ease-expo) 0.22s both;
+}
+@keyframes intro-header {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -0.75rem, 0);
+  }
+}
+@keyframes intro-write {
+  from {
+    --ink-wipe: 0%;
+  }
+  to {
+    --ink-wipe: 115%;
+  }
+}
+@keyframes intro-lift {
+  to {
+    transform: translate3d(0, -100%, 0);
+  }
+}
+@keyframes intro-mark-out {
+  to {
+    transform: translate3d(0, 35%, 0);
+    opacity: 0;
+  }
+}
+/* While the curtain is down, the page's own on-load entrances hold their first
+   frame, so they play as it lifts. The opening photograph is left alone: it
+   paints at once under the curtain (it is the page's largest paint). */
+html.intro-hold main *:not([data-reveal-image], [data-reveal-image] *),
+html.intro-hold main *:not([data-reveal-image], [data-reveal-image] *)::before,
+html.intro-hold main *:not([data-reveal-image], [data-reveal-image] *)::after {
+  animation-play-state: paused !important;
+}
+html.intro-hold main [data-inview] .rise,
+html.intro-hold main [data-inview].rise,
+html.intro-hold main [data-inview] .rule-draw,
+html.intro-hold main [data-inview] .wipe,
+html.intro-hold main [data-inview] .settle {
+  transition-delay: calc(var(--d, 0s) + var(--intro-wait, 0.8s));
+}
+html.intro-hold main [data-inview] .stagger > *,
+html.intro-hold main [data-inview].stagger > * {
+  transition-delay: calc(var(--d, 0s) + var(--si, 0) * var(--stagger, 70ms) + var(--intro-wait, 0.8s));
+}
+html.intro-hold main [data-inview] .wr-in {
+  transition-delay: calc(var(--rise-delay, 0s) + var(--i, 0) * var(--rise-stagger, 40ms) + var(--intro-wait, 0.8s));
+}
+html.intro-hold main [data-reveal=""] {
+  transition-delay: calc(var(--reveal-delay, 0s) + var(--intro-wait, 0.8s));
+}
+
+/* --------------------------------------------------------------------------
+   Cursor label. Any element can ask for it with data-cursor="View" (or
+   "Play", "Drag": one short word). Over that element, on a fine pointer with
+   motion on, a gold-ringed disc grows from a dot at the pointer and carries
+   the word; the native cursor steps aside on that element only while the
+   disc is showing. Everywhere else, on touch, with reduced motion and
+   without JavaScript there is only the native cursor. Do not put it on form
+   fields or on text meant to be selected.
+   -------------------------------------------------------------------------- */
+.site-cursor {
+  display: none;
+}
+html.has-cursor .site-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 95;
+  display: block;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  view-transition-name: site-cursor;
+}
+.cursor-disc {
+  position: absolute;
+  top: -2.875rem;
+  left: -2.875rem;
+  display: grid;
+  width: 5.75rem;
+  height: 5.75rem;
+  place-items: center;
+  border: 1px solid var(--color-gold);
+  border-radius: 50%;
+  background: rgb(11 11 11 / 0.62);
+  backdrop-filter: blur(6px);
+  color: #fff;
+  opacity: 0;
+  transform: scale(0.1);
+  transition:
+    transform 0.3s var(--ease-soft),
+    opacity 0.2s ease-out;
+}
+.site-cursor[data-on] .cursor-disc {
+  opacity: 1;
+  transform: none;
+  transition:
+    transform 0.55s var(--ease-expo),
+    opacity 0.15s ease-out;
+}
+.site-cursor[data-on][data-down] .cursor-disc {
+  transform: scale(0.9);
+  transition: transform 0.14s ease-out;
+}
+.cursor-label {
+  font-size: 0.6875rem;
+  opacity: 0;
+  transition: opacity 0.15s ease-out;
+}
+.site-cursor[data-on] .cursor-label {
+  opacity: 1;
+  transition: opacity 0.3s ease-out 0.12s;
+}
+html.cursor-live [data-cursor],
+html.cursor-live [data-cursor] * {
+  cursor: none;
+}
+html.cursor-live [data-cursor] :is(input, textarea, select, [contenteditable="true"]) {
+  cursor: auto;
+}
+
+/* --------------------------------------------------------------------------
+   Page transitions (PageShell in components/chrome): React's <ViewTransition>
+   around the page shell. Moving between pages, the new page dissolves in over
+   the old one with a slight rise; from the NextPage link it comes up from
+   below like the next spread. The header and the open menu stay put. The
+   navigation itself is never held back: these only animate after it commits.
+   -------------------------------------------------------------------------- */
+.site-header {
+  view-transition-name: site-header;
+}
+/* The menu only exists below 1280px; named so it stays above the page while it closes. */
+@media (max-width: 79.99rem) {
+  #mobile-menu {
+    view-transition-name: site-menu;
+  }
+}
+::view-transition {
+  pointer-events: none;
+}
+/* Nothing else is in the root layer but the page colour: no cross-fade of its own. */
+::view-transition-old(root) {
+  display: none;
+}
+::view-transition-new(root) {
+  animation: none;
+}
+/* The header changes tone in step with the page (the browser's own cross-fade, at the page's tempo). */
+::view-transition-group(site-header),
+::view-transition-old(site-header),
+::view-transition-new(site-header) {
+  animation-duration: 0.42s;
+  animation-timing-function: var(--ease-soft);
+}
+/* The closing menu and the cursor label are shown live, not as a snapshot. */
+::view-transition-group(site-menu),
+::view-transition-new(site-menu),
+::view-transition-group(site-cursor),
+::view-transition-new(site-cursor) {
+  animation: none;
+}
+::view-transition-old(site-menu),
+::view-transition-old(site-cursor) {
+  display: none;
+}
+/* Between pages: the old page holds still underneath (so nothing shows
+   through, black to black included) while the new one dissolves in. */
+::view-transition-old(.page-out) {
+  animation: vt-hold 0.42s linear both;
+}
+::view-transition-new(.page-in) {
+  animation: vt-page-in 0.42s var(--ease-soft) both;
+}
+/* From NextPage: the next spread comes up from below and covers the old one,
+   which drifts up a little and dims as it is covered. */
+::view-transition-old(.spread-out) {
+  animation: vt-spread-out 0.75s var(--ease-expo) both;
+}
+::view-transition-new(.spread-in) {
+  animation: vt-spread-in 0.75s var(--ease-expo) both;
+}
+@keyframes vt-hold {
+  to {
+    opacity: 1;
+  }
+}
+@keyframes vt-page-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 1.25rem, 0);
+  }
+}
+@keyframes vt-spread-out {
+  to {
+    transform: translate3d(0, -12vh, 0);
+    filter: brightness(0.82);
+  }
+}
+@keyframes vt-spread-in {
+  from {
+    transform: translate3d(0, 100vh, 0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
+
+@media print {
+  .intro-curtain,
+  .page-progress,
+  .site-cursor,
+  .foot-ghost {
+    display: none !important;
+  }
+  .site-footer {
+    position: static !important;
+  }
+  .foot-inner {
+    transform: none !important;
+    opacity: 1 !important;
+  }
+  .foot-mark {
+    mask-image: none !important;
+  }
+  .foot-rule {
+    transform: none !important;
+  }
+}
