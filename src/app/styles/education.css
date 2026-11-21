@@ -208,6 +208,13 @@ html.motion .edu-arrive {
   right: var(--u);
 }
 
+/* Swiped (below lg, with motion): the row drifts a little as the page scrolls
+   past, which shows that it moves sideways. */
+html.motion [data-scene]:not([data-pinned]) .edu-strip-track {
+  transform: translate3d(calc((0.5 - var(--v, 0.5)) * 14vw), 0, 0);
+  will-change: transform;
+}
+
 /* Pinned: the stage clips, the row slides (motion.css), and each print keeps
    its own depth: nearer prints travel a little faster than the row. The
    stage's own spacing is in the strip's unit, so it fits short windows. */
@@ -219,6 +226,43 @@ html.motion .edu-arrive {
 }
 [data-pinned] .edu-strip-bar {
   margin-top: calc(4.5 * var(--u));
+}
+/* The frame counter: the engine sets data-step on the scene, CSS prints it. */
+.edu-strip-now::before {
+  content: "01";
+}
+[data-step="1"] .edu-strip-now::before {
+  content: "02";
+}
+[data-step="2"] .edu-strip-now::before {
+  content: "03";
+}
+[data-step="3"] .edu-strip-now::before {
+  content: "04";
+}
+[data-step="4"] .edu-strip-now::before {
+  content: "05";
+}
+[data-step="5"] .edu-strip-now::before {
+  content: "06";
+}
+[data-step="6"] .edu-strip-now::before {
+  content: "07";
+}
+[data-step="7"] .edu-strip-now::before {
+  content: "08";
+}
+[data-step="8"] .edu-strip-now::before {
+  content: "09";
+}
+[data-step="9"] .edu-strip-now::before {
+  content: "10";
+}
+[data-step="10"] .edu-strip-now::before {
+  content: "11";
+}
+[data-step="11"] .edu-strip-now::before {
+  content: "12";
 }
 /* The dot at the head of the progress line. */
 .edu-strip-dot {
@@ -330,6 +374,7 @@ html.motion .edu-arrive {
   .edu-float > *,
   .edu-settle,
   .edu-arrive,
+  .edu-strip-track,
   .edu-print-body {
     transform: none !important;
     opacity: 1 !important;

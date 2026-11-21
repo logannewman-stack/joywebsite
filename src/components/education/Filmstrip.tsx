@@ -2,7 +2,7 @@ import type { CSSProperties } from "react";
 import { education } from "@/content/education";
 import { Photo } from "@/components/ui/Photo";
 import { InView } from "@/components/motion/InView";
-import { Scene, SceneCount, SceneLine, ScenePanel, SceneTrack } from "@/components/motion/Scene";
+import { Scene, SceneLine, ScenePanel, SceneTrack } from "@/components/motion/Scene";
 
 type Vars = CSSProperties & Record<`--${string}`, string | number>;
 
@@ -12,9 +12,11 @@ type Vars = CSSProperties & Record<`--${string}`, string | number>;
  *
  * From lg the section pins and the row slides sideways as the visitor scrolls
  * (the nearer prints a little faster), with a frame counter and a gold
- * progress line whose dot travels with the row. Below lg, without JavaScript and with reduced motion it is a strip to
- * swipe or scroll sideways: the group takes keyboard focus, so the arrow keys
- * move it. Sizes and offsets come from education.filmstrip; the styles are in
+ * progress line whose dot travels with the row. Below lg it is a strip to
+ * swipe, which drifts a little as the page scrolls to show that it moves.
+ * Without JavaScript and with reduced motion it is a still strip to scroll
+ * sideways. The group takes keyboard focus, so the arrow keys move it.
+ * Sizes and offsets come from education.filmstrip; the styles are in
  * src/app/styles/education.css ("Filmstrip").
  */
 export function Filmstrip() {
@@ -30,7 +32,7 @@ export function Filmstrip() {
       className="edu-strip bg-ivory"
       pinClassName="edu-strip-stage py-16 md:py-24"
     >
-      <div tabIndex={0} role="group" aria-label="Photographs from a P3 workshop" className="edu-strip-scroll">
+      <div data-view="" tabIndex={0} role="group" aria-label="Photographs from a P3 workshop" className="edu-strip-scroll">
         <SceneTrack className="edu-strip-track">
           {prints.map((p, i) => {
             const style: Vars = { "--h": p.height, "--y": p.drop, "--ar": p.ratio, "--gap": i ? p.gap : 0, "--drift": p.drift, zIndex: p.layer };
@@ -63,7 +65,13 @@ export function Filmstrip() {
       </div>
       {/* Only while pinned: the frame in view, and how far the row has travelled. */}
       <div className="edu-strip-bar mx-auto hidden w-full max-w-[90rem] items-center gap-6 px-10 pinned:flex">
-        <SceneCount total={prints.length} className="label text-stone" />
+        {/* The current frame comes from CSS (the scene's data-step), not from text the engine rewrites:
+            that text would differ from the server's on a reload mid-scene and break hydration. */}
+        <span aria-hidden className="label tabular-nums text-stone">
+          <span className="edu-strip-now" />
+          <span className="mx-2 opacity-50">/</span>
+          {String(prints.length).padStart(2, "0")}
+        </span>
         <span className="relative block flex-1 text-gold-deep">
           <SceneLine />
           <span aria-hidden className="edu-strip-dot" />
