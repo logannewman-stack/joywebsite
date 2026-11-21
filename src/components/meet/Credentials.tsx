@@ -53,7 +53,7 @@ export function Credentials({ heading, groups }: { heading: string; groups: Grou
           {education.items.map((item) => {
             const [degree, school] = split(item, "first");
             return (
-              <li key={item} className="border-b border-line-dark py-5 md:py-6">
+              <li key={item} className="border-b border-line-dark py-5 text-pretty md:py-6">
                 <span className="display block text-[clamp(1.75rem,2.35vw,2.2rem)] leading-[1.05] text-white">{degree}</span>
                 <Comma />
                 <span className="mt-2 block text-[14px] leading-snug text-ash">{school}</span>
@@ -66,7 +66,7 @@ export function Credentials({ heading, groups }: { heading: string; groups: Grou
           {leadership.items.map((item) => {
             const [role, organization] = split(item, "first");
             return (
-              <li key={item} className="border-b border-line-dark py-3.5 text-[16px] leading-snug md:py-[1.05rem] md:text-[17px]">
+              <li key={item} className="border-b border-line-dark py-3.5 text-[16px] leading-snug text-pretty md:py-[1.05rem] md:text-[17px]">
                 <span className="text-ash">{role},</span> <span className="text-white">{organization}</span>
               </li>
             );
@@ -77,8 +77,8 @@ export function Credentials({ heading, groups }: { heading: string; groups: Grou
           {built.items.map((item) => {
             const [name, role] = split(item, "last");
             return (
-              <li key={item} className="border-b border-line-dark py-5 md:py-6 lg:border-b-0 lg:pt-8 lg:pb-0">
-                <span className="display block text-[clamp(1.9rem,2.7vw,2.6rem)] leading-[1.02] text-white">{typeset(name)}</span>
+              <li key={item} className="border-b border-line-dark py-5 text-pretty md:py-6 lg:border-b-0 lg:pt-8 lg:pb-0">
+                <span className="display block text-[clamp(2rem,3vw,2.9rem)] leading-[1.02] text-white">{typeset(name)}</span>
                 <Comma />
                 <span className="label mt-3 block text-ash">{role}</span>
               </li>

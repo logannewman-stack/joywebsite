@@ -2,7 +2,7 @@
 
 import { Fragment, useEffect, useRef } from "react";
 import { Reveal } from "@/components/ui/Reveal";
-import { bindI } from "./text";
+import { bindI, noWidow } from "./text";
 
 /** Opacity of a word not yet reached: ink at 50% on white is 3.7:1, AA for display-size type. */
 const FLOOR = 0.5;
@@ -90,9 +90,9 @@ export function Question({ question, answer }: { question: string; answer: strin
           ))}
         </span>
       </p>
-      <Reveal delay={0.2} y={12} className="mt-14 md:mt-20 lg:mt-24 lg:pl-[41.5%]">
-        <p className="font-sans text-[clamp(2.15rem,5vw,4.75rem)] leading-none font-semibold tracking-[-0.04em] text-balance">
-          {bindI(answer)}
+      <Reveal delay={0.2} y={12} className="mt-14 md:mt-20 lg:mt-24 lg:pl-[calc(50%+12px)]">
+        <p className="font-sans text-[clamp(2.15rem,5vw,4.75rem)] leading-none font-semibold tracking-[-0.04em] text-balance!">
+          {bindI(noWidow(answer))}
           <span aria-hidden className="ml-[0.16em] inline-block size-[0.24em] rounded-full bg-blush-deep" />
         </p>
       </Reveal>

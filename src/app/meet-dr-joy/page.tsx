@@ -133,7 +133,7 @@ export default function MeetPage() {
               className={
                 hasLifePhoto
                   ? "mt-12 max-w-[36rem] md:mt-16 md:ml-[8%] lg:col-span-6 lg:col-start-7 lg:mt-0 lg:ml-0 lg:max-w-none lg:self-end"
-                  : "max-w-[36rem] lg:col-span-6 lg:col-start-6 lg:max-w-none"
+                  : "max-w-[36rem] lg:col-span-6 lg:col-start-7 lg:max-w-none"
               }
             >
               <Reveal>
