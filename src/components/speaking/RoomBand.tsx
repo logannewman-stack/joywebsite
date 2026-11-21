@@ -1,26 +1,29 @@
 import { links, site } from "@/content/site";
 import { speaking } from "@/content/speaking";
 import { Photo } from "@/components/ui/Photo";
-import { ImageReveal } from "@/components/ui/Reveal";
 import { ReviewSlot } from "@/components/ui/Links";
 import { SpeakerReel } from "./SpeakerReel";
 
 /**
- * Full-bleed photograph of a real room: the stage and the audience. It is
- * also where the speaker reel plays once links.speakerReel is set; until
- * then review mode marks the slot, and at launch the band is just the photo.
+ * Full-bleed photograph of a real room: the stage and the audience, close to
+ * a full screen tall on desktop. The photo drifts slower than the page and
+ * grows slightly as the band passes (speaking.css, "Room band"). It is also
+ * where the speaker reel plays once links.speakerReel is set; until then
+ * review mode marks the slot, and at launch the band is just the photo.
  */
 export function RoomBand() {
   const { photo } = speaking.room;
   const reel = links.speakerReel;
   return (
-    <div data-header="dark" className="relative bg-ink">
-      <ImageReveal>
-        <Photo slot={photo} className="aspect-[4/3] w-full sm:aspect-[3/2] md:aspect-[2/1] lg:aspect-[21/9]" sizes="100vw" />
-      </ImageReveal>
+    <div data-header="dark" data-view className="sp-room relative overflow-clip bg-ink">
+      <div className="relative aspect-[4/5] w-full sm:aspect-[3/2] md:aspect-[2/1] lg:aspect-auto lg:h-[min(86svh,54rem)] lg:min-h-[30rem]">
+        <div className="sp-room-photo absolute inset-0">
+          <Photo slot={photo} className="h-full w-full" sizes="100vw" />
+        </div>
+      </div>
       {reel ? (
         <>
-          <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-ink/70 to-transparent" />
+          <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-ink/75 to-transparent" />
           {/* Covers the band so the player, once started, fills it. */}
           <div className="absolute inset-0 flex items-end p-5 md:p-10">
             <SpeakerReel url={reel} label="Speaker reel" title={`Speaker reel: ${site.name}`} />

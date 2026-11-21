@@ -2,8 +2,10 @@ import Link from "next/link";
 import { ArrowRight, ArrowUp, Mail, Plus } from "lucide-react";
 import { links, site } from "@/content/site";
 import { speaking } from "@/content/speaking";
+import type { CSSProperties } from "react";
 import { ButtonLink, ReviewSlot, focusRing } from "@/components/ui/Links";
-import { Reveal } from "@/components/ui/Reveal";
+import { InView } from "@/components/motion/InView";
+import { WordRise } from "@/components/motion/Text";
 
 const textLink = `group inline-flex min-h-11 items-center gap-2 text-[0.9375rem] font-medium ${focusRing.light}`;
 
@@ -18,19 +20,23 @@ export function PlannerResources({ ruled = false }: { ruled?: boolean }) {
   return (
     <section id="resources" className={`bg-paper ${ruled ? "border-t border-line" : ""}`}>
       <div className="mx-auto grid max-w-[90rem] gap-8 px-5 py-24 md:px-10 md:py-32 lg:grid-cols-12 lg:gap-x-6">
-        <Reveal className="lg:col-span-6">
-          <h2 className="display text-[clamp(2.6rem,4.8vw,4.6rem)]">{heading}</h2>
-        </Reveal>
-        <Reveal delay={0.06} className="lg:col-span-6 lg:col-start-7 lg:pt-3">
-          <p className="max-w-[44ch] text-[1.0625rem] leading-relaxed text-stone">{text}</p>
-          <div className="mt-8">{links.speakerResources ? <ButtonLink href={links.speakerResources}>{cta}</ButtonLink> : <Kit />}</div>
+        <h2 className="display text-[clamp(2.6rem,4.8vw,4.6rem)] lg:col-span-6">
+          <WordRise>{heading}</WordRise>
+        </h2>
+        <InView className="lg:col-span-6 lg:col-start-7 lg:pt-3">
+          <p className="rise max-w-[44ch] text-[1.0625rem] leading-relaxed text-stone" style={{ "--d": "0.15s" } as CSSProperties}>
+            {text}
+          </p>
+          <div className="rise mt-8" style={{ "--d": "0.23s" } as CSSProperties}>
+            {links.speakerResources ? <ButtonLink href={links.speakerResources}>{cta}</ButtonLink> : <Kit />}
+          </div>
           {!links.speakerResources && site.showPlaceholders && (
             <ReviewSlot className="mt-8 !min-h-0 !justify-start !px-4 !py-3 text-left">
               Speaker packet and bio PDF held: the supplied files carry retired P3 wording. Until a clean packet is supplied, the
               packet and headshots are sent on request.
             </ReviewSlot>
           )}
-        </Reveal>
+        </InView>
       </div>
     </section>
   );

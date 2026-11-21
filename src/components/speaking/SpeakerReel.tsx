@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { ArrowUpRight, Play } from "lucide-react";
+import { Magnetic } from "@/components/motion/InView";
 
 /**
  * YouTube or Vimeo watch/share URL -> privacy-friendly embed URL that starts
@@ -35,12 +36,14 @@ export function reelEmbedUrl(url: string): string | null {
 }
 
 const control =
-  "group inline-flex min-h-12 items-center gap-4 rounded-full text-[0.9375rem] font-medium text-white focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-white";
+  "sp-reel group inline-flex min-h-12 items-center gap-5 rounded-full pr-2 text-[1rem] font-medium text-white focus-visible:outline-2 focus-visible:outline-offset-[6px] focus-visible:outline-white md:gap-6";
 
+/** The play disc inside a soft ring. The ring opens on hover and focus; nothing pulses on its own (speaking.css, "Room band"). */
 function Disc() {
   return (
-    <span className="inline-flex size-14 items-center justify-center rounded-full bg-white text-ink transition-transform duration-300 group-hover:scale-105 md:size-16">
-      <Play className="ml-0.5 size-5 fill-current" aria-hidden />
+    <span className="sp-reel-disc relative inline-flex size-16 items-center justify-center rounded-full bg-white text-ink md:size-20">
+      <span aria-hidden className="sp-reel-ring" />
+      <Play className="relative ml-0.5 size-5 fill-current md:size-6" aria-hidden />
     </span>
   );
 }
@@ -48,7 +51,8 @@ function Disc() {
 /**
  * Speaker reel over a poster photograph. Nothing loads from YouTube or Vimeo
  * until the visitor presses play; then the player replaces the poster in place.
- * A link the player cannot embed opens in a new tab instead.
+ * A link the player cannot embed opens in a new tab instead. The control leans
+ * a few pixels toward a fine pointer (Magnetic).
  */
 export function SpeakerReel({ url, label, title }: { url: string; label: string; title: string }) {
   const [playing, setPlaying] = useState(false);
@@ -61,12 +65,14 @@ export function SpeakerReel({ url, label, title }: { url: string; label: string;
 
   if (!embed) {
     return (
-      <a href={url} target="_blank" rel="noopener noreferrer" className={control}>
-        <Disc />
-        <span className="link-draw pb-0.5">{label}</span>
-        <ArrowUpRight className="size-4" aria-hidden />
-        <span className="sr-only"> (opens in a new tab)</span>
-      </a>
+      <Magnetic strength={0.2}>
+        <a href={url} target="_blank" rel="noopener noreferrer" className={control}>
+          <Disc />
+          <span className="link-draw pb-0.5">{label}</span>
+          <ArrowUpRight className="size-4" aria-hidden />
+          <span className="sr-only"> (opens in a new tab)</span>
+        </a>
+      </Magnetic>
     );
   }
 
@@ -86,9 +92,11 @@ export function SpeakerReel({ url, label, title }: { url: string; label: string;
   }
 
   return (
-    <button type="button" onClick={() => setPlaying(true)} className={control}>
-      <Disc />
-      <span className="link-draw pb-0.5">{label}</span>
-    </button>
+    <Magnetic strength={0.2}>
+      <button type="button" onClick={() => setPlaying(true)} className={control}>
+        <Disc />
+        <span className="link-draw pb-0.5">{label}</span>
+      </button>
+    </Magnetic>
   );
 }
