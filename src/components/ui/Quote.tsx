@@ -89,7 +89,7 @@ export function Quote({
   const dark = tone === "dark";
   const { lead, rest } = shape(quote);
   const scale = size ?? (lead.length > 120 ? "md" : "lg");
-  const mark = dark ? "text-blush" : "text-blush-deep";
+  const mark = dark ? "text-gold" : "text-gold-deep";
   return (
     <section id={id} className={`relative overflow-hidden ${surfaces[tone]} ${className}`} data-tone={tone} data-header={dark ? "dark" : undefined}>
       {dark && backdrop?.src && (
