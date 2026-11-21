@@ -51,7 +51,7 @@ export function Credentials({ heading, groups }: { heading: string; groups: Grou
       <div className="mt-14 grid gap-x-10 gap-y-16 md:mt-20 md:grid-cols-2 lg:grid-cols-12 lg:gap-x-6 lg:gap-y-20">
         <GroupBlock title={education.title} className="lg:col-span-5">
           {education.items.map((item) => {
-            const [degree, school] = split(item, "first");
+            const [degree, school] = split(item, "last");
             return (
               <li key={item} className="border-b border-line-dark py-5 text-pretty md:py-6">
                 <span className="display block text-[clamp(1.75rem,2.35vw,2.2rem)] leading-[1.05] text-white">{degree}</span>

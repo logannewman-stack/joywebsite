@@ -170,7 +170,7 @@ Set `education.events.featured` (in `src/content/education.ts`) to the next even
    - [ ] Mobile image crops, contrast, alt text, keyboard and screen-reader pass on the final photography
    - [ ] Usage rights for the event frames 54708147463 and _DSC1299 (the sponsor lettering in the Industry partnership photo was retouched out)
    - [ ] info@DrJoyRDH.com approved for public display (footer, email links, structured data)
-   - [ ] Added interface labels approved: "On request" and the resource items on Speaking, "Inquire" on each speaking program, and the Home search title and description
+   - [ ] Added interface labels approved: "On request" and the resource items on Speaking, "Inquire" on each speaking program, "From a P3 participant" above the Hands-On testimonial, and the Home search title and description
 10. Launch newsletter
    - [ ] The launch edition is timed to the public launch date; the site does not wait for a new edition
 

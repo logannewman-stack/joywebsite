@@ -25,7 +25,7 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps<"/insights/[slug]">): Promise<Metadata> {
   const { slug } = await params;
   const article = onSite().find((a) => a.slug === slug);
-  if (!article) return {};
+  if (!article) return { title: "Page not found" };
   return {
     title: article.title,
     description: article.excerpt,
