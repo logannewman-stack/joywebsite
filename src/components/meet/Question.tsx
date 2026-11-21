@@ -74,21 +74,19 @@ export function Question({ question, answer }: { question: string; answer: strin
 
   return (
     <div>
+      {/* Plain inline spans (not inline-block), so assistive technology, search and copy-paste get one continuous sentence. */}
       <p ref={ref} className="display text-[clamp(2.75rem,7vw,7.25rem)] leading-[0.96] print:[--lit:1]!">
-        <span className="sr-only">{question}</span>
-        <span aria-hidden="true">
-          {words.map((word, i) => (
-            <Fragment key={i}>
-              {i > 0 && " "}
-              <span
-                className="transition-opacity duration-300 ease-out"
-                style={{ opacity: `calc(${FLOOR} + ${1 - FLOOR} * clamp(0, (var(--lit, 1) * ${steps} - ${i}) / ${OVERLAP}, 1))` }}
-              >
-                {word}
-              </span>
-            </Fragment>
-          ))}
-        </span>
+        {words.map((word, i) => (
+          <Fragment key={i}>
+            {i > 0 && " "}
+            <span
+              className="transition-opacity duration-300 ease-out"
+              style={{ opacity: `calc(${FLOOR} + ${1 - FLOOR} * clamp(0, (var(--lit, 1) * ${steps} - ${i}) / ${OVERLAP}, 1))` }}
+            >
+              {word}
+            </span>
+          </Fragment>
+        ))}
       </p>
       <Reveal delay={0.2} y={12} className="mt-14 md:mt-20 lg:mt-24 lg:pl-[calc(50%+12px)]">
         <p className="font-sans text-[clamp(2.15rem,5vw,4.75rem)] leading-none font-semibold tracking-[-0.04em] text-balance!">
