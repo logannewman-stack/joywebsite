@@ -52,7 +52,7 @@ export default function SpeakingPage() {
         <div className="mx-auto grid max-w-[1440px] px-5 md:px-10 lg:grid-cols-12 lg:gap-x-6">
           <div className="pt-12 md:pt-16 lg:col-span-6 lg:row-start-1 lg:pt-14 xl:col-span-7">
             <Label index="02">Speaking</Label>
-            <h1 className="display mt-7 text-[clamp(2.75rem,8.6vw,5.25rem)] leading-[0.92] md:text-[clamp(4.5rem,10vw,6.5rem)] lg:text-[clamp(3.6rem,6.3vw,6.75rem)]">
+            <h1 className="display mt-7 text-[clamp(2.6rem,13.2vw,5.25rem)] leading-[0.92] md:text-[clamp(4.5rem,10vw,6.5rem)] lg:text-[clamp(3.6rem,6.3vw,6.75rem)]">
               {/* Trailing spaces keep the words apart in the text content; they collapse visually. */}
               <LineReveal lines={["Presentations ", "grounded in ", <em key="c">clinical practice.</em>]} />
             </h1>
@@ -64,7 +64,7 @@ export default function SpeakingPage() {
                 slot={hero.photo}
                 priority
                 className="aspect-[4/5] w-full md:aspect-auto md:h-[min(70svh,44rem)] lg:aspect-[3/4] lg:h-auto lg:max-h-[calc(100svh-76px)] xl:aspect-[4/5]"
-                sizes="(max-width: 767px) 100vw, (max-width: 1023px) calc(100vw - 80px), (max-width: 1279px) 49vw, (max-width: 1440px) 42vw, 610px"
+                sizes="(max-width: 767px) 100vw, (max-width: 1023px) calc(100vw - 80px), (max-width: 1279px) 49vw, (max-width: 1440px) 41vw, 600px"
               />
             </ImageReveal>
           </div>
@@ -104,7 +104,7 @@ export default function SpeakingPage() {
 
       {/* Featured Clinical Courses: an editorial index */}
       <section className="bg-paper">
-        <div className="mx-auto max-w-[1440px] px-5 pt-20 pb-24 md:px-10 md:pt-32 md:pb-32">
+        <div className="mx-auto max-w-[1440px] px-5 pt-28 pb-24 md:px-10 md:pt-32 md:pb-32">
           <div id="topics" className="grid gap-6 lg:grid-cols-12 lg:gap-x-6">
             <Reveal className="lg:col-span-7">
               <h2 className="display text-[clamp(2.75rem,5.6vw,5.4rem)]">{clinical.heading}</h2>
@@ -122,7 +122,7 @@ export default function SpeakingPage() {
 
       {/* For Dental Teams & Organizations: a staggered spread on ivory */}
       <section className="bg-ivory">
-        <div className="mx-auto max-w-[1440px] px-5 py-24 md:px-10 md:py-36">
+        <div className="mx-auto max-w-[1440px] px-5 pt-28 pb-24 md:px-10 md:py-36">
           <div id="teams" className="max-w-[60rem]">
             <Reveal>
               <h2 className="display text-[clamp(2.75rem,5.6vw,5.4rem)]">{teams.heading}</h2>
@@ -151,7 +151,7 @@ export default function SpeakingPage() {
 
       {/* Keynote Presentations: the black chapter */}
       <section className="grain grain-light bg-ink text-white">
-        <div className="mx-auto grid max-w-[1440px] px-5 py-24 md:px-10 md:py-36 lg:grid-cols-12 lg:gap-x-6">
+        <div className="mx-auto grid max-w-[1440px] px-5 pt-28 pb-24 md:px-10 md:py-36 lg:grid-cols-12 lg:gap-x-6">
           <div id="keynotes" className="lg:col-span-7 lg:row-start-1">
             <Reveal>
               <h2 className="display text-[clamp(2.4rem,3.6vw,3.6rem)]">{keynotes.heading}</h2>
@@ -187,7 +187,7 @@ export default function SpeakingPage() {
 
       {/* Dr. Joy's P3: kept minimal */}
       <section className="bg-paper">
-        <div className="mx-auto grid max-w-[1440px] gap-10 px-5 py-24 md:px-10 md:py-32 lg:grid-cols-12 lg:gap-x-6">
+        <div className="mx-auto grid max-w-[1440px] gap-10 px-5 pt-28 pb-24 md:px-10 md:py-32 lg:grid-cols-12 lg:gap-x-6">
           <div id="p3" className="lg:col-span-4">
             <Reveal>
               <h2 className="display text-[clamp(2.75rem,4.6vw,4.6rem)]">{p3.heading}</h2>

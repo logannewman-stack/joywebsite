@@ -37,7 +37,7 @@ export function DetailsLink({
         {meta}
       </span>
       <span className="sr-only">
-        {`: ${title} (PDF${size ? `, ${size}` : ""}, opens in a new tab)`}
+        {` for ${title} (PDF${size ? `, ${size}` : ""}, opens in a new tab)`}
       </span>
     </a>
   );
