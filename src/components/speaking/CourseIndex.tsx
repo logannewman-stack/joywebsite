@@ -1,6 +1,7 @@
 import { site } from "@/content/site";
 import { Reveal } from "@/components/ui/Reveal";
 import { typeset } from "@/components/ui/Typeset";
+import { InquiryButton } from "@/components/inquiry/InquiryProvider";
 import { DetailsLink } from "./DetailsLink";
 
 type Course = { title: string; text: string; pdf: string | null };
@@ -26,15 +27,20 @@ export function CourseIndex({ courses, className = "" }: { courses: Course[]; cl
             <h3 className="display text-[length:var(--t)] leading-[1.02] lg:col-span-6">{typeset(c.title)}</h3>
             <div className="col-start-2 mt-4 lg:col-span-4 lg:col-start-9 lg:row-start-1 lg:mt-0 lg:pt-[calc(var(--t)*0.81_-_18px)]">
               <p className="max-w-[46ch] text-[16px] leading-relaxed text-stone">{c.text}</p>
-              {c.pdf ? (
-                <DetailsLink pdf={c.pdf} title={c.title} className="mt-3" />
-              ) : (
-                site.showPlaceholders && (
-                  <p className="label mt-4 inline-block border border-dashed border-ink/25 px-2.5 py-1 !text-[9.5px] leading-relaxed text-stone">
-                    Course details: updated PDF pending
-                  </p>
-                )
-              )}
+              <div className="mt-3 flex flex-wrap items-center gap-x-7">
+                {c.pdf ? (
+                  <DetailsLink pdf={c.pdf} title={c.title} />
+                ) : (
+                  site.showPlaceholders && (
+                    <p className="label inline-block border border-dashed border-ink/25 px-2.5 py-1 !text-[9.5px] leading-relaxed text-stone">
+                      Course details: updated PDF pending
+                    </p>
+                  )
+                )}
+                <InquiryButton program={c.title} variant="text">
+                  Inquire<span className="sr-only"> about {c.title}</span>
+                </InquiryButton>
+              </div>
             </div>
           </Reveal>
         </li>

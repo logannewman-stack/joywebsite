@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { ArrowLeft, ArrowRight, ArrowUpRight, Check, X } from "lucide-react";
 import { consultingChoice, inquiryTypes, interestChoices, type InquiryType } from "@/content/integrations";
-import { education } from "@/content/education";
+import { currentEvent, education } from "@/content/education";
 import { instrumentalLink, PendingTag } from "@/components/ui/Links";
 import { InquiryForm, successMessage } from "./InquiryForm";
 import { inertOutside, trapTab } from "./modal";
@@ -25,13 +25,10 @@ const ring = "focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-v
 const pill =
   "group inline-flex min-h-12 items-center gap-3 whitespace-nowrap rounded-full px-6 text-[15px] font-medium transition-[background-color,border-color,transform] duration-[var(--duration-hover,180ms)]";
 
-/** The featured P3 event, while its registration page is live. Honors an optional `endsOn: "YYYY-MM-DD"`. */
+/** The featured P3 event, while its registration page is live (it comes down after its `endsOn` day, US Eastern). */
 function liveEvent() {
-  const ev = education.events.featured;
-  if (!ev || !ev.registrationUrl) return null;
-  const endsOn = "endsOn" in ev && typeof ev.endsOn === "string" ? ev.endsOn : "";
-  if (endsOn && endsOn < new Date().toLocaleDateString("en-CA")) return null;
-  return ev;
+  const ev = currentEvent();
+  return ev && ev.registrationUrl ? ev : null;
 }
 
 export default function InquiryPanel({ request, closing, close }: PanelProps) {

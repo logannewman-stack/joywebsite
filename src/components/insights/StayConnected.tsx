@@ -1,4 +1,4 @@
-import { NewsletterForm } from "@/components/inquiry/InquiryForm";
+import { NewsletterForm } from "@/components/inquiry/NewsletterForm";
 import { Reveal } from "@/components/ui/Reveal";
 
 /**

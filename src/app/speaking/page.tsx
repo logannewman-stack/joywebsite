@@ -141,7 +141,12 @@ export default function SpeakingPage() {
                   <h3 className="display mt-8 text-[clamp(2.75rem,5vw,5rem)] leading-[0.94]">{stackedTitle(p.title)}</h3>
                   <p className="mt-6 max-w-[30ch] font-serif text-[clamp(1.35rem,1.9vw,1.7rem)] leading-snug italic">{p.subtitle}</p>
                   <p className="mt-5 max-w-[46ch] text-[16.5px] leading-relaxed text-stone">{p.text}</p>
-                  <DetailsLink pdf={p.pdf} title={p.title} className="mt-4" />
+                  <div className="mt-4 flex flex-wrap items-center gap-x-7">
+                    <DetailsLink pdf={p.pdf} title={p.title} />
+                    <InquiryButton program={p.title} variant="text">
+                      Inquire<span className="sr-only"> about {p.title}</span>
+                    </InquiryButton>
+                  </div>
                 </Reveal>
               </li>
             ))}
@@ -177,7 +182,12 @@ export default function SpeakingPage() {
                   <h3 className="display mt-6 text-[clamp(2.75rem,5.4vw,5.6rem)] leading-[0.95]">{typeset(k.title)}</h3>
                   <p className="mt-5 max-w-[34ch] font-serif text-[clamp(1.35rem,1.9vw,1.7rem)] leading-snug text-blush italic">{k.subtitle}</p>
                   <p className="mt-5 max-w-[48ch] text-[16.5px] leading-relaxed text-ash">{k.text}</p>
-                  <DetailsLink pdf={k.pdf} title={k.title} label="Keynote Details" tone="dark" className="mt-4" />
+                  <div className="mt-4 flex flex-wrap items-center gap-x-7">
+                    <DetailsLink pdf={k.pdf} title={k.title} label="Keynote Details" tone="dark" />
+                    <InquiryButton program={k.title} variant="text" tone="dark">
+                      Inquire<span className="sr-only"> about {k.title}</span>
+                    </InquiryButton>
+                  </div>
                 </article>
               </Reveal>
             ))}
@@ -197,7 +207,7 @@ export default function SpeakingPage() {
             <Reveal className="border-b border-line py-9 md:border-r md:pr-10">
               <h3 className="font-serif text-[clamp(1.75rem,2.4vw,2.1rem)] leading-tight">{p3.bring.title}</h3>
               <p className="mt-3 max-w-md text-[16.5px] leading-relaxed text-stone">{p3.bring.text}</p>
-              <InquiryButton type="p3_conference" variant="text" className="mt-4 !min-h-11 !gap-2">
+              <InquiryButton type="p3_conference" variant="text" className="mt-4">
                 {p3.bring.cta}
               </InquiryButton>
             </Reveal>

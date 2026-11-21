@@ -132,7 +132,7 @@ export default function IndustryPage() {
           </Reveal>
           <Reveal delay={0.08} className="md:ml-auto md:w-[62%] lg:col-span-4 lg:col-start-9 lg:ml-0 lg:w-auto lg:self-end">
             <p className="text-[17.5px] leading-relaxed text-stone">{closing.text}</p>
-            <InquiryButton choices={["partnership", "clinical_launch", "general"]} className="mt-8">
+            <InquiryButton choices={["partnership", "clinical_launch", "general"]} intro={closing.text} className="mt-8">
               {closing.cta}
             </InquiryButton>
           </Reveal>
