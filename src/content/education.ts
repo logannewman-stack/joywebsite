@@ -35,6 +35,27 @@ type Attendee = {
 };
 
 /**
+ * One print in the workshop filmstrip. Sizes are in the strip's own unit
+ * (a hundredth of the screen height on desktop, a little over a hundredth of
+ * the screen width on phones), so the row always fits its stage.
+ */
+export type Print = {
+  photo: PhotoSlot;
+  /** Width divided by height, e.g. 4 / 5 for an upright print. */
+  ratio: number;
+  /** Height of the photograph. The tallest print should stay near 60. */
+  height: number;
+  /** How far the print sits below the top of the row. Keep drop + height under 68. */
+  drop: number;
+  /** Space before the print. Negative tucks it over (or under) the print before it. */
+  gap: number;
+  /** Which print lies on top where two overlap: the higher number. */
+  layer: number;
+  /** Depth: negative slides a little faster than the row (nearer), positive slower. Nearer prints lie on top. */
+  drift: number;
+};
+
+/**
  * HANDS-ON EDUCATION: approved direction (operational copy pending final proof).
  * Note: never spell out the letters P3 on education pages.
  */
@@ -78,7 +99,7 @@ export const education = {
       },
     ],
     photo: {
-      src: "/photos/education-annual-g.jpg",
+      src: "/photos/education-annual-v2-g.jpg",
       alt: "Dr. Joy demonstrating a technique while participants work with their instrument kits",
       treatment: "color",
       direction: "The whole room at work: participants with instruments and kits on the tables.",
@@ -87,16 +108,94 @@ export const education = {
     } satisfies PhotoSlot,
   },
 
-  /** Full-width photograph between the P3 family and the attendee voice. */
-  interlude: {
-    src: "/photos/education-band-g.jpg",
-    alt: "A participant smiling, an instrument in hand, at a P3 workshop table",
-    treatment: "color",
-    direction: "Participants practicing at their tables, instruments in hand.",
-    focus: "50% 50%",
-    focusMobile: "47% 50%",
-    original: "54708309585",
-  } satisfies PhotoSlot,
+  /**
+   * The workshop as a row of prints, between the P3 family and the attendee
+   * voice. On desktop the row slides sideways as the visitor scrolls; on
+   * phones it is a strip to swipe. No photograph here repeats elsewhere on
+   * the page. Add, remove or reorder prints freely: the layout follows.
+   */
+  filmstrip: [
+    {
+      photo: {
+        src: "/photos/education-strip-smile-g.jpg",
+        alt: "A participant smiling, a micro-applicator in hand, at a P3 workshop table",
+        treatment: "color",
+        direction: "A participant mid-practice, instrument in hand.",
+        focus: "50% 40%",
+        original: "54708309585",
+      },
+      ratio: 4 / 5,
+      height: 62,
+      drop: 4,
+      gap: 0,
+      layer: 2,
+      drift: -1,
+    },
+    {
+      photo: {
+        src: "/photos/education-strip-room-g.jpg",
+        alt: "Dr. Joy teaching at the front of the room, seen from the back row of a P3 workshop",
+        treatment: "color",
+        direction: "The whole room from the back row, Dr. Joy at the front.",
+        focus: "30% 50%",
+        original: "54707125282",
+      },
+      ratio: 12 / 5,
+      height: 32,
+      drop: 36,
+      gap: -5,
+      layer: 1,
+      drift: 3,
+    },
+    {
+      photo: {
+        src: "/photos/education-strip-kit-g.jpg",
+        alt: "A participant studying a product pouch from her kit",
+        treatment: "color",
+        direction: "A participant working through her kit.",
+        focus: "55% 45%",
+        original: "54707976721",
+      },
+      ratio: 99 / 65,
+      height: 40,
+      drop: 0,
+      gap: -7,
+      layer: 3,
+      drift: -3,
+    },
+    {
+      photo: {
+        src: "/photos/education-strip-raised-v2-g.jpg",
+        alt: "Participants raising their hands at their tables",
+        treatment: "color",
+        direction: "The room answering a question: hands up at the tables.",
+        focus: "50% 40%",
+        original: "54708309770",
+      },
+      ratio: 4 / 5,
+      height: 46,
+      drop: 22,
+      gap: -5,
+      layer: 4,
+      drift: -6,
+    },
+    {
+      photo: {
+        src: "/photos/education-strip-practice-g.jpg",
+        alt: "A participant practicing with a micro-applicator while another looks up and smiles",
+        treatment: "color",
+        direction: "Participants practicing at their tables.",
+        focus: "50% 45%",
+        original: "54707977396",
+      },
+      ratio: 5 / 4,
+      height: 42,
+      drop: 3,
+      gap: 4,
+      layer: 2,
+      drift: 1,
+    },
+  ] satisfies Print[],
 
   /** Featured attendee testimonial or approved short video. null = not yet supplied. */
   attendee: {
