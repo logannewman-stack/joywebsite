@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
-import { HeroA, HeroB, HeroC } from "@/components/home/Heroes";
+import type { ReactNode } from "react";
+import { notFound } from "next/navigation";
+import { ArrowUpRight } from "lucide-react";
 import { site } from "@/content/site";
 
 export const metadata: Metadata = {
@@ -7,14 +9,23 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-const directions = [
+type Key = "a" | "b" | "c";
+
+const directions: {
+  key: Key;
+  name: string;
+  tag: string;
+  idea: string;
+  image: string;
+  strengths: string[];
+  tradeoffs: string[];
+}[] = [
   {
     key: "a",
-    Hero: HeroA,
     name: "Editorial White",
-    tag: "Closest to the brief",
-    idea: "The brief’s own instinct, executed with restraint. A white page, an oversized serif headline, and one strong portrait set off-axis. Typography does the work; the photograph confirms the person.",
-    image: "JVH-155: black suit, arms crossed. The black jacket separates cleanly on white, and the composition leaves the left side for the headline. Safe to crop to 4:5 on mobile. A black-and-white version is ready (photoStyle in site.ts).",
+    tag: "Quietest",
+    idea: "The brief’s own starting point, executed with restraint. A white page, an oversized serif headline, and one strong portrait set off-axis. Typography does the work; the photograph confirms the person.",
+    image: "JVH-155: black suit, arms crossed. The black jacket separates cleanly on white, and the composition leaves the left side for the headline. A black-and-white version is ready.",
     strengths: [
       "Most readable and fastest to load, especially on phones.",
       "Lets the color photography in the four pathways below carry the energy.",
@@ -22,31 +33,29 @@ const directions = [
     ],
     tradeoffs: [
       "The quietest first impression of the three.",
-      "Everything rests on one excellent portrait.",
+      "On a phone the portrait sits below the headline, mostly under the first screen.",
       "Less sense of stage presence than Direction B.",
     ],
   },
   {
     key: "b",
-    Hero: HeroB,
     name: "Black Stage",
-    tag: "Boldest",
-    idea: "The drama of Alexandria Ohlinger’s photo-led opening. A background-removed portrait stands in front of the headline on black: the one designed cutout moment the brief allows.",
-    image: "JVH-130: white blazer, background removed (a black jacket would disappear on black). This is an automated test cutout; a retoucher should refine the hair and jacket edges before launch. Blush carries the closing phrase. A black-and-white version is ready.",
+    tag: "Recommended",
+    idea: "The drama of Alexandria Ohlinger’s photo-led opening, built from a real photograph. Dr. Joy, in color, sits in the black ground on the right; the headline takes the left, with its closing phrase in blush. Black sets the first impression, and she is on the first screen at every size.",
+    image: "JVH-111: black suit, direct smile, seated on grey steps. The grey steps keep the black jacket from disappearing into the black ground, and the photograph fades into black at its left edge. A black-and-white version is one setting away. A background-removed cutout (JVH-130, white blazer) stays an option for later, once a retoucher has refined its edges.",
     strengths: [
       "The most memorable and personal first screen.",
-      "Signals keynote presence before a word is read.",
-      "Strongest contrast and the clearest point of view.",
+      "She is on the first screen at every size, phones included.",
+      "The black stage and white type set the first impression the brief asks for; her photograph brings the color.",
     ],
     tradeoffs: [
-      "Cutout quality is make-or-break and adds retouching time.",
-      "Layered type needs careful crops at every screen size.",
-      "A black opening on a mostly white site needs a deliberate transition.",
+      "A black opening on a mostly white site needs a clear move into the first white section.",
+      "Type and photograph share the screen, so every screen size needs its own crop check.",
+      "It shows her rather than the room; stage presence comes from the Speaking photographs.",
     ],
   },
   {
     key: "c",
-    Hero: HeroC,
     name: "Ivory & Stage",
     tag: "Warmest",
     idea: "Warmth first. An ivory ground, a photograph from a real stage, and blush used once, as a single block behind the image.",
@@ -58,13 +67,37 @@ const directions = [
     ],
     tradeoffs: [
       "Least distinctive; closer to many speaker sites.",
-      "A stage photo is less personal than a portrait for a first impression.",
-      "Stage lighting colors compete with the blush and ivory palette.",
+      "She is small in the frame, and on a phone the photograph starts low on the first screen.",
+      "Purple stage light competes with the ivory and blush palette; a warmer room photograph would suit it better.",
     ],
   },
-] as const;
+];
+
+/** Opens one direction on its own page, at full screen. */
+function OpenLink({ dir, children, className = "" }: { dir: Key; children: ReactNode; className?: string }) {
+  return (
+    <a
+      href={`/directions/${dir}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`group inline-flex min-h-11 items-center gap-1.5 text-[14px] font-medium ${className}`}
+    >
+      <span className="link-draw">{children}</span>
+      <ArrowUpRight className="size-4 transition-transform duration-(--duration-ui) ease-expo group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden />
+      <span className="sr-only"> (opens in a new tab)</span>
+    </a>
+  );
+}
 
 export default function DirectionsPage() {
+  // Review only: gone at launch.
+  if (!site.showPlaceholders) notFound();
+  const current = site.homeHero.toUpperCase();
+  const others = directions
+    .map((d) => d.key.toUpperCase())
+    .filter((k) => k !== current)
+    .join(" or ");
+
   return (
     <>
       <section className="border-b border-line bg-paper pt-[76px]">
@@ -77,13 +110,14 @@ export default function DirectionsPage() {
               filename is noted under each direction.
             </p>
             <p className="text-[16px] leading-relaxed text-stone">
-              Home currently uses <strong className="font-medium text-ink">Direction {site.homeHero.toUpperCase()}</strong>. Switching is one
-              setting: <code className="text-ink">homeHero</code> in <code className="text-ink">src/content/site.ts</code>.
+              Home uses <strong className="font-medium text-ink">Direction {current}</strong>. Moving to {others} is a quick change once you
+              choose.
             </p>
             <nav aria-label="Directions" className="flex flex-col gap-2">
               {directions.map((d) => (
                 <a key={d.key} href={`#direction-${d.key}`} className="link-draw self-start text-[16px] font-medium">
                   {d.key.toUpperCase()}. {d.name}
+                  {d.key === "b" && <span className="label ml-2 text-stone">{d.tag}</span>}
                 </a>
               ))}
             </nav>
@@ -91,20 +125,65 @@ export default function DirectionsPage() {
         </div>
       </section>
 
-      {directions.map(({ key, Hero, name, tag, idea, image, strengths, tradeoffs }) => (
-        <div key={key} id={`direction-${key}`} className="scroll-mt-0">
-          <div className="border-y border-ink bg-paper">
-            <div className="mx-auto flex max-w-[1440px] items-center justify-between px-5 py-4 md:px-10">
-              <p className="label">
+      {/* The first screen on a phone, side by side. */}
+      <section className="border-b border-line bg-ivory" aria-labelledby="phones-heading">
+        <div className="mx-auto max-w-[1440px] px-5 py-14 md:px-10 md:py-20">
+          <h2 id="phones-heading" className="label text-stone">
+            On a phone
+          </h2>
+          <div className="-mx-5 mt-8 flex snap-x snap-mandatory gap-6 overflow-x-auto px-5 pb-4 md:mx-0 md:px-0 lg:justify-between">
+            {directions.map((d) => (
+              <figure key={d.key} className="shrink-0 snap-start">
+                <div
+                  inert
+                  className="box-content h-[608px] w-[281px] overflow-hidden rounded-[30px] border-[6px] border-ink bg-ink shadow-[0_24px_60px_-30px_rgba(11,11,11,0.45)]"
+                >
+                  <iframe
+                    src={`/directions/${d.key}`}
+                    title={`Direction ${d.key.toUpperCase()}, ${d.name}, on a phone`}
+                    loading="lazy"
+                    className="block h-[844px] w-[390px] origin-top-left scale-[0.72] border-0 bg-paper"
+                  />
+                </div>
+                <figcaption className="mt-4 flex items-center justify-between gap-4">
+                  <span className="text-[15px] font-medium">
+                    {d.key.toUpperCase()}. {d.name}
+                    {d.key === site.homeHero && <span className="label ml-2 text-stone">Home</span>}
+                  </span>
+                  <OpenLink dir={d.key}>Open</OpenLink>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {directions.map(({ key, name, tag, idea, image, strengths, tradeoffs }) => (
+        <section key={key} id={`direction-${key}`} aria-labelledby={`direction-${key}-heading`}>
+          <div className="border-b border-ink bg-paper">
+            <div className="mx-auto flex max-w-[1440px] flex-wrap items-center justify-between gap-x-6 gap-y-1 px-5 py-3 md:px-10">
+              <h2 id={`direction-${key}-heading`} className="label">
                 Direction {key.toUpperCase()} · {name}
-              </p>
-              <p className="label text-stone">{tag}</p>
+              </h2>
+              <div className="flex items-center gap-6">
+                <p className={`label ${key === "b" ? "text-ink" : "text-stone"}`}>
+                  {tag}
+                  {key === site.homeHero && " · Home uses this"}
+                </p>
+                <OpenLink dir={key}>Open full screen</OpenLink>
+              </div>
             </div>
           </div>
-          <div className="relative">
-            <Hero id={`hero-${key}`} as="h2" />
+          {/* The real opening screen at this width (desktop and tablet). Phones are compared above. */}
+          <div inert className="hidden bg-ink md:block">
+            <iframe
+              src={`/directions/${key}`}
+              title={`Direction ${key.toUpperCase()}, ${name}, opening screen`}
+              loading="lazy"
+              className="mx-auto block aspect-[16/10] w-full max-w-[1440px] border-0 bg-paper"
+            />
           </div>
-          <section className="border-b border-line bg-ivory" aria-label={`Direction ${key.toUpperCase()} rationale`}>
+          <div className="border-b border-line bg-ivory">
             <div className="mx-auto grid max-w-[1440px] gap-10 px-5 py-14 md:grid-cols-12 md:gap-x-6 md:px-10 md:py-20">
               <div className="md:col-span-5">
                 <p className="label text-stone">Rationale</p>
@@ -133,8 +212,8 @@ export default function DirectionsPage() {
                 </ul>
               </div>
             </div>
-          </section>
-        </div>
+          </div>
+        </section>
       ))}
     </>
   );
