@@ -160,6 +160,15 @@ body {
   background-size: 100% 1px;
 }
 
+/* Bleed off the right edge: a photo in the right-hand column of a
+   `max-w-[1440px] px-10` container runs to the edge of the screen at every
+   width, wide screens included (use it from md, e.g. `lg:bleed-right`).
+   100vw counts a classic scrollbar, so the section clips the few extra
+   pixels with `overflow-x-clip`. */
+@utility bleed-right {
+  margin-right: calc(-1 * max(2.5rem, (100vw - 1440px) / 2 + 2.5rem));
+}
+
 /* ==========================================================================
    Reveals (src/components/ui/Reveal.tsx)
    Content is visible in the server HTML. It is hidden only when <html> has

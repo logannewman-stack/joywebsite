@@ -54,24 +54,24 @@ export default function InsightsPage() {
   return (
     <>
       {/* Opening: the headline, and a large, quiet portrait */}
-      <section className="bg-paper pt-[76px]">
+      <section className="overflow-x-clip bg-paper pt-[76px]">
         <div className="mx-auto grid grid-cols-1 max-w-[1440px] gap-y-12 px-5 pt-12 pb-20 md:px-10 md:pt-20 md:pb-28 lg:grid-cols-12 lg:gap-x-6 lg:pb-32">
           <div className="lg:col-span-7 lg:pt-6">
             <Label index="05">Insights</Label>
-            <h1 className="display mt-8 text-[clamp(2.4rem,12.4vw,4.4rem)] leading-[0.92] md:text-[clamp(3rem,9vw,6rem)] lg:text-[clamp(3rem,6.6vw,6.4rem)]">
+            <h1 className="display mt-8 text-[clamp(2.4rem,12.4vw,4.4rem)] leading-[0.92] md:text-[clamp(3rem,9vw,6rem)] lg:text-[clamp(3rem,6.6vw,5.94rem)]">
               <LineReveal lines={["The conversation ", "doesn’t end when the ", <em key="a">presentation does.</em>]} />
             </h1>
             <Reveal immediate delay={0.25} className="mt-10 max-w-md md:mt-12">
               <p className="text-[19px] leading-relaxed text-stone">{hero.text}</p>
             </Reveal>
           </div>
-          <div className="md:ml-auto md:w-[62%] lg:col-span-5 lg:col-start-8 lg:-mr-10 lg:ml-0 lg:w-auto">
+          <div className="md:ml-auto md:w-[62%] lg:col-span-5 lg:col-start-8 lg:ml-0 lg:w-auto lg:bleed-right">
             <ImageReveal immediate delay={0.1}>
               <Photo
                 slot={hero.photo}
                 priority
                 className="aspect-[4/5] w-full"
-                sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1023px) 62vw, (max-width: 1440px) 42vw, 600px"
+                sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1023px) 62vw, (max-width: 1440px) 42vw, calc(50vw - 127px)"
               />
             </ImageReveal>
           </div>

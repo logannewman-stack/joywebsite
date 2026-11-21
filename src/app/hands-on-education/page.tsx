@@ -35,7 +35,7 @@ export default function EducationPage() {
             <Label index="03">Hands-On Education</Label>
             {/* typeset() keeps "Skill-building" on one line; it always fits, but under a
                 reader's own wide text spacing it may break at its hyphen instead of overflowing. */}
-            <h1 className="display mt-8 text-[clamp(3rem,14vw,4.6rem)] leading-[0.9] lg:text-[clamp(4rem,7vw,7.6rem)] [&_.whitespace-nowrap]:whitespace-normal">
+            <h1 className="display mt-8 text-[clamp(3rem,14vw,4.6rem)] leading-[0.9] lg:text-[clamp(4rem,7vw,6.3rem)] [&_.whitespace-nowrap]:whitespace-normal">
               <LineReveal lines={[typeset("Skill-building"), "with instruments", <em key="a">in hand.</em>]} />
             </h1>
           </div>
@@ -75,7 +75,7 @@ export default function EducationPage() {
       <section className="bg-ivory">
         <div className="mx-auto grid max-w-[1440px] gap-12 px-5 py-24 md:px-10 md:py-32 lg:grid-cols-12 lg:grid-rows-[auto_1fr] lg:gap-x-6 lg:gap-y-16">
           <Reveal className="lg:col-span-5 lg:col-start-8 lg:row-start-1">
-            <h2 className="display text-[clamp(3.6rem,19vw,6.4rem)] leading-[0.88] lg:text-[clamp(4.6rem,8.4vw,7.6rem)]">{markP3(family.heading)}</h2>
+            <h2 className="display text-[clamp(3.6rem,19vw,6.4rem)] leading-[0.88] lg:text-[clamp(4.6rem,8.4vw,7.56rem)]">{markP3(family.heading)}</h2>
           </Reveal>
           <ImageReveal className="lg:col-span-6 lg:row-span-2 lg:row-start-1">
             <Photo
@@ -88,7 +88,7 @@ export default function EducationPage() {
             {family.items.map((item, i) => (
               <Reveal key={item.title} delay={i * 0.08} className={i > 0 ? "lg:mt-11 lg:border-t lg:border-ink/15 lg:pt-11" : ""}>
                 <article>
-                  <h3 className={`display text-[clamp(2.2rem,3.4vw,3.4rem)] ${i === 0 ? "lg:text-[clamp(2.6rem,4.4vw,4.4rem)]" : ""}`}>
+                  <h3 className={`display text-[clamp(2.2rem,3.4vw,3.06rem)] ${i === 0 ? "lg:text-[clamp(2.6rem,4.4vw,3.96rem)]" : ""}`}>
                     {typeset(item.title)}
                   </h3>
                   <p className="mt-5 max-w-[42ch] text-[17px] leading-relaxed text-stone">{item.text}</p>
@@ -118,7 +118,7 @@ export default function EducationPage() {
           {routes.map((r, i) => (
             <li key={r.heading} className="border-t border-line">
               <Reveal delay={i * 0.06} className="grid gap-3 py-9 md:grid-cols-12 md:items-baseline md:gap-x-6 md:py-11">
-                <h2 className="display text-[clamp(2rem,3vw,2.8rem)] md:col-span-6 xl:col-span-5">{typeset(r.heading)}</h2>
+                <h2 className="display text-[clamp(2rem,3vw,2.7rem)] md:col-span-6 xl:col-span-5">{typeset(r.heading)}</h2>
                 <p className="text-[16.5px] leading-relaxed text-stone md:col-span-6 xl:col-span-4">{r.text}</p>
                 <div className="md:col-span-12 md:col-start-7 xl:col-span-3 xl:col-start-auto xl:justify-self-end">
                   <ArrowLink href={r.cta.href}>{r.cta.label}</ArrowLink>

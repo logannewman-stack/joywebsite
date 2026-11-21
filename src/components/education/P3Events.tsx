@@ -3,7 +3,7 @@ import { education, eventEndsAt, isListed, type FeaturedEvent } from "@/content/
 import { EventStructuredData } from "@/components/ui/StructuredData";
 import type { PhotoSlot } from "@/content/site";
 import { Photo } from "@/components/ui/Photo";
-import { ButtonLink, Label } from "@/components/ui/Links";
+import { ButtonLink } from "@/components/ui/Links";
 import { ImageReveal, Reveal } from "@/components/ui/Reveal";
 import { typeset } from "@/components/ui/Typeset";
 import { InquiryButton } from "@/components/inquiry/InquiryProvider";
@@ -52,6 +52,11 @@ export async function P3Events() {
   );
 }
 
+/** "P3 Events" with its P3 in italic, as in the family name "Dr. Joy's P3". */
+function italicP3(text: string): ReactNode {
+  return text.split(/\b(P3)\b/).map((part, i) => (part === "P3" ? <em key={i}>P3</em> : part));
+}
+
 /**
  * Photo and words side by side. The section heading sits with the words, so
  * each version carries it; only one version is ever displayed.
@@ -59,16 +64,15 @@ export async function P3Events() {
 function Panel({ photo, children }: { photo: PhotoSlot; children: ReactNode }) {
   // Phones: heading, photo, words. From lg: the photo on the right, and the
   // heading and words centered beside it (the 1fr rows above and below take
-  // up the photo's extra height).
+  // up the photo's extra height). The heading is the section's masthead, on
+  // the same step as "Dr. Joy's P3"; the event, or the notice, reads under it.
   return (
     <div className="grid gap-10 md:gap-12 lg:grid-cols-12 lg:grid-rows-[1fr_auto_auto_1fr] lg:gap-x-6 lg:gap-y-0">
       <Reveal className="lg:col-span-6 lg:col-start-1 lg:row-start-2">
-        <div className="flex items-center gap-4">
-          <span aria-hidden className="h-px w-10 bg-blush" />
-          <Label as="h2" className="text-ash">
-            {education.events.heading}
-          </Label>
-        </div>
+        <span aria-hidden className="block h-px w-12 bg-blush" />
+        <h2 className="display mt-8 text-[clamp(3.6rem,19vw,6.4rem)] leading-[0.88] lg:text-[clamp(4.6rem,8.4vw,7.56rem)]">
+          {italicP3(education.events.heading)}
+        </h2>
       </Reveal>
       <ImageReveal className="lg:col-span-5 lg:col-start-8 lg:row-span-4 lg:row-start-1">
         <Photo
@@ -85,12 +89,13 @@ function Panel({ photo, children }: { photo: PhotoSlot; children: ReactNode }) {
   );
 }
 
+/** No live event yet: the notice is a serif lede under the masthead, then the interest list. */
 function InterestList() {
   const { fallback } = education.events;
   return (
     <>
-      <h3 className="display max-w-[19ch] text-[clamp(2.1rem,5vw,3.5rem)] leading-[1.02]">{typeset(fallback.heading)}</h3>
-      <p className="mt-6 max-w-[44ch] text-[17px] leading-relaxed text-ash">{fallback.text}</p>
+      <h3 className="max-w-[26ch] font-serif text-[clamp(1.5rem,2.2vw,2rem)] leading-snug text-balance">{fallback.heading}</h3>
+      <p className="mt-5 max-w-[44ch] text-[17px] leading-relaxed text-ash">{fallback.text}</p>
       <InquiryButton type="p3_interest" tone="dark" className="mt-9">
         {fallback.cta}
       </InquiryButton>
@@ -98,15 +103,16 @@ function InterestList() {
   );
 }
 
+/** The next event: its name on the same step as "P3 Special Events", then when, where and Register. */
 function EventDetails({ ev }: { ev: FeaturedEvent }) {
   return (
     <>
-      <h3 className="display text-[clamp(2.6rem,5vw,4.8rem)]">{typeset(ev.name)}</h3>
-      <p className="mt-5 text-[18px] text-blush">
+      <h3 className="display text-[clamp(2.2rem,3.4vw,3.06rem)]">{typeset(ev.name)}</h3>
+      <p className="mt-4 text-[18px] text-blush">
         {ev.startsOn ? <time dateTime={ev.startsOn}>{ev.date}</time> : ev.date} · {ev.location}
       </p>
-      <p className="mt-6 max-w-[46ch] text-[16.5px] leading-relaxed text-ash">{ev.details}</p>
-      <ButtonLink href={ev.registrationUrl} tone="dark" className="mt-10">
+      <p className="mt-5 max-w-[46ch] text-[16.5px] leading-relaxed text-ash">{ev.details}</p>
+      <ButtonLink href={ev.registrationUrl} tone="dark" className="mt-9">
         {education.events.cta}
       </ButtonLink>
     </>

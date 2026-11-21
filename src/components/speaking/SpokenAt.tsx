@@ -38,15 +38,16 @@ export function SpokenAt({ className = "" }: { className?: string }) {
               ))}
             </ul>
           ) : (
-            <ul className="font-serif text-[clamp(1.4rem,2.3vw,2.15rem)] leading-[1.32] tracking-[-0.005em] [text-wrap:pretty]">
+            <ul className="font-serif text-[clamp(1.4rem,2.3vw,2.07rem)] leading-[1.32] tracking-[-0.005em] [text-wrap:pretty] max-sm:border-t max-sm:border-line max-sm:text-[1.25rem] max-sm:leading-snug">
               {venues.map((v, i) => (
-                // From sm up each name stays on one line with its separator;
-                // the space after it is where lines may break.
-                <li key={v} className="inline">
+                // Phones: one venue per line on hairline rules, so every name
+                // reads whole. From sm up each name stays on one line with its
+                // separator; the space after it is where lines may break.
+                <li key={v} className="max-sm:border-b max-sm:border-line max-sm:py-2.5 sm:inline">
                   <span className="sm:whitespace-nowrap">
                     {v}
                     {i < venues.length - 1 && (
-                      <span aria-hidden className="relative -top-[0.32em] ml-[0.4em] text-[0.42em] text-blush-deep">
+                      <span aria-hidden className="relative -top-[0.32em] ml-[0.4em] text-[0.42em] text-blush-deep max-sm:hidden">
                         ●
                       </span>
                     )}

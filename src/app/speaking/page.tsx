@@ -48,23 +48,23 @@ export default function SpeakingPage() {
   return (
     <>
       {/* Opening: the headline, then Dr. Joy on stage at full height */}
-      <section className="bg-paper pt-[76px]">
+      <section className="overflow-x-clip bg-paper pt-[76px]">
         <div className="mx-auto grid max-w-[1440px] px-5 md:px-10 lg:grid-cols-12 lg:gap-x-6">
           <div className="pt-12 md:pt-16 lg:col-span-6 lg:row-start-1 lg:pt-14 xl:col-span-7">
             <Label index="02">Speaking</Label>
-            <h1 className="display mt-7 text-[clamp(2.6rem,13.2vw,5.25rem)] leading-[0.92] md:text-[clamp(4.5rem,10vw,6.5rem)] lg:text-[clamp(3.6rem,6.3vw,6.75rem)]">
+            <h1 className="display mt-7 text-[clamp(2.6rem,13.2vw,5.25rem)] leading-[0.92] md:text-[clamp(4.5rem,10vw,6.5rem)] lg:text-[clamp(3.6rem,6.3vw,5.67rem)]">
               {/* Trailing spaces keep the words apart in the text content; they collapse visually. */}
               <LineReveal lines={["Presentations ", "grounded in ", <em key="c">clinical practice.</em>]} />
             </h1>
           </div>
 
-          <div className="-mx-5 mt-10 md:mx-0 md:mt-12 lg:col-span-6 lg:col-start-7 lg:row-span-2 lg:row-start-1 lg:-mr-10 lg:mt-0 xl:col-span-5 xl:col-start-8">
+          <div className="-mx-5 mt-10 md:mx-0 md:mt-12 lg:col-span-6 lg:col-start-7 lg:row-span-2 lg:row-start-1 lg:mt-0 lg:bleed-right xl:col-span-5 xl:col-start-8">
             <ImageReveal immediate delay={0.1}>
               <Photo
                 slot={hero.photo}
                 priority
                 className="aspect-[4/5] w-full md:aspect-auto md:h-[min(70svh,44rem)] lg:aspect-[3/4] lg:h-auto lg:max-h-[calc(100svh-76px)] xl:aspect-[4/5]"
-                sizes="(max-width: 767px) 100vw, (max-width: 1023px) calc(100vw - 80px), (max-width: 1279px) 49vw, (max-width: 1440px) 41vw, 600px"
+                sizes="(max-width: 767px) 100vw, (max-width: 1023px) calc(100vw - 80px), (max-width: 1279px) 49vw, (max-width: 1440px) 41vw, calc(50vw - 127px)"
               />
             </ImageReveal>
           </div>
@@ -107,7 +107,7 @@ export default function SpeakingPage() {
         <div className="mx-auto max-w-[1440px] px-5 pt-28 pb-24 md:px-10 md:pt-32 md:pb-32">
           <div id="topics" className="grid gap-6 lg:grid-cols-12 lg:gap-x-6">
             <Reveal className="lg:col-span-7">
-              <h2 className="display text-[clamp(2.75rem,5.6vw,5.4rem)]">{clinical.heading}</h2>
+              <h2 className="display text-[clamp(2.75rem,5.6vw,5.04rem)]">{clinical.heading}</h2>
             </Reveal>
             <Reveal delay={0.06} className="lg:col-span-4 lg:col-start-9 lg:self-end">
               <p className="max-w-[46ch] text-[17px] leading-relaxed text-stone">{clinical.intro}</p>
@@ -125,7 +125,7 @@ export default function SpeakingPage() {
         <div className="mx-auto max-w-[1440px] px-5 pt-28 pb-24 md:px-10 md:py-36">
           <div id="teams" className="max-w-[60rem]">
             <Reveal>
-              <h2 className="display text-[clamp(2.75rem,5.6vw,5.4rem)]">{teams.heading}</h2>
+              <h2 className="display text-[clamp(2.75rem,5.6vw,5.04rem)]">{teams.heading}</h2>
             </Reveal>
             <Reveal delay={0.06}>
               <p className="mt-6 max-w-[46ch] text-[17px] leading-relaxed text-stone">{teams.intro}</p>
@@ -138,7 +138,7 @@ export default function SpeakingPage() {
                   <span className="label text-stone tabular-nums" aria-hidden>
                     {String(i + 1).padStart(2, "0")}
                   </span>
-                  <h3 className="display mt-8 text-[clamp(2.75rem,5vw,5rem)] leading-[0.94]">{stackedTitle(p.title)}</h3>
+                  <h3 className="display mt-8 text-[clamp(2.75rem,5vw,4.5rem)] leading-[0.94]">{stackedTitle(p.title)}</h3>
                   <p className="mt-6 max-w-[30ch] font-serif text-[clamp(1.35rem,1.9vw,1.7rem)] leading-snug italic">{p.subtitle}</p>
                   <p className="mt-5 max-w-[46ch] text-[16.5px] leading-relaxed text-stone">{p.text}</p>
                   <div className="mt-4 flex flex-wrap items-center gap-x-7">
@@ -159,7 +159,7 @@ export default function SpeakingPage() {
         <div className="mx-auto grid max-w-[1440px] px-5 pt-28 pb-24 md:px-10 md:py-36 lg:grid-cols-12 lg:gap-x-6">
           <div id="keynotes" className="lg:col-span-7 lg:row-start-1">
             <Reveal>
-              <h2 className="display text-[clamp(2.4rem,3.6vw,3.6rem)]">{keynotes.heading}</h2>
+              <h2 className="display text-[clamp(2.4rem,3.6vw,3.24rem)]">{keynotes.heading}</h2>
             </Reveal>
           </div>
           <div className="-mx-5 mt-10 md:mx-0 md:mt-14 lg:col-span-5 lg:col-start-8 lg:row-span-2 lg:row-start-1 lg:mt-0">
@@ -179,7 +179,7 @@ export default function SpeakingPage() {
                   <span className="label text-blush tabular-nums" aria-hidden>
                     {String(i + 1).padStart(2, "0")}
                   </span>
-                  <h3 className="display mt-6 text-[clamp(2.75rem,5.4vw,5.6rem)] leading-[0.95]">{typeset(k.title)}</h3>
+                  <h3 className="display mt-6 text-[clamp(2.75rem,5.4vw,4.86rem)] leading-[0.95]">{typeset(k.title)}</h3>
                   <p className="mt-5 max-w-[34ch] font-serif text-[clamp(1.35rem,1.9vw,1.7rem)] leading-snug text-blush italic">{k.subtitle}</p>
                   <p className="mt-5 max-w-[48ch] text-[16.5px] leading-relaxed text-ash">{k.text}</p>
                   <div className="mt-4 flex flex-wrap items-center gap-x-7">
@@ -200,7 +200,7 @@ export default function SpeakingPage() {
         <div className="mx-auto grid max-w-[1440px] gap-10 px-5 pt-28 pb-24 md:px-10 md:py-32 lg:grid-cols-12 lg:gap-x-6">
           <div id="p3" className="lg:col-span-4">
             <Reveal>
-              <h2 className="display text-[clamp(2.75rem,4.6vw,4.6rem)]">{p3.heading}</h2>
+              <h2 className="display text-[clamp(2.75rem,4.6vw,4.14rem)]">{p3.heading}</h2>
             </Reveal>
           </div>
           <div className="grid border-t border-ink md:grid-cols-2 lg:col-span-8">
@@ -232,7 +232,7 @@ export default function SpeakingPage() {
       <section data-header="dark" className="grain grain-light bg-ink text-white">
         <div className="mx-auto grid max-w-[1440px] gap-10 px-5 py-28 md:px-10 md:py-40 lg:grid-cols-12 lg:gap-x-6">
           <Reveal className="lg:col-span-8">
-            <h2 className="display text-[clamp(3.6rem,9.6vw,9.5rem)] leading-[0.88]">{planning.heading}</h2>
+            <h2 className="display text-[clamp(3.6rem,9.6vw,8.64rem)] leading-[0.88]">{planning.heading}</h2>
           </Reveal>
           <Reveal delay={0.08} className="lg:col-span-4 lg:self-end">
             <p className="max-w-[34ch] text-[17px] leading-relaxed text-ash">{planning.text}</p>
