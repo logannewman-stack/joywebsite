@@ -1,4 +1,12 @@
 @import "tailwindcss";
+@import "./styles/motion.css";
+@import "./styles/chrome.css";
+@import "./styles/home.css";
+@import "./styles/meet.css";
+@import "./styles/speaking.css";
+@import "./styles/education.css";
+@import "./styles/industry.css";
+@import "./styles/insights.css";
 
 /* ==========================================================================
    Dr. Joy RDH: design tokens

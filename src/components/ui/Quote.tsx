@@ -1,4 +1,7 @@
-import { site } from "@/content/site";
+import { site, type PhotoSlot } from "@/content/site";
+import { Parallax } from "@/components/motion/Parallax";
+import { WordLight } from "@/components/motion/Text";
+import { Photo } from "./Photo";
 import { Reveal } from "./Reveal";
 import { typeset } from "./Typeset";
 
@@ -48,9 +51,13 @@ function shape(quote: string): { lead: string; rest: string } {
 }
 
 /**
- * Testimonial set large, with a hanging opening quote mark. Testimonials
- * awaiting republishing permission are shown in review mode only, with a
- * note, and hidden at launch.
+ * Testimonial set large, with a hanging opening quote mark. Its words
+ * brighten one after another as it scrolls into view. Testimonials awaiting
+ * republishing permission are shown in review mode only, with a note, and
+ * hidden at launch.
+ *
+ * `backdrop` (dark tone only) sets the quote over a dimmed, slowly drifting
+ * photograph, e.g. a room or an audience.
  */
 export function Quote({
   heading,
@@ -62,6 +69,7 @@ export function Quote({
   size,
   className = "",
   id,
+  backdrop,
 }: {
   heading: string;
   quote: string;
@@ -74,6 +82,8 @@ export function Quote({
   /** Extra classes for the section, e.g. to tighten its padding next to a same-colored section. */
   className?: string;
   id?: string;
+  /** A photograph behind a dark quote, dimmed so the words stay first. */
+  backdrop?: PhotoSlot;
 }) {
   if (permission !== "granted" && !site.showPlaceholders) return null;
   const dark = tone === "dark";
@@ -82,7 +92,15 @@ export function Quote({
   const mark = dark ? "text-blush" : "text-blush-deep";
   return (
     <section id={id} className={`relative overflow-hidden ${surfaces[tone]} ${className}`} data-tone={tone} data-header={dark ? "dark" : undefined}>
-      <div className="mx-auto max-w-[1440px] px-5 py-24 md:px-10 md:py-32">
+      {dark && backdrop?.src && (
+        <div aria-hidden className="absolute inset-0">
+          <Parallax className="h-full w-full" amount={6}>
+            <Photo slot={{ ...backdrop, alt: "" }} tone="dark" className="h-full w-full grayscale" sizes="100vw" />
+          </Parallax>
+          <div className="absolute inset-0 bg-ink/80" />
+        </div>
+      )}
+      <div className="relative mx-auto max-w-[1440px] px-5 py-24 md:px-10 md:py-32">
         <div className="grid md:grid-cols-12 md:gap-x-6">
           <div
             className={`flex flex-wrap items-center gap-x-4 gap-y-2 border-t pt-5 md:col-span-10 md:col-start-2 lg:col-span-9 lg:col-start-3 ${
@@ -111,7 +129,9 @@ export function Quote({
                   <span aria-hidden className={`mr-[0.06em] md:absolute md:top-0 md:-left-[0.5em] md:mr-0 ${mark}`}>
                     “
                   </span>
-                  {typeset(bindShort(lead))}
+                  <WordLight from={0.14} to={0.44} dim={dark ? 0.4 : 0.5}>
+                    {bindShort(lead)}
+                  </WordLight>
                 </p>
                 {rest && (
                   <p className="mt-6 max-w-[44ch] font-serif text-[clamp(1.3rem,1.9vw,1.65rem)] leading-[1.32] md:mt-8">{typeset(bindShort(rest))}</p>

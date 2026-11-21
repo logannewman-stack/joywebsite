@@ -5,7 +5,8 @@ import { optIns } from "@/content/integrations";
 import { InquiryProvider } from "@/components/inquiry/InquiryProvider";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
-import { REVEAL_BODY_SCRIPT, REVEAL_HEAD_SCRIPT } from "@/components/ui/Reveal";
+import { REVEAL_BODY_SCRIPT } from "@/components/ui/Reveal";
+import { MOTION_BODY_SCRIPT, MOTION_HEAD_SCRIPT } from "@/components/motion/engine";
 import { StructuredData } from "@/components/ui/StructuredData";
 import { insights } from "@/content/insights";
 import { isShown } from "@/components/insights/records";
@@ -53,7 +54,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" data-scroll-behavior="smooth" className={`${instrument.variable} ${geist.variable}`} suppressHydrationWarning>
       <head>
-        <script dangerouslySetInnerHTML={{ __html: REVEAL_HEAD_SCRIPT }} />
+        <script dangerouslySetInnerHTML={{ __html: MOTION_HEAD_SCRIPT }} />
         <StructuredData />
       </head>
       <body>
@@ -65,6 +66,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <Footer />
         </InquiryProvider>
         <script dangerouslySetInnerHTML={{ __html: REVEAL_BODY_SCRIPT }} />
+        <script dangerouslySetInnerHTML={{ __html: MOTION_BODY_SCRIPT }} />
       </body>
     </html>
   );
