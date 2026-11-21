@@ -1,5 +1,5 @@
 import { industry } from "./industry";
-import { speaking } from "./speaking";
+import { programTitles } from "./speaking";
 
 /**
  * ============================================================================
@@ -78,16 +78,10 @@ export const consultingChoice = {
 
 /**
  * "Program of interest" on the speaking form: every program on the Speaking
- * page, grouped as it is there. Sent to GoHighLevel as `program`.
+ * page, in page order, then "Not sure yet". Sent to GoHighLevel as `program`.
  */
-export const speakingPrograms = [
-  { group: speaking.clinical.heading, titles: speaking.clinical.courses.map((c) => c.title) },
-  { group: speaking.teams.heading, titles: speaking.teams.programs.map((p) => p.title) },
-  { group: speaking.keynotes.heading, titles: speaking.keynotes.items.map((k) => k.title) },
-];
 export const programNotSure = "Not sure yet";
-/** Every value the program field accepts. */
-export const programChoices: string[] = [...speakingPrograms.flatMap((g) => g.titles), programNotSure];
+export const programChoices: string[] = [...programTitles, programNotSure];
 
 /**
  * DRAFT opt-in language for the P3 interest list. Both boxes are unchecked

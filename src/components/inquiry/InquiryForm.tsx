@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { ArrowRight, Check, LoaderCircle } from "lucide-react";
-import { inquiryTypes, optIns, programNotSure, speakingPrograms, type InquiryType } from "@/content/integrations";
+import { inquiryTypes, optIns, programChoices, type InquiryType } from "@/content/integrations";
 import { links } from "@/content/site";
 import { CheckGroup, Consent, Field, Select, TextArea } from "./fields";
 import { FormAlert, Honeypot, mailtoFrom, sendInquiry, type Status } from "./feedback";
@@ -28,7 +28,7 @@ const eventFields = (formats: string[], preset: Preset, programs = false) => (
       <Select
         label="Program of interest"
         name="program"
-        options={[...speakingPrograms.map((g) => ({ group: g.group, options: g.titles })), programNotSure]}
+        options={programChoices}
         defaultValue={preset.program}
       />
     )}
@@ -107,7 +107,7 @@ export function SubmitButton({ sending, children }: { sending: boolean; children
     <button
       type="submit"
       aria-disabled={sending || undefined}
-      className="group inline-flex min-h-12 w-full items-center justify-center gap-3 rounded-full bg-ink px-7 text-[15px] font-medium whitespace-nowrap text-white transition-[background-color,transform] duration-[var(--duration-hover,180ms)] hover:bg-charcoal focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-ink active:scale-[0.98] aria-disabled:cursor-progress aria-disabled:bg-charcoal motion-reduce:active:scale-100 sm:w-auto"
+      className="group inline-flex min-h-12 w-full max-w-full items-center justify-center gap-3 rounded-full bg-ink px-7 text-[15px] font-medium whitespace-nowrap text-white max-[359px]:whitespace-normal transition-[background-color,transform] duration-[var(--duration-hover,180ms)] hover:bg-charcoal focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-ink active:scale-[0.98] aria-disabled:cursor-progress aria-disabled:bg-charcoal motion-reduce:active:scale-100 sm:w-auto"
     >
       {sending ? <LoaderCircle className="size-4 animate-spin motion-reduce:animate-none" aria-hidden /> : null}
       {sending ? "Sending" : children}

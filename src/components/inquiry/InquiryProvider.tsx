@@ -29,8 +29,10 @@ export type Choice = InquiryType | "consulting";
 export type OpenOptions = {
   /** Limit the topic picker to these topics, e.g. only the two manufacturer categories. */
   choices?: Choice[];
-  /** Starting values for the form, by field name, e.g. { program: "GLP-1s in Your Chair" }. */
+  /** Starting values for the form, by field name, e.g. { event_name: "Spring Meeting" }. */
   preset?: Record<string, string>;
+  /** Speaking form: the program to preselect in "Program of interest" (a title from programTitles). */
+  program?: string;
   /** Where focus returns on close. Defaults to the element that opened the panel. */
   returnFocus?: HTMLElement | null;
 };
@@ -73,7 +75,7 @@ export function InquiryProvider({ children }: { children: ReactNode }) {
       id: seq.current,
       type: !type || type === "general" ? null : type,
       choices: opts?.choices?.length ? opts.choices : null,
-      preset: opts?.preset ?? {},
+      preset: { ...opts?.preset, ...(opts?.program ? { program: opts.program } : {}) },
     });
     setClosing(false);
     setFailed(false);
@@ -195,6 +197,7 @@ export function InquiryButton({
   className = "",
   choices,
   preset,
+  program,
   arrow = true,
 }: {
   type?: Choice;
@@ -204,8 +207,13 @@ export function InquiryButton({
   className?: string;
   /** Limit the general picker to these topics (only when `type` is omitted). */
   choices?: Choice[];
-  /** Starting values for the form, e.g. { program: "GLP-1s in Your Chair" }. */
+  /** Starting values for the form, by field name. */
   preset?: Record<string, string>;
+  /**
+   * Opens the speaking form with this program preselected, e.g.
+   * <InquiryButton program="GLP-1s in Your Chair">…</InquiryButton>. Implies type "speaking".
+   */
+  program?: string;
   /** Set false for a plain text link without the arrow. */
   arrow?: boolean;
 }) {
@@ -213,16 +221,16 @@ export function InquiryButton({
   const dark = tone === "dark";
   const ring = `focus-visible:outline-2 focus-visible:outline-offset-[3px] ${dark ? "focus-visible:outline-white" : "focus-visible:outline-ink"}`;
   const styles = {
-    solid: `min-h-12 gap-3 whitespace-nowrap rounded-full px-6 motion-safe:active:scale-[0.98] ${
+    solid: `min-h-12 max-w-full gap-3 whitespace-nowrap rounded-full px-6 motion-safe:active:scale-[0.98] max-[359px]:whitespace-normal ${
       dark ? "bg-white text-ink hover:bg-ivory" : "bg-ink text-white hover:bg-charcoal"
     }`,
-    outline: `min-h-12 gap-3 whitespace-nowrap rounded-full border px-6 motion-safe:active:scale-[0.98] ${
+    outline: `min-h-12 max-w-full gap-3 whitespace-nowrap rounded-full border px-6 motion-safe:active:scale-[0.98] max-[359px]:whitespace-normal ${
       dark ? "border-white/40 text-white hover:border-white hover:bg-white/10" : "border-ink/30 text-ink hover:border-ink hover:bg-ink/[0.04]"
     }`,
     text: "min-h-11 gap-2",
   }[variant];
   const onClick = (e: MouseEvent<HTMLButtonElement>) =>
-    open(type, { choices, preset, returnFocus: e.currentTarget });
+    open(type ?? (program ? "speaking" : undefined), { choices, preset, program, returnFocus: e.currentTarget });
   return (
     <button
       type="button"
