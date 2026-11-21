@@ -33,12 +33,12 @@ export function Footer() {
                 <div>
                   <span aria-hidden className="mb-6 block h-px w-12 bg-blush" />
                   <p className="label text-ash">{insights.newsletter.heading}</p>
-                  <h2 id="footer-newsletter" className="display mt-6 text-[clamp(3rem,5.6vw,5rem)]">
+                  <h2 id="footer-newsletter" className="display mt-5 text-[clamp(2.75rem,4.6vw,4.25rem)]">
                     {insights.newsletter.name}
                   </h2>
                 </div>
                 <div className="@2xl:self-end">
-                  <p className="max-w-[28rem] text-[17px] leading-relaxed text-ash">{insights.newsletter.text}</p>
+                  <p className="max-w-[28rem] text-[17px] leading-relaxed text-balance text-ash">{insights.newsletter.text}</p>
                   <div className="mt-8 max-w-md">
                     <NewsletterForm tone="dark" cta={insights.newsletter.cta} />
                   </div>

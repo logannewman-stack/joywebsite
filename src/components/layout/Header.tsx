@@ -27,7 +27,8 @@ const BAR = 76;
  * flashes: add a path when a page's first section carries data-header="dark".
  */
 function opensDark(pathname: string) {
-  return pathname === "/" && site.homeHero === "b";
+  // Home opens on the black stage unless one of the light directions is chosen.
+  return pathname === "/" && site.homeHero !== "a" && site.homeHero !== "c";
 }
 
 /** Home is the cover; the five pages carry their page numbers, as on their own openings (Meet 01 … Insights 05). */
@@ -91,18 +92,16 @@ export function Header() {
     };
   }, []);
 
-  // Dark variant while any [data-header="dark"] element is behind the bar.
+  // Dark variant while any [data-header="dark"] element is behind the bar. The
+  // band is re-measured on resize, and the targets re-read if the page adds content.
   useEffect(() => {
-    const targets = Array.from(document.querySelectorAll('[data-header="dark"]'));
-    if (!targets.length) {
-      const frame = requestAnimationFrame(() => setOverDark(false));
-      return () => cancelAnimationFrame(frame);
-    }
     const behind = new Set<Element>();
     let io: IntersectionObserver | null = null;
+    let frame = 0;
     const watch = () => {
       io?.disconnect();
       behind.clear();
+      const targets = document.querySelectorAll('[data-header="dark"]');
       io = new IntersectionObserver(
         (entries) => {
           for (const e of entries) {
@@ -113,19 +112,25 @@ export function Header() {
         },
         { rootMargin: `0px 0px -${Math.max(0, window.innerHeight - BAR)}px 0px` },
       );
-      for (const t of targets) io.observe(t);
+      targets.forEach((t) => io?.observe(t));
+      if (!targets.length) frame = requestAnimationFrame(() => setOverDark(false));
     };
     watch();
     let timer = 0;
-    const onResize = () => {
+    const rewatch = () => {
       window.clearTimeout(timer);
       timer = window.setTimeout(watch, 150);
     };
-    window.addEventListener("resize", onResize);
+    window.addEventListener("resize", rewatch);
+    const main = document.getElementById("main");
+    const added = new MutationObserver(rewatch);
+    if (main) added.observe(main, { childList: true, subtree: true });
     return () => {
       io?.disconnect();
+      added.disconnect();
+      cancelAnimationFrame(frame);
       window.clearTimeout(timer);
-      window.removeEventListener("resize", onResize);
+      window.removeEventListener("resize", rewatch);
     };
   }, [pathname]);
 
@@ -203,7 +208,7 @@ export function Header() {
                   key={item.href}
                   href={item.href}
                   aria-current={active ? "page" : undefined}
-                  className={`group relative py-2 text-[14px] font-medium transition-opacity duration-[var(--duration-hover,180ms)] hover:opacity-100 ${
+                  className={`group relative py-2 text-[14px] font-medium whitespace-nowrap transition-opacity duration-[var(--duration-hover,180ms)] hover:opacity-100 ${
                     active ? "opacity-100" : "opacity-75"
                   }`}
                 >
@@ -211,7 +216,7 @@ export function Header() {
                   <span
                     aria-hidden
                     className={`absolute inset-x-0 -bottom-0.5 h-px origin-left bg-current transition-transform duration-[var(--duration-ui,320ms)] ${ease} ${
-                      active ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100 group-focus-visible:scale-x-100"
+                      active ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
                     }`}
                   />
                 </Link>
@@ -220,7 +225,12 @@ export function Header() {
           </nav>
 
           <div className="hidden items-center gap-6 xl:flex">
-            <ConsultingLink label="Consulting" srLabel=" at Instrumental" className="text-[14px] font-medium opacity-75 hover:opacity-100" />
+            <ConsultingLink
+              label="Consulting"
+              srLabel=" at Instrumental"
+              className="text-[14px] font-medium whitespace-nowrap opacity-75 hover:opacity-100"
+              tagClassName="hidden min-[1366px]:inline"
+            />
             <InquiryButton tone={tone} className="!min-h-11 !px-5 !text-[14px]">
               Start a Conversation
             </InquiryButton>
@@ -260,7 +270,7 @@ export function Header() {
           open ? "visible opacity-100" : "invisible opacity-0"
         }`}
       >
-        <nav aria-label="Menu">
+        <nav aria-label="Menu" className="flex flex-1 flex-col">
           <ul>
             {menu.map((item, i) => {
               const current = pathname === item.href;
@@ -292,24 +302,35 @@ export function Header() {
               );
             })}
           </ul>
+          <div
+            className={`mt-auto flex flex-wrap items-center justify-between gap-x-8 gap-y-5 pt-12 transition-opacity duration-[350ms] ${open ? "opacity-100" : "opacity-0"}`}
+            style={{ transitionDelay: open ? `${40 + menu.length * 30}ms` : "0ms" }}
+          >
+            <ConsultingLink label="Consulting at Instrumental" className="text-[16px] font-medium" />
+            {/* Below tablet width the CTA lives here instead of the bar. */}
+            <span className="md:hidden" onClickCapture={() => closeMenu(false)}>
+              <InquiryButton>Start a Conversation</InquiryButton>
+            </span>
+          </div>
         </nav>
-        <div
-          className={`mt-auto flex flex-wrap items-center justify-between gap-x-8 gap-y-5 pt-12 transition-opacity duration-[350ms] ${open ? "opacity-100" : "opacity-0"}`}
-          style={{ transitionDelay: open ? `${40 + menu.length * 30}ms` : "0ms" }}
-        >
-          <ConsultingLink label="Consulting at Instrumental" className="text-[16px] font-medium" />
-          {/* Below tablet width the CTA lives here instead of the bar. */}
-          <span className="md:hidden" onClickCapture={() => closeMenu(false)}>
-            <InquiryButton>Start a Conversation</InquiryButton>
-          </span>
-        </div>
       </div>
     </>
   );
 }
 
 /** Instrumental, the companion consulting site. While its URL is pending (review mode) nothing navigates. */
-function ConsultingLink({ label, srLabel = "", className = "" }: { label: string; srLabel?: string; className?: string }) {
+function ConsultingLink({
+  label,
+  srLabel = "",
+  className = "",
+  tagClassName = "",
+}: {
+  label: string;
+  srLabel?: string;
+  className?: string;
+  /** The review-mode tag does not fit the bar below 1366px. */
+  tagClassName?: string;
+}) {
   const link = instrumentalLink();
   const cls = `group inline-flex min-h-11 items-center gap-1.5 transition-opacity duration-[var(--duration-hover,180ms)] ${className}`;
   const icon = (
@@ -324,7 +345,7 @@ function ConsultingLink({ label, srLabel = "", className = "" }: { label: string
         {label}
         {srLabel && <span className="sr-only">{srLabel}</span>}
         {icon}
-        <PendingTag className="!ml-1" />
+        <PendingTag className={`!ml-1 ${tagClassName}`} />
       </span>
     );
   }
