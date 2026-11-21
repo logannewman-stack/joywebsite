@@ -181,6 +181,8 @@ a:focus-visible > .sp-toc-arrow > svg + svg {
     top: calc(4 * 1.875rem + 0.875rem);
     left: 50%;
     writing-mode: vertical-rl;
+    /* Every character turned the same way (an upright apostrophe would read as a dash). */
+    text-orientation: sideways;
     transform: translateX(-50%);
     font-size: 0.625rem;
     letter-spacing: 0.18em;
