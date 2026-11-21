@@ -38,7 +38,7 @@ export function Footer() {
                   </h2>
                 </div>
                 <div className="@2xl:self-end">
-                  <p className="max-w-[28rem] text-[17px] leading-relaxed text-balance text-ash">{insights.newsletter.text}</p>
+                  <p className="max-w-[28rem] text-[17px] leading-relaxed !text-balance text-ash">{insights.newsletter.text}</p>
                   <div className="mt-8 max-w-md">
                     <NewsletterForm tone="dark" cta={insights.newsletter.cta} />
                   </div>
@@ -87,8 +87,10 @@ export function Footer() {
                         title="Instrumental website link to come"
                         className={`${row} ${ring} cursor-not-allowed flex-wrap gap-x-2 gap-y-1 py-2`}
                       >
-                        <span className="whitespace-nowrap">Consulting at Instrumental</span>
-                        <ArrowUpRight className="size-4" aria-hidden />
+                        <span className="inline-flex items-center gap-2 whitespace-nowrap">
+                          Consulting at Instrumental
+                          <ArrowUpRight className="size-4" aria-hidden />
+                        </span>
                         <PendingTag className="!ml-0" />
                       </span>
                     ) : (

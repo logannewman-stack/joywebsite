@@ -127,7 +127,7 @@ export function InquiryProvider({ children }: { children: ReactNode }) {
           <div
             aria-hidden
             onClick={close}
-            className={`absolute inset-0 bg-ink/55 backdrop-blur-[2px] transition-opacity duration-[var(--duration-ui,320ms)] starting:opacity-0 ${
+            className={`absolute inset-0 bg-ink/55 backdrop-blur-[2px] transition-opacity duration-[var(--duration-ui,320ms)] starting:opacity-0 motion-reduce:transition-none ${
               closing ? "opacity-0" : "opacity-100"
             }`}
           />

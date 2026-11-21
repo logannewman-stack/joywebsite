@@ -266,7 +266,7 @@ export function Header() {
         ref={menuRef}
         id="mobile-menu"
         inert={!open}
-        className={`fixed inset-0 z-40 flex flex-col overflow-y-auto overscroll-contain bg-paper px-5 pt-[calc(76px+1rem)] pb-[max(2rem,env(safe-area-inset-bottom))] transition-[opacity,visibility] duration-[var(--duration-ui,320ms)] md:px-10 md:pt-[calc(76px+2.5rem)] xl:hidden ${
+        className={`fixed inset-0 z-40 flex flex-col overflow-y-auto overscroll-contain bg-paper px-5 pt-[calc(76px+1rem)] pb-[max(2rem,env(safe-area-inset-bottom))] transition-[opacity,visibility] duration-[var(--duration-ui,320ms)] motion-reduce:transition-none md:px-10 md:pt-[calc(76px+2.5rem)] xl:hidden ${
           open ? "visible opacity-100" : "invisible opacity-0"
         }`}
       >
@@ -277,20 +277,20 @@ export function Header() {
               return (
                 <li
                   key={item.href}
-                  className={`border-b border-line transition-[opacity,translate] duration-[350ms] ${ease} ${open ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0"}`}
+                  className={`border-b border-line transition-[opacity,translate] duration-[350ms] motion-reduce:transition-none ${ease} ${open ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0"}`}
                   style={{ transitionDelay: open ? `${40 + i * 30}ms` : "0ms" }}
                 >
                   <Link
                     href={item.href}
                     aria-current={current ? "page" : undefined}
                     onClick={() => closeMenu(true)}
-                    className="group flex items-baseline gap-4 py-3.5 focus-visible:outline-offset-0 md:gap-6 md:py-4"
+                    className="group flex items-baseline gap-4 py-3.5 focus-visible:outline-offset-0 md:gap-6 md:py-4 md:[@media(min-height:900px)]:py-6"
                   >
                     <span aria-hidden className="label w-6 shrink-0 text-stone tabular-nums group-aria-[current=page]:text-ink">
                       {item.index}
                     </span>
                     <span
-                      className={`display text-[clamp(2.15rem,5.4vw,3.5rem)] transition-transform duration-[var(--duration-ui,320ms)] ${ease} group-hover:translate-x-1.5 group-aria-[current=page]:italic`}
+                      className={`display text-[clamp(2.15rem,5.4vw,3.5rem)] md:[@media(min-height:900px)]:text-[clamp(2.5rem,6.6vw,4.25rem)] transition-transform duration-[var(--duration-ui,320ms)] ${ease} group-hover:translate-x-1.5 group-aria-[current=page]:italic`}
                     >
                       {typeset(item.label)}
                       {current && (
@@ -303,7 +303,7 @@ export function Header() {
             })}
           </ul>
           <div
-            className={`mt-auto flex flex-wrap items-center justify-between gap-x-8 gap-y-5 pt-12 transition-opacity duration-[350ms] ${open ? "opacity-100" : "opacity-0"}`}
+            className={`mt-auto flex flex-wrap items-center justify-between gap-x-8 gap-y-5 pt-12 transition-opacity duration-[350ms] motion-reduce:transition-none ${open ? "opacity-100" : "opacity-0"}`}
             style={{ transitionDelay: open ? `${40 + menu.length * 30}ms` : "0ms" }}
           >
             <ConsultingLink label="Consulting at Instrumental" className="text-[16px] font-medium" />
