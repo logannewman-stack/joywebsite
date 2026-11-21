@@ -23,25 +23,26 @@ export default function MeetPage() {
 
   return (
     <>
-      {/* Opening: the portrait owns the right half of the first screen */}
-      <section className="bg-paper pt-[76px]">
+      {/* Opening: the portrait owns the right half of the first screen, bleeding to the edge */}
+      <section className="overflow-x-clip bg-paper pt-[76px]">
         <div className="mx-auto max-w-[1440px] px-5 pb-24 md:px-10 md:pb-32 lg:grid lg:grid-cols-12 lg:gap-x-6">
           <div className="pt-10 md:pt-16 lg:col-span-6 lg:pt-14">
             <Reveal immediate>
               <Label index="01">Meet Dr. Joy</Label>
             </Reveal>
             <h1 className="display mt-7 text-[clamp(3.5rem,8vw,8.4rem)] leading-[0.9] md:mt-9">
-              <LineReveal lines={["My career has", "never followed", <em key="lane">a single lane.</em>]} />
+              {/* Trailing spaces keep the text "My career has never followed a single lane." for search and copy-paste; they do not render. */}
+              <LineReveal lines={["My career has ", "never followed ", <em key="lane">a single lane.</em>]} />
             </h1>
           </div>
 
-          <div className="mt-10 md:mt-14 md:ml-auto md:w-2/3 lg:col-span-6 lg:col-start-7 lg:row-span-2 lg:-mr-10 lg:mt-0 lg:ml-0 lg:w-auto">
+          <div className="mt-10 md:mt-14 md:ml-auto md:w-2/3 lg:col-span-6 lg:col-start-7 lg:row-span-2 lg:mt-0 lg:mr-[calc(-1*max(2.5rem,(100vw-1440px)/2+2.5rem))] lg:ml-0 lg:w-auto">
             <ImageReveal immediate delay={0.1}>
               <Photo
                 slot={hero.portrait}
                 priority
-                className="aspect-[4/5] w-full lg:aspect-auto lg:h-[min(calc(100svh-76px),960px)]"
-                sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1023px) calc(66vw - 53px), (max-width: 1440px) calc(50vw - 12px), 708px"
+                className="aspect-[4/5] w-full lg:aspect-auto lg:h-[min(calc(100svh-76px),1080px)]"
+                sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1023px) calc(66vw - 53px), calc(50vw - 12px)"
               />
             </ImageReveal>
           </div>
