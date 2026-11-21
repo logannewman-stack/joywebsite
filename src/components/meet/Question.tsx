@@ -88,7 +88,7 @@ export function Question({ question, answer }: { question: string; answer: strin
           </Fragment>
         ))}
       </p>
-      <Reveal delay={0.2} y={12} className="mt-14 md:mt-20 lg:mt-24 lg:pl-[calc(50%+12px)]">
+      <Reveal delay={0.2} y={12} className="mt-14 md:mt-20 lg:mt-24 lg:pl-[calc(50%+0.75rem)]">
         <p className="font-sans text-[clamp(2.15rem,5vw,4.75rem)] leading-none font-semibold tracking-[-0.04em] text-balance!">
           {bindI(noWidow(answer.replace(/\.$/, "")))}
           <span aria-hidden className="ml-[0.04em] inline-block size-[0.2em] rounded-full bg-blush-deep" />

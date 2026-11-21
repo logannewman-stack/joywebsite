@@ -105,7 +105,7 @@ function TypeFields({ type, preset, draft, programFirst }: { type: InquiryType; 
 /** Neutral, factual note under each form. Wording for Dr. Joy to approve is in the handoff notes. */
 function PrivacyNote({ interest }: { interest: boolean }) {
   return (
-    <p className="text-[13.5px] leading-relaxed text-stone">
+    <p className="text-[0.84375rem] leading-relaxed text-stone">
       {interest
         ? "Your details add you to the P3 interest list. Sponsor communications and text messages are sent only if you check those boxes."
         : "Your details are used to respond to your inquiry."}
@@ -129,7 +129,7 @@ export function SubmitButton({ sending, children }: { sending: boolean; children
     <button
       type="submit"
       aria-disabled={sending || undefined}
-      className="group inline-flex min-h-12 w-full max-w-full items-center justify-center gap-3 rounded-full bg-ink px-7 text-[15px] font-medium whitespace-nowrap text-white max-[359px]:whitespace-normal transition-[background-color,transform] duration-[var(--duration-hover,180ms)] hover:bg-charcoal focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-ink active:scale-[0.98] aria-disabled:cursor-progress aria-disabled:bg-charcoal motion-reduce:active:scale-100 sm:w-auto"
+      className="group inline-flex min-h-12 w-full max-w-full items-center justify-center gap-3 rounded-full bg-ink px-7 text-[0.9375rem] font-medium whitespace-nowrap text-white max-[359px]:whitespace-normal transition-[background-color,transform] duration-[var(--duration-hover,180ms)] hover:bg-charcoal focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-ink active:scale-[0.98] aria-disabled:cursor-progress aria-disabled:bg-charcoal motion-reduce:active:scale-100 sm:w-auto"
     >
       {sending ? <LoaderCircle className="size-4 animate-spin motion-reduce:animate-none" aria-hidden /> : null}
       {sending ? "Sending" : children}
@@ -196,7 +196,7 @@ export function InquiryForm({
           <Check className="size-5" aria-hidden />
         </span>
         <p className="display mt-6 text-4xl">Thank you.</p>
-        <p className="mt-3 max-w-sm text-[16px] leading-relaxed text-stone">{successMessage(type)}</p>
+        <p className="mt-3 max-w-sm text-[1rem] leading-relaxed text-stone">{successMessage(type)}</p>
       </div>
     );
   }

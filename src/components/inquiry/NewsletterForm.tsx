@@ -43,7 +43,7 @@ export function NewsletterForm({ tone = "light", cta = "Subscribe" }: { tone?: "
         ref={doneRef}
         tabIndex={-1}
         role="status"
-        className={`flex items-start gap-3 text-[16px] leading-relaxed outline-none ${dark ? "text-white" : "text-ink"}`}
+        className={`flex items-start gap-3 text-[1rem] leading-relaxed outline-none ${dark ? "text-white" : "text-ink"}`}
       >
         <span className={`mt-0.5 inline-flex size-6 shrink-0 items-center justify-center rounded-full ${dark ? "bg-blush text-ink" : "bg-ink text-white"}`}>
           <Check className="size-3.5" aria-hidden />
@@ -56,7 +56,7 @@ export function NewsletterForm({ tone = "light", cta = "Subscribe" }: { tone?: "
   return (
     <form onSubmit={onSubmit} className="relative">
       <Honeypot />
-      <label htmlFor={`${id}-email`} className={`block text-[14px] font-medium ${dark ? "text-ash" : "text-stone"}`}>
+      <label htmlFor={`${id}-email`} className={`block text-[0.875rem] font-medium ${dark ? "text-ash" : "text-stone"}`}>
         Email address
       </label>
       <div
@@ -76,12 +76,12 @@ export function NewsletterForm({ tone = "light", cta = "Subscribe" }: { tone?: "
           autoComplete="email"
           {...emailInputProps}
           // w-full keeps the field from widening narrow layouts (a percentage width gives it no minimum).
-          className={`w-full min-w-0 flex-1 bg-transparent py-3 text-[17px] outline-none ${dark ? "text-white" : "text-ink"}`}
+          className={`w-full min-w-0 flex-1 bg-transparent py-3 text-[1.0625rem] outline-none ${dark ? "text-white" : "text-ink"}`}
         />
         <button
           type="submit"
           aria-disabled={sending || undefined}
-          className={`group my-1.5 inline-flex min-h-11 shrink-0 items-center gap-2 rounded-full px-5 text-[14.5px] font-medium whitespace-nowrap transition-[background-color,transform] duration-[var(--duration-hover,180ms)] focus-visible:outline-2 focus-visible:outline-offset-[3px] active:scale-[0.98] aria-disabled:cursor-progress motion-reduce:active:scale-100 ${
+          className={`group my-1.5 inline-flex min-h-11 shrink-0 items-center gap-2 rounded-full px-5 text-[0.90625rem] font-medium whitespace-nowrap transition-[background-color,transform] duration-[var(--duration-hover,180ms)] focus-visible:outline-2 focus-visible:outline-offset-[3px] active:scale-[0.98] aria-disabled:cursor-progress motion-reduce:active:scale-100 ${
             dark
               ? "bg-white text-ink hover:bg-ivory focus-visible:outline-white"
               : "bg-ink text-white hover:bg-charcoal focus-visible:outline-ink"
@@ -93,7 +93,7 @@ export function NewsletterForm({ tone = "light", cta = "Subscribe" }: { tone?: "
         </button>
       </div>
       {links.privacy && (
-        <p className={`mt-1 text-[13.5px] ${dark ? "text-ash" : "text-stone"}`}>
+        <p className={`mt-1 text-[0.84375rem] ${dark ? "text-ash" : "text-stone"}`}>
           <a href={links.privacy} className="inline-flex min-h-11 items-center underline decoration-1 underline-offset-[3px]">
             Privacy Policy
           </a>

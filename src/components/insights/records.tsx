@@ -21,7 +21,7 @@ export function ConfirmTag({ tone = "light", className = "" }: { tone?: "light" 
   if (!site.showPlaceholders) return null;
   return (
     <span
-      className={`label inline-block rounded-full border px-2 py-0.5 !text-[9.5px] whitespace-nowrap ${
+      className={`label inline-block rounded-full border px-2 py-0.5 !text-[0.59375rem] whitespace-nowrap ${
         tone === "dark" ? "border-white/30 text-white/70" : "border-ink/25 text-stone"
       } ${className}`}
     >

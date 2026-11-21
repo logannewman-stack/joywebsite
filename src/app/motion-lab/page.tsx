@@ -24,7 +24,7 @@ export default function MotionLab() {
   const sample = "Motion lab sample sentence that runs long enough to show the words brightening one after another as the page scrolls.";
   return (
     <>
-      <section className="bg-paper px-5 pt-[calc(76px+4rem)] pb-24 md:px-10">
+      <section className="bg-paper px-5 pt-[calc(4.75rem+4rem)] pb-24 md:px-10">
         <p className="label text-stone">Internal: motion system reference</p>
         <h1 className="display mt-6 text-[clamp(3rem,7vw,7rem)]">
           <WordRise immediate>Words rise on load</WordRise>
@@ -37,12 +37,12 @@ export default function MotionLab() {
             </em>
           </h2>
           <span className="rule-draw mt-8 block h-px bg-ink" />
-          <ul className="stagger mt-8 grid gap-4 text-[17px] sm:grid-cols-3">
+          <ul className="stagger mt-8 grid gap-4 text-[1.0625rem] sm:grid-cols-3">
             <li>Staggered item one</li>
             <li>Staggered item two</li>
             <li>Staggered item three</li>
           </ul>
-          <p className="rise mt-10 text-[19px] leading-relaxed" style={{ "--d": "0.2s" } as React.CSSProperties}>
+          <p className="rise mt-10 text-[1.1875rem] leading-relaxed" style={{ "--d": "0.2s" } as React.CSSProperties}>
             A paragraph that rises, with a <Hl tone="light">marker highlight</Hl> that draws itself in.
           </p>
           <p className="mt-10 font-serif text-[clamp(1.6rem,3vw,2.6rem)] leading-tight">

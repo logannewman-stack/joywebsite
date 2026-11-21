@@ -23,7 +23,7 @@ import type { Choice, PanelProps } from "./InquiryProvider";
 
 const ring = "focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-ink";
 const pill =
-  "group inline-flex min-h-12 items-center gap-3 whitespace-nowrap rounded-full px-6 text-[15px] font-medium transition-[background-color,border-color,transform] duration-[var(--duration-hover,180ms)]";
+  "group inline-flex min-h-12 items-center gap-3 whitespace-nowrap rounded-full px-6 text-[0.9375rem] font-medium transition-[background-color,border-color,transform] duration-[var(--duration-hover,180ms)]";
 
 /** The featured P3 event, while its registration page is live (it comes down after its `endsOn` day, US Eastern). */
 function liveEvent() {
@@ -102,18 +102,18 @@ export default function InquiryPanel({ request, closing, close }: PanelProps) {
       aria-labelledby="inquiry-title"
       aria-describedby={intro ? "inquiry-intro" : undefined}
       inert={closing}
-      className={`absolute inset-y-0 right-0 flex w-full max-w-[600px] flex-col bg-paper shadow-[0_0_80px_rgba(11,11,11,0.18)] transition-transform starting:translate-x-full motion-reduce:transition-none ${
+      className={`absolute inset-y-0 right-0 flex w-full max-w-[37.5rem] flex-col bg-paper shadow-[0_0_80px_rgba(11,11,11,0.18)] transition-transform starting:translate-x-full motion-reduce:transition-none ${
         closing
           ? "translate-x-full duration-[320ms] ease-[cubic-bezier(0.7,0,0.84,0)]"
           : "translate-x-0 duration-[420ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
       }`}
     >
-      <div className="flex h-[72px] shrink-0 items-center justify-between border-b border-line px-6 md:px-10">
+      <div className="flex h-[4.5rem] shrink-0 items-center justify-between border-b border-line px-6 md:px-10">
         {(choice !== null || limited) && !sent ? (
           <button
             type="button"
             onClick={choice !== null ? back : () => setAllTopics(true)}
-            className={`-ml-1 inline-flex min-h-11 items-center gap-2 px-1 text-[14px] font-medium text-stone transition-colors duration-[var(--duration-hover,180ms)] hover:text-ink ${ring}`}
+            className={`-ml-1 inline-flex min-h-11 items-center gap-2 px-1 text-[0.875rem] font-medium text-stone transition-colors duration-[var(--duration-hover,180ms)] hover:text-ink ${ring}`}
           >
             <ArrowLeft className="size-4" aria-hidden /> All topics
           </button>
@@ -140,7 +140,7 @@ export default function InquiryPanel({ request, closing, close }: PanelProps) {
           {title}
         </h2>
         {intro && (
-          <p id="inquiry-intro" className="mt-4 max-w-md text-[16.5px] leading-relaxed text-stone">
+          <p id="inquiry-intro" className="mt-4 max-w-md text-[1.03125rem] leading-relaxed text-stone">
             {intro}
           </p>
         )}
@@ -189,7 +189,7 @@ function Picker({ choices, onPick }: { choices: Choice[]; onPick: (c: Choice) =>
               className="group flex min-h-16 w-full items-center gap-5 py-4 text-left transition-colors duration-[var(--duration-hover,180ms)] hover:bg-ivory focus-visible:bg-ivory focus-visible:outline-2 focus-visible:outline-offset-0 focus-visible:outline-ink active:bg-sand/60"
             >
               <span className="label w-6 shrink-0 text-stone tabular-nums">{String(i + 1).padStart(2, "0")}</span>
-              <span className="flex-1 font-serif text-[22px] leading-tight">
+              <span className="flex-1 font-serif text-[1.375rem] leading-tight">
                 {c === "consulting" ? consultingChoice.label : inquiryTypes[c].label}
               </span>
               <ArrowRight
@@ -238,10 +238,10 @@ function EventRoute({ event }: { event: NonNullable<ReturnType<typeof liveEvent>
   return (
     <div className="border-t border-line pt-6">
       <p className="font-serif text-3xl leading-tight">{event.name}</p>
-      <p className="mt-2 text-[16px] text-stone">
+      <p className="mt-2 text-[1rem] text-stone">
         {event.date} · {event.location}
       </p>
-      {event.details && <p className="mt-4 max-w-md text-[16px] leading-relaxed text-stone">{event.details}</p>}
+      {event.details && <p className="mt-4 max-w-md text-[1rem] leading-relaxed text-stone">{event.details}</p>}
       <a
         href={event.registrationUrl}
         target="_blank"

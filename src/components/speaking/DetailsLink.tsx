@@ -29,11 +29,11 @@ export function DetailsLink({
       href={pdf}
       target="_blank"
       rel="noopener noreferrer"
-      className={`group inline-flex min-h-11 items-center gap-2 text-[15px] font-medium ${focusRing[tone]} ${className}`}
+      className={`group inline-flex min-h-11 items-center gap-2 text-[0.9375rem] font-medium ${focusRing[tone]} ${className}`}
     >
       <FileText className="size-4 shrink-0" aria-hidden />
       <span className="link-draw pb-0.5">{label}</span>
-      <span aria-hidden className={`label ml-1 !text-[10px] !tracking-[0.14em] whitespace-nowrap max-sm:hidden ${tone === "dark" ? "text-ash" : "text-stone"}`}>
+      <span aria-hidden className={`label ml-1 !text-[0.625rem] !tracking-[0.14em] whitespace-nowrap max-sm:hidden ${tone === "dark" ? "text-ash" : "text-stone"}`}>
         {meta}
       </span>
       <span className="sr-only">

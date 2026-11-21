@@ -117,13 +117,13 @@ export function FormAlert({
       ref={ref}
       role="alert"
       tabIndex={-1}
-      className={`flex gap-3 rounded-[2px] border p-4 text-[15px] leading-relaxed md:p-5 ${
+      className={`flex gap-3 rounded-[2px] border p-4 text-[0.9375rem] leading-relaxed md:p-5 ${
         dark
           ? "border-white/25 bg-white/[0.06] text-white focus-visible:outline-white"
           : "border-ink/15 bg-ivory text-ink focus-visible:outline-ink"
       } focus-visible:outline-2 focus-visible:outline-offset-2`}
     >
-      <CircleAlert className="mt-[3px] size-[18px] shrink-0" aria-hidden />
+      <CircleAlert className="mt-[3px] size-[1.125rem] shrink-0" aria-hidden />
       <div>
         <p className="font-medium">{title}</p>
         <p className={`mt-1 ${dark ? "text-white/80" : "text-ink/80"}`}>
@@ -146,7 +146,7 @@ export function StatusMessage({ status, tone = "light" }: { status: Status; tone
 /** Hidden field that only bots fill in. */
 export function Honeypot() {
   return (
-    <div aria-hidden className="absolute -left-[9999px] h-0 w-0 overflow-hidden">
+    <div aria-hidden className="absolute -left-[624.9375rem] h-0 w-0 overflow-hidden">
       <label>
         Company website
         <input type="text" name="company_website" tabIndex={-1} autoComplete="off" />

@@ -23,7 +23,7 @@ export type FeatureItem = {
 export function Feature({ item, cta }: { item: FeatureItem; cta: string }) {
   return (
     <section className="bg-ivory">
-      <div className="mx-auto max-w-[1440px] px-5 py-20 md:px-10 md:py-28 lg:py-36">
+      <div className="mx-auto max-w-[90rem] px-5 py-20 md:px-10 md:py-28 lg:py-36">
         <article className="grid grid-cols-1 gap-y-10 border-t border-ink pt-8 md:pt-10 lg:grid-cols-12 lg:gap-x-6">
           <Reveal className="lg:col-span-5">
             {item.publication && <p className="font-serif text-[clamp(1.6rem,2.3vw,2.25rem)] leading-tight italic">{item.publication}</p>}
@@ -37,7 +37,7 @@ export function Feature({ item, cta }: { item: FeatureItem; cta: string }) {
             {item.subtitle && (
               <p className="mt-6 max-w-[34ch] font-serif text-[clamp(1.35rem,1.9vw,1.8rem)] leading-snug text-stone italic">{item.subtitle}</p>
             )}
-            {item.excerpt && <p className="mt-6 max-w-[56ch] text-[17px] leading-relaxed text-stone">{item.excerpt}</p>}
+            {item.excerpt && <p className="mt-6 max-w-[56ch] text-[1.0625rem] leading-relaxed text-stone">{item.excerpt}</p>}
             <ButtonLink href={item.href} className="mt-10">
               {cta}
             </ButtonLink>

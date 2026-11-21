@@ -43,7 +43,7 @@ function GroupBlock({
 export function Credentials({ heading, groups }: { heading: string; groups: Group[] }) {
   const [education, leadership, built] = groups;
   return (
-    <div className="mx-auto max-w-[1440px] px-5 pt-20 pb-24 md:px-10 md:pt-28 md:pb-32">
+    <div className="mx-auto max-w-[90rem] px-5 pt-20 pb-24 md:px-10 md:pt-28 md:pb-32">
       <Reveal>
         <h2 className="display max-w-[11em] text-[clamp(2.75rem,5.4vw,5.25rem)] leading-[0.95]">{heading}</h2>
       </Reveal>
@@ -56,7 +56,7 @@ export function Credentials({ heading, groups }: { heading: string; groups: Grou
               <li key={item} className="border-b border-line-dark py-5 text-pretty md:py-6">
                 <span className="display block text-[clamp(1.75rem,2.35vw,2.2rem)] leading-[1.05] text-white">{degree}</span>
                 <Comma />
-                <span className="mt-2 block text-[14px] leading-snug text-ash">{school}</span>
+                <span className="mt-2 block text-[0.875rem] leading-snug text-ash">{school}</span>
               </li>
             );
           })}
@@ -66,7 +66,7 @@ export function Credentials({ heading, groups }: { heading: string; groups: Grou
           {leadership.items.map((item) => {
             const [role, organization] = split(item, "first");
             return (
-              <li key={item} className="border-b border-line-dark py-3.5 text-[16px] leading-snug text-pretty md:py-[1.05rem] md:text-[17px]">
+              <li key={item} className="border-b border-line-dark py-3.5 text-[1rem] leading-snug text-pretty md:py-[1.05rem] md:text-[1.0625rem]">
                 <span className="text-ash">{role},</span> <span className="text-white">{organization}</span>
               </li>
             );

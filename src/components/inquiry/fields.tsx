@@ -13,14 +13,14 @@ export { Honeypot } from "./feedback";
  */
 
 const control =
-  "block w-full rounded-none border-0 border-b border-ink/45 bg-transparent px-0 pt-1.5 pb-2 text-[16px] leading-normal text-ink outline-none transition-[border-color,box-shadow] duration-[var(--duration-hover,180ms)] placeholder:text-stone hover:border-ink/70 focus:border-ink focus:shadow-[0_1px_0_0_var(--color-ink)]";
+  "block w-full rounded-none border-0 border-b border-ink/45 bg-transparent px-0 pt-1.5 pb-2 text-[1rem] leading-normal text-ink outline-none transition-[border-color,box-shadow] duration-[var(--duration-hover,180ms)] placeholder:text-stone hover:border-ink/70 focus:border-ink focus:shadow-[0_1px_0_0_var(--color-ink)]";
 
 function FieldLabel({ label, required, hint }: { label: string; required?: boolean; hint?: string }) {
   const note = hint ?? (required ? null : "Optional");
   return (
     <span className="mb-1.5 flex items-baseline justify-between gap-4">
-      <span className="text-[14px] leading-snug font-medium text-ink">{label}</span>
-      {note && <span className="shrink-0 text-right text-[13px] leading-snug text-stone">{note}</span>}
+      <span className="text-[0.875rem] leading-snug font-medium text-ink">{label}</span>
+      {note && <span className="shrink-0 text-right text-[0.8125rem] leading-snug text-stone">{note}</span>}
     </span>
   );
 }
@@ -166,7 +166,7 @@ export function CheckGroup({
         {options.map((o) => (
           <label key={o} className="cursor-pointer">
             <input type="checkbox" name={name} value={o} defaultChecked={defaultValues.includes(o)} className="peer sr-only" />
-            <span className="inline-flex min-h-11 items-center rounded-full border border-ink/25 px-4 text-[14px] transition-colors duration-[var(--duration-hover,180ms)] select-none peer-checked:border-ink peer-checked:bg-ink peer-checked:text-white forced-colors:peer-checked:border-[Highlight] forced-colors:peer-checked:bg-[Highlight] forced-colors:peer-checked:text-[HighlightText] peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-ink hover:border-ink/60 active:scale-[0.98] motion-reduce:active:scale-100">
+            <span className="inline-flex min-h-11 items-center rounded-full border border-ink/25 px-4 text-[0.875rem] transition-colors duration-[var(--duration-hover,180ms)] select-none peer-checked:border-ink peer-checked:bg-ink peer-checked:text-white forced-colors:peer-checked:border-[Highlight] forced-colors:peer-checked:bg-[Highlight] forced-colors:peer-checked:text-[HighlightText] peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-ink hover:border-ink/60 active:scale-[0.98] motion-reduce:active:scale-100">
               {o}
             </span>
           </label>
@@ -191,8 +191,8 @@ export function Consent({
   defaultChecked?: boolean;
 }) {
   return (
-    <label className="flex cursor-pointer items-start gap-3 text-[14.5px] leading-relaxed text-ink/80" data-field={name} data-label={label ?? name}>
-      <input type="checkbox" name={name} onChange={onChange} defaultChecked={defaultChecked} className="mt-[3px] size-[18px] shrink-0 cursor-pointer accent-ink" />
+    <label className="flex cursor-pointer items-start gap-3 text-[0.90625rem] leading-relaxed text-ink/80" data-field={name} data-label={label ?? name}>
+      <input type="checkbox" name={name} onChange={onChange} defaultChecked={defaultChecked} className="mt-[3px] size-[1.125rem] shrink-0 cursor-pointer accent-ink" />
       <span>
         {children} <span className="text-stone">(optional)</span>
       </span>

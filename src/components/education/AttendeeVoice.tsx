@@ -22,7 +22,7 @@ export function AttendeeVoice() {
   if (!a) {
     return site.showPlaceholders ? (
       <section className="bg-paper">
-        <div className="mx-auto max-w-[1440px] px-5 py-24 md:px-10">
+        <div className="mx-auto max-w-[90rem] px-5 py-24 md:px-10">
           <ReviewSlot>Featured attendee testimonial or approved short video (permission required)</ReviewSlot>
         </div>
       </section>
@@ -36,14 +36,14 @@ export function AttendeeVoice() {
         // Sits in the quote's column, pulled up into the quote's bottom space
         // (relative, so it paints above the quote section it overlaps).
         <section className={`relative bg-paper ${hasQuote ? "-mt-10 md:-mt-20" : ""}`}>
-          <div className={`mx-auto grid max-w-[1440px] gap-10 px-5 md:px-10 lg:grid-cols-12 ${hasQuote ? "pb-24 md:pb-32" : "py-24 md:py-36"}`}>
+          <div className={`mx-auto grid max-w-[90rem] gap-10 px-5 md:px-10 lg:grid-cols-12 ${hasQuote ? "pb-24 md:pb-32" : "py-24 md:py-36"}`}>
             {!hasQuote && (
               <div className="lg:col-span-3">
                 <Label as="h2" className="text-stone">
                   {heading}
                 </Label>
                 {a.permission !== "granted" && (
-                  <p className="label mt-3 inline-block border border-ink/25 px-2 py-1 !text-[9px] whitespace-nowrap text-stone">Permission to republish pending</p>
+                  <p className="label mt-3 inline-block border border-ink/25 px-2 py-1 !text-[0.5625rem] whitespace-nowrap text-stone">Permission to republish pending</p>
                 )}
               </div>
             )}

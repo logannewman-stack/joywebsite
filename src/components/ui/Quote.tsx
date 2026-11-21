@@ -100,7 +100,7 @@ export function Quote({
           <div className="absolute inset-0 bg-ink/80" />
         </div>
       )}
-      <div className="relative mx-auto max-w-[1440px] px-5 py-24 md:px-10 md:py-32">
+      <div className="relative mx-auto max-w-[90rem] px-5 py-24 md:px-10 md:py-32">
         <div className="grid md:grid-cols-12 md:gap-x-6">
           <div
             className={`flex flex-wrap items-center gap-x-4 gap-y-2 border-t pt-5 md:col-span-10 md:col-start-2 lg:col-span-9 lg:col-start-3 ${
@@ -110,7 +110,7 @@ export function Quote({
             <h2 className={`label ${dark ? "text-ash" : "text-stone"}`}>{heading}</h2>
             {permission !== "granted" && (
               <p
-                className={`label rounded-full border px-2 py-0.5 !text-[9px] whitespace-nowrap ${dark ? "border-white/25 text-white/60" : "border-ink/25 text-stone"}`}
+                className={`label rounded-full border px-2 py-0.5 !text-[0.5625rem] whitespace-nowrap ${dark ? "border-white/25 text-white/60" : "border-ink/25 text-stone"}`}
               >
                 Permission to republish pending
               </p>
@@ -140,11 +140,11 @@ export function Quote({
             </Reveal>
             <Reveal delay={0.1}>
               <figcaption className="mt-10 flex flex-col gap-1 md:mt-12 md:flex-row md:items-center md:gap-4">
-                <span className="text-[16px] font-medium">{name}</span>
+                <span className="text-[1rem] font-medium">{name}</span>
                 {role && (
                   <>
                     <span className={`hidden h-px w-6 md:block ${dark ? "bg-white/40" : "bg-ink/30"}`} aria-hidden />
-                    <span className={`text-[15px] ${dark ? "text-ash" : "text-stone"}`}>{role}</span>
+                    <span className={`text-[0.9375rem] ${dark ? "text-ash" : "text-stone"}`}>{role}</span>
                   </>
                 )}
               </figcaption>

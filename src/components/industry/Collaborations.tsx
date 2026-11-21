@@ -13,7 +13,7 @@ export function Collaborations({ heading, logos }: { heading: string; logos: { n
   const shown = logos.slice(0, 5);
   return (
     <section className="bg-paper">
-      <div className="mx-auto grid grid-cols-1 max-w-[1440px] gap-y-10 px-5 pt-24 md:px-10 md:pt-28 lg:grid-cols-12 lg:gap-x-6 lg:pt-36">
+      <div className="mx-auto grid grid-cols-1 max-w-[90rem] gap-y-10 px-5 pt-24 md:px-10 md:pt-28 lg:grid-cols-12 lg:gap-x-6 lg:pt-36">
         <Reveal className="lg:col-span-4">
           <h2 className="display max-w-[14ch] text-[clamp(2.2rem,3.4vw,3.2rem)] leading-[1]">{heading}</h2>
         </Reveal>
@@ -22,7 +22,7 @@ export function Collaborations({ heading, logos }: { heading: string; logos: { n
             <ul className="grid grid-cols-2 border-t border-line sm:flex sm:border-y">
               {shown.map((l) => (
                 <li key={l.name} className="relative h-28 border-b border-line odd:border-r sm:flex-1 sm:border-b-0 sm:odd:border-r-0 sm:[&:not(:first-child)]:border-l md:h-32">
-                  <Image src={l.src} alt={l.name} fill sizes="(max-width: 639px) 45vw, 220px" className="object-contain px-8 py-9 md:px-10" />
+                  <Image src={l.src} alt={l.name} fill sizes="(max-width: 639px) 45vw, (max-width: 1440px) 220px, 15.3vw" className="object-contain px-8 py-9 md:px-10" />
                 </li>
               ))}
             </ul>

@@ -79,7 +79,7 @@ function OpenLink({ dir, children, className = "" }: { dir: Key; children: React
       href={`/directions/${dir}`}
       target="_blank"
       rel="noopener noreferrer"
-      className={`group inline-flex min-h-11 items-center gap-1.5 text-[14px] font-medium ${className}`}
+      className={`group inline-flex min-h-11 items-center gap-1.5 text-[0.875rem] font-medium ${className}`}
     >
       <span className="link-draw">{children}</span>
       <ArrowUpRight className="size-4 transition-transform duration-(--duration-ui) ease-expo group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden />
@@ -99,22 +99,22 @@ export default function DirectionsPage() {
 
   return (
     <>
-      <section className="border-b border-line bg-paper pt-[76px]">
-        <div className="mx-auto max-w-[1440px] px-5 py-16 md:px-10 md:py-24">
+      <section className="border-b border-line bg-paper pt-[4.75rem]">
+        <div className="mx-auto max-w-[90rem] px-5 py-16 md:px-10 md:py-24">
           <p className="label text-stone">For review · Not part of the public site</p>
           <h1 className="display mt-6 max-w-4xl text-[clamp(2.8rem,6vw,6rem)]">Three directions for the opening screen.</h1>
           <div className="mt-10 grid gap-8 md:grid-cols-3">
-            <p className="text-[16px] leading-relaxed text-stone">
+            <p className="text-[1rem] leading-relaxed text-stone">
               Each direction uses the approved Home copy unchanged. Photographs are from the supplied shoot and event folders; the original
               filename is noted under each direction.
             </p>
-            <p className="text-[16px] leading-relaxed text-stone">
+            <p className="text-[1rem] leading-relaxed text-stone">
               Home uses <strong className="font-medium text-ink">Direction {current}</strong>. Moving to {others} is a quick change once you
               choose.
             </p>
             <nav aria-label="Directions" className="flex flex-col gap-2">
               {directions.map((d) => (
-                <a key={d.key} href={`#direction-${d.key}`} className="link-draw self-start text-[16px] font-medium">
+                <a key={d.key} href={`#direction-${d.key}`} className="link-draw self-start text-[1rem] font-medium">
                   {d.key.toUpperCase()}. {d.name}
                   {d.key === "b" && <span className="label ml-2 text-stone">{d.tag}</span>}
                 </a>
@@ -126,7 +126,7 @@ export default function DirectionsPage() {
 
       {/* The first screen on a phone, side by side. */}
       <section className="border-b border-line bg-ivory" aria-labelledby="phones-heading">
-        <div className="mx-auto max-w-[1440px] px-5 py-14 md:px-10 md:py-20">
+        <div className="mx-auto max-w-[90rem] px-5 py-14 md:px-10 md:py-20">
           <h2 id="phones-heading" className="label text-stone">
             On a phone
           </h2>
@@ -136,17 +136,17 @@ export default function DirectionsPage() {
               <figure key={d.key} className="shrink-0 snap-start">
                 <div
                   inert
-                  className="box-content h-[608px] w-[281px] overflow-hidden rounded-[30px] border-[6px] border-ink bg-ink shadow-[0_24px_60px_-30px_rgba(11,11,11,0.45)]"
+                  className="box-content h-[38rem] w-[17.5625rem] overflow-hidden rounded-[1.875rem] border-[0.375rem] border-ink bg-ink shadow-[0_24px_60px_-30px_rgba(11,11,11,0.45)]"
                 >
                   <iframe
                     src={`/directions/${d.key}`}
                     title={`Direction ${d.key.toUpperCase()}, ${d.name}, on a phone`}
                     loading="lazy"
-                    className="block h-[844px] w-[390px] origin-top-left scale-[0.72] border-0 bg-paper"
+                    className="block h-[52.75rem] w-[24.375rem] origin-top-left scale-[0.72] border-0 bg-paper"
                   />
                 </div>
                 <figcaption className="mt-4 flex items-center justify-between gap-4">
-                  <span className="text-[15px] font-medium">
+                  <span className="text-[0.9375rem] font-medium">
                     {d.key.toUpperCase()}. {d.name}
                     {d.key === site.homeHero && <span className="label ml-2 text-stone">Home</span>}
                   </span>
@@ -161,7 +161,7 @@ export default function DirectionsPage() {
       {directions.map(({ key, name, tag, idea, image, strengths, tradeoffs }) => (
         <section key={key} id={`direction-${key}`} aria-labelledby={`direction-${key}-heading`}>
           <div className="border-b border-ink bg-paper">
-            <div className="mx-auto flex max-w-[1440px] flex-wrap items-center justify-between gap-x-6 gap-y-1 px-5 py-3 md:px-10">
+            <div className="mx-auto flex max-w-[90rem] flex-wrap items-center justify-between gap-x-6 gap-y-1 px-5 py-3 md:px-10">
               <h2 id={`direction-${key}-heading`} className="label">
                 Direction {key.toUpperCase()} · {name}
               </h2>
@@ -180,22 +180,22 @@ export default function DirectionsPage() {
               src={`/directions/${key}`}
               title={`Direction ${key.toUpperCase()}, ${name}, opening screen`}
               loading="lazy"
-              className="mx-auto block aspect-[16/10] w-full max-w-[1440px] border-0 bg-paper"
+              className="mx-auto block aspect-[16/10] w-full max-w-[90rem] border-0 bg-paper"
             />
           </div>
           <div className="border-b border-line bg-ivory">
-            <div className="mx-auto grid max-w-[1440px] gap-10 px-5 py-14 md:grid-cols-12 md:gap-x-6 md:px-10 md:py-20">
+            <div className="mx-auto grid max-w-[90rem] gap-10 px-5 py-14 md:grid-cols-12 md:gap-x-6 md:px-10 md:py-20">
               <div className="md:col-span-5">
                 <p className="label text-stone">Rationale</p>
-                <p className="mt-4 font-serif text-[24px] leading-snug">{idea}</p>
+                <p className="mt-4 font-serif text-[1.5rem] leading-snug">{idea}</p>
                 <p className="label mt-8 text-stone">Image selection</p>
-                <p className="mt-3 text-[16px] leading-relaxed">{image}</p>
+                <p className="mt-3 text-[1rem] leading-relaxed">{image}</p>
               </div>
               <div className="md:col-span-3 md:col-start-7">
                 <p className="label text-stone">Strengths</p>
                 <ul className="mt-4 flex flex-col gap-3">
                   {strengths.map((s) => (
-                    <li key={s} className="border-t border-line pt-3 text-[15.5px] leading-relaxed">
+                    <li key={s} className="border-t border-line pt-3 text-[0.96875rem] leading-relaxed">
                       {s}
                     </li>
                   ))}
@@ -205,7 +205,7 @@ export default function DirectionsPage() {
                 <p className="label text-stone">Tradeoffs</p>
                 <ul className="mt-4 flex flex-col gap-3">
                   {tradeoffs.map((s) => (
-                    <li key={s} className="border-t border-line pt-3 text-[15.5px] leading-relaxed text-stone">
+                    <li key={s} className="border-t border-line pt-3 text-[0.96875rem] leading-relaxed text-stone">
                       {s}
                     </li>
                   ))}

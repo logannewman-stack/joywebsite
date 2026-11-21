@@ -5,7 +5,7 @@ import { speaking } from "@/content/speaking";
 import { ButtonLink, ReviewSlot, focusRing } from "@/components/ui/Links";
 import { Reveal } from "@/components/ui/Reveal";
 
-const textLink = `group inline-flex min-h-11 items-center gap-2 text-[15px] font-medium ${focusRing.light}`;
+const textLink = `group inline-flex min-h-11 items-center gap-2 text-[0.9375rem] font-medium ${focusRing.light}`;
 
 /**
  * Meeting Planner Resources. With links.speakerResources set, the approved
@@ -17,12 +17,12 @@ export function PlannerResources({ ruled = false }: { ruled?: boolean }) {
   const { heading, text, cta } = speaking.resources;
   return (
     <section id="resources" className={`bg-paper ${ruled ? "border-t border-line" : ""}`}>
-      <div className="mx-auto grid max-w-[1440px] gap-8 px-5 py-24 md:px-10 md:py-32 lg:grid-cols-12 lg:gap-x-6">
+      <div className="mx-auto grid max-w-[90rem] gap-8 px-5 py-24 md:px-10 md:py-32 lg:grid-cols-12 lg:gap-x-6">
         <Reveal className="lg:col-span-6">
           <h2 className="display text-[clamp(2.6rem,4.8vw,4.6rem)]">{heading}</h2>
         </Reveal>
         <Reveal delay={0.06} className="lg:col-span-6 lg:col-start-7 lg:pt-3">
-          <p className="max-w-[44ch] text-[17px] leading-relaxed text-stone">{text}</p>
+          <p className="max-w-[44ch] text-[1.0625rem] leading-relaxed text-stone">{text}</p>
           <div className="mt-8">{links.speakerResources ? <ButtonLink href={links.speakerResources}>{cta}</ButtonLink> : <Kit />}</div>
           {!links.speakerResources && site.showPlaceholders && (
             <ReviewSlot className="mt-8 !min-h-0 !justify-start !px-4 !py-3 text-left">
@@ -74,7 +74,7 @@ function Kit() {
   return (
     <details className="group/kit">
       <summary
-        className={`group inline-flex min-h-12 cursor-pointer list-none items-center gap-3 rounded-full bg-ink px-6 text-[15px] font-medium whitespace-nowrap text-white transition-colors duration-300 select-none hover:bg-charcoal ${focusRing.light} [&::-webkit-details-marker]:hidden`}
+        className={`group inline-flex min-h-12 cursor-pointer list-none items-center gap-3 rounded-full bg-ink px-6 text-[0.9375rem] font-medium whitespace-nowrap text-white transition-colors duration-300 select-none hover:bg-charcoal ${focusRing.light} [&::-webkit-details-marker]:hidden`}
       >
         {cta}
         <Plus className="size-4 transition-transform duration-300 group-open/kit:rotate-45" aria-hidden />
@@ -82,7 +82,7 @@ function Kit() {
       <dl className="mt-8 border-t border-ink">
         {rows.map((r) => (
           <div key={r.name} className="grid gap-1 border-b border-line py-4 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center sm:gap-6">
-            <dt className="font-serif text-[21px] leading-tight">{r.name}</dt>
+            <dt className="font-serif text-[1.3125rem] leading-tight">{r.name}</dt>
             <dd className="flex flex-wrap items-center">{r.action}</dd>
           </div>
         ))}

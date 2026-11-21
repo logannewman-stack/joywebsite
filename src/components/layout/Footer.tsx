@@ -18,14 +18,14 @@ const work = [
   { type: "clinical_launch", label: "Clinical launch strategy" },
 ] as const;
 
-const row = "inline-flex min-h-11 items-center text-[15.5px] text-white/90 transition-colors duration-[var(--duration-hover,180ms)] hover:text-white";
+const row = "inline-flex min-h-11 items-center text-[0.96875rem] text-white/90 transition-colors duration-[var(--duration-hover,180ms)] hover:text-white";
 const ring = "rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white";
 
 export function Footer() {
   const consulting = instrumentalLink();
   return (
     <footer data-header="dark" className="grain grain-light bg-ink text-white">
-      <div className="mx-auto max-w-[1440px] px-5 pt-24 pb-10 md:px-10 md:pt-32">
+      <div className="mx-auto max-w-[90rem] px-5 pt-24 pb-10 md:px-10 md:pt-32">
         <div className="flex flex-col gap-20 xl:flex-row xl:gap-24">
           <FooterNewsletter>
             <section aria-labelledby="footer-newsletter" className="@container xl:w-[44%] xl:shrink-0">
@@ -38,7 +38,7 @@ export function Footer() {
                   </h2>
                 </div>
                 <div className="@2xl:self-end">
-                  <p className="max-w-[28rem] text-[17px] leading-relaxed !text-balance text-ash">{insights.newsletter.text}</p>
+                  <p className="max-w-[28rem] text-[1.0625rem] leading-relaxed !text-balance text-ash">{insights.newsletter.text}</p>
                   <div className="mt-8 max-w-md">
                     <NewsletterForm tone="dark" cta={insights.newsletter.cta} />
                   </div>
@@ -72,7 +72,7 @@ export function Footer() {
                 <ul className="mt-4 @3xl:columns-2 @3xl:gap-10">
                   {work.map((w) => (
                     <li key={w.type} className="break-inside-avoid">
-                      <InquiryButton variant="text" tone="dark" type={w.type} arrow={false} className={`${row} !text-[15.5px] !font-normal whitespace-nowrap`}>
+                      <InquiryButton variant="text" tone="dark" type={w.type} arrow={false} className={`${row} !text-[0.96875rem] !font-normal whitespace-nowrap`}>
                         {w.label}
                       </InquiryButton>
                     </li>
@@ -107,7 +107,7 @@ export function Footer() {
                   <li className="break-inside-avoid pt-3">
                     <a
                       href={`mailto:${site.email}`}
-                      className={`${row} ${ring} text-white underline decoration-white/35 decoration-1 underline-offset-[6px] hover:decoration-white`}
+                      className={`${row} ${ring} text-white underline decoration-white/35 decoration-1 underline-offset-[0.375rem] hover:decoration-white`}
                     >
                       {site.email}
                     </a>
@@ -123,7 +123,7 @@ export function Footer() {
           <Link href="/" aria-label={`${site.name}, home`} className={`self-start ${ring}`}>
             <Wordmark tone="dark" loading="lazy" className="!h-[clamp(4.5rem,10vw,8.5rem)]" />
           </Link>
-          <div className="flex flex-wrap items-center gap-x-6 gap-y-1 text-[13px] text-ash md:pb-3">
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-1 text-[0.8125rem] text-ash md:pb-3">
             <span>
               © <Year /> {site.name}. All rights reserved.
             </span>

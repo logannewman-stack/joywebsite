@@ -41,13 +41,20 @@
   --duration-ui: 320ms; /* underlines, small shifts, header and panels */
   --duration-text: 600ms; /* text fade-and-lift */
   --duration-image: 800ms; /* photo uncover, headline line rise */
-  --header-height: 76px;
+  --header-height: 4.75rem;
 }
 
 /* ==========================================================================
    Base
    ========================================================================== */
 html {
+  /* Above the 1440px design width the whole site scales with the screen, so a
+     large monitor shows the same composition, bigger, instead of a narrow
+     column. All layout sizes are in rem for this reason (px is only for
+     hairlines and media queries). The height term keeps very wide, short
+     windows from over-scaling; the cap is a 2560px-wide layout. Up to 1440px
+     nothing changes, and the visitor's own font size still applies. */
+  font-size: clamp(100%, min(1.1111vw, 2.16vh), 177.78%);
   scroll-behavior: smooth;
   /* The site is designed light. Keeps form controls and scrollbars light in dark mode. */
   color-scheme: light;
@@ -108,7 +115,7 @@ body {
   letter-spacing: -0.015em;
   line-height: 0.96;
   text-wrap: balance;
-  /* Long words wrap instead of pushing the page sideways at 320px or with
+  /* Long words wrap instead of pushing the page sideways at 20rem or with
      increased text spacing (WCAG 1.4.12). Only applies when a word cannot fit. */
   overflow-wrap: anywhere;
 }
@@ -129,7 +136,7 @@ body {
 /* Small uppercase label */
 .label {
   font-family: var(--font-sans);
-  font-size: 11.5px;
+  font-size: 0.71875rem;
   font-weight: 500;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -177,12 +184,12 @@ body {
 }
 
 /* Bleed off the right edge: a photo in the right-hand column of a
-   `max-w-[1440px] px-10` container runs to the edge of the screen at every
+   `max-w-[90rem] px-10` container runs to the edge of the screen at every
    width, wide screens included (use it from md, e.g. `lg:bleed-right`).
    100vw counts a classic scrollbar, so the section clips the few extra
    pixels with `overflow-x-clip`. */
 @utility bleed-right {
-  margin-right: calc(-1 * max(2.5rem, (100vw - 1440px) / 2 + 2.5rem));
+  margin-right: calc(-1 * max(2.5rem, (100vw - 90rem) / 2 + 2.5rem));
 }
 
 /* ==========================================================================
@@ -192,7 +199,7 @@ body {
    ========================================================================== */
 html.js [data-reveal=""] {
   opacity: 0;
-  transform: translate3d(0, var(--reveal-y, 12px), 0);
+  transform: translate3d(0, var(--reveal-y, 0.75rem), 0);
   transition:
     opacity var(--duration-text) var(--ease-expo) var(--reveal-delay, 0s),
     transform var(--duration-text) var(--ease-expo) var(--reveal-delay, 0s);
@@ -210,7 +217,7 @@ html.js [data-reveal=""][data-in] {
 @keyframes reveal-rise {
   from {
     opacity: 0;
-    transform: translate3d(0, var(--reveal-y, 12px), 0);
+    transform: translate3d(0, var(--reveal-y, 0.75rem), 0);
   }
   to {
     opacity: 1;

@@ -75,7 +75,7 @@ export function Photo({
           className={cutout ? "object-contain object-bottom" : "object-cover object-[var(--focus-sm)] md:object-[var(--focus)]"}
         />
         {slot.stock && site.showPlaceholders && (
-          <span className="label absolute top-3 left-3 bg-paper/90 px-2 py-1 !text-[9.5px] !tracking-[0.14em] text-ink">
+          <span className="label absolute top-3 left-3 bg-paper/90 px-2 py-1 !text-[0.59375rem] !tracking-[0.14em] text-ink">
             Stock placeholder
           </span>
         )}
@@ -111,8 +111,8 @@ export function Photo({
       {site.showPlaceholders && showDirection && (
         <div className={`absolute inset-x-0 bottom-0 p-4 md:p-5 ${isCutout ? "" : fg}`}>
           <div className={isCutout ? "max-w-[36ch] bg-paper/95 px-3.5 py-3 text-ink" : ""}>
-            <p className="label !text-[9.5px]">Photo to come · {treatmentLabel[slot.treatment]}</p>
-            <p className="mt-1.5 max-w-[34ch] font-serif text-[15px] leading-snug italic">{slot.direction}</p>
+            <p className="label !text-[0.59375rem]">Photo to come · {treatmentLabel[slot.treatment]}</p>
+            <p className="mt-1.5 max-w-[34ch] font-serif text-[0.9375rem] leading-snug italic">{slot.direction}</p>
           </div>
         </div>
       )}

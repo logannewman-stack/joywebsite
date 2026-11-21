@@ -35,7 +35,7 @@ export function reelEmbedUrl(url: string): string | null {
 }
 
 const control =
-  "group inline-flex min-h-12 items-center gap-4 rounded-full text-[15px] font-medium text-white focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-white";
+  "group inline-flex min-h-12 items-center gap-4 rounded-full text-[0.9375rem] font-medium text-white focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-white";
 
 function Disc() {
   return (

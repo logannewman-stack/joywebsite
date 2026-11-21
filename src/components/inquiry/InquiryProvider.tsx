@@ -173,7 +173,7 @@ function PanelUnavailable({ close }: { close: () => void }) {
       role="dialog"
       aria-modal="true"
       aria-labelledby="inquiry-unavailable"
-      className="absolute inset-y-0 right-0 flex w-full max-w-[600px] flex-col bg-paper px-6 py-8 md:px-10"
+      className="absolute inset-y-0 right-0 flex w-full max-w-[37.5rem] flex-col bg-paper px-6 py-8 md:px-10"
     >
       <button
         type="button"
@@ -186,7 +186,7 @@ function PanelUnavailable({ close }: { close: () => void }) {
       <h2 ref={heading} id="inquiry-unavailable" tabIndex={-1} className="display mt-10 text-[clamp(2.4rem,6vw,3.4rem)] outline-none">
         Start a Conversation
       </h2>
-      <p className="mt-4 max-w-md text-[16px] leading-relaxed text-stone">
+      <p className="mt-4 max-w-md text-[1rem] leading-relaxed text-stone">
         This form didn’t load. Please email{" "}
         <a href={`mailto:${site.email}`} className="font-medium text-ink underline underline-offset-[3px]">
           {site.email}
@@ -250,7 +250,7 @@ export function InquiryButton({
       onPointerEnter={preload}
       onFocus={preload}
       aria-haspopup="dialog"
-      className={`group inline-flex items-center text-left text-[15px] font-medium transition-[background-color,border-color,color,transform] duration-[var(--duration-hover,180ms)] ${ring} ${styles} ${className}`}
+      className={`group inline-flex items-center text-left text-[0.9375rem] font-medium transition-[background-color,border-color,color,transform] duration-[var(--duration-hover,180ms)] ${ring} ${styles} ${className}`}
     >
       {variant === "text" ? (
         // The arrow follows the last word when the label wraps (a word joiner keeps them together).

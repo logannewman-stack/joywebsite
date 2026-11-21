@@ -12,7 +12,7 @@ import { Reveal } from "@/components/ui/Reveal";
 export function StayConnected({ heading, name, text, cta }: { heading: string; name: string; text: string; cta: string }) {
   return (
     <section data-header="dark" className="grain grain-light bg-ink text-white">
-      <div className="mx-auto grid grid-cols-1 max-w-[1440px] gap-y-12 px-5 py-24 md:px-10 md:py-28 lg:grid-cols-12 lg:gap-x-6 lg:py-36">
+      <div className="mx-auto grid grid-cols-1 max-w-[90rem] gap-y-12 px-5 py-24 md:px-10 md:py-28 lg:grid-cols-12 lg:gap-x-6 lg:py-36">
         <Reveal className="lg:col-span-6">
           <span aria-hidden className="mb-6 block h-px w-12 bg-blush" />
           <h2>
@@ -24,7 +24,7 @@ export function StayConnected({ heading, name, text, cta }: { heading: string; n
           </h2>
         </Reveal>
         <Reveal delay={0.08} className="lg:col-span-5 lg:col-start-7 lg:self-end">
-          <p className="max-w-[28rem] text-[17px] leading-relaxed !text-balance text-ash">{text}</p>
+          <p className="max-w-[28rem] text-[1.0625rem] leading-relaxed !text-balance text-ash">{text}</p>
           <div className="mt-8 max-w-md">
             <NewsletterForm tone="dark" cta={cta} />
           </div>

@@ -16,7 +16,7 @@ export function NextPage({ current }: { current: string }) {
   const next = following.href === "/" ? pageOrder[1] : following;
   return (
     <Link href={next.href} className="group block border-t border-line bg-paper">
-      <div className="mx-auto flex max-w-[1440px] items-end justify-between gap-6 px-5 py-14 md:px-10 md:py-20">
+      <div className="mx-auto flex max-w-[90rem] items-end justify-between gap-6 px-5 py-14 md:px-10 md:py-20">
         <div className="min-w-0">
           <p className="label flex items-center gap-2 text-stone">
             Next

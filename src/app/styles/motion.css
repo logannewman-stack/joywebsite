@@ -46,14 +46,14 @@
 [data-scene][data-pinned] [data-scene-step] {
   grid-area: 1 / 1;
   opacity: 0;
-  transform: translate3d(0, var(--step-shift, 28px), 0);
+  transform: translate3d(0, var(--step-shift, 1.75rem), 0);
   transition:
     opacity var(--duration-scene) var(--ease-soft),
     transform var(--duration-scene) var(--ease-expo);
   pointer-events: none;
 }
 [data-scene][data-pinned] [data-scene-step][data-past] {
-  transform: translate3d(0, calc(var(--step-shift, 28px) * -1), 0);
+  transform: translate3d(0, calc(var(--step-shift, 1.75rem) * -1), 0);
 }
 [data-scene][data-pinned] [data-scene-step][data-active],
 [data-scene][data-pinned]:not([data-step]) [data-scene-step="0"] {
@@ -169,7 +169,7 @@ html.motion [data-inview][data-in] .hl-light {
 html.motion [data-inview] .rise,
 html.motion [data-inview].rise {
   opacity: 0;
-  transform: translate3d(0, var(--rise-y, 18px), 0);
+  transform: translate3d(0, var(--rise-y, 1.125rem), 0);
   transition:
     opacity var(--duration-text) var(--ease-soft) var(--d, 0s),
     transform var(--duration-image) var(--ease-expo) var(--d, 0s);
@@ -183,7 +183,7 @@ html.motion [data-inview][data-in].rise {
 html.motion [data-inview] .stagger > *,
 html.motion [data-inview].stagger > * {
   opacity: 0;
-  transform: translate3d(0, var(--rise-y, 18px), 0);
+  transform: translate3d(0, var(--rise-y, 1.125rem), 0);
   transition:
     opacity var(--duration-text) var(--ease-soft) calc(var(--d, 0s) + var(--si, 0) * var(--stagger, 70ms)),
     transform var(--duration-image) var(--ease-expo) calc(var(--d, 0s) + var(--si, 0) * var(--stagger, 70ms));

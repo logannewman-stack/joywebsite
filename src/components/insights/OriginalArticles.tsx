@@ -17,7 +17,7 @@ const geometry = [
 export function OriginalArticles({ heading, cta, articles }: { heading: string; cta: string; articles: OriginalArticle[] }) {
   return (
     <section className="bg-paper">
-      <div className="mx-auto max-w-[1440px] px-5 py-24 md:px-10 md:py-28 lg:pt-36 lg:pb-32">
+      <div className="mx-auto max-w-[90rem] px-5 py-24 md:px-10 md:py-28 lg:pt-36 lg:pb-32">
         <Reveal>
           <h2 className="display text-[clamp(2.6rem,5vw,4.8rem)]">{heading}</h2>
         </Reveal>
@@ -28,7 +28,7 @@ export function OriginalArticles({ heading, cta, articles }: { heading: string; 
                   <article className="border-t border-ink pt-8">
                     {a.date && <p className="label text-stone tabular-nums">{a.date}</p>}
                     <h3 className={`display mt-6 leading-[1] ${geometry[i].title}`}>{typeset(a.title)}</h3>
-                    <p className="mt-5 max-w-[52ch] text-[16.5px] leading-relaxed text-stone">{a.excerpt}</p>
+                    <p className="mt-5 max-w-[52ch] text-[1.03125rem] leading-relaxed text-stone">{a.excerpt}</p>
                     <ArrowLink href={articleHref(a)} className="mt-6">
                       {cta}
                     </ArrowLink>

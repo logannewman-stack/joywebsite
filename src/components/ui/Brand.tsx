@@ -29,7 +29,7 @@ export function Wordmark({
         height={site.wordmark.height}
         loading={loading}
         unoptimized
-        className={`h-[44px] w-auto md:h-[52px] ${className}`}
+        className={`h-[2.75rem] w-auto md:h-[3.25rem] ${className}`}
       />
     );
   }
@@ -39,8 +39,8 @@ export function Wordmark({
       data-wordmark-placeholder
       title="Wordmark placeholder: replace with the Dr. Joy script wordmark"
     >
-      <span className="font-serif text-[27px] leading-none italic">Dr. Joy</span>
-      <span className="label !text-[10px] !tracking-[0.22em]">RDH</span>
+      <span className="font-serif text-[1.6875rem] leading-none italic">Dr. Joy</span>
+      <span className="label !text-[0.625rem] !tracking-[0.22em]">RDH</span>
     </span>
   );
 }

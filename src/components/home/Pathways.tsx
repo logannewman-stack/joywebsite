@@ -13,7 +13,7 @@ import { typeset } from "../ui/Typeset";
  */
 
 // Photo widths: 4:5 crops in a 1/2/4-column grid inside a 1440px container (40px gutters, 32px gaps).
-const sizes = "(max-width: 767px) calc(100vw - 40px), (max-width: 1279px) calc(50vw - 56px), (max-width: 1440px) calc(25vw - 44px), 316px";
+const sizes = "(max-width: 767px) calc(100vw - 40px), (max-width: 1279px) calc(50vw - 56px), (max-width: 1440px) calc(25vw - 44px), 21.9vw";
 
 export function Pathways() {
   return (
@@ -21,7 +21,7 @@ export function Pathways() {
       {home.pathways.map((p, i) => (
         <li
           key={p.kicker}
-          className="group relative self-start md:even:mt-24 xl:even:mt-28 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-[10px] has-[:focus-visible]:outline-ink"
+          className="group relative self-start md:even:mt-24 xl:even:mt-28 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-[0.625rem] has-[:focus-visible]:outline-ink"
         >
           <Reveal delay={(i % 4) * 0.06}>
             <div className="overflow-hidden bg-sand">
@@ -36,7 +36,7 @@ export function Pathways() {
               <h3 className="label">{p.kicker}</h3>
             </div>
             <p className="display mt-5 text-[clamp(1.85rem,2.4vw,2.25rem)] leading-[1.04] xl:text-[clamp(1.75rem,2vw,2.1rem)]">{typeset(p.heading)}</p>
-            <p className="mt-4 text-[15.5px] leading-relaxed text-stone">{p.body}</p>
+            <p className="mt-4 text-[0.96875rem] leading-relaxed text-stone">{p.body}</p>
             {/* The link's ::after covers the card, so the photo and words are part of one target. */}
             <ArrowLink
               href={p.link.href}

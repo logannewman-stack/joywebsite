@@ -19,11 +19,11 @@ export function SpokenAt({ className = "" }: { className?: string }) {
   const { heading, logos, verified, venues } = speaking.spokenAt;
   return (
     <section className={`grain bg-ivory ${className}`}>
-      <div className="mx-auto grid max-w-[1440px] gap-8 px-5 pt-24 md:px-10 md:pt-36 lg:grid-cols-12 lg:gap-x-6">
+      <div className="mx-auto grid max-w-[90rem] gap-8 px-5 pt-24 md:px-10 md:pt-36 lg:grid-cols-12 lg:gap-x-6">
         <div className="lg:col-span-3">
           <h2 className="label text-stone">{heading}</h2>
           {!verified && site.showPlaceholders && (
-            <p className="label mt-3 inline-block border border-ink/25 px-2 py-1 !text-[9px] leading-relaxed text-stone">
+            <p className="label mt-3 inline-block border border-ink/25 px-2 py-1 !text-[0.5625rem] leading-relaxed text-stone">
               From Testimonials.pdf (partial listing): confirm before launch
             </p>
           )}
@@ -33,7 +33,7 @@ export function SpokenAt({ className = "" }: { className?: string }) {
             <ul className="flex flex-wrap items-center gap-x-12 gap-y-10">
               {logos.map((l) => (
                 <li key={l.name} className="relative h-10 w-32">
-                  <Image src={l.src} alt={l.name} fill sizes="128px" className="object-contain grayscale" />
+                  <Image src={l.src} alt={l.name} fill sizes="(max-width: 1440px) 128px, 8.9vw" className="object-contain grayscale" />
                 </li>
               ))}
             </ul>

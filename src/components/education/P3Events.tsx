@@ -47,7 +47,7 @@ export async function P3Events() {
 
   return (
     <section id="events" data-header="dark" className="grain grain-light bg-ink text-white">
-      <div className="mx-auto max-w-[1440px] px-5 py-24 md:px-10 md:py-32">{body}</div>
+      <div className="mx-auto max-w-[90rem] px-5 py-24 md:px-10 md:py-32">{body}</div>
     </section>
   );
 }
@@ -79,7 +79,7 @@ function Panel({ photo, children }: { photo: PhotoSlot; children: ReactNode }) {
           slot={photo}
           tone="dark"
           className="aspect-[4/3] w-full md:aspect-[3/2] lg:aspect-[4/5]"
-          sizes="(min-width: 1440px) 560px, (min-width: 1024px) 40vw, (min-width: 768px) calc(100vw - 80px), calc(100vw - 40px)"
+          sizes="(min-width: 1440px) 38.9vw, (min-width: 1024px) 40vw, (min-width: 768px) calc(100vw - 80px), calc(100vw - 40px)"
         />
       </ImageReveal>
       <Reveal delay={0.08} className="lg:col-span-6 lg:col-start-1 lg:row-start-3 lg:mt-10">
@@ -95,7 +95,7 @@ function InterestList() {
   return (
     <>
       <h3 className="max-w-[26ch] font-serif text-[clamp(1.5rem,2.2vw,2rem)] leading-snug text-balance">{fallback.heading}</h3>
-      <p className="mt-5 max-w-[44ch] text-[17px] leading-relaxed text-ash">{fallback.text}</p>
+      <p className="mt-5 max-w-[44ch] text-[1.0625rem] leading-relaxed text-ash">{fallback.text}</p>
       <InquiryButton type="p3_interest" tone="dark" className="mt-9">
         {fallback.cta}
       </InquiryButton>
@@ -108,10 +108,10 @@ function EventDetails({ ev }: { ev: FeaturedEvent }) {
   return (
     <>
       <h3 className="display text-[clamp(2.2rem,3.4vw,3.06rem)]">{typeset(ev.name)}</h3>
-      <p className="mt-4 text-[18px] text-blush">
+      <p className="mt-4 text-[1.125rem] text-blush">
         {ev.startsOn ? <time dateTime={ev.startsOn}>{ev.date}</time> : ev.date} · {ev.location}
       </p>
-      <p className="mt-5 max-w-[46ch] text-[16.5px] leading-relaxed text-ash">{ev.details}</p>
+      <p className="mt-5 max-w-[46ch] text-[1.03125rem] leading-relaxed text-ash">{ev.details}</p>
       <ButtonLink href={ev.registrationUrl} tone="dark" className="mt-9">
         {education.events.cta}
       </ButtonLink>

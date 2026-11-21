@@ -48,8 +48,8 @@ export default function SpeakingPage() {
   return (
     <>
       {/* Opening: the headline, then Dr. Joy on stage at full height */}
-      <section className="overflow-x-clip bg-paper pt-[76px]">
-        <div className="mx-auto grid max-w-[1440px] px-5 md:px-10 lg:grid-cols-12 lg:gap-x-6">
+      <section className="overflow-x-clip bg-paper pt-[4.75rem]">
+        <div className="mx-auto grid max-w-[90rem] px-5 md:px-10 lg:grid-cols-12 lg:gap-x-6">
           <div className="pt-12 md:pt-16 lg:col-span-6 lg:row-start-1 lg:pt-14 xl:col-span-7">
             <Label index="02">Speaking</Label>
             <h1 className="display mt-7 text-[clamp(2.6rem,13.2vw,5.25rem)] leading-[0.92] md:text-[clamp(4.5rem,10vw,6.5rem)] lg:text-[clamp(3.6rem,6.3vw,5.67rem)]">
@@ -63,7 +63,7 @@ export default function SpeakingPage() {
               <Photo
                 slot={hero.photo}
                 priority
-                className="aspect-[4/5] w-full md:aspect-auto md:h-[min(70svh,44rem)] lg:aspect-[3/4] lg:h-auto lg:max-h-[calc(100svh-76px)] xl:aspect-[4/5]"
+                className="aspect-[4/5] w-full md:aspect-auto md:h-[min(70svh,44rem)] lg:aspect-[3/4] lg:h-auto lg:max-h-[calc(100svh-4.75rem)] xl:aspect-[4/5]"
                 sizes="(max-width: 767px) 100vw, (max-width: 1023px) calc(100vw - 80px), (max-width: 1279px) 49vw, (max-width: 1440px) 41vw, calc(50vw - 127px)"
               />
             </ImageReveal>
@@ -72,7 +72,7 @@ export default function SpeakingPage() {
           <Reveal immediate delay={0.25} className="pt-10 pb-20 md:pt-12 md:pb-24 lg:col-span-6 lg:row-start-2 lg:self-end lg:pt-12 lg:pb-10">
             <div className="flex max-w-[36rem] flex-col gap-5">
               {hero.paragraphs.map((p, i) => (
-                <p key={p} className={`leading-relaxed ${i === 0 ? "text-[18px] text-ink" : "text-[17px] text-stone"}`}>
+                <p key={p} className={`leading-relaxed ${i === 0 ? "text-[1.125rem] text-ink" : "text-[1.0625rem] text-stone"}`}>
                   {p}
                 </p>
               ))}
@@ -89,7 +89,7 @@ export default function SpeakingPage() {
                   <li key={c.href} className={`border-b border-line ${i % 2 === 0 ? "sm:pr-6" : "sm:pl-6"}`}>
                     <a
                       href={c.href}
-                      className={`group flex min-h-12 items-center justify-between gap-4 py-2.5 text-[14.5px] font-medium ${focusRing.light}`}
+                      className={`group flex min-h-12 items-center justify-between gap-4 py-2.5 text-[0.90625rem] font-medium ${focusRing.light}`}
                     >
                       <span className="link-draw pb-0.5">{c.label}</span>
                       <ArrowDown className="size-4 shrink-0 text-stone transition-transform duration-300 group-hover:translate-y-0.5 group-hover:text-ink" aria-hidden />
@@ -104,13 +104,13 @@ export default function SpeakingPage() {
 
       {/* Featured Clinical Courses: an editorial index */}
       <section className="bg-paper">
-        <div className="mx-auto max-w-[1440px] px-5 pt-28 pb-24 md:px-10 md:pt-32 md:pb-32">
+        <div className="mx-auto max-w-[90rem] px-5 pt-28 pb-24 md:px-10 md:pt-32 md:pb-32">
           <div id="topics" className="grid gap-6 lg:grid-cols-12 lg:gap-x-6">
             <Reveal className="lg:col-span-7">
               <h2 className="display text-[clamp(2.75rem,5.6vw,5.04rem)]">{clinical.heading}</h2>
             </Reveal>
             <Reveal delay={0.06} className="lg:col-span-4 lg:col-start-9 lg:self-end">
-              <p className="max-w-[46ch] text-[17px] leading-relaxed text-stone">{clinical.intro}</p>
+              <p className="max-w-[46ch] text-[1.0625rem] leading-relaxed text-stone">{clinical.intro}</p>
             </Reveal>
           </div>
           <CourseIndex courses={clinical.courses} className="mt-14 md:mt-20" />
@@ -122,13 +122,13 @@ export default function SpeakingPage() {
 
       {/* For Dental Teams & Organizations: a staggered spread on ivory */}
       <section className="bg-ivory">
-        <div className="mx-auto max-w-[1440px] px-5 pt-28 pb-24 md:px-10 md:py-36">
+        <div className="mx-auto max-w-[90rem] px-5 pt-28 pb-24 md:px-10 md:py-36">
           <div id="teams" className="max-w-[60rem]">
             <Reveal>
               <h2 className="display text-[clamp(2.75rem,5.6vw,5.04rem)]">{teams.heading}</h2>
             </Reveal>
             <Reveal delay={0.06}>
-              <p className="mt-6 max-w-[46ch] text-[17px] leading-relaxed text-stone">{teams.intro}</p>
+              <p className="mt-6 max-w-[46ch] text-[1.0625rem] leading-relaxed text-stone">{teams.intro}</p>
             </Reveal>
           </div>
           <ol className="mt-16 grid gap-16 md:mt-24 lg:grid-cols-12 lg:gap-x-6">
@@ -140,7 +140,7 @@ export default function SpeakingPage() {
                   </span>
                   <h3 className="display mt-8 text-[clamp(2.75rem,5vw,4.5rem)] leading-[0.94]">{stackedTitle(p.title)}</h3>
                   <p className="mt-6 max-w-[30ch] font-serif text-[clamp(1.35rem,1.9vw,1.7rem)] leading-snug italic">{p.subtitle}</p>
-                  <p className="mt-5 max-w-[46ch] text-[16.5px] leading-relaxed text-stone">{p.text}</p>
+                  <p className="mt-5 max-w-[46ch] text-[1.03125rem] leading-relaxed text-stone">{p.text}</p>
                   <div className="mt-4 flex flex-wrap items-center gap-x-7">
                     <DetailsLink pdf={p.pdf} title={p.title} />
                     <InquiryButton program={p.title} variant="text">
@@ -156,7 +156,7 @@ export default function SpeakingPage() {
 
       {/* Keynote Presentations: the black chapter */}
       <section data-header="dark" className="grain grain-light bg-ink text-white">
-        <div className="mx-auto grid max-w-[1440px] px-5 pt-28 pb-24 md:px-10 md:py-36 lg:grid-cols-12 lg:gap-x-6">
+        <div className="mx-auto grid max-w-[90rem] px-5 pt-28 pb-24 md:px-10 md:py-36 lg:grid-cols-12 lg:gap-x-6">
           <div id="keynotes" className="lg:col-span-7 lg:row-start-1">
             <Reveal>
               <h2 className="display text-[clamp(2.4rem,3.6vw,3.24rem)]">{keynotes.heading}</h2>
@@ -168,7 +168,7 @@ export default function SpeakingPage() {
                 slot={keynotes.photo}
                 tone="dark"
                 className="aspect-[4/5] w-full md:max-w-[34rem] lg:max-w-none"
-                sizes="(max-width: 767px) 100vw, (max-width: 1023px) 544px, (max-width: 1440px) 39vw, 560px"
+                sizes="(max-width: 767px) 100vw, (max-width: 1023px) 544px, (max-width: 1440px) 39vw, 38.9vw"
               />
             </ImageReveal>
           </div>
@@ -181,7 +181,7 @@ export default function SpeakingPage() {
                   </span>
                   <h3 className="display mt-6 text-[clamp(2.75rem,5.4vw,4.86rem)] leading-[0.95]">{typeset(k.title)}</h3>
                   <p className="mt-5 max-w-[34ch] font-serif text-[clamp(1.35rem,1.9vw,1.7rem)] leading-snug text-blush italic">{k.subtitle}</p>
-                  <p className="mt-5 max-w-[48ch] text-[16.5px] leading-relaxed text-ash">{k.text}</p>
+                  <p className="mt-5 max-w-[48ch] text-[1.03125rem] leading-relaxed text-ash">{k.text}</p>
                   <div className="mt-4 flex flex-wrap items-center gap-x-7">
                     <DetailsLink pdf={k.pdf} title={k.title} label="Keynote Details" tone="dark" />
                     <InquiryButton program={k.title} variant="text" tone="dark">
@@ -197,7 +197,7 @@ export default function SpeakingPage() {
 
       {/* Dr. Joy's P3: kept minimal */}
       <section className="bg-paper">
-        <div className="mx-auto grid max-w-[1440px] gap-10 px-5 pt-28 pb-24 md:px-10 md:py-32 lg:grid-cols-12 lg:gap-x-6">
+        <div className="mx-auto grid max-w-[90rem] gap-10 px-5 pt-28 pb-24 md:px-10 md:py-32 lg:grid-cols-12 lg:gap-x-6">
           <div id="p3" className="lg:col-span-4">
             <Reveal>
               <h2 className="display text-[clamp(2.75rem,4.6vw,4.14rem)]">{p3.heading}</h2>
@@ -206,14 +206,14 @@ export default function SpeakingPage() {
           <div className="grid border-t border-ink md:grid-cols-2 lg:col-span-8">
             <Reveal className="border-b border-line py-9 md:border-r md:pr-10">
               <h3 className="font-serif text-[clamp(1.75rem,2.4vw,2.1rem)] leading-tight">{p3.bring.title}</h3>
-              <p className="mt-3 max-w-md text-[16.5px] leading-relaxed text-stone">{p3.bring.text}</p>
+              <p className="mt-3 max-w-md text-[1.03125rem] leading-relaxed text-stone">{p3.bring.text}</p>
               <InquiryButton type="p3_conference" variant="text" className="mt-4">
                 {p3.bring.cta}
               </InquiryButton>
             </Reveal>
             <Reveal delay={0.06} className="border-b border-line py-9 md:pl-10">
               <h3 className="font-serif text-[clamp(1.75rem,2.4vw,2.1rem)] leading-tight">{p3.attend.title}</h3>
-              <p className="mt-3 max-w-md text-[16.5px] leading-relaxed text-stone">{p3.attend.text}</p>
+              <p className="mt-3 max-w-md text-[1.03125rem] leading-relaxed text-stone">{p3.attend.text}</p>
               <ArrowLink href={p3.attend.cta.href} className="mt-4">
                 {p3.attend.cta.label}
               </ArrowLink>
@@ -230,12 +230,12 @@ export default function SpeakingPage() {
 
       {/* Planning an Event?: the finale */}
       <section data-header="dark" className="grain grain-light bg-ink text-white">
-        <div className="mx-auto grid max-w-[1440px] gap-10 px-5 py-28 md:px-10 md:py-40 lg:grid-cols-12 lg:gap-x-6">
+        <div className="mx-auto grid max-w-[90rem] gap-10 px-5 py-28 md:px-10 md:py-40 lg:grid-cols-12 lg:gap-x-6">
           <Reveal className="lg:col-span-8">
             <h2 className="display text-[clamp(3.6rem,9.6vw,8.64rem)] leading-[0.88]">{planning.heading}</h2>
           </Reveal>
           <Reveal delay={0.08} className="lg:col-span-4 lg:self-end">
-            <p className="max-w-[34ch] text-[17px] leading-relaxed text-ash">{planning.text}</p>
+            <p className="max-w-[34ch] text-[1.0625rem] leading-relaxed text-ash">{planning.text}</p>
             <InquiryButton type="speaking" tone="dark" className="mt-8">
               {planning.cta}
             </InquiryButton>

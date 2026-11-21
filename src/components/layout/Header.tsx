@@ -112,7 +112,7 @@ export function Header() {
           }
           setOverDark(behind.size > 0);
         },
-        { rootMargin: `0px 0px -${Math.max(0, window.innerHeight - BAR)}px 0px` },
+        { rootMargin: `0px 0px -${Math.max(0, window.innerHeight - (headerRef.current?.offsetHeight ?? BAR))}px 0px` },
       );
       targets.forEach((t) => io?.observe(t));
       if (!targets.length) frame = requestAnimationFrame(() => setOverDark(false));
@@ -190,7 +190,7 @@ export function Header() {
           hidden && !open ? "-translate-y-full" : "translate-y-0"
         } ${dark ? "text-white" : "text-ink"}`}
       >
-        <div className="mx-auto flex h-[76px] max-w-[1440px] items-center justify-between gap-6 px-5 md:px-10">
+        <div className="mx-auto flex h-[4.75rem] max-w-[90rem] items-center justify-between gap-6 px-5 md:px-10">
           <Link
             href="/"
             aria-label={`${site.name}, home`}
@@ -210,7 +210,7 @@ export function Header() {
                   key={item.href}
                   href={item.href}
                   aria-current={active ? "page" : undefined}
-                  className={`group relative py-2 text-[14px] font-medium whitespace-nowrap transition-opacity duration-[var(--duration-hover,180ms)] hover:opacity-100 ${
+                  className={`group relative py-2 text-[0.875rem] font-medium whitespace-nowrap transition-opacity duration-[var(--duration-hover,180ms)] hover:opacity-100 ${
                     active ? "opacity-100" : "opacity-75"
                   }`}
                 >
@@ -230,10 +230,10 @@ export function Header() {
             <ConsultingLink
               label="Consulting"
               srLabel=" at Instrumental"
-              className="text-[14px] font-medium whitespace-nowrap opacity-75 hover:opacity-100"
+              className="text-[0.875rem] font-medium whitespace-nowrap opacity-75 hover:opacity-100"
               tagClassName="hidden min-[1366px]:inline"
             />
-            <InquiryButton tone={tone} className="!min-h-11 !px-5 !text-[14px]">
+            <InquiryButton tone={tone} className="!min-h-11 !px-5 !text-[0.875rem]">
               Start a Conversation
             </InquiryButton>
           </div>
@@ -241,7 +241,7 @@ export function Header() {
           <div className="flex items-center gap-3 xl:hidden">
             {/* From tablet width the primary CTA stays in the bar beside the menu button. */}
             <span className="hidden md:block" onClickCapture={() => open && closeMenu(false)}>
-              <InquiryButton tone={tone} className="!min-h-11 !px-5 !text-[14px]">
+              <InquiryButton tone={tone} className="!min-h-11 !px-5 !text-[0.875rem]">
                 Start a Conversation
               </InquiryButton>
             </span>
@@ -252,7 +252,7 @@ export function Header() {
               aria-expanded={open}
               aria-controls="mobile-menu"
               onClick={() => (open ? closeMenu(false) : setOpen(true))}
-              className={`relative inline-flex size-11 flex-col items-center justify-center gap-[6px] rounded-full border border-current/25 transition-[border-color,transform] duration-[var(--duration-hover,180ms)] hover:border-current/60 active:scale-95 motion-reduce:active:scale-100 ${
+              className={`relative inline-flex size-11 flex-col items-center justify-center gap-[0.375rem] rounded-full border border-current/25 transition-[border-color,transform] duration-[var(--duration-hover,180ms)] hover:border-current/60 active:scale-95 motion-reduce:active:scale-100 ${
                 dark ? "focus-visible:outline-white" : "focus-visible:outline-ink"
               }`}
             >
@@ -272,7 +272,7 @@ export function Header() {
         ref={menuRef}
         id="mobile-menu"
         inert={!open}
-        className={`fixed inset-0 z-40 flex scroll-pt-[calc(76px+1rem)] flex-col overflow-y-auto overscroll-contain bg-paper px-5 pt-[calc(76px+1rem)] pb-[max(2rem,env(safe-area-inset-bottom))] transition-[opacity,visibility] duration-[var(--duration-ui,320ms)] motion-reduce:transition-none max-md:[@media(max-height:660px)]:pt-[calc(76px+0.5rem)] max-md:[@media(max-height:660px)]:pb-[max(1.25rem,env(safe-area-inset-bottom))] md:px-10 md:pt-[calc(76px+2.5rem)] xl:hidden ${
+        className={`fixed inset-0 z-40 flex scroll-pt-[calc(4.75rem+1rem)] flex-col overflow-y-auto overscroll-contain bg-paper px-5 pt-[calc(4.75rem+1rem)] pb-[max(2rem,env(safe-area-inset-bottom))] transition-[opacity,visibility] duration-[var(--duration-ui,320ms)] motion-reduce:transition-none max-md:[@media(max-height:660px)]:pt-[calc(4.75rem+0.5rem)] max-md:[@media(max-height:660px)]:pb-[max(1.25rem,env(safe-area-inset-bottom))] md:px-10 md:pt-[calc(4.75rem+2.5rem)] xl:hidden ${
           open ? "visible opacity-100" : "invisible opacity-0"
         }`}
       >
@@ -316,7 +316,7 @@ export function Header() {
             <span className="md:hidden" onClickCapture={() => closeMenu(false)}>
               <InquiryButton>Start a Conversation</InquiryButton>
             </span>
-            <ConsultingLink label="Consulting at Instrumental" className="text-[16px] font-medium" />
+            <ConsultingLink label="Consulting at Instrumental" className="text-[1rem] font-medium" />
           </div>
         </nav>
       </div>

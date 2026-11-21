@@ -41,8 +41,8 @@ function Actions({ dark = false }: { dark?: boolean }) {
 /** A: white page; the portrait runs the full height of the opening screen beside the headline. */
 export function HeroA({ id = "hero-heading", as: H = "h1" }: HeroProps) {
   return (
-    <section className="relative overflow-hidden bg-paper pt-[76px]" aria-labelledby={id}>
-      <div className="mx-auto grid max-w-[1440px] grid-cols-1 px-5 pt-6 pb-14 md:px-10 md:pt-10 lg:min-h-[calc(100svh-76px)] lg:grid-cols-[minmax(0,1fr)_minmax(0,0.74fr)] lg:grid-rows-[auto_1fr] lg:gap-x-12 lg:pt-8 lg:pb-10">
+    <section className="relative overflow-hidden bg-paper pt-[4.75rem]" aria-labelledby={id}>
+      <div className="mx-auto grid max-w-[90rem] grid-cols-1 px-5 pt-6 pb-14 md:px-10 md:pt-10 lg:min-h-[calc(100svh-4.75rem)] lg:grid-cols-[minmax(0,1fr)_minmax(0,0.74fr)] lg:grid-rows-[auto_1fr] lg:gap-x-12 lg:pt-8 lg:pb-10">
         <H id={id} className="display relative z-10 text-[clamp(3.4rem,min(9vw,15.5svh),10.4rem)] leading-[0.88] lg:col-start-1 lg:row-start-1">
           <LineReveal lines={lines} delay={0.05} />
         </H>
@@ -53,12 +53,12 @@ export function HeroA({ id = "hero-heading", as: H = "h1" }: HeroProps) {
               slot={hero.portrait}
               priority
               className="aspect-[4/5] w-full lg:aspect-auto lg:h-full"
-              sizes="(max-width: 1023px) 100vw, (max-width: 1440px) 42vw, 620px"
+              sizes="(max-width: 1023px) 100vw, (max-width: 1440px) 42vw, 43.1vw"
             />
           </ImageReveal>
         </div>
         <Reveal immediate delay={0.25} className="mt-8 grid gap-7 lg:col-start-1 lg:row-start-2 lg:mt-0 lg:self-end lg:pt-10">
-          <p className="max-w-[26rem] text-[18px] leading-relaxed text-stone md:text-[19px]">{hero.sub}</p>
+          <p className="max-w-[26rem] text-[1.125rem] leading-relaxed text-stone md:text-[1.1875rem]">{hero.sub}</p>
           <Actions />
         </Reveal>
       </div>
@@ -104,7 +104,7 @@ export function HeroB({ id = "hero-heading", as: H = "h1" }: HeroProps) {
               className="absolute inset-0 -z-10 bg-[radial-gradient(70%_42%_at_72%_70%,#272727_0%,#151515_55%,#0b0b0b_100%)] lg:bg-[radial-gradient(34%_58%_at_76%_40%,#2a2a2a_0%,#161616_55%,#0b0b0b_100%)]"
             />
             {/* The one designed cutout: anchored to the stage floor, soft dissolve at the waist. */}
-            <div className="pointer-events-none absolute right-[-4vw] bottom-0 z-10 aspect-[1248/2003] h-[54svh] [mask-image:linear-gradient(to_bottom,#000_78%,transparent_100%)] sm:right-0 lg:right-[3vw] lg:h-[min(88svh,880px)]">
+            <div className="pointer-events-none absolute right-[-4vw] bottom-0 z-10 aspect-[1248/2003] h-[54svh] [mask-image:linear-gradient(to_bottom,#000_78%,transparent_100%)] sm:right-0 lg:right-[3vw] lg:h-[min(88svh,55rem)]">
               <ImageReveal immediate className="h-full w-full">
                 <Photo slot={hero.cutout} tone="dark" priority className="h-full w-full" sizes="(max-width: 1023px) 60vw, 36vw" />
               </ImageReveal>
@@ -112,8 +112,8 @@ export function HeroB({ id = "hero-heading", as: H = "h1" }: HeroProps) {
           </>
         )}
 
-        <div className="mx-auto max-w-[1440px] px-5 pt-24 md:px-10 lg:landscape:pt-[100px]">
-          <H id={id} className="display relative z-20 text-[clamp(3rem,14vw,3.4rem)] leading-[0.88] sm:text-[clamp(3.4rem,min(10vw,15svh,calc(26svh_-_90px)),11rem)]">
+        <div className="mx-auto max-w-[90rem] px-5 pt-24 md:px-10 lg:landscape:pt-[6.25rem]">
+          <H id={id} className="display relative z-20 text-[clamp(3rem,14vw,3.4rem)] leading-[0.88] sm:text-[clamp(3.4rem,min(10vw,15svh,calc(26svh_-_5.625rem)),11rem)]">
             <LineReveal
               lines={[
                 "The work has",
@@ -137,9 +137,9 @@ export function HeroB({ id = "hero-heading", as: H = "h1" }: HeroProps) {
       <Reveal
         immediate
         delay={0.25}
-        className="relative z-20 mx-auto grid max-w-[1440px] gap-7 px-5 pt-4 pb-16 md:px-10 lg:landscape:absolute lg:landscape:inset-x-0 lg:landscape:bottom-0 lg:landscape:pt-0 lg:landscape:pb-12"
+        className="relative z-20 mx-auto grid max-w-[90rem] gap-7 px-5 pt-4 pb-16 md:px-10 lg:landscape:absolute lg:landscape:inset-x-0 lg:landscape:bottom-0 lg:landscape:pt-0 lg:landscape:pb-12"
       >
-        <p className="max-w-[30rem] text-[18px] leading-relaxed text-white/80 md:text-[19px]">{hero.sub}</p>
+        <p className="max-w-[30rem] text-[1.125rem] leading-relaxed text-white/80 md:text-[1.1875rem]">{hero.sub}</p>
         <Actions dark />
       </Reveal>
     </section>
@@ -149,28 +149,28 @@ export function HeroB({ id = "hero-heading", as: H = "h1" }: HeroProps) {
 /** C: ivory, a color photograph of a real room, blush used once behind it. */
 export function HeroC({ id = "hero-heading", as: H = "h1" }: HeroProps) {
   return (
-    <section className="relative overflow-hidden bg-ivory pt-[76px]" aria-labelledby={id}>
-      <div className="mx-auto grid max-w-[1440px] grid-cols-1 px-5 pt-6 pb-14 md:px-10 md:pt-10 lg:min-h-[calc(100svh-76px)] lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:gap-x-16 lg:pt-12 lg:pb-16">
+    <section className="relative overflow-hidden bg-ivory pt-[4.75rem]" aria-labelledby={id}>
+      <div className="mx-auto grid max-w-[90rem] grid-cols-1 px-5 pt-6 pb-14 md:px-10 md:pt-10 lg:min-h-[calc(100svh-4.75rem)] lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:gap-x-16 lg:pt-12 lg:pb-16">
         {/* Phones: headline, photo, then the sub-line (order). lg: headline and sub-line centered beside the photo. */}
         <div className="contents lg:col-start-1 lg:row-start-1 lg:flex lg:flex-col lg:justify-center">
           <H id={id} className="display order-1 text-[clamp(3.4rem,min(7.4vw,13svh),8.4rem)] leading-[0.9]">
             <LineReveal lines={lines} delay={0.05} />
           </H>
           <Reveal immediate delay={0.25} className="order-3 mt-8 max-w-md lg:mt-10">
-            <p className="text-[18px] leading-relaxed text-stone md:text-[19px]">{hero.sub}</p>
+            <p className="text-[1.125rem] leading-relaxed text-stone md:text-[1.1875rem]">{hero.sub}</p>
             <div className="mt-8">
               <Actions />
             </div>
           </Reveal>
         </div>
-        <div className="relative order-2 mt-8 lg:col-start-2 lg:row-start-1 lg:mt-0 lg:min-h-[420px]">
+        <div className="relative order-2 mt-8 lg:col-start-2 lg:row-start-1 lg:mt-0 lg:min-h-[26.25rem]">
           <div className="absolute top-0 -right-10 bottom-10 left-10 hidden bg-blush/70 lg:block" aria-hidden />
           <ImageReveal immediate className="relative h-full lg:translate-y-10">
             <Photo
               slot={hero.color}
               priority
               className="aspect-[4/5] w-full sm:aspect-[4/3] lg:aspect-auto lg:h-full"
-              sizes="(max-width: 1023px) 100vw, (max-width: 1440px) 50vw, 700px"
+              sizes="(max-width: 1023px) 100vw, (max-width: 1440px) 50vw, 48.6vw"
             />
           </ImageReveal>
         </div>

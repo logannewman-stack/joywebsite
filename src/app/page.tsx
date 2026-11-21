@@ -39,7 +39,7 @@ export default function Home() {
 
       {/* A perspective shaped by every side of dentistry: the story, paced around one full-bleed photograph. */}
       <section className={perspectiveTone} aria-labelledby="perspective-heading">
-        <div className="mx-auto grid max-w-[1440px] gap-y-10 px-5 pt-24 md:px-10 md:pt-32 lg:grid-cols-12 lg:gap-x-6 lg:pt-40">
+        <div className="mx-auto grid max-w-[90rem] gap-y-10 px-5 pt-24 md:px-10 md:pt-32 lg:grid-cols-12 lg:gap-x-6 lg:pt-40">
           <Reveal className="lg:col-span-11">
             <h2 id="perspective-heading" className="display max-w-[20ch] text-[clamp(2.75rem,6.4vw,6.5rem)] leading-[0.92]">
               {perspective.heading}
@@ -50,13 +50,13 @@ export default function Home() {
           </Reveal>
         </div>
 
-        <ImageReveal className="relative mt-16 aspect-[4/5] w-full bg-sand md:mt-24 md:aspect-[16/9] lg:aspect-auto lg:h-[min(84svh,880px)]">
+        <ImageReveal className="relative mt-16 aspect-[4/5] w-full bg-sand md:mt-24 md:aspect-[16/9] lg:aspect-auto lg:h-[min(84svh,55rem)]">
           <ArtDirected wide={perspective.photo} tall={perspective.photoTall} at="md" sizesWide="100vw" sizesTall="100vw" />
         </ImageReveal>
 
-        <div className="mx-auto grid max-w-[1440px] gap-y-8 px-5 pt-14 pb-24 md:px-10 md:pt-20 md:pb-32 lg:grid-cols-12 lg:gap-x-6 lg:pb-36">
+        <div className="mx-auto grid max-w-[90rem] gap-y-8 px-5 pt-14 pb-24 md:px-10 md:pt-20 md:pb-32 lg:grid-cols-12 lg:gap-x-6 lg:pb-36">
           <Reveal className="lg:col-span-5 lg:col-start-1">
-            <p className="max-w-[36rem] text-[17px] leading-relaxed text-stone md:text-[18px]">{middle}</p>
+            <p className="max-w-[36rem] text-[1.0625rem] leading-relaxed text-stone md:text-[1.125rem]">{middle}</p>
           </Reveal>
           <Reveal delay={0.06} className="lg:col-span-6 lg:col-start-7">
             <p className="display max-w-[32rem] text-[clamp(1.65rem,2.5vw,2.4rem)] leading-[1.16] tracking-[-0.005em] lg:max-w-none">{typeset(bridge)}</p>
@@ -66,7 +66,7 @@ export default function Home() {
 
       {/* Explore My Work: the four pathways */}
       <section id="work" className="bg-paper" aria-labelledby="work-heading">
-        <div className="mx-auto max-w-[1440px] px-5 pt-24 pb-28 md:px-10 md:pt-32 md:pb-36 lg:pb-44">
+        <div className="mx-auto max-w-[90rem] px-5 pt-24 pb-28 md:px-10 md:pt-32 md:pb-36 lg:pb-44">
           <Reveal>
             <h2 id="work-heading" className="display text-[clamp(2.75rem,6.4vw,6.5rem)] leading-[0.92]">
               {work.heading}
@@ -85,14 +85,14 @@ export default function Home() {
 
       {/* Let's start a conversation: the page ends on one centered invitation. */}
       <section className="bg-ivory" aria-labelledby="closing-heading">
-        <div className="mx-auto max-w-[1440px] px-5 py-24 text-center md:px-10 md:py-36 lg:py-44">
+        <div className="mx-auto max-w-[90rem] px-5 py-24 text-center md:px-10 md:py-36 lg:py-44">
           <Reveal>
             <h2 id="closing-heading" className="display mx-auto max-w-[11ch] text-[clamp(3rem,7.6vw,7.75rem)] leading-[0.92]">
               {closing.heading}
             </h2>
           </Reveal>
           <Reveal delay={0.06}>
-            <p className="mx-auto mt-8 max-w-[34rem] text-[17px] leading-relaxed text-stone md:mt-10 md:text-[18px]">{closing.body}</p>
+            <p className="mx-auto mt-8 max-w-[34rem] text-[1.0625rem] leading-relaxed text-stone md:mt-10 md:text-[1.125rem]">{closing.body}</p>
             <InquiryButton className="mt-10">{closing.cta}</InquiryButton>
           </Reveal>
         </div>

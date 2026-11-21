@@ -28,7 +28,7 @@ export function resolveHref(href: string): { href: string; external: boolean; pe
 export function PendingTag({ className = "" }: { className?: string }) {
   if (!site.showPlaceholders) return null;
   return (
-    <span className={`label ml-2 rounded-full border border-current/30 px-1.5 py-0.5 !text-[8.5px] whitespace-nowrap opacity-70 ${className}`}>
+    <span className={`label ml-2 rounded-full border border-current/30 px-1.5 py-0.5 !text-[0.53125rem] whitespace-nowrap opacity-70 ${className}`}>
       URL pending
     </span>
   );
@@ -85,7 +85,7 @@ export const focusRing = {
  */
 export const buttonStates =
   "transition-[background-color,scale] duration-(--duration-hover) ease-out motion-safe:active:scale-[0.98]";
-export const textLink = "group inline-flex min-h-11 items-center gap-2 text-[15px] font-medium";
+export const textLink = "group inline-flex min-h-11 items-center gap-2 text-[0.9375rem] font-medium";
 
 const solid = {
   light: `bg-ink text-white hover:bg-charcoal ${focusRing.light}`,
@@ -109,7 +109,7 @@ export function ButtonLink({
   const r = resolveHref(href);
   // One line at every normal size; below 360px a long label may wrap rather than push past the
   // screen edge (e.g. at 320px with increased text spacing, WCAG 1.4.12).
-  const cls = `group inline-flex min-h-12 max-w-full items-center gap-3 whitespace-nowrap rounded-full px-6 py-3 text-[15px] font-medium max-[359px]:whitespace-normal ${buttonStates} ${solid[tone]} ${className}`;
+  const cls = `group inline-flex min-h-12 max-w-full items-center gap-3 whitespace-nowrap rounded-full px-6 py-3 text-[0.9375rem] font-medium max-[359px]:whitespace-normal ${buttonStates} ${solid[tone]} ${className}`;
   const inner = (
     <>
       {children}
@@ -218,7 +218,7 @@ export function ReviewSlot({ children, tone = "light", className = "" }: { child
         tone === "dark" ? "border-white/25 text-white/60" : "border-ink/25 text-stone"
       } ${className}`}
     >
-      <p className="label !text-[10px] leading-relaxed text-balance">{children}</p>
+      <p className="label !text-[0.625rem] leading-relaxed text-balance">{children}</p>
     </div>
   );
 }

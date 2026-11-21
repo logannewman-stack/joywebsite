@@ -24,8 +24,8 @@ export default function MeetPage() {
   return (
     <>
       {/* Opening: the portrait owns the right half of the first screen, bleeding to the edge */}
-      <section className="overflow-x-clip bg-paper pt-[76px]">
-        <div className="mx-auto max-w-[1440px] px-5 pb-24 md:px-10 md:pb-32 lg:grid lg:grid-cols-12 lg:gap-x-6">
+      <section className="overflow-x-clip bg-paper pt-[4.75rem]">
+        <div className="mx-auto max-w-[90rem] px-5 pb-24 md:px-10 md:pb-32 lg:grid lg:grid-cols-12 lg:gap-x-6">
           <div className="pt-10 md:pt-16 lg:col-span-6 lg:pt-14">
             <Reveal immediate>
               <Label index="01">Meet Dr. Joy</Label>
@@ -41,7 +41,7 @@ export default function MeetPage() {
               <Photo
                 slot={hero.portrait}
                 priority
-                className="aspect-[4/5] w-full lg:aspect-auto lg:h-[min(calc(100svh-76px),1080px)]"
+                className="aspect-[4/5] w-full lg:aspect-auto lg:h-[min(calc(100svh-4.75rem),67.5rem)]"
                 sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1023px) calc(66vw - 53px), calc(50vw - 12px)"
               />
             </ImageReveal>
@@ -51,11 +51,11 @@ export default function MeetPage() {
             {hero.paragraphs.map((p, i) =>
               i === 0 ? (
                 <Reveal key={i} immediate delay={0.25}>
-                  <p className="text-[20px] leading-[1.55] text-ink md:text-[22px] lg:text-[20px] xl:text-[22px]">{p}</p>
+                  <p className="text-[1.25rem] leading-[1.55] text-ink md:text-[1.375rem] lg:text-[1.25rem] xl:text-[1.375rem]">{p}</p>
                 </Reveal>
               ) : (
                 <Reveal key={i} delay={(i - 1) * 0.06}>
-                  <p className="text-[18px] leading-relaxed text-ink">{p}</p>
+                  <p className="text-[1.125rem] leading-relaxed text-ink">{p}</p>
                 </Reveal>
               ),
             )}
@@ -65,7 +65,7 @@ export default function MeetPage() {
 
       {/* Couplet: one turning sentence, with the operatory in the picture */}
       <section className="bg-ivory">
-        <div className="mx-auto max-w-[1440px] px-5 py-20 md:px-10 md:py-32">
+        <div className="mx-auto max-w-[90rem] px-5 py-20 md:px-10 md:py-32">
           <Reveal>
             <p className="display text-[clamp(2.6rem,5.6vw,5.6rem)] leading-[0.98]">{bindI(hero.couplet[0])}</p>
           </Reveal>
@@ -79,7 +79,7 @@ export default function MeetPage() {
               <Photo
                 slot={operatory}
                 className="aspect-[5/4] w-full"
-                sizes="(max-width: 767px) calc(80vw - 32px), (max-width: 1023px) calc(42vw - 47px), (max-width: 1440px) calc(33vw - 43px), 437px"
+                sizes="(max-width: 767px) calc(80vw - 32px), (max-width: 1023px) calc(42vw - 47px), (max-width: 1440px) calc(33vw - 43px), 30.3vw"
               />
             </ImageReveal>
           </div>
@@ -101,7 +101,7 @@ export default function MeetPage() {
 
       {/* What Guides My Work */}
       <section className="bg-paper">
-        <div className="mx-auto max-w-[1440px] px-5 pt-24 pb-28 md:px-10 md:pt-36 md:pb-40">
+        <div className="mx-auto max-w-[90rem] px-5 pt-24 pb-28 md:px-10 md:pt-36 md:pb-40">
           <div className="max-w-[46rem]">
             <Reveal>
               <Label as="h2">{guides.heading}</Label>
@@ -109,7 +109,7 @@ export default function MeetPage() {
             <div className="mt-8 flex flex-col gap-6 md:mt-10">
               {guides.before.map((p, i) => (
                 <Reveal key={i} delay={i * 0.06}>
-                  <p className="text-[21px] leading-[1.5] text-ink md:text-[24px]">{p}</p>
+                  <p className="text-[1.3125rem] leading-[1.5] text-ink md:text-[1.5rem]">{p}</p>
                 </Reveal>
               ))}
             </div>
@@ -125,7 +125,7 @@ export default function MeetPage() {
                 <Photo
                   slot={guides.photo}
                   className="aspect-[4/5] w-full"
-                  sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1023px) calc(66vw - 53px), (max-width: 1440px) calc(42vw - 47px), 553px"
+                  sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1023px) calc(66vw - 53px), (max-width: 1440px) calc(42vw - 47px), 38.4vw"
                 />
               </ImageReveal>
             )}
@@ -137,7 +137,7 @@ export default function MeetPage() {
               }
             >
               <Reveal>
-                <p className="text-[19px] leading-relaxed text-ink md:text-[20px]">{guides.after[0]}</p>
+                <p className="text-[1.1875rem] leading-relaxed text-ink md:text-[1.25rem]">{guides.after[0]}</p>
               </Reveal>
               <Reveal delay={0.06}>
                 <p className="display mt-10 text-[clamp(2rem,3.1vw,2.9rem)] leading-[1.08]">{guides.after[1]}</p>

@@ -64,7 +64,7 @@ export function VideoFacade({
         href={url}
         target="_blank"
         rel="noopener noreferrer"
-        className="group inline-flex min-h-12 items-center gap-3 rounded-full bg-ink px-6 py-3 text-[15px] font-medium whitespace-nowrap text-white transition-colors hover:bg-ink-soft focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-ink"
+        className="group inline-flex min-h-12 items-center gap-3 rounded-full bg-ink px-6 py-3 text-[0.9375rem] font-medium whitespace-nowrap text-white transition-colors hover:bg-ink-soft focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-ink"
       >
         <Play className="size-4" aria-hidden />
         Play video

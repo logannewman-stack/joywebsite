@@ -12,8 +12,8 @@ import { typeset } from "@/components/ui/Typeset";
  */
 export function Article({ article, section }: { article: OriginalArticle; section: string }) {
   return (
-    <article className="bg-paper pt-[76px]">
-      <header className="mx-auto max-w-[1440px] px-5 pt-12 md:px-10 md:pt-20">
+    <article className="bg-paper pt-[4.75rem]">
+      <header className="mx-auto max-w-[90rem] px-5 pt-12 md:px-10 md:pt-20">
         <Link href="/insights" className="group label inline-flex min-h-11 items-center gap-2 text-stone hover:text-ink">
           <ArrowLeft className="size-3.5 transition-transform duration-200 group-hover:-translate-x-0.5" aria-hidden />
           Insights
@@ -32,12 +32,12 @@ export function Article({ article, section }: { article: OriginalArticle; sectio
         </div>
       </header>
 
-      <div className="mx-auto max-w-[1440px] px-5 pt-16 pb-24 md:px-10 md:pt-20 md:pb-32 lg:pb-40">
+      <div className="mx-auto max-w-[90rem] px-5 pt-16 pb-24 md:px-10 md:pt-20 md:pb-32 lg:pb-40">
         <div className="grid grid-cols-1 lg:grid-cols-12 lg:gap-x-6">
           <div className="border-t border-ink pt-10 lg:col-span-7 lg:col-start-4">
             {(article.body ?? []).map((block, i) =>
               typeof block === "string" ? (
-                <p key={i} className="mt-6 max-w-[66ch] text-[19px] leading-[1.7] first:mt-0">
+                <p key={i} className="mt-6 max-w-[66ch] text-[1.1875rem] leading-[1.7] first:mt-0">
                   {block}
                 </p>
               ) : "heading" in block ? (
