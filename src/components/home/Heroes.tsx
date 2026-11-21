@@ -6,7 +6,17 @@ import { ArtDirected } from "./ArtDirected";
 
 const { hero } = home;
 
-type HeroProps = { id?: string; as?: "h1" | "h2" };
+type HeroProps = {
+  id?: string;
+  as?: "h1" | "h2";
+  /**
+   * Home only (Direction B): the stage holds while the next section slides up
+   * over it. The page wraps the hero and that section in `.hero-hold` (see
+   * src/app/styles/home.css); the header's dark marker then moves off the
+   * held stage, which would otherwise stay "behind the header" all the way.
+   */
+  hold?: boolean;
+};
 
 /*
  * Three directions for the opening screen. All use the same approved copy,
@@ -72,10 +82,17 @@ export function HeroA({ id = "hero-heading", as: H = "h1" }: HeroProps) {
  * Either way it dissolves into black on its inner edge. The section is marked
  * data-header="dark" so the header keeps its dark style while over it.
  */
-export function HeroB({ id = "hero-heading", as: H = "h1" }: HeroProps) {
+export function HeroB({ id = "hero-heading", as: H = "h1", hold = false }: HeroProps) {
   const photographic = hero.bStyle === "photo";
   return (
-    <section data-header="dark" className="relative isolate overflow-hidden bg-ink text-white" aria-labelledby={id}>
+    <section
+      data-header={hold ? undefined : "dark"}
+      className={`relative isolate overflow-hidden bg-ink text-white ${hold ? "hero-stage" : ""}`}
+      aria-labelledby={id}
+    >
+      {/* Held stage: this marker keeps the header dark while the stage scrolls normally (phones, portrait).
+          Where the stage holds (landscape from 1024px), the page's own marker in .hero-hold takes over. */}
+      {hold && <div aria-hidden data-header="dark" className="pointer-events-none absolute inset-0 -z-20 lg:landscape:hidden" />}
       {/* Short portrait phones: the stage runs past the fold, so the screen edge crops the photo and its fade to black stays below her face. */}
       <div className={`relative min-h-[100svh] ${photographic ? "max-md:portrait:min-h-[max(100svh,40rem)]" : ""}`}>
         {photographic ? (
@@ -91,6 +108,7 @@ export function HeroB({ id = "hero-heading", as: H = "h1" }: HeroProps) {
                 eager
                 sizesWide="(min-width: 1024px) and (orientation: landscape) 150vh, 116vw"
                 sizesTall="100vw"
+                className="hero-settle"
               />
             </ImageReveal>
             {/* When stacked, the photo settles into the black where the sub-line begins. */}
@@ -142,6 +160,18 @@ export function HeroB({ id = "hero-heading", as: H = "h1" }: HeroProps) {
         <p className="max-w-[30rem] text-[1.125rem] leading-relaxed text-white/80 md:text-[1.1875rem]">{hero.sub}</p>
         <Actions dark />
       </Reveal>
+
+      {hold && (
+        <>
+          {/* "Scroll": a quiet cue at the foot of the first screen, wide screens only. It fades as the page moves. */}
+          <div aria-hidden className="hero-cue pointer-events-none absolute right-10 bottom-12 z-20 hidden items-center gap-4 lg:landscape:flex">
+            <span className="label !text-[0.65625rem] text-white/80">Scroll</span>
+            <span className="hero-cue-line block h-px w-16 bg-white/60" />
+          </div>
+          {/* The stage dims as the next section slides up over it. */}
+          <div aria-hidden className="hero-dim pointer-events-none absolute inset-0 z-30 bg-ink opacity-0" />
+        </>
+      )}
     </section>
   );
 }

@@ -76,6 +76,20 @@ export const home = {
       "I’ve experienced dentistry from the front office to the operatory, from clinical education to industry leadership. Every role has reinforced the same belief: dental hygiene has extraordinary potential when clinical excellence, education, and business understanding come together.",
       "Today, I bring that perspective to conference stages, hands-on education, industry collaborations, and practice consulting.",
     ],
+    /**
+     * Styling only, never wording: the phrase of the heading that carries the blush
+     * marker, and the phrases set in blush when the paragraphs above are shown one
+     * sentence at a time over the photograph (one list per sentence, in order).
+     * Each phrase must appear in its sentence exactly as written.
+     */
+    headingMark: "every side",
+    marks: [
+      ["at 16", "the front desk"],
+      ["three decades later"],
+      ["the front office", "industry leadership"],
+      ["extraordinary potential"],
+      ["that perspective"],
+    ],
     /** Full-bleed band inside the section, 768px and up. */
     photo: {
       src: "/photos/home-perspective-band-g.jpg",
@@ -169,6 +183,16 @@ export const home = {
     name: "Claire Jeong, MS, RDH",
     role: "Founder, StudentRDH & DentalToaster",
     permission: "pending" as "pending" | "granted",
+    /** The room behind the quote: dimmed and in monochrome, so the words stay first. */
+    backdrop: {
+      src: "/photos/home-quote-room-g.jpg",
+      alt: "A conference audience standing and applauding",
+      treatment: "color",
+      direction: "A full room on its feet, seen from the side. No stage, no signage: a backdrop for the quote.",
+      focus: "50% 82%",
+      focusMobile: "42% 82%",
+      original: "54708276125",
+    } satisfies PhotoSlot,
   },
 
   closing: {

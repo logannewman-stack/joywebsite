@@ -1,13 +1,16 @@
+import type { CSSProperties } from "react";
 import type { Metadata, Viewport } from "next";
 import { home } from "@/content/home";
 import { site } from "@/content/site";
 import { heroes } from "@/components/home/Heroes";
+import { Perspective, PERSPECTIVE_LENGTH } from "@/components/home/Perspective";
 import { Pathways } from "@/components/home/Pathways";
-import { ArtDirected } from "@/components/home/ArtDirected";
-import { ImageReveal, Reveal } from "@/components/ui/Reveal";
+import { Finale } from "@/components/home/Finale";
+import { Scene } from "@/components/motion/Scene";
+import { WordRise } from "@/components/motion/Text";
 import { Quote } from "@/components/ui/Quote";
-import { typeset } from "@/components/ui/Typeset";
-import { InquiryButton } from "@/components/inquiry/InquiryProvider";
+
+type Vars = CSSProperties & Record<`--${string}`, string | number>;
 
 // Approved copy only: the headline for the title, and the line that names the work for the description.
 const title = `${site.name} | ${home.hero.heading}`;
@@ -26,77 +29,70 @@ export const viewport: Viewport = {
   themeColor: { a: "#ffffff", b: "#0b0b0b", c: "#f5f1e9" }[site.homeHero],
 };
 
+const pad = (n: number) => String(n).padStart(2, "0");
+
 export default function Home() {
   const Hero = heroes[site.homeHero];
-  const { perspective, work, closing, testimonial } = home;
-  const [lede, middle, bridge] = perspective.paragraphs;
+  const { work, pathways, testimonial } = home;
+  // The black stage (Direction B) holds while the story slides up over it.
+  const hold = site.homeHero === "b";
   // Ivory brings warmth after a black or white opening; after C's ivory opening it switches to white.
   const perspectiveTone = site.homeHero === "c" ? "bg-paper" : "bg-ivory";
+  const opening = (
+    <>
+      <Hero hold={hold} />
+      {/* A perspective shaped by every side of dentistry: the story, pinned over one photograph. */}
+      <Perspective tone={perspectiveTone} />
+    </>
+  );
 
   return (
     <>
-      <Hero />
-
-      {/* A perspective shaped by every side of dentistry: the story, paced around one full-bleed photograph. */}
-      <section className={perspectiveTone} aria-labelledby="perspective-heading">
-        <div className="mx-auto grid max-w-[90rem] gap-y-10 px-5 pt-24 md:px-10 md:pt-32 lg:grid-cols-12 lg:gap-x-6 lg:pt-40">
-          <Reveal className="lg:col-span-11">
-            <h2 id="perspective-heading" className="display max-w-[20ch] text-[clamp(2.75rem,6.4vw,6.5rem)] leading-[0.92]">
-              {perspective.heading}
-            </h2>
-          </Reveal>
-          <Reveal delay={0.06} className="lg:col-span-6 lg:col-start-7 lg:mt-4">
-            <p className="display max-w-[32rem] text-[clamp(1.65rem,2.5vw,2.4rem)] leading-[1.16] tracking-[-0.005em] lg:max-w-none">{typeset(lede)}</p>
-          </Reveal>
+      {hold ? (
+        // The engine gives this wrapper --p; home.css ("Opening") uses it to dim the held stage.
+        <div data-scene="lg" className="hero-hold relative" style={{ "--hold-n": PERSPECTIVE_LENGTH } as Vars}>
+          {/* Where the stage holds, this marker scrolls in its place and keeps the header's dark variant in step. */}
+          <div aria-hidden data-header="dark" className="pointer-events-none absolute inset-x-0 top-0 hidden h-[100svh] lg:landscape:block" />
+          {opening}
         </div>
+      ) : (
+        opening
+      )}
 
-        <ImageReveal className="relative mt-16 aspect-[4/5] w-full bg-sand md:mt-24 md:aspect-[16/9] lg:aspect-auto lg:h-[min(84svh,55rem)]">
-          <ArtDirected wide={perspective.photo} tall={perspective.photoTall} at="md" sizesWide="100vw" sizesTall="100vw" />
-        </ImageReveal>
-
-        <div className="mx-auto grid max-w-[90rem] gap-y-8 px-5 pt-14 pb-24 md:px-10 md:pt-20 md:pb-32 lg:grid-cols-12 lg:gap-x-6 lg:pb-36">
-          <Reveal className="lg:col-span-5 lg:col-start-1">
-            <p className="max-w-[36rem] text-[1.0625rem] leading-relaxed text-stone md:text-[1.125rem]">{middle}</p>
-          </Reveal>
-          <Reveal delay={0.06} className="lg:col-span-6 lg:col-start-7">
-            <p className="display max-w-[32rem] text-[clamp(1.65rem,2.5vw,2.4rem)] leading-[1.16] tracking-[-0.005em] lg:max-w-none">{typeset(bridge)}</p>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* Explore My Work: the four pathways */}
-      <section id="work" className="bg-paper" aria-labelledby="work-heading">
-        <div className="mx-auto max-w-[90rem] px-5 pt-24 pb-28 md:px-10 md:pt-32 md:pb-36 lg:pb-44">
-          <Reveal>
-            <h2 id="work-heading" className="display text-[clamp(2.75rem,6.4vw,6.5rem)] leading-[0.92]">
-              {work.heading}
+      {/* Explore My Work: the four pathways, a sideways-scrolling sequence from 1024px and a swipeable row below. */}
+      <section id="work" className="work-sheet relative z-10 bg-paper" aria-labelledby="work-heading">
+        <Scene as="div" from="lg" length={4} steps={pathways.length} className="work" pinClassName="work-stage pt-24 pb-24 md:pt-32 md:pb-32 lg:pb-40">
+          <div className="work-head mx-auto max-w-[90rem] px-5 md:px-10">
+            <h2 id="work-heading" className="work-title display text-[clamp(2.75rem,6.4vw,6.5rem)] leading-[0.92]">
+              <WordRise>{work.heading}</WordRise>
             </h2>
-          </Reveal>
-          <div className="mt-12 md:mt-16 lg:mt-20">
+            <p aria-hidden className="work-count label text-stone">
+              <span className="roll-count tabular-nums text-ink">
+                <span className="roll">
+                  {pathways.map((p, i) => (
+                    <span key={p.kicker}>{pad(i + 1)}</span>
+                  ))}
+                </span>
+              </span>
+              <span className="mx-2 opacity-50">/</span>
+              <span className="tabular-nums">{pad(pathways.length)}</span>
+            </p>
+          </div>
+          <div className="work-list mt-10 md:mt-14 lg:mt-20">
             <Pathways />
           </div>
-        </div>
+          <div aria-hidden className="work-progress">
+            <span className="work-progress-fill" />
+            <span className="work-progress-dot" />
+          </div>
+        </Scene>
       </section>
 
-      {/* What Others Are Saying: big type on black. Marked dark so the header switches over it. */}
-      <div data-header="dark">
-        <Quote {...testimonial} tone="dark" />
-      </div>
+      {/* What Others Are Saying: the quote lights up over a room on its feet. Black: the header switches over it. */}
+      <Quote {...testimonial} tone="dark" className="home-quote" />
 
-      {/* Let's start a conversation: the page ends on one centered invitation. */}
-      <section className="bg-ivory" aria-labelledby="closing-heading">
-        <div className="mx-auto max-w-[90rem] px-5 py-24 text-center md:px-10 md:py-36 lg:py-44">
-          <Reveal>
-            <h2 id="closing-heading" className="display mx-auto max-w-[11ch] text-[clamp(3rem,7.6vw,7.75rem)] leading-[0.92]">
-              {closing.heading}
-            </h2>
-          </Reveal>
-          <Reveal delay={0.06}>
-            <p className="mx-auto mt-8 max-w-[34rem] text-[1.0625rem] leading-relaxed text-stone md:mt-10 md:text-[1.125rem]">{closing.body}</p>
-            <InquiryButton className="mt-10">{closing.cta}</InquiryButton>
-          </Reveal>
-        </div>
-      </section>
+      {/* Let's start a conversation: the finale. */}
+      <Finale />
     </>
   );
 }
