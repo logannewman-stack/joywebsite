@@ -33,7 +33,7 @@ export function DetailsLink({
     >
       <FileText className="size-4 shrink-0" aria-hidden />
       <span className="link-draw pb-0.5">{label}</span>
-      <span aria-hidden className={`label ml-1 !text-[10px] !tracking-[0.14em] whitespace-nowrap ${tone === "dark" ? "text-ash" : "text-stone"}`}>
+      <span aria-hidden className={`label ml-1 !text-[10px] !tracking-[0.14em] whitespace-nowrap max-sm:hidden ${tone === "dark" ? "text-ash" : "text-stone"}`}>
         {meta}
       </span>
       <span className="sr-only">

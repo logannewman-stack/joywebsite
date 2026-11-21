@@ -30,7 +30,7 @@ export default function IndustryPage() {
         <div className="mx-auto grid grid-cols-1 max-w-[1440px] gap-y-12 px-5 pt-12 pb-20 md:px-10 md:pt-20 md:pb-28 lg:grid-cols-12 lg:grid-rows-[auto_1fr] lg:gap-x-6 lg:gap-y-8 lg:pb-32">
           <div className="lg:col-span-7 lg:col-start-6 lg:row-start-1">
             <Label index="04">Industry Collaborations</Label>
-            <h1 className="display mt-8 text-[clamp(2.6rem,13vw,4.4rem)] leading-[0.92] md:text-[clamp(2.6rem,7.4vw,6.4rem)] lg:text-[clamp(2.6rem,5.1vw,5.8rem)]">
+            <h1 className="display mt-8 text-[clamp(2.6rem,13vw,4.4rem)] leading-[0.92] md:text-[clamp(2.6rem,7.4vw,6.4rem)] lg:text-[clamp(2.6rem,5.1vw,4.59rem)]">
               <LineReveal lines={["Education and ", "clinical strategy ", <em key="a">for dental </em>, <em key="b">manufacturers.</em>]} />
             </h1>
           </div>
@@ -58,12 +58,12 @@ export default function IndustryPage() {
       </section>
 
       {/* Sponsorships and KOL Partnerships: the large portrait moment */}
-      <section id="partnerships" className="bg-ivory">
+      <section id="partnerships" className="overflow-x-clip bg-ivory">
         <div className="mx-auto grid grid-cols-1 max-w-[1440px] gap-y-14 px-5 py-24 md:px-10 md:py-28 lg:grid-cols-12 lg:gap-x-6 lg:py-36">
           {/* Heading at the top of the column, the offer and its button at the foot */}
           <div className="flex flex-col lg:col-span-5 lg:justify-between lg:pb-2">
             <Reveal>
-              <h2 className="display max-w-[12ch] text-[clamp(2.6rem,4.6vw,4.6rem)] leading-[0.95]">{partnerships.heading}</h2>
+              <h2 className="display max-w-[12ch] text-[clamp(2.6rem,4.6vw,4.14rem)] leading-[0.95]">{partnerships.heading}</h2>
             </Reveal>
             <Reveal delay={0.08} className="mt-7 lg:mt-12">
               <p className="max-w-[34rem] text-[17.5px] leading-relaxed text-stone">{keepCompounds(partnerships.text)}</p>
@@ -72,11 +72,11 @@ export default function IndustryPage() {
               </InquiryButton>
             </Reveal>
           </div>
-          <ImageReveal className="md:ml-auto md:w-[70%] lg:col-span-6 lg:col-start-7 lg:-mr-10 lg:ml-0 lg:w-auto">
+          <ImageReveal className="md:ml-auto md:w-[70%] lg:col-span-6 lg:col-start-7 lg:ml-0 lg:w-auto lg:bleed-right">
             <Photo
               slot={partnerships.photo}
               className="aspect-[4/5] w-full"
-              sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1023px) 70vw, (max-width: 1440px) 50vw, 710px"
+              sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1023px) 70vw, (max-width: 1440px) 50vw, calc(50vw - 12px)"
             />
           </ImageReveal>
         </div>
@@ -86,10 +86,10 @@ export default function IndustryPage() {
       <section id="clinical-launch" data-header="dark" className="grain grain-light bg-ink text-white">
         <div className="mx-auto max-w-[1440px] px-5 py-24 md:px-10 md:py-28 lg:py-36">
           <Reveal>
-            <h2 className="display max-w-[12ch] text-[clamp(2.6rem,4.6vw,4.6rem)] leading-[0.95]">{launch.heading}</h2>
+            <h2 className="display max-w-[12ch] text-[clamp(2.6rem,4.6vw,4.14rem)] leading-[0.95]">{launch.heading}</h2>
           </Reveal>
           <Reveal delay={0.08} className="mt-14 md:mt-20 lg:pl-[8.333%]">
-            <p className="display max-w-[21ch] text-[clamp(2.4rem,5vw,5.2rem)] leading-[1.02]">
+            <p className="display max-w-[21ch] text-[clamp(2.4rem,5vw,4.5rem)] leading-[1.02]">
               <em className="text-blush">{launch.lead}</em>
             </p>
           </Reveal>
@@ -125,7 +125,7 @@ export default function IndustryPage() {
       <section className="bg-paper">
         <div className="mx-auto grid grid-cols-1 max-w-[1440px] gap-y-10 px-5 py-24 md:px-10 md:py-28 lg:grid-cols-12 lg:gap-x-6 lg:py-36">
           <Reveal className="lg:col-span-7">
-            <h2 className="display text-[clamp(2.8rem,5.8vw,6.4rem)] leading-[0.92]">
+            <h2 className="display text-[clamp(2.8rem,5.8vw,5.22rem)] leading-[0.92]">
               <span className="block">{closingA} </span>
               <em className="block">{closingB}</em>
             </h2>
