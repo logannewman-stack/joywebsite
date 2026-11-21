@@ -71,8 +71,9 @@ export function HeroA({ id = "hero-heading", as: H = "h1" }: HeroProps) {
 }
 
 /**
- * B: black stage. The photograph bleeds off the right edge (lg) or rises
- * under the headline (phones), dissolving into black on its inner edge. The
+ * B: black stage. On landscape screens from 1024px the photograph bleeds off
+ * the right edge; on phones and portrait tablets it rises under the headline.
+ * Either way it dissolves into black on its inner edge. The
  * section is marked data-header="dark" so the header keeps its dark style
  * while it overlaps the stage.
  */
@@ -82,19 +83,19 @@ export function HeroB({ id = "hero-heading", as: H = "h1" }: HeroProps) {
     <section data-header="dark" className="relative isolate overflow-hidden bg-ink text-white" aria-labelledby={id}>
       <div className="relative min-h-[100svh]">
         {photographic ? (
-          <div className="absolute inset-x-0 top-[47svh] bottom-0 -z-10 [mask-image:linear-gradient(to_bottom,transparent_0%,#000_22%)] md:top-[42svh] lg:inset-y-0 lg:right-0 lg:left-auto lg:w-[58%] lg:[mask-image:linear-gradient(to_right,transparent_0%,#000_28%)]">
+          <div className="absolute inset-x-0 top-[47svh] bottom-0 -z-10 [mask-image:linear-gradient(to_bottom,transparent_0%,#000_22%)] md:top-[42svh] lg:landscape:inset-y-0 lg:landscape:right-0 lg:landscape:left-auto lg:landscape:w-[58%] lg:landscape:[mask-image:linear-gradient(to_right,transparent_0%,#000_28%)]">
             <ImageReveal immediate className="absolute inset-0">
               <ArtDirected
                 wide={hero.stage}
                 tall={hero.stageTall}
                 at="md"
                 eager
-                sizesWide="(min-width: 1024px) 150vh, 110vw"
+                sizesWide="(min-width: 1024px) and (orientation: landscape) 150vh, 116vw"
                 sizesTall="100vw"
               />
             </ImageReveal>
-            {/* Below lg, the photo settles into the black where the sub-line begins. */}
-            <div aria-hidden className="absolute inset-0 bg-[linear-gradient(to_top,#0b0b0b_0%,rgba(11,11,11,0)_32%)] lg:hidden" />
+            {/* When stacked, the photo settles into the black where the sub-line begins. */}
+            <div aria-hidden className="absolute inset-0 bg-[linear-gradient(to_top,#0b0b0b_0%,rgba(11,11,11,0)_32%)] lg:landscape:hidden" />
           </div>
         ) : (
           <>
@@ -112,18 +113,18 @@ export function HeroB({ id = "hero-heading", as: H = "h1" }: HeroProps) {
           </>
         )}
 
-        <div className="mx-auto max-w-[1440px] px-5 pt-24 md:px-10 lg:pt-[100px]">
+        <div className="mx-auto max-w-[1440px] px-5 pt-24 md:px-10 lg:landscape:pt-[100px]">
           <H id={id} className="display relative z-20 text-[clamp(3rem,14vw,3.4rem)] leading-[0.88] sm:text-[clamp(3.4rem,min(10vw,15svh,calc(26svh_-_90px)),11rem)]">
             <LineReveal
               lines={[
                 "The work has",
-                <span key="a" className="block lg:pl-[16%]">
+                <span key="a" className="block lg:landscape:pl-[16%]">
                   always been
                 </span>,
                 <em key="b" className="block text-blush">
                   bigger than
                 </em>,
-                <em key="c" className="block text-blush lg:pl-[8%]">
+                <em key="c" className="block text-blush lg:landscape:pl-[8%]">
                   the chair.
                 </em>,
               ]}
@@ -133,11 +134,11 @@ export function HeroB({ id = "hero-heading", as: H = "h1" }: HeroProps) {
         </div>
       </div>
 
-      {/* Phones: directly under the stage. lg: pinned to the bottom-left of the first screen. */}
+      {/* Stacked: directly under the stage. Landscape from 1024px: pinned to the bottom-left of the first screen. */}
       <Reveal
         immediate
         delay={0.25}
-        className="relative z-20 mx-auto grid max-w-[1440px] gap-7 px-5 pt-4 pb-16 md:px-10 lg:absolute lg:inset-x-0 lg:bottom-0 lg:pt-0 lg:pb-12"
+        className="relative z-20 mx-auto grid max-w-[1440px] gap-7 px-5 pt-4 pb-16 md:px-10 lg:landscape:absolute lg:landscape:inset-x-0 lg:landscape:bottom-0 lg:landscape:pt-0 lg:landscape:pb-12"
       >
         <p className="max-w-[30rem] text-[18px] leading-relaxed text-white/80 md:text-[19px]">{hero.sub}</p>
         <Actions dark />
