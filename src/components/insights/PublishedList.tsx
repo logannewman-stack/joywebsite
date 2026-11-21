@@ -17,8 +17,8 @@ function RowRule({ index }: { index: number }) {
  * Published Articles: an editorial index of work in dental publications, each
  * linking to the original. Book contributions sit apart under Published Work.
  *
- * The index draws itself: the top rule, then each row with its hairline, one
- * after another. A row with a link answers as one on hover and focus: an ink
+ * The index draws itself: the gold top rule, then each row with its hairline,
+ * one after another. A row with a link answers as one on hover and focus: an ink
  * rule draws over its hairline, the title leans in, the number darkens and
  * the arrow travels.
  */
@@ -68,7 +68,7 @@ export function PublishedList({
         <div className="lg:col-span-6 lg:col-start-7">
           {articles.length > 0 && (
             <InView>
-              <span aria-hidden className="rule-draw block h-px bg-ink" />
+              <span aria-hidden className="rule-draw block h-px bg-gold-deep" />
               <ol className="stagger">
                 {articles.map((a, i) => (
                   <li key={a.title} className="relative">
@@ -82,7 +82,7 @@ export function PublishedList({
           {books.length > 0 && (
             <InView className={articles.length > 0 ? "mt-16 md:mt-20" : ""}>
               <h3 className="rise label text-stone">{booksHeading}</h3>
-              <span aria-hidden className="rule-draw mt-5 block h-px bg-ink" style={{ "--d": "0.08s" } as Vars} />
+              <span aria-hidden className="rule-draw mt-5 block h-px bg-gold-deep" style={{ "--d": "0.08s" } as Vars} />
               <ul className="stagger">
                 {books.map((b, i) => (
                   <li key={b.title} className="relative">

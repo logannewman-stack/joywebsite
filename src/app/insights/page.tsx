@@ -7,7 +7,7 @@ import { Reveal } from "@/components/ui/Reveal";
 import { NextPage } from "@/components/layout/NextPage";
 import { InView } from "@/components/motion/InView";
 import { Parallax } from "@/components/motion/Parallax";
-import { LineRise } from "@/components/motion/Text";
+import { Hl, LineRise } from "@/components/motion/Text";
 import { Band } from "@/components/insights/Band";
 import { Feature, type FeatureItem } from "@/components/insights/Feature";
 import { OriginalArticles } from "@/components/insights/OriginalArticles";
@@ -63,7 +63,19 @@ export default function InsightsPage() {
           <div className="lg:col-span-7 lg:pt-6">
             <Label index="05">Insights</Label>
             <h1 className="display mt-8 text-[clamp(2.4rem,12.4vw,4.4rem)] leading-[0.92] md:text-[clamp(3rem,9vw,6rem)] lg:text-[clamp(3rem,6.6vw,5.94rem)]">
-              <LineRise immediate lines={["The conversation", "doesn’t end when the", <em key="a">presentation does.</em>]} />
+              <LineRise
+                immediate
+                lines={[
+                  "The conversation",
+                  "doesn’t end when the",
+                  // The page's one pink emphasis: a pale marker that draws behind the italic phrase.
+                  <em key="a">
+                    <InView as="span">
+                      <Hl tone="light">presentation does.</Hl>
+                    </InView>
+                  </em>,
+                ]}
+              />
             </h1>
             <Reveal immediate delay={0.3} className="mt-10 max-w-md md:mt-12">
               <p className="text-[1.1875rem] leading-relaxed text-stone">{hero.text}</p>

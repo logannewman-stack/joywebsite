@@ -9,15 +9,16 @@ type Vars = CSSProperties & Record<`--${string}`, string>;
  * numbered as a list, so the page's two inquiry categories are clear from the
  * first screen. Each row jumps to its section.
  *
- * The rules draw themselves in and the rows follow. On hover or focus a row
- * answers as one: an ink rule draws over the hairline, the label leans in,
- * the number darkens and the arrow travels down.
+ * The rules draw themselves in (the index rule in gold) and the rows follow.
+ * On hover or focus a row answers as one: an ink rule draws over the
+ * hairline, the label leans in, the number darkens and the arrow travels
+ * down in its gold ring.
  */
 export function PathIndex({ items, className = "" }: { items: { label: string; href: string }[]; className?: string }) {
   return (
     <nav aria-label="On this page" className={className}>
       <InView delay={0.3}>
-        <span aria-hidden className="rule-draw block h-px bg-ink" />
+        <span aria-hidden className="rule-draw block h-px bg-gold-deep" />
         <ol className="stagger">
           {items.map((item, i) => (
             <li key={item.href}>

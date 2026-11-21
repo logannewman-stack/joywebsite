@@ -30,8 +30,9 @@ export type FeatureItem = {
  * on ivory with the publication as its masthead, the headline at cover scale
  * and one way in. The whole sheet is the link (its hit area is stretched over
  * the card) and answers as one object on hover and focus: an ink rule draws
- * under the masthead, the headline leans in, and the arrow circle fills,
- * leans toward the pointer and sends its arrow out. Type only: no cover art
+ * over the gold one under the masthead, the headline leans in, and the arrow
+ * circle (a gold ring at rest) fills, leans toward the pointer and sends its
+ * arrow out. Type only: no cover art
  * is invented for the publisher.
  */
 export function Feature({ item, cta }: { item: FeatureItem; cta: string }) {
@@ -61,7 +62,7 @@ export function Feature({ item, cta }: { item: FeatureItem; cta: string }) {
               {item.date && <p className="label text-stone tabular-nums">{item.date}</p>}
               {!item.verified && <ConfirmTag />}
             </div>
-            <span aria-hidden className="rule-draw absolute inset-x-0 bottom-0 h-px bg-ink/25" />
+            <span aria-hidden className="rule-draw absolute inset-x-0 bottom-0 h-px bg-gold-deep" />
             <span aria-hidden className="rule-over" />
           </InView>
 

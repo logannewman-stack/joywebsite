@@ -9,7 +9,7 @@ import { NextPage } from "@/components/layout/NextPage";
 import { InView, Magnetic } from "@/components/motion/InView";
 import { Parallax } from "@/components/motion/Parallax";
 import { Scene, SceneLine, SceneStep } from "@/components/motion/Scene";
-import { LineRise, WordRise } from "@/components/motion/Text";
+import { Hl, LineRise, WordRise } from "@/components/motion/Text";
 import { PathIndex } from "@/components/industry/PathIndex";
 import { Collaborations } from "@/components/industry/Collaborations";
 import { LeadLight } from "@/components/industry/LeadLight";
@@ -28,12 +28,12 @@ function lastTwo(heading: string): [string, string] {
   return [words.slice(0, -2).join(" "), words.slice(-2).join(" ")];
 }
 
-/** The section's place in the opening index ("01", "02"), with a short rule. */
+/** The section's place in the opening index ("01", "02"), with a short gold rule (gold is for lines, never for the small numeral). */
 function Index({ n, tone = "light" }: { n: string; tone?: "light" | "dark" }) {
   return (
     <p aria-hidden className={`label flex items-center gap-3 tabular-nums ${tone === "dark" ? "text-ash" : "text-stone"}`}>
       {n}
-      <span className="h-px w-8 bg-current opacity-40" />
+      <span className={`h-px w-8 ${tone === "dark" ? "bg-gold" : "bg-gold-deep"}`} />
     </p>
   );
 }
@@ -50,7 +50,20 @@ export default function IndustryPage() {
           <div className="lg:col-span-7 lg:col-start-6 lg:row-start-1">
             <Label index="04">Industry Collaborations</Label>
             <h1 className="display mt-8 text-[clamp(2.6rem,13vw,4.4rem)] leading-[0.92] md:text-[clamp(2.6rem,7.4vw,6.4rem)] lg:text-[clamp(2.6rem,5.1vw,4.59rem)]">
-              <LineRise immediate lines={["Education and", "clinical strategy", <em key="a">for dental</em>, <em key="b">manufacturers.</em>]} />
+              <LineRise
+                immediate
+                lines={[
+                  "Education and",
+                  "clinical strategy",
+                  <em key="a">for dental</em>,
+                  // The page's pink emphasis: a pale marker that draws behind the word the page is for.
+                  <em key="b">
+                    <InView as="span">
+                      <Hl tone="light">manufacturers.</Hl>
+                    </InView>
+                  </em>,
+                ]}
+              />
             </h1>
           </div>
           {/* The portrait is there from the first paint (it is the largest thing on the screen): it only settles and drifts. */}
@@ -144,7 +157,7 @@ export default function IndustryPage() {
 
           <SceneStep index={1} className="launch-step launch-details mt-12 md:ml-auto md:w-[78%] lg:col-span-5 lg:col-start-7 lg:mt-24 lg:ml-0 lg:w-auto lg:self-end">
             <InView className="launch-details-inner flex flex-col gap-6">
-              <span aria-hidden className="launch-item launch-rule hidden h-px bg-white/25" style={{ "--k": 0 } as Vars} />
+              <span aria-hidden className="launch-item launch-rule hidden h-px bg-gold/70" style={{ "--k": 0 } as Vars} />
               {launch.paragraphs.map((p, i) => (
                 <p key={i} className="launch-item rise max-w-[34rem] text-[1.09375rem] leading-relaxed text-white/85" style={{ "--k": i + 1, "--d": `${i * 0.06}s` } as Vars}>
                   {p}
@@ -161,7 +174,7 @@ export default function IndustryPage() {
 
           {/* How far through the scene: only while it is pinned */}
           <div aria-hidden className="launch-foot hidden">
-            <SceneLine className="text-white" />
+            <SceneLine className="text-gold" />
           </div>
         </div>
       </Scene>
@@ -180,7 +193,7 @@ export default function IndustryPage() {
             </em>
           </h2>
           <InView className="mt-12 md:mt-16">
-            <span aria-hidden className="rule-draw block h-px bg-ink" />
+            <span aria-hidden className="rule-draw block h-px bg-gold-deep" />
             <div className="mt-8 grid grid-cols-1 gap-y-9 md:mt-10 lg:grid-cols-12 lg:gap-x-6">
               <p className="rise max-w-[30rem] text-[1.1875rem] leading-relaxed text-stone lg:col-span-5 lg:col-start-3" style={{ "--d": "0.15s" } as Vars}>
                 {closing.text}

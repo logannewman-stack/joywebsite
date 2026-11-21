@@ -18,7 +18,8 @@
   display: block;
   flex-shrink: 0;
   overflow: hidden;
-  border: 1px solid rgb(11 11 11 / 0.22);
+  /* A gold ring at rest (gold-deep on white and ivory, gold on black). */
+  border: 1px solid var(--color-gold-deep);
   border-radius: 9999px;
   transition:
     background-color var(--duration-hover) ease-out,
@@ -34,7 +35,7 @@
   --ay: -1;
 }
 .arrow-circle-dark {
-  border-color: rgb(255 255 255 / 0.32);
+  border-color: var(--color-gold);
 }
 .arrow-circle > svg {
   position: absolute;
@@ -172,14 +173,14 @@ html.motion .partner-photo .parallax-inner {
 .launch-lead-p {
   font-size: clamp(2.4rem, 7.6vw, 4.5rem);
 }
-/* The sentence is set as two balanced line groups: the statement, then its
-   closing phrase in blush italic. */
+/* The sentence is set as two balanced line groups: the statement in white,
+   then its closing phrase in champagne gold italic (.hl-gold gives the
+   colour). One accent on the black stage: gold, for the phrase and the lines. */
 .launch-line {
   display: block;
   text-wrap: balance;
 }
 .launch-accent {
-  color: var(--color-blush);
   font-style: italic;
 }
 /* The words sit one level down from .word-light, so its brightening is

@@ -8,8 +8,9 @@ type Vars = CSSProperties & Record<`--${string}`, string | number>;
  * path across the viewport elsewhere (see .launch-lead in industry.css). It
  * uses the motion system's .word-light, so the sentence stays real text.
  *
- * `accent` is the phrase that closes the sentence; it is set in blush italic
- * on its own balanced lines, so it is never split from its first word. The
+ * `accent` is the phrase that closes the sentence; it is set in champagne
+ * gold italic (the motion system's gold highlight, for large display words on
+ * black) on its own balanced lines, so it is never split from its first word. The
  * wording is never changed: if the phrase is not the end of the text, nothing
  * is accented.
  */
@@ -32,7 +33,7 @@ export function LeadLight({ text, accent, className = "" }: { text: string; acce
       {accented > 0 && (
         <>
           {" "}
-          <span className="launch-line launch-accent">{line(words.slice(from), from)}</span>
+          <span className="launch-line launch-accent hl-gold">{line(words.slice(from), from)}</span>
         </>
       )}
     </span>

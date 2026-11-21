@@ -33,14 +33,14 @@ export function OriginalArticles({ heading, cta, articles }: { heading: string; 
             const g = geometry[i];
             return (
               <InView key={i} as={a ? "article" : "div"} className={`relative pt-8 ${a ? "group" : ""} ${g.box}`}>
-                <span aria-hidden className={`rule-draw absolute inset-x-0 top-0 h-px ${a ? "bg-ink/25" : "bg-ink"}`} />
+                <span aria-hidden className="rule-draw absolute inset-x-0 top-0 h-px bg-gold-deep" />
                 {a && <span aria-hidden className="rule-over rule-over-top" />}
                 <div className="rise" style={{ "--d": "0.12s" } as Vars}>
                   <p className="label flex items-center gap-3 text-stone tabular-nums">
                     <span aria-hidden>{String(i + 1).padStart(2, "0")}</span>
                     {a?.date && (
                       <>
-                        <span aria-hidden className="h-px w-8 bg-current opacity-40" />
+                        <span aria-hidden className="h-px w-8 bg-gold-deep" />
                         {a.date}
                       </>
                     )}

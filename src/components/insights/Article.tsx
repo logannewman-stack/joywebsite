@@ -41,7 +41,7 @@ export function Article({ article, section }: { article: OriginalArticle; sectio
         <div className="grid grid-cols-1 lg:grid-cols-12 lg:gap-x-6">
           <div className="lg:col-span-7 lg:col-start-4">
             <InView delay={0.35}>
-              <span aria-hidden className="rule-draw block h-px bg-ink" />
+              <span aria-hidden className="rule-draw block h-px bg-gold-deep" />
             </InView>
             <div className="article-body pt-10">
               {(article.body ?? []).map((block, i) =>
@@ -55,9 +55,9 @@ export function Article({ article, section }: { article: OriginalArticle; sectio
                   </h2>
                 ) : (
                   <InView key={i} as="blockquote" className="relative my-16 pt-8 lg:-ml-[16%] lg:w-[125%]">
-                    <span aria-hidden className="rule-draw absolute top-0 left-0 block h-px w-16 bg-blush-deep" />
+                    <span aria-hidden className="rule-draw absolute top-0 left-0 block h-px w-16 bg-gold-deep" />
                     <p className="display relative text-[clamp(1.9rem,3.4vw,3.2rem)] leading-[1.08] italic">
-                      <span aria-hidden className="text-blush-deep md:absolute md:top-0 md:-left-[0.5em]">
+                      <span aria-hidden className="text-gold-deep md:absolute md:top-0 md:-left-[0.5em]">
                         “
                       </span>
                       <WordLight from={0.16} to={0.46} dim={0.5}>

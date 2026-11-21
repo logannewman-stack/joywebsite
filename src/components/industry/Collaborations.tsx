@@ -39,7 +39,7 @@ export function Collaborations({ heading, logos }: { heading: string; logos: { n
           <WordRise>{heading}</WordRise>
         </h2>
         <InView className="lg:col-span-8 lg:self-end">
-          <span aria-hidden className="rule-draw block h-px bg-ink" />
+          <span aria-hidden className="rule-draw block h-px bg-gold-deep" />
           <ul className="stagger grid grid-cols-2 sm:flex">
             {empty
               ? Array.from({ length: MAX }, (_, i) => (
