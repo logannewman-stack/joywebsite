@@ -6,7 +6,8 @@ export const industry = {
     heading: "Education and clinical strategy for dental manufacturers.",
     text: "I work with dental manufacturers to connect their products with clinical practice through education, advisory work, and long-term partnerships.",
     photo: {
-      src: "/photos/industry-hero-bw-seated.jpg",
+      src: "/photos/industry-hero-seated.jpg",
+      srcBw: "/photos/industry-hero-bw-seated.jpg",
       alt: "Dr. Joy seated in a black suit",
       treatment: "bw",
       direction: "Black-and-white editorial image. Professional and composed, black jacket; product or lab context optional.",

@@ -11,10 +11,10 @@ const directions = [
   {
     key: "a",
     Hero: HeroA,
-    name: "Editorial Monochrome",
+    name: "Editorial White",
     tag: "Closest to the brief",
-    idea: "The brief’s own instinct, executed with restraint. A white page, an oversized serif headline, and one black-and-white portrait set off-axis. Typography does the work; the photograph confirms the person.",
-    image: "JVH-155: black suit, arms crossed, converted to black and white. The black jacket separates cleanly on white, and the composition leaves the left side for the headline. Safe to crop to 4:5 on mobile.",
+    idea: "The brief’s own instinct, executed with restraint. A white page, an oversized serif headline, and one strong portrait set off-axis. Typography does the work; the photograph confirms the person.",
+    image: "JVH-155: black suit, arms crossed. The black jacket separates cleanly on white, and the composition leaves the left side for the headline. Safe to crop to 4:5 on mobile. A black-and-white version is ready (photoStyle in site.ts).",
     strengths: [
       "Most readable and fastest to load, especially on phones.",
       "Lets the color photography in the four pathways below carry the energy.",
@@ -31,8 +31,8 @@ const directions = [
     Hero: HeroB,
     name: "Black Stage",
     tag: "Boldest",
-    idea: "The drama of Alexandria Ohlinger’s photo-led opening, translated into black and white. A background-removed portrait stands in front of the headline: the one designed cutout moment the brief allows.",
-    image: "JVH-130: white blazer, background removed and converted to black and white (a black jacket would disappear on black). This is an automated test cutout; a retoucher should refine the hair and jacket edges before launch. Blush carries the closing phrase.",
+    idea: "The drama of Alexandria Ohlinger’s photo-led opening. A background-removed portrait stands in front of the headline on black: the one designed cutout moment the brief allows.",
+    image: "JVH-130: white blazer, background removed (a black jacket would disappear on black). This is an automated test cutout; a retoucher should refine the hair and jacket edges before launch. Blush carries the closing phrase. A black-and-white version is ready.",
     strengths: [
       "The most memorable and personal first screen.",
       "Signals keynote presence before a word is read.",
@@ -47,9 +47,9 @@ const directions = [
   {
     key: "c",
     Hero: HeroC,
-    name: "Ivory & Color",
-    tag: "Departs from black and white",
-    idea: "Warmth first. An ivory ground, a full-color photograph in a real room, and blush used once, as a single block behind the image.",
+    name: "Ivory & Stage",
+    tag: "Warmest",
+    idea: "Warmth first. An ivory ground, a photograph from a real stage, and blush used once, as a single block behind the image.",
     image: "54707091267: color stage photograph in the white blazer, mid-gesture. It proves presence in a real room; the purple stage lighting is the one risk against the blush and ivory palette.",
     strengths: [
       "The most approachable and immediately human.",
@@ -58,7 +58,7 @@ const directions = [
     ],
     tradeoffs: [
       "Least distinctive; closer to many speaker sites.",
-      "Weakens the black-and-white identity the rest of the site builds.",
+      "A stage photo is less personal than a portrait for a first impression.",
       "Stage lighting colors compete with the blush and ivory palette.",
     ],
   },

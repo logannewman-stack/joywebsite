@@ -27,13 +27,14 @@ export function Photo({
   tone?: "light" | "dark";
   showDirection?: boolean;
 }) {
-  if (slot.src) {
+  const src = slot.src && site.photoStyle === "bw" && slot.srcBw ? slot.srcBw : slot.src;
+  if (src) {
     // A cutout keeps its transparency and stands on the bottom edge of its frame.
     const cutout = slot.treatment === "cutout";
     return (
       <div className={`relative overflow-hidden ${cutout ? "" : "bg-sand"} ${className}`}>
         <Image
-          src={slot.src}
+          src={src}
           alt={slot.alt}
           fill
           sizes={sizes}

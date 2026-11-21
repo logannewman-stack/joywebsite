@@ -8,7 +8,8 @@ export const home = {
     primary: { label: "Explore Speaking", href: "/speaking" },
     secondary: { label: "Meet Dr. Joy", href: "/meet-dr-joy" },
     portrait: {
-      src: "/photos/home-hero-bw.jpg",
+      src: "/photos/home-hero.jpg",
+      srcBw: "/photos/home-hero-bw.jpg",
       alt: "Dr. Joy in a black suit, arms crossed, smiling",
       treatment: "bw",
       direction: "One strong monochrome portrait. Black jacket or white blazer, three-quarter length, direct and warm. Leave headline space on the left.",
@@ -16,7 +17,8 @@ export const home = {
       original: "JVH-155",
     } satisfies PhotoSlot,
     cutout: {
-      src: "/photos/home-hero-cutout-bw.png",
+      src: "/photos/home-hero-cutout.png",
+      srcBw: "/photos/home-hero-cutout-bw.png",
       alt: "Dr. Joy in a white blazer",
       treatment: "cutout",
       direction: "Background-removed portrait in a white blazer (separates on black). Clean hair and jacket edges. Waist up, room above the head.",
@@ -42,7 +44,8 @@ export const home = {
     ],
     cta: { label: "Explore My Work", href: "#work" },
     photo: {
-      src: "/photos/home-perspective-bw.jpg",
+      src: "/photos/home-perspective.jpg",
+      srcBw: "/photos/home-perspective-bw.jpg",
       alt: "Dr. Joy in a white blazer, smiling",
       treatment: "bw",
       direction: "Quiet B&W editorial portrait, candid. White blazer on a light background, with enough tonal detail.",

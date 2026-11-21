@@ -6,7 +6,8 @@ export const insights = {
     heading: "The conversation doesn’t end when the presentation does.",
     text: "Published articles, clinical perspectives, and what I am seeing across the profession.",
     photo: {
-      src: "/photos/insights-hero-bw.jpg",
+      src: "/photos/insights-hero.jpg",
+      srcBw: "/photos/insights-hero-bw.jpg",
       alt: "Dr. Joy in a reflective moment",
       treatment: "bw",
       direction: "Quiet editorial imagery. Original photography preferred.",

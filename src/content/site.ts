@@ -41,6 +41,13 @@ export const site = {
    * Compare all three at /directions.
    */
   homeHero: "a" as "a" | "b" | "c",
+
+  /**
+   * Portrait style: "color" (current) or "bw". Every portrait also has a
+   * black-and-white version (srcBw), so the monochrome look Dr. Joy's brief
+   * started from is one setting away.
+   */
+  photoStyle: "color" as "color" | "bw",
 };
 
 /** Every outbound destination in one place. Empty string = not yet supplied. */
@@ -68,6 +75,8 @@ export const pageOrder = [
 export type PhotoSlot = {
   /** Path in /public. null shows an art-direction placeholder. */
   src: string | null;
+  /** Black-and-white version of the same photograph, used when site.photoStyle is "bw". */
+  srcBw?: string;
   alt: string;
   /** Intended treatment from the photography plan. */
   treatment: "bw" | "color" | "cutout";

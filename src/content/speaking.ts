@@ -75,7 +75,8 @@ export const speaking = {
       },
     ],
     photo: {
-      src: "/photos/speaking-keynote-bw.jpg",
+      src: "/photos/speaking-keynote.jpg",
+      srcBw: "/photos/speaking-keynote-bw.jpg",
       alt: "Dr. Joy in a white blazer",
       treatment: "bw",
       direction: "Monochrome headshot to support the keynote typography. White blazer, high tonal detail.",

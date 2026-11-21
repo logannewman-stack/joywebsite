@@ -11,7 +11,8 @@ export const meet = {
     ],
     couplet: ["In lecture halls, I studied.", "In the operatory, I tested and refined."],
     portrait: {
-      src: "/photos/meet-hero-bw.jpg",
+      src: "/photos/meet-hero.jpg",
+      srcBw: "/photos/meet-hero-bw.jpg",
       alt: "Dr. Joy seated in a black suit, smiling",
       treatment: "bw",
       direction: "Black-and-white portrait. Black jacket, seated or standing, natural expression. Preserve skin texture.",
