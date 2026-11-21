@@ -62,7 +62,9 @@ export const meet = {
     alt: "Dr. Joy sitting on a long stone staircase in a black suit, smiling",
     treatment: "bw",
     direction: "Wide portrait on location, room around her. Same shoot as the opening portrait.",
-    focus: "50% 74%",
+    // Wide frames show the full width; the horizontal focus only matters when the pinned
+    // stage is taller than the photo (an upright tablet), where it keeps her whole figure in.
+    focus: "58% 74%",
     focusMobile: "64% 50%",
     original: "JVH-113",
   } satisfies PhotoSlot,

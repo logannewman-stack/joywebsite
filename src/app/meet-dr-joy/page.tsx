@@ -93,8 +93,9 @@ export default function MeetPage() {
       */}
       <section data-scene="lg" data-view="" data-header="dark" className="meet-stairs bg-ivory">
         <div data-scene-pin className="relative">
-          <Parallax amount={4} className="aspect-square w-full md:aspect-[16/9] lg:aspect-[2/1] pinned:aspect-auto pinned:h-full">
-            <Photo slot={interlude} tone="dark" className="meet-stairs-photo h-full w-full" sizes="(max-width: 767px) 160vw, 106vw" />
+          <Parallax amount={4} className="aspect-[4/5] w-full md:aspect-[4/3] lg:aspect-[2/1] pinned:aspect-auto pinned:h-full">
+            {/* Phone and tablet frames are taller than the photo, so it is fitted by height (hence the wide sizes). */}
+            <Photo slot={interlude} tone="dark" className="meet-stairs-photo h-full w-full" sizes="(max-width: 767px) 200vw, (max-width: 1023px) 120vw, 106vw" />
           </Parallax>
           <div aria-hidden className="meet-stairs-dim pointer-events-none absolute inset-0 bg-ink opacity-0" />
         </div>

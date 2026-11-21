@@ -188,6 +188,12 @@ html.motion .meet-stairs[data-pinned] + .meet-creds {
     --qs: clamp(3rem, min(8.6vw, 14svh), 8.6rem);
   }
 }
+/* An upright large tablet: the stage is tall, so the question takes three lines. */
+@media (min-width: 1024px) and (max-aspect-ratio: 1/1) {
+  .meet-q[data-pinned] {
+    --qs: clamp(3rem, min(12vw, 8.5svh), 8.6rem);
+  }
+}
 .meet-question {
   font-size: var(--qs);
 }
