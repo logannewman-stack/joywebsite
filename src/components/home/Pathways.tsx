@@ -19,13 +19,15 @@ type Vars = CSSProperties & Record<`--${string}`, string | number>;
  * - From 1024px without motion (reduced motion, no JavaScript, print): the
  *   four cards side by side as a grid.
  *
+ * The cards rise one after another the first time the row is seen.
+ *
  * In every layout the whole card is one link (the link's ::after covers it),
  * so pointer, touch and keyboard users get the same target; hover and
  * keyboard focus both ease the photograph in. Nothing floats over the words.
  */
 
-// Photo widths: a 4:5 crop that is 78% of a phone screen, about 44% of a tablet's, and about 30% of a wide screen's.
-const sizes = "(max-width: 639px) 78vw, (max-width: 1023px) 44vw, (max-width: 1440px) 32vw, 30vw";
+// Photo widths: a 4:5 crop that is 78% of a phone screen, about 44% of a tablet's, and about a third of a wide screen's.
+const sizes = "(max-width: 639px) 78vw, (max-width: 1023px) 44vw, 33vw";
 
 const pad = (n: number) => String(n).padStart(2, "0");
 
@@ -36,7 +38,8 @@ export function Pathways() {
       <ol
         data-scene-track
         data-carousel
-        className="work-track flex snap-x snap-mandatory scroll-px-5 gap-4 overflow-x-auto overscroll-x-contain px-5 pb-1 [scrollbar-width:none] md:scroll-px-10 md:gap-6 md:px-10 lg:mx-auto lg:grid lg:max-w-[90rem] lg:snap-none lg:grid-cols-2 lg:gap-x-8 lg:gap-y-20 lg:overflow-visible xl:grid-cols-4 [&::-webkit-scrollbar]:hidden"
+        data-inview=""
+        className="work-track stagger flex snap-x snap-mandatory scroll-px-5 gap-4 overflow-x-auto overscroll-x-contain px-5 pb-1 [scrollbar-width:none] md:scroll-px-10 md:gap-6 md:px-10 lg:mx-auto lg:grid lg:max-w-[90rem] lg:snap-none lg:grid-cols-2 lg:gap-x-8 lg:gap-y-20 lg:overflow-visible xl:grid-cols-4 [&::-webkit-scrollbar]:hidden"
       >
         {home.pathways.map((p, i) => (
           <li

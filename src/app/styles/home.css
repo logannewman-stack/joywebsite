@@ -113,7 +113,7 @@ html.motion .hero-cue-line {
     --shut: calc(1 - var(--open));
     --dark: clamp(0, (var(--at) - 0.46) / 0.44, 1);
     --exit: clamp(0, (var(--at) - var(--n) + 1) * 1000, 1);
-    --win-top: 45svh;
+    --win-top: max(45svh, 13.25rem);
     --win-x: 2.5rem;
     --win-shift: 25svh;
   }
@@ -583,10 +583,10 @@ html.motion .hero-cue-line {
   }
   .work .work-progress-dot {
     position: absolute;
-    top: -3px;
-    left: -3px;
-    width: 7px;
-    height: 7px;
+    top: -0.1875rem;
+    left: -0.1875rem;
+    width: 0.4375rem;
+    height: 0.4375rem;
     border-radius: 50%;
     background: var(--color-gold-deep);
     transform: translate3d(calc(var(--p, 0) * 100cqw), 0, 0);

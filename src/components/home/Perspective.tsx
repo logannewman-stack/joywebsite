@@ -151,7 +151,15 @@ export function Perspective({ tone = "bg-ivory" }: { tone?: string }) {
           </InView>
 
           <div className="persp-photo relative aspect-[4/5] w-full overflow-hidden bg-sand md:aspect-[16/9] lg:aspect-auto lg:h-[min(84svh,55rem)]">
-            <ArtDirected wide={perspective.photo} tall={perspective.photoTall} at="md" sizesWide="100vw" sizesTall="100vw" className="persp-img" />
+            {/* Pinned, the photograph covers the screen's height: on upright screens that is wider than the screen. */}
+            <ArtDirected
+              wide={perspective.photo}
+              tall={perspective.photoTall}
+              at="md"
+              sizesWide="(orientation: portrait) 170vh, 115vw"
+              sizesTall="(orientation: portrait) 95vh, 100vw"
+              className="persp-img"
+            />
             <div aria-hidden className="persp-shade pointer-events-none absolute inset-0 opacity-0" />
           </div>
 
