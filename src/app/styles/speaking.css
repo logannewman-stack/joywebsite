@@ -5,7 +5,12 @@
    scoped to <html class="motion"> (JavaScript on, reduced motion off) or to
    hover and focus, so without it the page is its plain, complete layout.
    Scroll effects read the engine's variables (--v on [data-view]); nothing
-   here animates in JavaScript.
+   here animates in JavaScript. One refinement, the chapter rail's progress,
+   uses a CSS scroll timeline where the browser has one.
+
+   Accents: gold for structure (the rules that draw, the rail's current mark,
+   the marks between venue names, the reel's ring; gold-deep on white and
+   ivory, gold on black) and pale pink for italic display emphasis on black.
 
      Opening        short-screen fit, the photo settling, the chapter list
      Chapter rail   the fixed indicator in the left margin (desktop)
@@ -65,14 +70,15 @@ html.motion .sp-hero-settle {
   }
 }
 
-/* The chapter list: hairlines at the row edges (five rows of one on phones,
-   three rows of two from sm), drawn one after another on load. */
+/* The chapter list: fine gold hairlines at the row edges (five on phones,
+   where the list is one column; three from sm, where it is two), drawn one
+   after another on load. */
 .sp-toc-rule {
   position: absolute;
   inset-inline: 0;
   top: calc(var(--i) * 25%);
   height: 1px;
-  background: rgb(11 11 11 / 0.16);
+  background: color-mix(in srgb, var(--color-gold-deep) 55%, transparent);
   transform-origin: left center;
 }
 .sp-toc-rule:nth-child(5) {
@@ -143,11 +149,16 @@ a:focus-visible > .sp-toc-arrow > svg + svg {
     view-timeline-inset: 50%;
   }
   .sp-rail {
+    /* Gold for the current mark: the deeper gold on white and ivory, tan gold on black. */
+    --rail-gold: var(--color-gold-deep);
     position: fixed;
     top: calc(50% - 12.25rem);
     left: 0;
     width: 2.5rem;
     pointer-events: auto;
+  }
+  .sp-rail-dark {
+    --rail-gold: var(--color-gold);
   }
   .sp-rail-item {
     display: block;
@@ -169,11 +180,15 @@ a:focus-visible > .sp-toc-arrow > svg + svg {
   }
   .sp-rail-item[data-state="current"] .sp-rail-tick {
     width: 2px;
-    background: currentColor;
+    background: var(--rail-gold);
   }
-  .sp-rail-item:hover .sp-rail-tick {
+  .sp-rail-item:not([data-state="current"]):hover .sp-rail-tick {
     width: 2px;
     background: currentColor;
+  }
+  /* The travelling dot (only where the mark can fill, below). */
+  .sp-rail-run {
+    display: none;
   }
   /* The chapter's name, set along the margin below the marks. Hovering another mark previews its name. */
   .sp-rail-name {
@@ -206,7 +221,8 @@ a:focus-visible > .sp-toc-arrow > svg + svg {
     display: none;
   }
 }
-/* Where the browser can tie an animation to a section's own scroll range, the current mark fills as the chapter is read. */
+/* Where the browser can tie an animation to a section's own scroll range, the
+   current mark fills with gold as the chapter is read, behind a small dot. */
 @supports (animation-timeline: view()) {
   @media screen and (min-width: 1024px) and (min-height: 480px) {
     html.motion .sp-rail-item[data-state="current"] .sp-rail-tick {
@@ -216,11 +232,30 @@ a:focus-visible > .sp-toc-arrow > svg + svg {
       content: "";
       position: absolute;
       inset: 0;
-      background: currentColor;
+      background: var(--rail-gold);
       transform-origin: center top;
       animation: sp-fill linear both;
       animation-timeline: --sp-chapter;
       animation-range: cover 0% cover 100%;
+    }
+    html.motion .sp-rail-item[data-state="current"] .sp-rail-run {
+      position: absolute;
+      inset: 0;
+      display: block;
+      animation: sp-run linear both;
+      animation-timeline: --sp-chapter;
+      animation-range: cover 0% cover 100%;
+    }
+    html.motion .sp-rail-item[data-state="current"] .sp-rail-run::before {
+      content: "";
+      position: absolute;
+      top: -0.15625rem;
+      left: 50%;
+      width: 0.3125rem;
+      height: 0.3125rem;
+      margin-left: -0.15625rem;
+      border-radius: 9999px;
+      background: var(--rail-gold);
     }
   }
 }
@@ -230,6 +265,14 @@ a:focus-visible > .sp-toc-arrow > svg + svg {
   }
   to {
     transform: none;
+  }
+}
+@keyframes sp-run {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(100%);
   }
 }
 
@@ -242,10 +285,11 @@ a:focus-visible > .sp-toc-arrow > svg + svg {
   inset-inline: 0;
   bottom: 0;
   height: 1px;
-  background: var(--color-line);
+  /* A fine gold hairline; the row's answer fills it to full gold. */
+  background: color-mix(in srgb, var(--color-gold-deep) 50%, transparent);
 }
 .sp-course-ink {
-  background: var(--color-ink);
+  background: var(--color-gold-deep);
   transform: scaleX(0);
   transform-origin: right center;
   transition: transform 0.6s var(--ease-expo);
@@ -275,7 +319,7 @@ a:focus-visible > .sp-toc-arrow > svg + svg {
   left: 0;
   width: 0.9375rem;
   height: 0.9375rem;
-  color: var(--color-ink);
+  color: var(--color-gold-deep);
   transform: translate(-130%, -50%);
   transition: transform var(--duration-ui) var(--ease-expo);
 }
@@ -324,16 +368,16 @@ html.motion .sp-room-photo {
   transform: translate3d(0, calc((var(--v, 0.5) - 0.5) * 9%), 0) scale(calc(1.1 + var(--v, 0.5) * 0.06));
   will-change: transform;
 }
-/* The reel control: a white disc inside a soft ring that opens on hover and focus. */
+/* The reel control: a white disc inside a soft gold ring that opens on hover and focus. */
 .sp-reel-disc {
   transition: transform var(--duration-ui) var(--ease-expo);
 }
 .sp-reel-ring {
   position: absolute;
   inset: -0.625rem;
-  border: 1px solid rgb(255 255 255 / 0.5);
+  border: 1px solid color-mix(in srgb, var(--color-gold) 85%, transparent);
   border-radius: 9999px;
-  box-shadow: 0 0 0 0.5rem rgb(255 255 255 / 0.07);
+  box-shadow: 0 0 0 0.5rem color-mix(in srgb, var(--color-gold-soft) 12%, transparent);
   transition:
     transform 0.6s var(--ease-expo),
     box-shadow 0.6s var(--ease-expo),
@@ -345,8 +389,8 @@ html.motion .sp-room-photo {
 }
 .sp-reel:hover .sp-reel-ring,
 .sp-reel:focus-visible .sp-reel-ring {
-  border-color: rgb(255 255 255 / 0.8);
-  box-shadow: 0 0 0 1rem rgb(255 255 255 / 0.09);
+  border-color: var(--color-gold-soft);
+  box-shadow: 0 0 0 1rem color-mix(in srgb, var(--color-gold-soft) 14%, transparent);
   transform: scale(1.12);
 }
 
@@ -383,7 +427,7 @@ html.motion .sp-keynote-zoom {
   height: 0.2em;
   margin-left: 0.45em;
   border-radius: 9999px;
-  background: var(--color-blush-deep);
+  background: var(--color-gold-deep);
   vertical-align: 0.26em;
 }
 /* Still: the run ends on a name, not on a mark. */

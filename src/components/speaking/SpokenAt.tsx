@@ -23,7 +23,7 @@ function rows<T>(items: T[], count: number): T[][] {
  *
  * From tablet width the names travel in three rows of display serif, in
  * opposite directions, only as the visitor scrolls (Marquee; nothing moves on
- * its own), with a blush mark between names. That wall is decoration: the
+ * its own), with a gold mark between names. That wall is decoration: the
  * real list sits beside it for assistive technology, and is what phones and
  * print show, one venue per line, so every name can be read whole. Without
  * JavaScript or with reduced motion the wall is a still, wrapped run of names.
@@ -42,7 +42,7 @@ export function SpokenAt({ className = "" }: { className?: string }) {
             </p>
           )}
         </div>
-        <span aria-hidden className="rule-draw mt-5 block h-px bg-ink/25" />
+        <span aria-hidden className="rule-draw mt-5 block h-px bg-gold-deep/70" />
       </InView>
 
       {logos.length > 0 ? (

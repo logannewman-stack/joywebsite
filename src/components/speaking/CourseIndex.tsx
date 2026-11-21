@@ -19,14 +19,15 @@ const d = (seconds: number) => ({ "--d": `${seconds.toFixed(2)}s` }) as CSSPrope
  * Rows enter one after another as they are seen, each rule drawing itself.
  * With a mouse or the keyboard a row answers as one object (styles in
  * speaking.css, under "Course index"): a soft band sweeps in behind it, its
- * number gives way to an arrow, the title leans in and the two actions go from
- * grey to ink. On touch screens nothing waits for hover: the actions are ink.
+ * rule fills with gold, its number gives way to a gold arrow, the title leans
+ * in and the two actions go from grey to ink. On touch screens nothing waits
+ * for hover: the actions are ink.
  */
 export function CourseIndex({ courses, className = "" }: { courses: Course[]; className?: string }) {
   return (
     <div className={className}>
       <InView>
-        <span aria-hidden className="rule-draw block h-px bg-ink" />
+        <span aria-hidden className="rule-draw block h-px bg-gold-deep" />
       </InView>
       <ol className="sp-courses">
         {courses.map((c, i) => {

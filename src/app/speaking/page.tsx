@@ -104,7 +104,7 @@ export default function SpeakingPage() {
                       </span>
                       <span className="sp-toc-arrow relative block size-4 shrink-0 overflow-hidden text-stone group-hover:text-ink" aria-hidden>
                         <ArrowDown className="absolute inset-0 size-4" />
-                        <ArrowDown className="absolute inset-0 size-4 -translate-y-full" />
+                        <ArrowDown className="absolute inset-0 size-4" />
                       </span>
                     </a>
                   </li>
@@ -159,7 +159,7 @@ export default function SpeakingPage() {
           <ol className="mt-16 grid gap-16 md:mt-24 lg:grid-cols-12 lg:gap-x-6">
             {teams.programs.map((p, i) => (
               <InView as="li" key={p.title} className={i === 0 ? "lg:col-span-5" : "lg:col-span-6 lg:col-start-7 lg:mt-40"}>
-                <span aria-hidden className="rule-draw block h-px bg-ink" />
+                <span aria-hidden className="rule-draw block h-px bg-gold-deep" />
                 <span className="label rise mt-7 block text-stone tabular-nums" aria-hidden>
                   {String(i + 1).padStart(2, "0")}
                 </span>
@@ -189,7 +189,7 @@ export default function SpeakingPage() {
         <ChapterRail current={2} tone="dark" />
         <div className="mx-auto grid max-w-[90rem] px-5 pt-28 pb-24 md:px-10 md:pt-36 md:pb-36 lg:grid-cols-12 lg:gap-x-6">
           <div id="keynotes" className="lg:col-span-7 lg:row-start-1">
-            <h2 className="display text-[clamp(2.4rem,3.6vw,3.24rem)]">
+            <h2 className="display text-[clamp(2.4rem,3.6vw,3.24rem)] text-gold-soft">
               <WordRise>{keynotes.heading}</WordRise>
             </h2>
           </div>
@@ -212,8 +212,8 @@ export default function SpeakingPage() {
           <div className="mt-6 lg:col-span-7 lg:row-start-2 lg:mt-14 lg:pr-10">
             {keynotes.items.map((k, i) => (
               <InView as="article" key={k.title} className="relative py-11 md:py-16">
-                <span aria-hidden className="rule-draw absolute inset-x-0 top-0 block h-px bg-white/30" />
-                <span className="label rise block text-blush tabular-nums" aria-hidden>
+                <span aria-hidden className="rule-draw absolute inset-x-0 top-0 block h-px bg-gold" />
+                <span className="label rise block text-ash tabular-nums" aria-hidden>
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <h3 className="display mt-6 text-[clamp(2.9rem,6vw,5.4rem)] leading-[0.94]">
@@ -247,7 +247,7 @@ export default function SpeakingPage() {
             </h2>
           </div>
           <InView className="relative grid md:grid-cols-2 lg:col-span-8">
-            <span aria-hidden className="rule-draw absolute inset-x-0 top-0 block h-px bg-ink" />
+            <span aria-hidden className="rule-draw absolute inset-x-0 top-0 block h-px bg-gold-deep" />
             <div className="rise border-b border-line py-9 md:border-r md:pr-10" style={d(0.1)}>
               <h3 className="font-serif text-[clamp(1.75rem,2.4vw,2.1rem)] leading-tight">{p3.bring.title}</h3>
               <p className="mt-3 max-w-md text-[1.03125rem] leading-relaxed text-stone">{p3.bring.text}</p>
@@ -284,7 +284,7 @@ export default function SpeakingPage() {
             </h2>
           </div>
           <InView className="mt-12 grid gap-8 md:mt-16 lg:grid-cols-12 lg:items-center lg:gap-x-6">
-            <span aria-hidden className="rule-draw block h-px bg-white/30 lg:col-span-12" />
+            <span aria-hidden className="rule-draw block h-px bg-gold lg:col-span-12" />
             <p className="rise max-w-[34ch] text-[1.125rem] leading-relaxed text-ash lg:col-span-5" style={d(0.15)}>
               {planning.text}
             </p>
