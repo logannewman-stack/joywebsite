@@ -5,8 +5,20 @@ import { site } from "@/content/site";
  * The Dr. Joy script wordmark. Uses the supplied artwork when its path is set
  * in content/site.ts. Until then, a plain typographic stand-in holds the
  * space. The stand-in is deliberately not a logo design.
+ *
+ * The header mark is above the fold, so it loads eagerly by default (without
+ * a preload, which would be sent for every copy on the page). Pass
+ * loading="lazy" for copies further down, such as the footer.
  */
-export function Wordmark({ tone = "light", className = "" }: { tone?: "light" | "dark"; className?: string }) {
+export function Wordmark({
+  tone = "light",
+  className = "",
+  loading = "eager",
+}: {
+  tone?: "light" | "dark";
+  className?: string;
+  loading?: "eager" | "lazy";
+}) {
   const src = tone === "dark" ? site.wordmark.onDark : site.wordmark.onLight;
   if (src) {
     return (
@@ -15,7 +27,7 @@ export function Wordmark({ tone = "light", className = "" }: { tone?: "light" | 
         alt={site.name}
         width={site.wordmark.width}
         height={site.wordmark.height}
-        priority
+        loading={loading}
         unoptimized
         className={`h-[44px] w-auto md:h-[52px] ${className}`}
       />

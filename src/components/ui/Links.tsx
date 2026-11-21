@@ -6,6 +6,8 @@ import { links, site } from "@/content/site";
 /**
  * The companion consulting site. Use this everywhere Instrumental is linked
  * so the "URL pending" tag, new-tab behavior and launch guard stay consistent.
+ * While the URL is pending (review mode only: the launch check in site.ts
+ * requires it), `href` is "#"; render <PendingLink> instead of navigating to it.
  */
 export function instrumentalLink(): { href: string; pending: boolean; newTab: boolean } {
   const pending = !links.instrumental;
@@ -34,16 +36,63 @@ export function PendingTag({ className = "" }: { className?: string }) {
 
 const Pending = PendingTag;
 
+/**
+ * A link whose destination has not been supplied yet (review mode). It keeps
+ * the link's look and place in the tab order but goes nowhere, instead of
+ * jumping to the top of the page through href="#".
+ */
+export function PendingLink({ children, className = "", title = "Link to come" }: { children: ReactNode; className?: string; title?: string }) {
+  return (
+    <span role="link" aria-disabled="true" tabIndex={0} title={title} className={`cursor-not-allowed ${className}`}>
+      {children}
+    </span>
+  );
+}
+
+/**
+ * Link to the Instrumental site with the shared new-tab and pending behavior.
+ * Pass the link's own classes and content; the "URL pending" tag is added while
+ * the address is missing.
+ */
+export function InstrumentalLink({ children, className = "", pendingTagClassName = "" }: { children: ReactNode; className?: string; pendingTagClassName?: string }) {
+  const i = instrumentalLink();
+  if (i.pending) {
+    return (
+      <PendingLink className={className} title="Instrumental website link to come">
+        {children}
+        <Pending className={pendingTagClassName} />
+      </PendingLink>
+    );
+  }
+  return (
+    <a href={i.href} target="_blank" rel="noopener noreferrer" className={className}>
+      {children}
+      <span className="sr-only"> (opens in a new tab)</span>
+    </a>
+  );
+}
+
 /** Focus ring that stays visible on both light and dark surfaces. */
 export const focusRing = {
   light: "focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-ink",
   dark: "focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-white",
 };
 
+/**
+ * Shared interaction states. Solid buttons: a visible hover (ink to the logo
+ * charcoal, or white to ivory on dark) and a small press. Text links: one
+ * size, gap and icon size everywhere (ArrowLink, and InquiryButton's text variant).
+ */
+export const buttonStates =
+  "transition-[background-color,scale] duration-(--duration-hover) ease-out motion-safe:active:scale-[0.98]";
+export const textLink = "group inline-flex min-h-11 items-center gap-2 text-[15px] font-medium";
+
 const solid = {
-  light: `bg-ink text-white hover:bg-ink-soft ${focusRing.light}`,
+  light: `bg-ink text-white hover:bg-charcoal ${focusRing.light}`,
   dark: `bg-white text-ink hover:bg-ivory ${focusRing.dark}`,
 };
+
+const arrowMove = "size-4 shrink-0 transition-transform duration-(--duration-ui) ease-expo";
 
 /** Solid, high-contrast button. Large hit area, plain words. */
 export function ButtonLink({
@@ -58,22 +107,30 @@ export function ButtonLink({
   className?: string;
 }) {
   const r = resolveHref(href);
-  const cls = `group inline-flex min-h-12 items-center gap-3 whitespace-nowrap rounded-full px-6 py-3 text-[15px] font-medium transition-colors duration-300 ${solid[tone]} ${className}`;
+  const cls = `group inline-flex min-h-12 items-center gap-3 whitespace-nowrap rounded-full px-6 py-3 text-[15px] font-medium ${buttonStates} ${solid[tone]} ${className}`;
   const inner = (
     <>
       {children}
       {r.external ? (
-        <ArrowUpRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden />
+        <ArrowUpRight className={`${arrowMove} group-hover:translate-x-0.5 group-hover:-translate-y-0.5`} aria-hidden />
       ) : (
-        <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" aria-hidden />
+        <ArrowRight className={`${arrowMove} group-hover:translate-x-1`} aria-hidden />
       )}
     </>
   );
+  if (r.pending) {
+    return (
+      <PendingLink className={cls} title="Instrumental website link to come">
+        {inner}
+        <Pending />
+      </PendingLink>
+    );
+  }
   if (r.external) {
     return (
-      <a href={r.href} className={cls} {...(r.pending ? {} : { target: "_blank", rel: "noopener noreferrer" })}>
+      <a href={r.href} className={cls} target="_blank" rel="noopener noreferrer">
         {inner}
-        {r.pending && <Pending />}
+        <span className="sr-only"> (opens in a new tab)</span>
       </a>
     );
   }
@@ -95,23 +152,30 @@ export function ArrowLink({
   className?: string;
 }) {
   const r = resolveHref(href);
-  const cls = `group inline-flex min-h-11 items-center gap-2 text-[15px] font-medium ${className}`;
+  const cls = `${textLink} transition-opacity duration-(--duration-hover) active:opacity-70 ${className}`;
   const inner = (
     <>
       <span className="link-draw pb-0.5">{children}</span>
       {r.external ? (
-        <ArrowUpRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden />
+        <ArrowUpRight className={`${arrowMove} group-hover:translate-x-0.5 group-hover:-translate-y-0.5`} aria-hidden />
       ) : (
-        <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" aria-hidden />
+        <ArrowRight className={`${arrowMove} group-hover:translate-x-1`} aria-hidden />
       )}
-      {r.pending && <Pending />}
     </>
   );
+  if (r.pending) {
+    return (
+      <PendingLink className={cls} title="Instrumental website link to come">
+        {inner}
+        <Pending />
+      </PendingLink>
+    );
+  }
   if (r.external) {
     return (
-      <a href={r.href} className={cls} {...(r.pending ? {} : { target: "_blank", rel: "noopener noreferrer" })}>
+      <a href={r.href} className={cls} target="_blank" rel="noopener noreferrer">
         {inner}
-        {!r.pending && <span className="sr-only"> (opens in a new tab)</span>}
+        <span className="sr-only"> (opens in a new tab)</span>
       </a>
     );
   }
@@ -152,7 +216,7 @@ export function ReviewSlot({ children, tone = "light", className = "" }: { child
         tone === "dark" ? "border-white/25 text-white/60" : "border-ink/25 text-stone"
       } ${className}`}
     >
-      <p className="label !text-[10px] leading-relaxed">{children}</p>
+      <p className="label !text-[10px] leading-relaxed text-balance">{children}</p>
     </div>
   );
 }

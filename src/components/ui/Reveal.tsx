@@ -1,4 +1,4 @@
-import type { CSSProperties, ReactNode } from "react";
+import { Fragment, type CSSProperties, type ReactNode } from "react";
 
 /*
  * Reveal motion that never hides content from the server HTML.
@@ -20,7 +20,7 @@ type Vars = CSSProperties & Record<`--${string}`, string>;
 export function Reveal({
   children,
   delay = 0,
-  y = 18,
+  y = 12,
   className = "",
   immediate = false,
 }: {
@@ -39,7 +39,15 @@ export function Reveal({
   );
 }
 
-/** Photographs uncover from the bottom edge, like a print being pulled. */
+/**
+ * Photographs uncover from the bottom edge, like a print being pulled.
+ *
+ * The uncover waits until the photo inside has loaded, so it never reveals an
+ * empty frame, and it uses a CSS mask rather than clip-path so the browser
+ * still lazy-loads the photo ahead of the scroll. If a page needs its own
+ * mask-image (for example a fade into black), put it on a parent or child
+ * element: a mask set on this element replaces the uncover.
+ */
 export function ImageReveal({
   children,
   className = "",
@@ -75,13 +83,17 @@ export function LineReveal({
   return (
     <span className={className}>
       {lines.map((line, i) => {
-        const style: Vars = { "--line-delay": `${delay + i * 0.1}s` };
+        const style: Vars = { "--line-delay": `${delay + i * 0.06}s` };
         return (
-          <span key={i} className="block overflow-hidden pb-[0.08em]">
-            <span className={`line-rise block ${lineClassName}`} style={style}>
-              {line}
+          <Fragment key={i}>
+            {/* A real space between lines, so the heading's text reads "has always", not "hasalways". It is not rendered between the block lines. */}
+            {i > 0 && " "}
+            <span className="block overflow-hidden pb-[0.08em]">
+              <span className={`line-rise block ${lineClassName}`} style={style}>
+                {line}
+              </span>
             </span>
-          </span>
+          </Fragment>
         );
       })}
     </span>
@@ -92,8 +104,11 @@ export function LineReveal({
 export const REVEAL_HEAD_SCRIPT = `document.documentElement.classList.add('js')`;
 
 /**
- * Inline script for the end of <body>: reveals [data-reveal] and
- * [data-reveal-image] elements as they enter the viewport. A MutationObserver
- * picks up content added by client-side navigation.
+ * Inline script for the end of <body>:
+ * - reveals [data-reveal] and [data-reveal-image] elements as they enter the viewport (data-in);
+ * - marks each [data-reveal-image] ready to uncover (data-loaded) as soon as there is something to
+ *   show: the photo's blur preview, or else the loaded photo. A reveal never uncovers an empty frame;
+ * - fades each photo in over its preview once it has loaded ([data-blur] gets data-shown).
+ * A MutationObserver picks up content added by client-side navigation.
  */
-export const REVEAL_BODY_SCRIPT = `(function(){var d=document.documentElement;if(!('IntersectionObserver' in window)){d.classList.remove('js');return}var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.setAttribute('data-in','');io.unobserve(e.target)}})},{rootMargin:'0px 0px -8% 0px'});function scan(){document.querySelectorAll('[data-reveal=""]:not([data-in]),[data-reveal-image=""]:not([data-in])').forEach(function(el){io.observe(el)})}scan();new MutationObserver(scan).observe(document.body,{childList:true,subtree:true})})();`;
+export const REVEAL_BODY_SCRIPT = `(function(){var d=document.documentElement;if(!('IntersectionObserver' in window)){d.classList.remove('js');return}var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.setAttribute('data-in','');io.unobserve(e.target)}})},{rootMargin:'0px 0px -4% 0px'});function ready(img,fn){if(!img||img.complete){fn();return}img.addEventListener('load',fn,{once:true});img.addEventListener('error',fn,{once:true})}function scan(){document.querySelectorAll('[data-reveal=""]:not([data-in]),[data-reveal-image=""]:not([data-in])').forEach(function(el){io.observe(el)});document.querySelectorAll('[data-blur]:not([data-shown])').forEach(function(el){if(el.__rb)return;el.__rb=1;ready(el.querySelector('img'),function(){el.setAttribute('data-shown','')})});document.querySelectorAll('[data-reveal-image]:not([data-loaded])').forEach(function(el){if(el.__rv)return;el.__rv=1;var done=function(){el.setAttribute('data-loaded','')};if(el.querySelector('[data-blur]')){done();return}ready(el.querySelector('img'),done)})}scan();new MutationObserver(scan).observe(document.body,{childList:true,subtree:true})})();`;
