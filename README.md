@@ -86,7 +86,7 @@ The share image (`src/app/opengraph-image.jpg`, also `twitter-image.jpg`, 1200×
 - Portraits have a black-and-white twin (`srcBw`); `photoStyle` in `site.ts` switches every portrait at once. The conversions use a skin-preserving channel mix and a gentle curve. If the photographer supplies their own conversions, drop them in under the same names.
 - After adding or replacing photos, run `npm run photos:blur`. It writes a tiny preview of each JPEG to `src/content/blur.json`; while a photo loads, its frame shows that soft color preview and the photo fades in over it. Photos without a preview simply wait for the photo before revealing.
 - Color grade: _to be documented after the shared grade is applied to the color photographs._
-- The only remaining placeholder is the life photo on Meet Dr. Joy (Bowie Boys and Girls Club). At launch an empty slot is hidden.
+- Meet Dr. Joy uses a candid frame from the portrait shoot (JVH-167) as its life photo. When Dr. Joy supplies a Bowie Boys and Girls Club photo, set it as `meet.guides.photo` (color, no B&W twin needed). An empty slot is hidden at launch and the story column takes its place.
 
 ## Motion
 
@@ -111,6 +111,10 @@ The general flow asks what the visitor needs:
 - **Consulting** routes to Instrumental instead of a form.
 - **Attend a P3 event** goes to the live event page when one is set, otherwise to the interest list.
 
+The footer also opens the P3 conference, interest-list and clinical-launch forms. The footer newsletter is hidden on `/insights` and `/insights/*`, which have their own signup.
+
+Besides the form fields and `tags`, the payload carries `program` (speaking: the program of interest), `sponsor_consent_text` and `sms_consent_text` (the exact wording agreed to), `consent_version` and `consent_recorded_at`. Bump `optInsVersion` in `integrations.ts` whenever the opt-in wording changes. The route returns 422 for a text-message opt-in without a phone number. The webhook call times out after 10 seconds, and the error message offers a prefilled email instead.
+
 The P3 interest list has two separate opt-ins: sponsor communications and text messages. Both are unchecked by default. Choosing text messages requires a phone number. **The opt-in language in `integrations.ts` needs review before launch**, and because text-message consent is collected, the site needs a published privacy policy (`links.privacy`).
 
 ### P3 event
@@ -130,7 +134,7 @@ Set `education.events.featured` (in `src/content/education.ts`) to the next even
 
 1. Image shortlist and treatments
    - [x] Shortlist identified by original filename; color, monochrome and cutout treatments tested for the opening screen (`/directions`)
-   - [ ] Boys and Girls Club photo for Meet Dr. Joy
+   - [ ] Optional: Boys and Girls Club photo for Meet Dr. Joy (a candid portrait stands in)
    - [ ] If Direction B uses the cutout: matte refined by a retoucher (`home.hero.bStyle`)
 2. Logos
    - [ ] Approved manufacturer logos with written clearance, five at most (`industry.collaborations.logos`)

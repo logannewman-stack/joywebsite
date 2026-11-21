@@ -69,6 +69,11 @@ body {
     outline-offset: 3px;
   }
 
+  /* Paragraphs avoid one-word last lines (a text-balance utility can still override it). */
+  p {
+    text-wrap: pretty;
+  }
+
   /* In-page anchors (#topics, #events, #work...) land below the fixed header. */
   [id] {
     scroll-margin-top: calc(var(--header-height) + 1.25rem);
@@ -92,10 +97,6 @@ body {
   overflow-wrap: anywhere;
 }
 
-/* Paragraphs avoid one-word last lines. */
-p {
-  text-wrap: pretty;
-}
 
 /* Typeset helper (src/components/ui/Typeset.tsx): tighter compound hyphens,
    and a sans numeral 1 so "1" is not read as "l" in Instrument Serif. */
