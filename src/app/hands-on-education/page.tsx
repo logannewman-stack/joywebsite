@@ -33,7 +33,9 @@ export default function EducationPage() {
         <div className="mx-auto grid max-w-[1440px] px-5 pt-10 pb-20 md:px-10 md:pt-16 md:pb-28 lg:grid-cols-12 lg:grid-rows-[auto_1fr] lg:gap-x-6 lg:pt-14 lg:pb-40">
           <div className="lg:col-span-6">
             <Label index="03">Hands-On Education</Label>
-            <h1 className="display mt-8 text-[clamp(3rem,14vw,4.6rem)] leading-[0.9] lg:text-[clamp(4rem,7vw,7.6rem)]">
+            {/* typeset() keeps "Skill-building" on one line; it always fits, but under a
+                reader's own wide text spacing it may break at its hyphen instead of overflowing. */}
+            <h1 className="display mt-8 text-[clamp(3rem,14vw,4.6rem)] leading-[0.9] lg:text-[clamp(4rem,7vw,7.6rem)] [&_.whitespace-nowrap]:whitespace-normal">
               <LineReveal lines={[typeset("Skill-building"), "with instruments", <em key="a">in hand.</em>]} />
             </h1>
           </div>
