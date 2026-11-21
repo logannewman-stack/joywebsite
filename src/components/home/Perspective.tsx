@@ -35,7 +35,7 @@ const pad = (n: number) => String(n).padStart(2, "0");
 
 /**
  * A statement as words that can rise one after another, with its marked
- * phrases in blush. Trailing punctuation stays outside a mark ("at 16," keeps
+ * phrases in champagne gold (large display type on black). Trailing punctuation stays outside a mark ("at 16," keeps
  * a white comma), and a short marked phrase is never split across two lines.
  */
 function Words({ text, marks }: { text: string; marks: readonly string[] }) {
@@ -75,7 +75,7 @@ function Words({ text, marks }: { text: string; marks: readonly string[] }) {
       inner = (
         <>
           {typeset(word.slice(0, a))}
-          <span className="hl-dark">{typeset(word.slice(a, b))}</span>
+          <span className="hl-gold">{typeset(word.slice(a, b))}</span>
           {typeset(word.slice(b))}
         </>
       );

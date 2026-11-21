@@ -166,7 +166,7 @@ export function HeroB({ id = "hero-heading", as: H = "h1", hold = false }: HeroP
           {/* "Scroll": a quiet cue at the foot of the first screen, wide screens only. It fades as the page moves. */}
           <div aria-hidden className="hero-cue pointer-events-none absolute right-10 bottom-12 z-20 hidden items-center gap-4 lg:landscape:flex">
             <span className="label !text-[0.65625rem] text-white/80">Scroll</span>
-            <span className="hero-cue-line block h-px w-16 bg-white/60" />
+            <span className="hero-cue-line block h-px w-16 bg-gold" />
           </div>
           {/* The stage dims as the next section slides up over it. */}
           <div aria-hidden className="hero-dim pointer-events-none absolute inset-0 z-30 bg-ink opacity-0" />
