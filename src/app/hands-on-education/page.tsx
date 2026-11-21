@@ -30,10 +30,12 @@ export default function EducationPage() {
     <>
       {/* Opening. Phones: headline, photographs, then the words. Desktop: words left, collage right. */}
       <section className="bg-paper pt-[76px]">
-        <div className="mx-auto grid max-w-[1440px] px-5 pt-10 pb-20 md:px-10 md:pt-16 md:pb-28 lg:grid-cols-12 lg:grid-rows-[auto_1fr] lg:gap-x-6 lg:pt-20 lg:pb-40">
+        <div className="mx-auto grid max-w-[1440px] px-5 pt-10 pb-20 md:px-10 md:pt-16 md:pb-28 lg:grid-cols-12 lg:grid-rows-[auto_1fr] lg:gap-x-6 lg:pt-14 lg:pb-40">
           <div className="lg:col-span-6">
             <Label index="03">Hands-On Education</Label>
-            <h1 className="display mt-8 text-[clamp(3.2rem,7vw,7.6rem)] leading-[0.9]">
+            {/* typeset() keeps "Skill-building" on one line; it always fits, but under a
+                reader's own wide text spacing it may break at its hyphen instead of overflowing. */}
+            <h1 className="display mt-8 text-[clamp(3rem,14vw,4.6rem)] leading-[0.9] lg:text-[clamp(4rem,7vw,7.6rem)] [&_.whitespace-nowrap]:whitespace-normal">
               <LineReveal lines={[typeset("Skill-building"), "with instruments", <em key="a">in hand.</em>]} />
             </h1>
           </div>
@@ -56,7 +58,7 @@ export default function EducationPage() {
             </ImageReveal>
           </div>
 
-          <Reveal immediate delay={0.25} className="mt-12 flex max-w-md flex-col gap-5 md:mt-14 lg:col-span-5 lg:row-start-2 lg:mt-10">
+          <Reveal immediate delay={0.25} className="mt-12 flex max-w-md flex-col gap-5 md:mt-14 lg:col-span-5 lg:row-start-2 lg:mt-9">
             {hero.paragraphs.map((p, i) => (
               <p key={p} className={`leading-relaxed ${i === 0 ? "text-[19px]" : "text-[17px] text-stone"}`}>
                 {p}
@@ -73,7 +75,7 @@ export default function EducationPage() {
       <section className="bg-ivory">
         <div className="mx-auto grid max-w-[1440px] gap-12 px-5 py-24 md:px-10 md:py-32 lg:grid-cols-12 lg:grid-rows-[auto_1fr] lg:gap-x-6 lg:gap-y-16">
           <Reveal className="lg:col-span-5 lg:col-start-8 lg:row-start-1">
-            <h2 className="display text-[clamp(3.6rem,8.4vw,7.6rem)] leading-[0.88]">{markP3(family.heading)}</h2>
+            <h2 className="display text-[clamp(3.6rem,19vw,6.4rem)] leading-[0.88] lg:text-[clamp(4.6rem,8.4vw,7.6rem)]">{markP3(family.heading)}</h2>
           </Reveal>
           <ImageReveal className="lg:col-span-6 lg:row-span-2 lg:row-start-1">
             <Photo
@@ -86,7 +88,7 @@ export default function EducationPage() {
             {family.items.map((item, i) => (
               <Reveal key={item.title} delay={i * 0.08} className={i > 0 ? "lg:mt-11 lg:border-t lg:border-ink/15 lg:pt-11" : ""}>
                 <article>
-                  <h3 className={`display ${i === 0 ? "text-[clamp(2.6rem,4.4vw,4.4rem)]" : "text-[clamp(2.2rem,3.3vw,3.3rem)]"}`}>
+                  <h3 className={`display text-[clamp(2.2rem,3.4vw,3.4rem)] ${i === 0 ? "lg:text-[clamp(2.6rem,4.4vw,4.4rem)]" : ""}`}>
                     {typeset(item.title)}
                   </h3>
                   <p className="mt-5 max-w-[42ch] text-[17px] leading-relaxed text-stone">{item.text}</p>
@@ -102,7 +104,7 @@ export default function EducationPage() {
         <Photo
           slot={interlude}
           className="aspect-[4/3] w-full md:aspect-[16/9] lg:aspect-[21/9]"
-          sizes="(min-width: 1024px) 100vw, (min-width: 768px) 135vw, 180vw"
+          sizes="(min-width: 1024px) 100vw, (min-width: 768px) 130vw, 165vw"
         />
       </ImageReveal>
 

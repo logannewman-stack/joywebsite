@@ -23,13 +23,13 @@ export async function P3Events() {
     </Panel>
   );
 
+  // Once the server knows the event is over, it never ships its link again.
+  // Until then, EventWindow takes it down in the browser the moment it ends.
   let body: ReactNode = interest;
-  if (ev) {
-    const endsAt = eventEndsAt(ev);
+  if (ev && !(await hasEnded(eventEndsAt(ev)))) {
     body = (
       <EventWindow
-        endsAt={endsAt}
-        ended={await hasEnded(endsAt)}
+        endsAt={eventEndsAt(ev)}
         live={
           <Panel photo={ev.photo?.src ? ev.photo : events.photo}>
             <EventDetails ev={ev} />
@@ -84,7 +84,7 @@ function InterestList() {
   const { fallback } = education.events;
   return (
     <>
-      <h3 className="display max-w-[19ch] text-[clamp(2.1rem,3.7vw,3.5rem)] leading-[1.02]">{typeset(fallback.heading)}</h3>
+      <h3 className="display max-w-[19ch] text-[clamp(2.1rem,5vw,3.5rem)] leading-[1.02]">{typeset(fallback.heading)}</h3>
       <p className="mt-6 max-w-[44ch] text-[17px] leading-relaxed text-ash">{fallback.text}</p>
       <InquiryButton type="p3_interest" tone="dark" className="mt-9">
         {fallback.cta}

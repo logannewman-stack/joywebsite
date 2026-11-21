@@ -82,7 +82,7 @@ export const education = {
       alt: "Dr. Joy demonstrating a technique while participants work with their instrument kits",
       treatment: "color",
       direction: "The whole room at work: participants with instruments and kits on the tables.",
-      focus: "45% 40%",
+      focus: "45% 6%",
       original: "54707145282",
     } satisfies PhotoSlot,
   },

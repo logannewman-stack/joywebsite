@@ -76,7 +76,7 @@ export function VideoFacade({
 
   const frame = shape === "portrait" ? "aspect-[9/16] w-full max-w-[22rem]" : "aspect-video w-full";
   return (
-    <div className={`relative overflow-hidden bg-ink ${frame}`}>
+    <div className={`relative overflow-hidden bg-ink ${poster || playing ? "" : "grain grain-light"} ${frame}`}>
       {playing ? (
         <iframe
           ref={player}
