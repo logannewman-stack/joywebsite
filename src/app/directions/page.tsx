@@ -25,7 +25,7 @@ const directions: {
     name: "Editorial White",
     tag: "Quietest",
     idea: "The brief’s own starting point, executed with restraint. A white page, an oversized serif headline, and one strong portrait set off-axis. Typography does the work; the photograph confirms the person.",
-    image: "JVH-155: black suit, arms crossed. The black jacket separates cleanly on white, and the composition leaves the left side for the headline. A black-and-white version is ready.",
+    image: "JVH-155: black suit, arms crossed. The black jacket separates cleanly on white, and the composition leaves the left side for the headline. The portrait now runs the full height of the opening screen; on phones it follows the headline. A black-and-white version is ready.",
     strengths: [
       "Most readable and fastest to load, especially on phones.",
       "Lets the color photography in the four pathways below carry the energy.",
@@ -33,7 +33,7 @@ const directions: {
     ],
     tradeoffs: [
       "The quietest first impression of the three.",
-      "On a phone the portrait sits below the headline, mostly under the first screen.",
+      "On a phone the portrait follows the headline, so only part of it is on the first screen.",
       "Less sense of stage presence than Direction B.",
     ],
   },
@@ -41,8 +41,8 @@ const directions: {
     key: "b",
     name: "Black Stage",
     tag: "Recommended",
-    idea: "The drama of Alexandria Ohlinger’s photo-led opening, built from a real photograph. Dr. Joy, in color, sits in the black ground on the right; the headline takes the left, with its closing phrase in blush. Black sets the first impression, and she is on the first screen at every size.",
-    image: "JVH-111: black suit, direct smile, seated on grey steps. The grey steps keep the black jacket from disappearing into the black ground, and the photograph fades into black at its left edge. A black-and-white version is one setting away. A background-removed cutout (JVH-130, white blazer) stays an option for later, once a retoucher has refined its edges.",
+    idea: "The drama of Alexandria Ohlinger’s photo-led opening: a large photograph on a black stage, bleeding off the right edge, with the headline set over the black.",
+    image: "JVH-111: black suit, seated on dark steps, direct and warm. The grey steps separate the black jacket from the black stage; phones get a taller crop of the same frame. A black-and-white version is ready. The layered cutout (JVH-130) stays available as an option until a retouched matte exists.",
     strengths: [
       "The most memorable and personal first screen.",
       "She is on the first screen at every size, phones included.",
@@ -50,16 +50,15 @@ const directions: {
     ],
     tradeoffs: [
       "A black opening on a mostly white site needs a clear move into the first white section.",
-      "Type and photograph share the screen, so every screen size needs its own crop check.",
       "It shows her rather than the room; stage presence comes from the Speaking photographs.",
     ],
   },
   {
     key: "c",
-    name: "Ivory & Stage",
+    name: "Ivory & the Room",
     tag: "Warmest",
-    idea: "Warmth first. An ivory ground, a photograph from a real stage, and blush used once, as a single block behind the image.",
-    image: "54707091267: color stage photograph in the white blazer, mid-gesture. It proves presence in a real room; the purple stage lighting is the one risk against the blush and ivory palette.",
+    idea: "Warmth first. An ivory ground, a color photograph from a real workshop room, and blush used once, as a single block behind the image.",
+    image: "54707956836: teaching a hands-on session in a warm, naturally lit room; she is mid-gesture rather than posed.",
     strengths: [
       "The most approachable and immediately human.",
       "Shows the work in context from the first second.",
@@ -68,7 +67,7 @@ const directions: {
     tradeoffs: [
       "Least distinctive; closer to many speaker sites.",
       "She is small in the frame, and on a phone the photograph starts low on the first screen.",
-      "Purple stage light competes with the ivory and blush palette; a warmer room photograph would suit it better.",
+      "Mid-gesture, so the expression is less composed than a portrait.",
     ],
   },
 ];

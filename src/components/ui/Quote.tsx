@@ -27,6 +27,11 @@ function sentences(text: string): string[] {
   return out.filter(Boolean);
 }
 
+/** Keeps one- and two-letter words ("It", "a", "to") off the end of a line by binding each to the next word. */
+function bindShort(text: string): string {
+  return text.replace(/(?<=^|\s)([A-Za-z]{1,2})\s+(?=\S)/g, "$1\u00a0");
+}
+
 /**
  * Long testimonials read as a wall at display size. When a quote runs past
  * about 220 characters and has more than one sentence, its opening sentence
@@ -106,10 +111,10 @@ export function Quote({
                   <span aria-hidden className={`mr-[0.06em] md:absolute md:top-0 md:-left-[0.5em] md:mr-0 ${mark}`}>
                     “
                   </span>
-                  {typeset(lead)}
+                  {typeset(bindShort(lead))}
                 </p>
                 {rest && (
-                  <p className="mt-6 max-w-[44ch] font-serif text-[clamp(1.3rem,1.9vw,1.65rem)] leading-[1.32] md:mt-8">{typeset(rest)}</p>
+                  <p className="mt-6 max-w-[44ch] font-serif text-[clamp(1.3rem,1.9vw,1.65rem)] leading-[1.32] md:mt-8">{typeset(bindShort(rest))}</p>
                 )}
               </blockquote>
             </Reveal>

@@ -118,16 +118,6 @@ p {
   text-transform: uppercase;
 }
 
-/* A quote (Quote.tsx) that directly follows a section of its own color
-   continues that section: its hairline label row stands in for a second band
-   of top padding, so two ivory (or white, or black) blocks never stack their
-   spacing or show a seam. */
-.bg-ivory + section[data-tone="light"] > div,
-.bg-paper + section[data-tone="paper"] > div,
-.bg-ink + section[data-tone="dark"] > div {
-  padding-top: 0;
-}
-
 /* Long-form reading */
 .prose-joy p + p {
   margin-top: 1.1em;
@@ -137,7 +127,10 @@ p {
 .grain {
   position: relative;
 }
-.grain::after {
+/* A light quote (Quote.tsx) right after a grained ivory section carries the
+   same grain, so the two read as one surface with no seam between them. */
+.grain::after,
+.grain.bg-ivory + section[data-tone="light"]::after {
   content: "";
   position: absolute;
   inset: 0;
