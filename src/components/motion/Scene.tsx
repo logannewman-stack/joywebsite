@@ -95,7 +95,10 @@ export function ScenePanel({ children, className = "", as: Tag = "div" }: { chil
 export function SceneCount({ total, className = "" }: { total: number; className?: string }) {
   return (
     <span aria-hidden className={`tabular-nums ${className}`}>
-      <span data-scene-count>01</span>
+      {/* The engine rewrites this number before React hydrates when a page loads mid-scene. */}
+      <span data-scene-count suppressHydrationWarning>
+        01
+      </span>
       <span className="mx-2 opacity-50">/</span>
       {String(total).padStart(2, "0")}
     </span>
