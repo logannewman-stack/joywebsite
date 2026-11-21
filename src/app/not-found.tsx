@@ -5,7 +5,6 @@ import { home } from "@/content/home";
 import { nav, site } from "@/content/site";
 import { ArrowLink, ButtonLink, Label, PendingLink, PendingTag, SwapArrow, resolveHref } from "@/components/ui/Links";
 import { Reveal } from "@/components/ui/Reveal";
-import { InView } from "@/components/motion/InView";
 import { WordRise } from "@/components/motion/Text";
 import { typeset } from "@/components/ui/Typeset";
 import { InquiryButton } from "@/components/inquiry/InquiryProvider";
@@ -46,7 +45,9 @@ export default function NotFound() {
           </Reveal>
         </div>
 
-        <InView className="md:col-span-6 md:col-start-7 md:pt-3" delay={0.25}>
+        {/* An in-view block (see motion/InView). Written out here with suppressHydrationWarning: it is on
+            screen at load, so the scroll engine marks it seen (data-in) before React hydrates. */}
+        <div data-inview="" suppressHydrationWarning className="md:col-span-6 md:col-start-7 md:pt-3" style={{ "--d": "0.25s" } as CSSProperties}>
           <Label as="h2" className="rise text-stone">
             {home.work.heading}
           </Label>
@@ -97,7 +98,7 @@ export default function NotFound() {
               </ArrowLink>
             ))}
           </div>
-        </InView>
+        </div>
       </div>
     </section>
   );

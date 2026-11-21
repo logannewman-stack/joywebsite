@@ -299,6 +299,11 @@ html.motion .foot-inner {
   transform: translate3d(0, calc((1 - var(--foot-p, 1)) * 4.5rem), 0);
   opacity: calc(0.3 + 0.7 * var(--foot-p, 1));
 }
+/* With keyboard focus inside, it is at rest and fully lit, so the focus ring is where it will stay. */
+html.motion .site-footer:has(:focus-visible) .foot-inner {
+  transform: none;
+  opacity: 1;
+}
 
 /* The script wordmark, signed large. From 1280px the footer is one screen
    tall and the wordmark takes the height that is left. */

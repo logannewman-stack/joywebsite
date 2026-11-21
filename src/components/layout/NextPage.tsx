@@ -40,7 +40,7 @@ export function NextPage({ current }: { current: string }) {
   const slot = openings[next.href];
   const src = slot?.src && site.photoStyle === "bw" && slot.srcBw ? slot.srcBw : slot?.src;
   return (
-    <Link href={next.href} transitionTypes={["next-page"]} data-inview="" data-magnetic="0.04" className="next-page group">
+    <Link href={next.href} transitionTypes={["next-page"]} data-inview="" data-magnetic="0.04" suppressHydrationWarning className="next-page group">
       <span aria-hidden className="rule-draw absolute inset-x-0 top-0 block h-px bg-gold-deep/70" />
       <div className="mx-auto flex max-w-[90rem] items-end justify-between gap-6 px-5 pt-14 pb-12 md:gap-10 md:px-10 md:pt-24 md:pb-20">
         <div className="min-w-0 flex-1">

@@ -22,8 +22,10 @@
  *                                     (html.cursor-live hides the native
  *                                     cursor on that element meanwhile).
  *
- * It also keeps a covered footer link from holding keyboard focus out of
- * sight, makes "Back to top" move focus with the view, and sets the browser
+ * It also keeps a footer link from holding keyboard focus out of sight
+ * (covered by the page, or below the screen while a tall footer is held in
+ * place: the browser's own scroll-into-view cannot move a sticky element),
+ * makes "Back to top" move focus with the view, and sets the browser
  * chrome colour (theme-color) for a page that opens on black.
  */
 
@@ -105,7 +107,9 @@ document.addEventListener('focusin',function(e){
   if(!foot||!t||!t.matches||!foot.contains(t)||!d.classList.contains('motion'))return;
   try{if(!t.matches(':focus-visible'))return}catch(_){}
   var main=document.getElementById('main');if(!main)return;
-  var over=main.getBoundingClientRect().bottom-t.getBoundingClientRect().top+24;
+  var mb=main.getBoundingClientRect().bottom,r=t.getBoundingClientRect();
+  var over=mb-r.top+24,low=r.bottom+24-w.innerHeight;
+  if(low>0)over=Math.max(over,mb-foot.getBoundingClientRect().top+low);
   if(over>0)w.scrollBy({top:over,behavior:'instant'});
 });
 var cur=document.querySelector('.site-cursor');
