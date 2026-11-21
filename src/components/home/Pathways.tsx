@@ -21,14 +21,14 @@ export function Pathways() {
       {home.pathways.map((p, i) => (
         <li
           key={p.kicker}
-          className="group relative self-start md:even:mt-24 xl:even:mt-28 has-[a:focus-visible]:outline-2 has-[a:focus-visible]:outline-offset-[10px] has-[a:focus-visible]:outline-ink"
+          className="group relative self-start md:even:mt-24 xl:even:mt-28 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-[10px] has-[:focus-visible]:outline-ink"
         >
           <Reveal delay={(i % 4) * 0.06}>
             <div className="overflow-hidden bg-sand">
               <Photo
                 slot={p.photo}
                 sizes={sizes}
-                className="aspect-[4/5] w-full transition-transform duration-[var(--duration-image,850ms)] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04] group-has-[a:focus-visible]:scale-[1.04] motion-reduce:transition-none"
+                className="aspect-[4/5] w-full transition-transform duration-[var(--duration-image,850ms)] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04] group-has-[:focus-visible]:scale-[1.04] motion-reduce:transition-none"
               />
             </div>
             <div className="mt-6 flex items-baseline gap-3 border-t border-ink pt-4">

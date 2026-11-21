@@ -76,9 +76,13 @@ export function HeroB({ id = "hero-heading", as: H = "h1" }: HeroProps) {
   const photographic = hero.bStyle === "photo";
   return (
     <section data-header="dark" className="relative isolate overflow-hidden bg-ink text-white" aria-labelledby={id}>
-      <div className="relative min-h-[100svh]">
+      {/* Short portrait phones: the stage runs past the fold, so the screen edge crops the photo and its fade to black stays below her face. */}
+      <div className={`relative min-h-[100svh] ${photographic ? "max-md:portrait:min-h-[max(100svh,40rem)]" : ""}`}>
         {photographic ? (
-          <div className="absolute inset-x-0 top-[47svh] bottom-0 -z-10 [mask-image:linear-gradient(to_bottom,transparent_0%,#000_22%)] md:top-[42svh] lg:landscape:inset-y-0 lg:landscape:right-0 lg:landscape:left-auto lg:landscape:w-[58%] lg:landscape:[mask-image:linear-gradient(to_right,transparent_0%,#000_28%)]">
+          // Phones: the photo starts no higher than 20rem, because the headline's height follows the
+          // width, not the height; on short screens (iPhone SE) 47svh would put the bun into "the chair.".
+          // Landscape phones keep 47svh: the headline sits beside her there.
+          <div className="absolute inset-x-0 top-[max(47svh,20rem)] bottom-0 -z-10 [mask-image:linear-gradient(to_bottom,transparent_0%,#000_22%)] max-md:landscape:top-[47svh] md:top-[42svh] lg:landscape:inset-y-0 lg:landscape:right-0 lg:landscape:left-auto lg:landscape:w-[58%] lg:landscape:[mask-image:linear-gradient(to_right,transparent_0%,#000_28%)]">
             <ImageReveal immediate className="absolute inset-0">
               <ArtDirected
                 wide={hero.stage}
