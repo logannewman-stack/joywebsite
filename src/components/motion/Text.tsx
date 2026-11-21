@@ -115,20 +115,23 @@ export function WordLight({
   );
 }
 
+export type HlTone = "dark" | "gold" | "light";
+
 /**
- * A highlighted phrase. On black it is blush type; on white or ivory it is a
- * blush marker behind ink type (blush is never small text on white). Inside
- * an [data-inview] element the marker draws itself in.
+ * A highlighted phrase. On black it is pale pink type ("dark") or champagne
+ * gold type ("gold", large display type only); on white or ivory it is a pale
+ * pink marker behind ink type ("light": pink is never small text on white).
+ * Inside an [data-inview] element the marker draws itself in.
  */
-export function Hl({ children, tone = "dark", className = "" }: { children: ReactNode; tone?: "dark" | "light"; className?: string }) {
-  return <span className={`${tone === "dark" ? "hl-dark" : "hl-light"} ${className}`}>{children}</span>;
+export function Hl({ children, tone = "dark", className = "" }: { children: ReactNode; tone?: HlTone; className?: string }) {
+  return <span className={`${tone === "dark" ? "hl-dark" : tone === "gold" ? "hl-gold" : "hl-light"} ${className}`}>{children}</span>;
 }
 
 /**
  * Splits a sentence around the phrases to highlight, keeping the wording
  * untouched: highlight("clinical excellence and business", ["business"]).
  */
-export function highlight(text: string, phrases: string[], tone: "dark" | "light" = "dark"): ReactNode {
+export function highlight(text: string, phrases: string[], tone: HlTone = "dark"): ReactNode {
   let parts: (string | ReactElement)[] = [text];
   phrases.forEach((phrase, pi) => {
     const next: (string | ReactElement)[] = [];

@@ -143,9 +143,12 @@ html.motion .word-light > span {
   opacity: clamp(var(--dim, 0.3), calc((var(--t) * (var(--n) + var(--lead, 5)) - var(--i)) / var(--lead, 5)), 1);
 }
 
-/* Highlights: blush words on black, a blush marker behind ink words on light. */
+/* Highlights: pale pink or gold words on black, a pale pink marker behind ink words on light. */
 .hl-dark {
   color: var(--color-blush);
+}
+.hl-gold {
+  color: var(--color-gold-soft);
 }
 .hl-light {
   background-image: linear-gradient(var(--color-blush), var(--color-blush));
