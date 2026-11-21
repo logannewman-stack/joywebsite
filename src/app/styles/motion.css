@@ -320,6 +320,15 @@ html.motion .magnetic {
     position: static !important;
     height: auto !important;
   }
+  /* Steps print one under another, not stacked in one cell. */
+  [data-scene][data-pinned] [data-scene-steps] {
+    display: block !important;
+  }
+  [data-scene][data-pinned] [data-scene-track] {
+    display: block !important;
+    width: auto !important;
+    transform: none !important;
+  }
   [data-scene-step],
   .wr-in,
   .rise,
