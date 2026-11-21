@@ -76,7 +76,7 @@ export function Quote({
   const scale = size ?? (lead.length > 120 ? "md" : "lg");
   const mark = dark ? "text-blush" : "text-blush-deep";
   return (
-    <section id={id} className={`relative overflow-hidden ${surfaces[tone]} ${className}`} data-header={dark ? "dark" : undefined}>
+    <section id={id} className={`relative overflow-hidden ${surfaces[tone]} ${className}`} data-tone={tone} data-header={dark ? "dark" : undefined}>
       <div className="mx-auto max-w-[1440px] px-5 py-24 md:px-10 md:py-32">
         <div className="grid md:grid-cols-12 md:gap-x-6">
           <div

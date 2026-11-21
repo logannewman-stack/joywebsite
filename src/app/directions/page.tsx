@@ -131,7 +131,8 @@ export default function DirectionsPage() {
           <h2 id="phones-heading" className="label text-stone">
             On a phone
           </h2>
-          <div className="-mx-5 mt-8 flex snap-x snap-mandatory gap-6 overflow-x-auto px-5 pb-4 md:mx-0 md:px-0 lg:justify-between">
+          {/* relative: keeps the visually hidden link text inside this scrolling row (it is absolutely positioned). */}
+          <div className="relative -mx-5 mt-8 flex snap-x snap-mandatory gap-6 overflow-x-auto px-5 pb-4 md:mx-0 md:px-0 lg:justify-between">
             {directions.map((d) => (
               <figure key={d.key} className="shrink-0 snap-start">
                 <div

@@ -25,7 +25,7 @@ export default function NotFound() {
       <div className="mx-auto grid max-w-[1440px] gap-14 px-5 pt-12 pb-24 md:grid-cols-12 md:gap-x-6 md:px-10 md:pt-20 md:pb-32">
         <div className="md:col-span-5">
           <Label>404</Label>
-          <h1 className="display mt-8 text-[clamp(3.4rem,7.4vw,7.6rem)] leading-[0.9]">
+          <h1 className="display mt-8 text-[clamp(3.4rem,7.4vw,7.6rem)] !leading-[0.92]">
             Page <em>not found.</em>
           </h1>
           <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3 md:mt-14">
