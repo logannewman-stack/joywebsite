@@ -42,9 +42,10 @@ export const industry = {
     ],
     cta: "Discuss a Clinical Launch Project",
     photo: {
-      // 4:5 crop around her face, gloved hands and the model. Ungraded: the integrator
-      // grades all color photos together after the merge.
-      src: "/photos/industry-launch-4x5-g.jpg",
+      // 4:5 crop around her face, gloved hands and the model. Calm grade
+      // (scripts/grade_photos.py --foliage 0.45 --ceiling 0.26): the neon gloves,
+      // chartreuse laptop and lilac sky are quieted so the frame sits with the set.
+      src: "/photos/industry-launch-4x5-v2-g.jpg",
       alt: "Dr. Joy in gloves and glasses, working an instrument on a dental model",
       treatment: "color",
       direction: "Authentic product work or clinical training photograph.",

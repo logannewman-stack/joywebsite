@@ -33,9 +33,13 @@ export const meet = {
     } satisfies PhotoSlot,
   },
 
-  /** Clinical close-up set beside "In the operatory, I tested and refined." */
+  /**
+   * Clinical close-up set beside "In the operatory, I tested and refined." Calm grade
+   * (scripts/grade_photos.py --foliage 0.45 --ceiling 0.30): the neon-teal gloves read
+   * as matte teal, so the inset sits with the set.
+   */
   operatory: {
-    src: "/photos/meet-operatory-g.jpg",
+    src: "/photos/meet-operatory-v2-g.jpg",
     alt: "Dr. Joy in glasses and teal gloves, pointing to the settings on a clinical handpiece",
     treatment: "color",
     direction: "Color close-up from clinical work: hands, instruments, the operatory. No legible product branding.",
