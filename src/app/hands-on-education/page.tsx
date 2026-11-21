@@ -115,7 +115,8 @@ export default function EducationPage() {
               <Masthead text={family.heading} />
             </h2>
           </InView>
-          <InView className="relative lg:col-span-6 lg:row-span-2 lg:row-start-1 lg:-mt-24">
+          {/* From lg the photograph is as tall as the words beside it, so both end on one line (never squarer than 4:5). */}
+          <InView className="edu-family-photo relative lg:col-span-6 lg:row-span-2 lg:row-start-1 lg:-mt-24">
             <Parallax amount={10} className="aspect-[4/5] w-full md:aspect-[4/3] lg:aspect-[4/5]">
               <Photo
                 slot={family.photo}

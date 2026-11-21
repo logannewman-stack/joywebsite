@@ -81,21 +81,27 @@ function risingP3(text: string): ReactNode {
  * each version carries it; only one version is ever displayed.
  */
 function Panel({ photo, lift, children }: { photo: PhotoSlot; lift: boolean; children: ReactNode }) {
-  // Phones: heading, photo, words. From lg: the photo on the right, and the
-  // heading and words centered beside it (the 1fr rows above and below take
-  // up the photo's extra height). The heading is the section's masthead, on
-  // the same step as "Dr. Joy's P3"; the event, or the notice, reads under it.
+  // Below lg the photograph leads, running off the right edge, then the
+  // heading and the words together (the heading still comes first in the
+  // markup). From lg: the photo on the right, and the heading and words
+  // centered beside it (the 1fr rows above and below take up the photo's
+  // extra height). The heading is the section's masthead, on the same step as
+  // "Dr. Joy's P3"; the event, or the notice, reads under it.
   // Motion: the blush rule draws and the heading rises; the photograph drifts
   // inside its frame and settles; the words follow one after another.
   return (
     <div className="grid gap-10 md:gap-12 lg:grid-cols-12 lg:grid-rows-[1fr_auto_auto_1fr] lg:gap-x-6 lg:gap-y-0">
-      <InView className="lg:col-span-6 lg:col-start-1 lg:row-start-2">
+      <InView className="order-2 lg:order-none lg:col-span-6 lg:col-start-1 lg:row-start-2">
         <span aria-hidden className="rule-draw block h-px w-12 bg-blush" />
         <h2 className="display mt-8 text-[clamp(3.6rem,19vw,6.4rem)] leading-[0.88] lg:text-[clamp(5.2rem,10.4vw,9.36rem)]">
           {risingP3(education.events.heading)}
         </h2>
       </InView>
-      <InView className={`lg:col-span-5 lg:col-start-8 lg:row-span-4 lg:row-start-1 ${lift ? "lg:-mt-52" : ""}`}>
+      <InView
+        className={`order-1 -mr-5 md:-mr-10 lg:order-none lg:col-span-5 lg:col-start-8 lg:row-span-4 lg:row-start-1 lg:mr-0 ${
+          lift ? "-mt-36 md:-mt-48 lg:-mt-52" : ""
+        }`}
+      >
         <Parallax amount={10} className="aspect-[4/3] w-full md:aspect-[3/2] lg:aspect-[4/5]">
           <Photo
             slot={photo}
@@ -105,7 +111,7 @@ function Panel({ photo, lift, children }: { photo: PhotoSlot; lift: boolean; chi
           />
         </Parallax>
       </InView>
-      <InView delay={0.12} className="stagger lg:col-span-6 lg:col-start-1 lg:row-start-3 lg:mt-10">
+      <InView delay={0.12} className="stagger order-3 -mt-2 lg:order-none lg:col-span-6 lg:col-start-1 lg:row-start-3 lg:mt-10">
         {children}
       </InView>
     </div>
