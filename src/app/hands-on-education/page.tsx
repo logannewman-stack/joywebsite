@@ -46,7 +46,7 @@ export default function EducationPage() {
       {/* Opening. Phones: headline, photographs, then the words. Desktop: words left, collage right.
           The two photographs sit at two depths: the room drifts inside its frame, the inset floats over it. */}
       <section className="edu-open bg-paper pt-[4.75rem]">
-        <div className="edu-open-grid mx-auto grid max-w-[90rem] px-5 pt-10 pb-20 md:px-10 md:pt-16 md:pb-28 lg:grid-cols-12 lg:grid-rows-[auto_1fr] lg:gap-x-6 lg:pt-14 lg:pb-44">
+        <div className="edu-open-grid mx-auto grid max-w-[90rem] px-5 pt-10 pb-20 md:px-10 md:pt-16 md:pb-28 lg:grid-cols-12 lg:grid-rows-[auto_1fr] lg:gap-x-6 lg:pt-14 lg:pb-48">
           <div className="lg:col-span-6">
             <Label index="03">Hands-On Education</Label>
             {/* typeset() keeps "Skill-building" on one line; it always fits, but under a
