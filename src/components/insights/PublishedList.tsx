@@ -1,12 +1,26 @@
-import { ArrowUpRight } from "lucide-react";
+import type { CSSProperties } from "react";
 import type { Publication } from "@/content/insights";
 import { site } from "@/content/site";
-import { Reveal } from "@/components/ui/Reveal";
+import { InView } from "@/components/motion/InView";
+import { WordRise } from "@/components/motion/Text";
+import { ArrowCircle } from "@/components/industry/ArrowCircle";
 import { ConfirmTag } from "./records";
+
+type Vars = CSSProperties & Record<`--${string}`, string>;
+
+/** A hairline under a row that draws in, each a little after the one above. */
+function RowRule({ index }: { index: number }) {
+  return <span aria-hidden className="rule-draw absolute inset-x-0 bottom-0 h-px bg-line" style={{ "--d": `${0.12 + index * 0.08}s` } as Vars} />;
+}
 
 /**
  * Published Articles: an editorial index of work in dental publications, each
  * linking to the original. Book contributions sit apart under Published Work.
+ *
+ * The index draws itself: the top rule, then each row with its hairline, one
+ * after another. A row with a link answers as one on hover and focus: an ink
+ * rule draws over its hairline, the title leans in, the number darkens and
+ * the arrow travels.
  */
 export function PublishedList({
   heading,
@@ -30,43 +44,54 @@ export function PublishedList({
   return (
     <section className="bg-paper">
       {rule && (
-        <div className="mx-auto max-w-[90rem] px-5 md:px-10" aria-hidden>
-          <div className="h-px bg-line" />
-        </div>
+        <InView className="mx-auto max-w-[90rem] px-5 md:px-10">
+          <span aria-hidden className="rule-draw block h-px bg-line" />
+        </InView>
       )}
-      <div className="mx-auto grid grid-cols-1 max-w-[90rem] gap-y-12 px-5 py-24 md:px-10 md:py-28 lg:grid-cols-12 lg:gap-x-6 lg:pt-32 lg:pb-36">
-        <Reveal className="lg:sticky lg:top-28 lg:col-span-5 lg:self-start">
-          <h2 className="display text-[clamp(2.6rem,4.6vw,4.4rem)]">{heading}</h2>
-          <p className="mt-5 max-w-sm text-[1.0625rem] leading-relaxed text-stone">{intro}</p>
-          {site.showPlaceholders && toConfirm > 0 && (
-            <p className="label mt-6 inline-block rounded-full border border-ink/25 px-2.5 py-1 !text-[0.59375rem] text-stone">
-              Review: {toConfirm} {toConfirm === 1 ? "record" : "records"} to confirm
+      <div className="mx-auto grid max-w-[90rem] grid-cols-1 gap-y-12 px-5 py-24 md:px-10 md:py-28 lg:grid-cols-12 lg:gap-x-6 lg:pt-32 lg:pb-36">
+        <div className="lg:sticky lg:top-28 lg:col-span-5 lg:self-start">
+          <h2 className="display text-[clamp(2.6rem,4.6vw,4.4rem)]">
+            <WordRise>{heading}</WordRise>
+          </h2>
+          <InView>
+            <p className="rise mt-5 max-w-sm text-[1.0625rem] leading-relaxed text-stone" style={{ "--d": "0.12s" } as Vars}>
+              {intro}
             </p>
-          )}
-        </Reveal>
+            {site.showPlaceholders && toConfirm > 0 && (
+              <p className="rise label mt-6 inline-block rounded-full border border-ink/25 px-2.5 py-1 !text-[0.59375rem] text-stone" style={{ "--d": "0.2s" } as Vars}>
+                Review: {toConfirm} {toConfirm === 1 ? "record" : "records"} to confirm
+              </p>
+            )}
+          </InView>
+        </div>
 
         <div className="lg:col-span-6 lg:col-start-7">
           {articles.length > 0 && (
-            <ol className="border-t border-ink">
-              {articles.map((a, i) => (
-                <li key={a.title} className="border-b border-line">
-                  <Row item={a} index={i} cta={cta} />
-                </li>
-              ))}
-            </ol>
+            <InView>
+              <span aria-hidden className="rule-draw block h-px bg-ink" />
+              <ol className="stagger">
+                {articles.map((a, i) => (
+                  <li key={a.title} className="relative">
+                    <Row item={a} index={i} cta={cta} />
+                  </li>
+                ))}
+              </ol>
+            </InView>
           )}
 
           {books.length > 0 && (
-            <div className={articles.length > 0 ? "mt-16" : ""}>
-              <h3 className="label text-stone">{booksHeading}</h3>
-              <ul className="mt-5 border-t border-ink">
-                {books.map((b) => (
-                  <li key={b.title} className="border-b border-line">
+            <InView className={articles.length > 0 ? "mt-16 md:mt-20" : ""}>
+              <h3 className="rise label text-stone">{booksHeading}</h3>
+              <span aria-hidden className="rule-draw mt-5 block h-px bg-ink" style={{ "--d": "0.08s" } as Vars} />
+              <ul className="stagger">
+                {books.map((b, i) => (
+                  <li key={b.title} className="relative">
                     <BookRow item={b} />
+                    <RowRule index={i} />
                   </li>
                 ))}
               </ul>
-            </div>
+            </InView>
           )}
         </div>
       </div>
@@ -74,41 +99,45 @@ export function PublishedList({
   );
 }
 
-/** The title's underline draws in when anywhere on the row is hovered or focused. */
-const drawOnRowHover =
-  "bg-[linear-gradient(currentColor,currentColor)] bg-[length:0%_1px] bg-[position:0_100%] bg-no-repeat [box-decoration-break:clone] transition-[background-size] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:bg-[length:100%_1px] group-focus-visible:bg-[length:100%_1px]";
-
 function Row({ item, index, cta }: { item: Publication; index: number; cta: string }) {
+  const linked = Boolean(item.url);
   const inner = (
-    <span className="grid grid-cols-[2rem_1fr] gap-x-4 py-6 md:grid-cols-[2.5rem_1fr_auto] md:gap-x-6 md:py-7">
-      <span className="label pt-2 text-stone tabular-nums">{String(index + 1).padStart(2, "0")}</span>
-      <span className="min-w-0">
-        <span className="block font-serif text-[1.5rem] leading-[1.12] md:text-[1.75rem]">
-          <span className={item.url ? drawOnRowHover : ""}>{item.title}</span>
-        </span>
-        {item.subtitle && <span className="mt-1 block font-serif text-[1.0625rem] leading-snug text-stone italic">{item.subtitle}</span>}
-        <span className="mt-2 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+    <span className="grid grid-cols-[2rem_1fr] gap-x-4 py-6 md:grid-cols-[2.5rem_1fr_auto] md:gap-x-6 md:py-8">
+      <span
+        className={`label pt-2 text-stone tabular-nums ${linked ? "transition-colors duration-(--duration-ui) group-hover:text-ink group-focus-visible:text-ink" : ""}`}
+      >
+        {String(index + 1).padStart(2, "0")}
+      </span>
+      <span className={`min-w-0 ${linked ? "lean" : ""}`}>
+        <span className="block font-serif text-[1.5rem] leading-[1.12] md:text-[1.875rem]">{item.title}</span>
+        {item.subtitle && <span className="mt-1.5 block font-serif text-[1.0625rem] leading-snug text-stone italic md:text-[1.125rem]">{item.subtitle}</span>}
+        <span className="mt-2.5 flex flex-wrap items-baseline gap-x-3 gap-y-1">
           <span className="font-serif text-[1.0625rem] text-ink/80 italic">{item.publication}</span>
-          {item.date && <span className="label text-stone tabular-nums md:hidden">{item.date}</span>}
+          {item.date && <span className="label text-stone tabular-nums">{item.date}</span>}
         </span>
         {!item.verified && <ConfirmTag className="mt-3" />}
       </span>
-      <span className="col-start-2 mt-4 flex flex-col gap-3 md:col-start-auto md:mt-0 md:items-end md:pt-2 md:text-right">
-        {item.date && <span className="label hidden whitespace-nowrap text-stone tabular-nums md:block">{item.date}</span>}
-        {item.url && (
-          <span className="inline-flex items-center gap-1.5 text-[0.875rem] font-medium whitespace-nowrap">
-            {cta}
-            <ArrowUpRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden />
-          </span>
-        )}
-      </span>
+      {linked && (
+        <span className="col-start-2 mt-5 flex items-center gap-3 md:col-start-auto md:mt-0 md:self-center">
+          <span className="text-[0.875rem] font-medium whitespace-nowrap">{cta}</span>
+          <ArrowCircle direction="up-right" className="size-10 md:size-11" iconClassName="size-4" />
+        </span>
+      )}
     </span>
   );
-  if (!item.url) return inner;
+  if (!linked)
+    return (
+      <>
+        {inner}
+        <RowRule index={index} />
+      </>
+    );
   return (
-    <a href={item.url} target="_blank" rel="noopener noreferrer" className="group block">
+    <a href={item.url} target="_blank" rel="noopener noreferrer" className="group relative block">
       {inner}
       <span className="sr-only"> (opens in a new tab)</span>
+      <RowRule index={index} />
+      <span aria-hidden className="rule-over" />
     </a>
   );
 }
@@ -116,7 +145,7 @@ function Row({ item, index, cta }: { item: Publication; index: number; cta: stri
 function BookRow({ item }: { item: Publication }) {
   const title = <span className="block font-serif text-[1.375rem] leading-tight italic md:text-[1.5rem]">{item.title}</span>;
   return (
-    <div className="grid grid-cols-[1fr_auto] items-baseline gap-x-6 py-5">
+    <div className="grid grid-cols-[1fr_auto] items-baseline gap-x-6 py-5 md:py-6">
       <span className="min-w-0">
         {item.url ? (
           <a href={item.url} target="_blank" rel="noopener noreferrer" className="link-draw">

@@ -1,1 +1,88 @@
-/* insights: styles owned by the insights work stream. Loaded from globals.css. */
+/* insights: styles owned by the insights work stream. Loaded from globals.css.
+   The shared row and card responses (.arrow-circle, .lean, .rule-over) are in
+   industry.css. */
+
+/* An ink rule that draws over the top edge of a piece instead of its foot. */
+.rule-over-top {
+  top: 0;
+  bottom: auto;
+}
+
+/* ==========================================================================
+   The cover story (src/components/insights/Feature.tsx)
+   The headline leans in when the card is hovered or its link is focused.
+   ========================================================================== */
+html.motion .cover-title {
+  transition: transform var(--duration-text) var(--ease-expo);
+}
+html.motion .cover:has(:focus-visible) .cover-title {
+  transform: translate3d(0.75rem, 0, 0);
+}
+@media (hover: hover) {
+  html.motion .cover:hover .cover-title {
+    transform: translate3d(0.75rem, 0, 0);
+  }
+}
+
+/* ==========================================================================
+   The conversation band (src/components/insights/Band.tsx)
+   --v runs 0 to 1 as the band crosses the viewport. --k is how far it has
+   opened: it arrives inset on the page margins and reaches the full width
+   once it is well into view. The photograph inside settles from slightly
+   large and drifts a little slower than the page. Compositor-only: a clip
+   and a transform.
+   ========================================================================== */
+html.motion .insights-band {
+  --k: clamp(0, calc((var(--v, 1) - 0.06) / 0.34), 1);
+  --inset-x: 1.25rem;
+  --inset-y: 1.75rem;
+  clip-path: inset(calc((1 - var(--k)) * var(--inset-y)) calc((1 - var(--k)) * var(--inset-x)));
+}
+@media (min-width: 768px) {
+  html.motion .insights-band {
+    --inset-x: 2.5rem;
+    --inset-y: 3.5rem;
+  }
+}
+html.motion .insights-band-inner {
+  transform: translate3d(0, calc((0.5 - var(--v, 0.5)) * 9%), 0) scale(calc(1.2 - var(--k) * 0.08));
+  will-change: transform;
+}
+
+/* ==========================================================================
+   Stay Connected: the JD monogram, pressed into the black like the mark on
+   her card. The mark is the brand SVG used as a mask over a tone one step
+   above the section's black; a light edge above-left and a dark edge
+   below-right give it the embossed relief of the brand board.
+   ========================================================================== */
+.stay-seal {
+  filter: drop-shadow(-1px -1px 0 rgb(231 211 203 / 0.16)) drop-shadow(1.5px 2px 1px rgb(0 0 0 / 0.95));
+}
+html.motion .stay-seal {
+  transform: translate3d(0, calc((0.5 - var(--v, 0.5)) * 3rem), 0);
+}
+.stay-mark {
+  display: block;
+  width: 100%;
+  aspect-ratio: 771.4 / 702.9;
+  background-color: #181615;
+  -webkit-mask: url("/brand/dr-joy-monogram-cream.svg") center / contain no-repeat;
+  mask: url("/brand/dr-joy-monogram-cream.svg") center / contain no-repeat;
+}
+@media print {
+  .stay-seal {
+    display: none;
+  }
+}
+
+/* ==========================================================================
+   An article (src/components/insights/Article.tsx): the first paragraph
+   opens with a drop cap in the display face.
+   ========================================================================== */
+.article-body > p:first-child::first-letter {
+  float: left;
+  margin: 0.06em 0.09em 0 0;
+  font-family: var(--font-serif);
+  font-size: 4.35em;
+  line-height: 0.78;
+}
