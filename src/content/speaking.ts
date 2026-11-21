@@ -27,8 +27,10 @@ export const speaking = {
 
   /** Full-bleed proof of a real room, between the courses and the team programs. */
   room: {
+    // The conference's sign on the podium is retouched to a plain panel
+    // (third-party branding needs clearance).
     photo: {
-      src: "/photos/speaking-room-g.jpg",
+      src: "/photos/speaking-room-v2-g.jpg",
       alt: "Dr. Joy on stage in front of a conference audience",
       treatment: "color",
       direction: "Wide color photograph of the stage and the audience.",
