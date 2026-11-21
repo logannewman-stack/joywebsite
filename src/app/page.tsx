@@ -6,6 +6,7 @@ import { heroes } from "@/components/home/Heroes";
 import { Perspective, PERSPECTIVE_LENGTH } from "@/components/home/Perspective";
 import { Pathways } from "@/components/home/Pathways";
 import { Finale } from "@/components/home/Finale";
+import { InView } from "@/components/motion/InView";
 import { Scene } from "@/components/motion/Scene";
 import { WordRise } from "@/components/motion/Text";
 import { Quote } from "@/components/ui/Quote";
@@ -63,9 +64,12 @@ export default function Home() {
       <section id="work" className="work-sheet relative z-10 bg-paper" aria-labelledby="work-heading">
         <Scene as="div" from="lg" length={4} steps={pathways.length} className="work" pinClassName="work-stage pt-24 pb-24 md:pt-32 md:pb-32 lg:pb-40">
           <div className="work-head mx-auto max-w-[90rem] px-5 md:px-10">
-            <h2 id="work-heading" className="work-title display text-[clamp(2.75rem,6.4vw,6.5rem)] leading-[0.92]">
-              <WordRise>{work.heading}</WordRise>
-            </h2>
+            <InView>
+              <span aria-hidden className="work-rule rule-draw mb-6 block h-px w-16 bg-gold-deep md:mb-8" />
+              <h2 id="work-heading" className="work-title display text-[clamp(2.75rem,6.4vw,6.5rem)] leading-[0.92]">
+                <WordRise>{work.heading}</WordRise>
+              </h2>
+            </InView>
             <p aria-hidden className="work-count label text-stone">
               <span className="roll-count tabular-nums text-ink">
                 <span className="roll">

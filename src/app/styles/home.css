@@ -123,8 +123,11 @@ html.motion .hero-cue-line {
     position: absolute;
     inset: 0 0 auto;
     z-index: 0;
-    padding-top: clamp(5.75rem, 12.5svh, 7.75rem);
+    padding-top: clamp(5.75rem, 11.5svh, 7.25rem);
     padding-bottom: 0;
+  }
+  .persp[data-pinned] .persp-title > .rule-draw {
+    margin-bottom: clamp(0.75rem, 2.4svh, 1.75rem);
   }
   .persp[data-pinned] .persp-heading {
     max-width: 19ch;
@@ -473,6 +476,9 @@ html.motion .hero-cue-line {
   .work[data-pinned] .work-title {
     font-size: clamp(2.75rem, min(6.4vw, 9.5svh), 6.5rem);
   }
+  .work[data-pinned] .work-rule {
+    margin-bottom: clamp(0.75rem, 2.2svh, 1.5rem);
+  }
   .work[data-pinned] .work-count {
     display: flex;
     align-items: center;
@@ -492,7 +498,7 @@ html.motion .hero-cue-line {
     transform: translate3d(calc(var(--p, 0) * (100cqw - 100%)), 0, 0);
   }
   .work[data-pinned] .work-panel {
-    --ph: min(36rem, calc(100svh - var(--header-height) - 14rem));
+    --ph: min(36rem, calc(100svh - var(--header-height) - 15rem));
     --pw: calc(var(--ph) * 0.8);
     display: grid;
     grid-template-columns: var(--pw) 23.5rem;

@@ -145,6 +145,8 @@ export function Perspective({ tone = "bg-ivory" }: { tone?: string }) {
           <div aria-hidden data-header="dark" className="persp-mark-pinned pointer-events-none" />
 
           <InView className="persp-title mx-auto max-w-[90rem] px-5 pt-24 pb-12 md:px-10 md:pt-32 md:pb-16 lg:pt-36">
+            {/* A short gold rule opens each chapter of the page. */}
+            <span aria-hidden className="rule-draw mb-6 block h-px w-16 bg-gold-deep md:mb-8" />
             <h2 id="perspective-heading" className="persp-heading display max-w-[18ch] text-[clamp(2.75rem,6.4vw,6.5rem)] leading-[0.94]">
               <Heading />
             </h2>
