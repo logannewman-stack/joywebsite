@@ -1,9 +1,12 @@
+import type { CSSProperties } from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { home } from "@/content/home";
 import { nav, site } from "@/content/site";
-import { ArrowLink, ButtonLink, Label, PendingLink, PendingTag, resolveHref } from "@/components/ui/Links";
+import { ArrowLink, ButtonLink, Label, PendingLink, PendingTag, SwapArrow, resolveHref } from "@/components/ui/Links";
+import { Reveal } from "@/components/ui/Reveal";
+import { InView } from "@/components/motion/InView";
+import { WordRise } from "@/components/motion/Text";
 import { typeset } from "@/components/ui/Typeset";
 import { InquiryButton } from "@/components/inquiry/InquiryProvider";
 
@@ -24,21 +27,31 @@ export default function NotFound() {
     <section className="bg-paper pt-[4.75rem]">
       <div className="mx-auto grid max-w-[90rem] gap-14 px-5 pt-12 pb-24 md:grid-cols-12 md:gap-x-6 md:px-10 md:pt-20 md:pb-32">
         <div className="md:col-span-5">
-          <Label>404</Label>
+          <Reveal immediate>
+            <Label>404</Label>
+          </Reveal>
           <h1 className="display mt-8 text-[clamp(3.4rem,7.4vw,7.6rem)] !leading-[0.92]">
-            Page <em>not found.</em>
+            <WordRise immediate delay={0.05}>
+              Page
+            </WordRise>{" "}
+            <em>
+              <WordRise immediate delay={0.05} start={1}>
+                not found.
+              </WordRise>
+            </em>
           </h1>
-          <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3 md:mt-14">
+          <Reveal immediate delay={0.3} className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3 md:mt-14">
             <ButtonLink href="/">Home</ButtonLink>
             <InquiryButton variant="text">{home.closing.cta}</InquiryButton>
-          </div>
+          </Reveal>
         </div>
 
-        <div className="md:col-span-6 md:col-start-7 md:pt-3">
-          <Label as="h2" className="text-stone">
+        <InView className="md:col-span-6 md:col-start-7 md:pt-3" delay={0.25}>
+          <Label as="h2" className="rise text-stone">
             {home.work.heading}
           </Label>
-          <ol className="mt-6 border-t border-ink">
+          <span aria-hidden className="rule-draw mt-6 block h-px bg-ink" />
+          <ol className="stagger">
             {home.pathways.map((p, i) => {
               const r = resolveHref(p.link.href);
               const row = "group grid grid-cols-[2rem_minmax(0,1fr)_auto] items-baseline gap-x-4 py-6 md:py-7";
@@ -54,11 +67,7 @@ export default function NotFound() {
                       {typeset(p.heading)}
                     </span>
                   </span>
-                  {r.external ? (
-                    <ArrowUpRight className="size-4 self-center transition-transform duration-(--duration-ui) ease-expo group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden />
-                  ) : (
-                    <ArrowRight className="size-4 self-center transition-transform duration-(--duration-ui) ease-expo group-hover:translate-x-1" aria-hidden />
-                  )}
+                  <SwapArrow direction={r.external ? "up-right" : "right"} className="size-4 self-center" />
                 </>
               );
               return (
@@ -81,14 +90,14 @@ export default function NotFound() {
               );
             })}
           </ol>
-          <div className="mt-6 flex flex-wrap gap-x-8 gap-y-1">
+          <div className="rise mt-6 flex flex-wrap gap-x-8 gap-y-1" style={{ "--d": "0.6s" } as CSSProperties}>
             {others.map((n) => (
               <ArrowLink key={n.href} href={n.href}>
                 {n.label}
               </ArrowLink>
             ))}
           </div>
-        </div>
+        </InView>
       </div>
     </section>
   );
