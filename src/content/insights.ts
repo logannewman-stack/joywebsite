@@ -51,7 +51,7 @@ export const insights = {
   hero: {
     heading: "The conversation doesn’t end when the presentation does.",
     // A no-break space keeps "I am" together, so no line ends on a lone "I".
-    text: "Published articles, clinical perspectives, and what I am seeing across the profession.",
+    text: "Published articles, clinical perspectives, and what I\u00a0am seeing across the profession.",
     photo: {
       src: "/photos/insights-hero-142.jpg",
       srcBw: "/photos/insights-hero-142-bw.jpg",

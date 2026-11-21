@@ -13,8 +13,8 @@ import { articleHref, isShown } from "@/components/insights/records";
 
 export const metadata: Metadata = {
   title: "Insights",
-  // Approved copy: the headline and the intro (144 characters).
-  description: `${insights.hero.heading} ${insights.hero.text.replace(/ /g, " ")}`,
+  // Approved copy: the headline and the intro (143 characters).
+  description: `${insights.hero.heading} ${insights.hero.text.replace(/\u00a0/g, " ")}`,
 };
 
 export default function InsightsPage() {
