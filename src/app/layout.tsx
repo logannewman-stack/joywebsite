@@ -1,12 +1,20 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Instrument_Serif } from "next/font/google";
-import { site } from "@/content/site";
+import { launchBlockers, site } from "@/content/site";
+import { optIns } from "@/content/integrations";
 import { InquiryProvider } from "@/components/inquiry/InquiryProvider";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Providers } from "@/components/layout/Providers";
 import { REVEAL_BODY_SCRIPT, REVEAL_HEAD_SCRIPT } from "@/components/ui/Reveal";
+import { StructuredData } from "@/components/ui/StructuredData";
 import "./globals.css";
+
+// Launch build (site.showPlaceholders false): stop here, with a list, if anything required is missing.
+const blockers = launchBlockers({ smsOptIn: Boolean(optIns.sms) });
+if (blockers.length) {
+  throw new Error(`Not ready to launch (site.showPlaceholders is false):\n- ${blockers.join("\n- ")}`);
+}
 
 const instrument = Instrument_Serif({
   variable: "--font-instrument",
@@ -22,10 +30,15 @@ const geist = Geist({
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
-  title: { default: site.name, template: `%s | ${site.name}` },
+  // Home has no title of its own, so the default names the work with the site's page names.
+  title: { default: `${site.name} | Speaking, Hands-On Education, and Industry Collaborations`, template: `%s | ${site.name}` },
   description: site.description,
-  openGraph: { siteName: site.name, type: "website" },
+  // "./" resolves to each page's own address, so every page gets its own canonical and og:url.
+  alternates: { canonical: "./" },
+  openGraph: { siteName: site.name, type: "website", locale: "en_US", url: "./" },
   twitter: { card: "summary_large_image" },
+  // Review mode is never indexed. Launch (showPlaceholders false) lifts this.
+  ...(site.showPlaceholders ? { robots: { index: false, follow: false } } : {}),
 };
 
 export const viewport: Viewport = {
@@ -37,6 +50,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html lang="en" className={`${instrument.variable} ${geist.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: REVEAL_HEAD_SCRIPT }} />
+        <StructuredData />
       </head>
       <body>
         <Providers>
