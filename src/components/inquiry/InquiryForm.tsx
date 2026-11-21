@@ -1,9 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
-import { ArrowRight, Check, LoaderCircle } from "lucide-react";
+import { Check, LoaderCircle } from "lucide-react";
 import { inquiryTypes, optIns, programChoices, type InquiryType } from "@/content/integrations";
 import { links } from "@/content/site";
+import { SwapArrow } from "@/components/ui/Links";
 import { CheckGroup, Consent, Field, Select, TextArea } from "./fields";
 import {
   collect,
@@ -129,11 +130,11 @@ export function SubmitButton({ sending, children }: { sending: boolean; children
     <button
       type="submit"
       aria-disabled={sending || undefined}
-      className="group inline-flex min-h-12 w-full max-w-full items-center justify-center gap-3 rounded-full bg-ink px-7 text-[0.9375rem] font-medium whitespace-nowrap text-white max-[359px]:whitespace-normal transition-[background-color,transform] duration-[var(--duration-hover,180ms)] hover:bg-charcoal focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-ink active:scale-[0.98] aria-disabled:cursor-progress aria-disabled:bg-charcoal motion-reduce:active:scale-100 sm:w-auto"
+      className="press group inline-flex min-h-12 w-full max-w-full items-center justify-center gap-3 rounded-full bg-ink px-7 text-[0.9375rem] font-medium whitespace-nowrap text-white max-[359px]:whitespace-normal hover:bg-charcoal focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-ink aria-disabled:cursor-progress aria-disabled:bg-charcoal sm:w-auto"
     >
       {sending ? <LoaderCircle className="size-4 animate-spin motion-reduce:animate-none" aria-hidden /> : null}
       {sending ? "Sending" : children}
-      {!sending && <ArrowRight className="size-4 transition-transform duration-[var(--duration-hover,180ms)] group-hover:translate-x-1" aria-hidden />}
+      {!sending && <SwapArrow />}
     </button>
   );
 }
@@ -206,7 +207,7 @@ export function InquiryForm({
       onSubmit={onSubmit}
       onInput={(e) => drafts.set(type, collect(e.currentTarget))}
       onChange={(e) => drafts.set(type, collect(e.currentTarget))}
-      className="relative flex flex-col gap-7"
+      className="panel-settle-list relative flex flex-col gap-7"
     >
       <Honeypot />
       {programFirst && <Select label="Program of interest" name="program" options={programChoices} defaultValue={seed.program} />}

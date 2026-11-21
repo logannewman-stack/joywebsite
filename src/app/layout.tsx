@@ -5,6 +5,9 @@ import { optIns } from "@/content/integrations";
 import { InquiryProvider } from "@/components/inquiry/InquiryProvider";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { PageShell } from "@/components/chrome/PageShell";
+import { Curtain } from "@/components/chrome/Curtain";
+import { CHROME_BODY_SCRIPT, CHROME_HEAD_SCRIPT } from "@/components/chrome/script";
 import { REVEAL_BODY_SCRIPT } from "@/components/ui/Reveal";
 import { MOTION_BODY_SCRIPT, MOTION_HEAD_SCRIPT } from "@/components/motion/engine";
 import { StructuredData } from "@/components/ui/StructuredData";
@@ -55,18 +58,18 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html lang="en" data-scroll-behavior="smooth" className={`${instrument.variable} ${geist.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: MOTION_HEAD_SCRIPT }} />
+        <script dangerouslySetInnerHTML={{ __html: CHROME_HEAD_SCRIPT }} />
         <StructuredData />
       </head>
       <body>
+        <Curtain />
         <InquiryProvider>
           <Header />
-          <main id="main" tabIndex={-1} className="outline-none">
-            {children}
-          </main>
-          <Footer />
+          <PageShell footer={<Footer />}>{children}</PageShell>
         </InquiryProvider>
         <script dangerouslySetInnerHTML={{ __html: REVEAL_BODY_SCRIPT }} />
         <script dangerouslySetInnerHTML={{ __html: MOTION_BODY_SCRIPT }} />
+        <script dangerouslySetInnerHTML={{ __html: CHROME_BODY_SCRIPT }} />
       </body>
     </html>
   );

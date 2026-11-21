@@ -2,17 +2,21 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { ArrowUpRight } from "lucide-react";
+import { useCallback, useEffect, useRef, useState, type CSSProperties } from "react";
 import { nav, site } from "@/content/site";
 import { Wordmark } from "../ui/Brand";
-import { instrumentalLink, PendingTag } from "../ui/Links";
+import { instrumentalLink, PendingTag, SwapArrow } from "../ui/Links";
 import { typeset } from "../ui/Typeset";
 import { InquiryButton } from "../inquiry/InquiryProvider";
 import { inertOutside, lockScroll, trapTab } from "../inquiry/modal";
 
 /** Height of the header bar; the dark-section observer watches this band. */
 const BAR = 76;
+
+/** Browser chrome (the phone's status and address bar) follows the header: ink over black sections, white over light. */
+const THEME = { dark: "#0b0b0b", light: "#ffffff" };
+
+type Vars = CSSProperties & Record<`--${string}`, string | number>;
 
 /*
  * Header colour follows what is under it. Any page can mark a section with
@@ -174,6 +178,13 @@ export function Header() {
         : "bg-paper";
   const tone = dark ? "dark" : "light";
 
+  // The browser's own chrome takes the header's colour. The first-visit curtain
+  // (html.intro) holds it black and hands back when it lifts.
+  useEffect(() => {
+    if (document.documentElement.classList.contains("intro")) return;
+    document.querySelector('meta[name="theme-color"]')?.setAttribute("content", THEME[tone]);
+  }, [tone, pathname]);
+
   return (
     <>
       <a
@@ -186,7 +197,7 @@ export function Header() {
         ref={headerRef}
         data-tone={tone}
         onFocusCapture={() => setHidden(false)}
-        className={`fixed inset-x-0 top-0 z-50 mr-[var(--scroll-lock-gap,0px)] transition-[translate,background-color,box-shadow,color] duration-[var(--duration-ui,320ms)] ${ease} ${surface} ${
+        className={`site-header fixed inset-x-0 top-0 z-50 mr-[var(--scroll-lock-gap,0px)] transition-[translate,background-color,box-shadow,color] duration-[var(--duration-ui,320ms)] ${ease} ${surface} ${
           hidden && !open ? "-translate-y-full" : "translate-y-0"
         } ${dark ? "text-white" : "text-ink"}`}
       >
@@ -252,7 +263,7 @@ export function Header() {
               aria-expanded={open}
               aria-controls="mobile-menu"
               onClick={() => (open ? closeMenu(false) : setOpen(true))}
-              className={`relative inline-flex size-11 flex-col items-center justify-center gap-[0.375rem] rounded-full border border-current/25 transition-[border-color,transform] duration-[var(--duration-hover,180ms)] hover:border-current/60 active:scale-95 motion-reduce:active:scale-100 ${
+              className={`press relative inline-flex size-11 flex-col items-center justify-center gap-[0.375rem] rounded-full border border-current/25 hover:border-current/60 ${
                 dark ? "focus-visible:outline-white" : "focus-visible:outline-ink"
               }`}
             >
@@ -264,7 +275,22 @@ export function Header() {
       </header>
 
       {/*
-        Always in the page (hidden and inert while closed) so it can fade with CSS alone.
+        Scroll progress: a hairline under the bar that fills with the page (--page-p, written by
+        the scroll engine). It rides at the top edge while the bar is away, and is off under the open menu.
+      */}
+      <div
+        aria-hidden
+        className={`page-progress mr-[var(--scroll-lock-gap,0px)] ${hidden && !open ? "translate-y-0" : "translate-y-[4.75rem]"} ${
+          open ? "opacity-0" : "opacity-100"
+        } ${dark ? "text-blush" : "text-ink"}`}
+      >
+        <span className="progress-page" />
+      </div>
+
+      {/*
+        Always in the page (hidden and inert while closed) so it can open with CSS alone: the sheet
+        drops from under the bar, the links rise one after another and their hairlines draw
+        (styles/chrome.css). With reduced motion it simply appears.
         scroll-pt: when the list scrolls, keyboard focus stops below the bar instead of under it.
         Short phones (up to 660px tall) get a tighter list, so "Start a Conversation" stays on screen.
       */}
@@ -272,36 +298,36 @@ export function Header() {
         ref={menuRef}
         id="mobile-menu"
         inert={!open}
-        className={`fixed inset-0 z-40 flex scroll-pt-[calc(4.75rem+1rem)] flex-col overflow-y-auto overscroll-contain bg-paper px-5 pt-[calc(4.75rem+1rem)] pb-[max(2rem,env(safe-area-inset-bottom))] transition-[opacity,visibility] duration-[var(--duration-ui,320ms)] motion-reduce:transition-none max-md:[@media(max-height:660px)]:pt-[calc(4.75rem+0.5rem)] max-md:[@media(max-height:660px)]:pb-[max(1.25rem,env(safe-area-inset-bottom))] md:px-10 md:pt-[calc(4.75rem+2.5rem)] xl:hidden ${
-          open ? "visible opacity-100" : "invisible opacity-0"
-        }`}
+        data-open={open}
+        className="menu-sheet thin-scroll fixed inset-0 z-40 flex scroll-pt-[calc(4.75rem+1rem)] flex-col overflow-y-auto overscroll-contain bg-paper px-5 pt-[calc(4.75rem+1rem)] pb-[max(2rem,env(safe-area-inset-bottom))] max-md:[@media(max-height:660px)]:pt-[calc(4.75rem+0.5rem)] max-md:[@media(max-height:660px)]:pb-[max(1.25rem,env(safe-area-inset-bottom))] md:px-10 md:pt-[calc(4.75rem+2.5rem)] xl:hidden"
       >
         <nav aria-label="Menu" className="flex flex-1 flex-col">
           <ul>
             {menu.map((item, i) => {
               const current = pathname === item.href || pathname.startsWith(`${item.href}/`);
               return (
-                <li
-                  key={item.href}
-                  className={`border-b border-line transition-[opacity,translate] duration-[350ms] motion-reduce:transition-none ${ease} ${open ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0"}`}
-                  style={{ transitionDelay: open ? `${40 + i * 30}ms` : "0ms" }}
-                >
+                <li key={item.href} className="menu-item" style={{ "--i": i } as Vars}>
                   <Link
                     href={item.href}
                     aria-current={current ? "page" : undefined}
                     onClick={() => closeMenu(true)}
                     className="group flex items-baseline gap-4 py-3.5 focus-visible:outline-offset-0 max-md:[@media(max-height:660px)]:py-2 md:gap-6 md:py-4 md:[@media(min-height:900px)]:py-6"
                   >
-                    <span aria-hidden className="label w-6 shrink-0 text-stone tabular-nums group-aria-[current=page]:text-ink">
+                    <span aria-hidden className="menu-fade label w-6 shrink-0 text-stone tabular-nums group-aria-[current=page]:text-ink">
                       {item.index}
                     </span>
                     <span
                       className={`display text-[clamp(2.15rem,5.4vw,3.5rem)] max-md:[@media(max-height:660px)]:text-[1.9rem] md:[@media(min-height:900px)]:text-[clamp(2.5rem,6.6vw,4.25rem)] transition-transform duration-[var(--duration-ui,320ms)] ${ease} group-hover:translate-x-1.5 group-aria-[current=page]:italic`}
                     >
-                      {typeset(item.label)}
-                      {current && (
-                        <span aria-hidden className="ml-[0.22em] inline-block size-[0.2em] -translate-y-[0.06em] rounded-full bg-blush-deep align-middle" />
-                      )}
+                      {/* The label rises from behind its own baseline (the .wr frame clips only the bottom edge). */}
+                      <span className="wr">
+                        <span className="menu-rise inline-block">
+                          {typeset(item.label)}
+                          {current && (
+                            <span aria-hidden className="ml-[0.22em] inline-block size-[0.2em] -translate-y-[0.06em] rounded-full bg-blush-deep align-middle" />
+                          )}
+                        </span>
+                      </span>
                     </span>
                   </Link>
                 </li>
@@ -309,8 +335,8 @@ export function Header() {
             })}
           </ul>
           <div
-            className={`mt-auto flex flex-wrap items-center justify-between gap-x-8 gap-y-5 pt-12 transition-opacity duration-[350ms] motion-reduce:transition-none max-md:[@media(max-height:660px)]:pt-5 ${open ? "opacity-100" : "opacity-0"}`}
-            style={{ transitionDelay: open ? `${40 + menu.length * 30}ms` : "0ms" }}
+            className="menu-fade mt-auto flex flex-wrap items-center justify-between gap-x-8 gap-y-5 pt-12 max-md:[@media(max-height:660px)]:pt-5"
+            style={{ "--i": menu.length } as Vars}
           >
             {/* Below tablet width the CTA lives here instead of the bar, first, so it is the action short screens still show. */}
             <span className="md:hidden" onClickCapture={() => closeMenu(false)}>
@@ -339,12 +365,7 @@ function ConsultingLink({
 }) {
   const link = instrumentalLink();
   const cls = `group inline-flex min-h-11 items-center gap-1.5 transition-opacity duration-[var(--duration-hover,180ms)] ${className}`;
-  const icon = (
-    <ArrowUpRight
-      className="size-4 transition-transform duration-[var(--duration-hover,180ms)] group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-      aria-hidden
-    />
-  );
+  const icon = <SwapArrow direction="up-right" />;
   if (link.pending) {
     return (
       <span role="link" aria-disabled="true" tabIndex={0} title="Instrumental website link to come" className={`${cls} cursor-not-allowed`}>

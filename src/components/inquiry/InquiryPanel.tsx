@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { ArrowLeft, ArrowRight, ArrowUpRight, Check, X } from "lucide-react";
+import { Check, X } from "lucide-react";
 import { consultingChoice, inquiryTypes, interestChoices, type InquiryType } from "@/content/integrations";
 import { currentEvent, education } from "@/content/education";
-import { instrumentalLink, PendingTag } from "@/components/ui/Links";
+import { instrumentalLink, PendingTag, SwapArrow } from "@/components/ui/Links";
 import { InquiryForm, successMessage } from "./InquiryForm";
 import { inertOutside, trapTab } from "./modal";
 import type { Choice, PanelProps } from "./InquiryProvider";
@@ -14,6 +14,10 @@ import type { Choice, PanelProps } from "./InquiryProvider";
  * that leave the site (Instrumental, a live P3 event page) and the forms.
  * Loaded on demand by InquiryProvider.
  *
+ * Motion: the sheet slides in, then each view's content settles in block by
+ * block (.panel-settle in styles/chrome.css; a change of view remounts the
+ * settling block so it plays again). Instant with reduced motion.
+ *
  * Focus: on open and after every change of view (topic picked, All topics,
  * sent) the body scrolls to the top and focus goes to the view's heading;
  * going back to the picker focuses the topic just left. Tab stays inside the
@@ -22,8 +26,7 @@ import type { Choice, PanelProps } from "./InquiryProvider";
  */
 
 const ring = "focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-ink";
-const pill =
-  "group inline-flex min-h-12 items-center gap-3 whitespace-nowrap rounded-full px-6 text-[0.9375rem] font-medium transition-[background-color,border-color,transform] duration-[var(--duration-hover,180ms)]";
+const pill = "press group inline-flex min-h-12 items-center gap-3 whitespace-nowrap rounded-full px-6 text-[0.9375rem] font-medium";
 
 /** The featured P3 event, while its registration page is live (it comes down after its `endsOn` day, US Eastern). */
 function liveEvent() {
@@ -113,9 +116,9 @@ export default function InquiryPanel({ request, closing, close }: PanelProps) {
           <button
             type="button"
             onClick={choice !== null ? back : () => setAllTopics(true)}
-            className={`-ml-1 inline-flex min-h-11 items-center gap-2 px-1 text-[0.875rem] font-medium text-stone transition-colors duration-[var(--duration-hover,180ms)] hover:text-ink ${ring}`}
+            className={`group -ml-1 inline-flex min-h-11 items-center gap-2 px-1 text-[0.875rem] font-medium text-stone transition-[color,opacity] duration-[var(--duration-hover,180ms)] hover:text-ink active:opacity-70 ${ring}`}
           >
-            <ArrowLeft className="size-4" aria-hidden /> All topics
+            <SwapArrow direction="left" /> All topics
           </button>
         ) : (
           <span className="label text-stone">Inquiry</span>
@@ -124,46 +127,49 @@ export default function InquiryPanel({ request, closing, close }: PanelProps) {
           type="button"
           onClick={close}
           aria-label="Close"
-          className={`inline-flex size-11 items-center justify-center rounded-full border border-line transition-[border-color,background-color,transform] duration-[var(--duration-hover,180ms)] hover:border-ink active:scale-95 motion-reduce:active:scale-100 ${ring}`}
+          className={`press inline-flex size-11 items-center justify-center rounded-full border border-line hover:border-ink ${ring}`}
         >
           <X className="size-5" aria-hidden />
         </button>
       </div>
 
-      <div ref={body} className="flex-1 overflow-y-auto overscroll-contain px-6 pt-10 pb-16 md:px-10 md:pt-12">
-        {sent && (
-          <span className="mb-8 inline-flex size-12 items-center justify-center rounded-full bg-blush text-ink">
-            <Check className="size-5" aria-hidden />
-          </span>
-        )}
-        <h2 ref={heading} id="inquiry-title" tabIndex={-1} className="display text-[clamp(2.4rem,6vw,3.4rem)] outline-none">
-          {title}
-        </h2>
-        {intro && (
-          <p id="inquiry-intro" className="mt-4 max-w-md text-[1.03125rem] leading-relaxed text-stone">
-            {intro}
-          </p>
-        )}
-
-        <div className="mt-10">
-          {sent ? (
-            <button type="button" onClick={close} className={`${pill} border border-ink/30 text-ink hover:border-ink hover:bg-ink/[0.04] active:scale-[0.98] ${ring}`}>
-              Close
-            </button>
-          ) : choice === null ? (
-            <Picker choices={limited && request.choices ? request.choices : interestChoices} onPick={pick} />
-          ) : choice === "consulting" ? (
-            <ConsultingRoute />
-          ) : event ? (
-            <EventRoute event={event} />
-          ) : (
-            <InquiryForm
-              key={choice}
-              type={choice}
-              preset={choice === request.type ? request.preset : undefined}
-              onSent={() => setSent(choice)}
-            />
+      <div ref={body} className="thin-scroll flex-1 overflow-y-auto overscroll-contain px-6 pt-10 pb-16 md:px-10 md:pt-12">
+        {/* Keyed by view: a new view mounts fresh, so its blocks settle in again. */}
+        <div key={`${sent ? "sent" : (choice ?? "picker")}${allTopics ? "-all" : ""}`} className="panel-settle">
+          {sent && (
+            <span className="mb-8 inline-flex size-12 items-center justify-center rounded-full bg-blush text-ink">
+              <Check className="size-5" aria-hidden />
+            </span>
           )}
+          <h2 ref={heading} id="inquiry-title" tabIndex={-1} className="display text-[clamp(2.4rem,6vw,3.4rem)] outline-none">
+            {title}
+          </h2>
+          {intro && (
+            <p id="inquiry-intro" className="mt-4 max-w-md text-[1.03125rem] leading-relaxed text-stone">
+              {intro}
+            </p>
+          )}
+
+          <div className="mt-10">
+            {sent ? (
+              <button type="button" onClick={close} className={`${pill} border border-ink/30 text-ink hover:border-ink hover:bg-ink/[0.04] ${ring}`}>
+                Close
+              </button>
+            ) : choice === null ? (
+              <Picker choices={limited && request.choices ? request.choices : interestChoices} onPick={pick} />
+            ) : choice === "consulting" ? (
+              <ConsultingRoute />
+            ) : event ? (
+              <EventRoute event={event} />
+            ) : (
+              <InquiryForm
+                key={choice}
+                type={choice}
+                preset={choice === request.type ? request.preset : undefined}
+                onSent={() => setSent(choice)}
+              />
+            )}
+          </div>
         </div>
 
         {/* Read out after a successful send; present from the start so screen readers notice the change. */}
@@ -179,7 +185,7 @@ function Picker({ choices, onPick }: { choices: Choice[]; onPick: (c: Choice) =>
   return (
     <fieldset>
       <legend className="label mb-4 text-stone">What can I help with?</legend>
-      <ul className="border-t border-line">
+      <ul className="panel-settle-list border-t border-line">
         {choices.map((c, i) => (
           <li key={c} className="border-b border-line">
             <button
@@ -192,10 +198,7 @@ function Picker({ choices, onPick }: { choices: Choice[]; onPick: (c: Choice) =>
               <span className="flex-1 font-serif text-[1.375rem] leading-tight">
                 {c === "consulting" ? consultingChoice.label : inquiryTypes[c].label}
               </span>
-              <ArrowRight
-                className="mr-1 size-4 shrink-0 transition-transform duration-[var(--duration-hover,180ms)] group-hover:translate-x-1"
-                aria-hidden
-              />
+              <SwapArrow className="mr-1 size-4" />
             </button>
           </li>
         ))}
@@ -217,18 +220,15 @@ function ConsultingRoute() {
         className={`${pill} cursor-not-allowed bg-ink/80 text-white ${ring}`}
       >
         Visit Instrumental
-        <ArrowUpRight className="size-4" aria-hidden />
+        <SwapArrow direction="up-right" />
         <PendingTag className="!ml-0" />
       </span>
     );
   }
   return (
-    <a href={link.href} target="_blank" rel="noopener noreferrer" className={`${pill} bg-ink text-white hover:bg-charcoal active:scale-[0.98] ${ring}`}>
+    <a href={link.href} target="_blank" rel="noopener noreferrer" className={`${pill} bg-ink text-white hover:bg-charcoal ${ring}`}>
       Visit Instrumental
-      <ArrowUpRight
-        className="size-4 transition-transform duration-[var(--duration-hover,180ms)] group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-        aria-hidden
-      />
+      <SwapArrow direction="up-right" />
       <span className="sr-only"> (opens in a new tab)</span>
     </a>
   );
@@ -246,10 +246,10 @@ function EventRoute({ event }: { event: NonNullable<ReturnType<typeof liveEvent>
         href={event.registrationUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className={`${pill} mt-8 bg-ink text-white hover:bg-charcoal active:scale-[0.98] ${ring}`}
+        className={`${pill} mt-8 bg-ink text-white hover:bg-charcoal ${ring}`}
       >
         {education.events.cta}
-        <ArrowUpRight className="size-4" aria-hidden />
+        <SwapArrow direction="up-right" />
         <span className="sr-only"> (opens in a new tab)</span>
       </a>
     </div>
