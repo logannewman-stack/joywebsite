@@ -166,7 +166,8 @@ export default function MeetPage() {
                 style={{ "--d": "0.5s" } as Vars}
               />
             )}
-            <div className="rise mt-14 border-t border-line pt-8" style={{ "--d": "0.6s" } as Vars}>
+            <span aria-hidden className="rule-draw mt-14 block h-px bg-gold-deep" style={{ "--d": "0.55s" } as Vars} />
+            <div className="rise pt-8" style={{ "--d": "0.7s" } as Vars}>
               <Magnetic strength={0.2}>
                 <InquiryButton>Start a Conversation</InquiryButton>
               </Magnetic>

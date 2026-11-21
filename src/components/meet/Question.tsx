@@ -11,8 +11,8 @@ const STEPS = 4;
  * "I joined the board."
  *
  * The page's one pinned scene. The stage holds while the question takes ink
- * word by word; then the answer lands as its own beat, larger, closed by the
- * blush full stop, and the question steps back. After that the stage lets go
+ * word by word; then the answer lands as its own beat, larger, closed by a
+ * gold full stop, and the question steps back. After that the stage lets go
  * and the story carries on.
  *
  * It is a plain sticky section driven by the scroll engine (--p and
@@ -54,14 +54,15 @@ export function Question({ question, answer }: { question: string; answer: strin
                   {second}
                 </span>
               </span>
-              <span aria-hidden className="meet-dot ml-[0.05em] inline-block size-[0.2em] rounded-full bg-blush-deep" />
+              <span aria-hidden className="meet-dot ml-[0.05em] inline-block size-[0.2em] rounded-full bg-gold-deep" />
               <span className="sr-only">.</span>
             </span>
           </p>
         </div>
-        {/* How far through the held scene the visitor is. Decorative. */}
-        <span aria-hidden className="meet-q-progress pointer-events-none absolute inset-x-5 bottom-8 hidden h-px bg-ink/12 md:inset-x-10">
-          <span className="scene-line absolute inset-0 bg-ink/60" />
+        {/* How far through the held scene the visitor is: a gold line and its dot. Decorative. */}
+        <span aria-hidden className="meet-q-progress pointer-events-none absolute inset-x-5 bottom-8 hidden h-px bg-gold-deep/25 md:inset-x-10">
+          <span className="scene-line absolute inset-0 bg-gold-deep" />
+          <span className="meet-q-mark absolute top-1/2 size-[0.4375rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gold-deep" />
         </span>
       </div>
     </section>

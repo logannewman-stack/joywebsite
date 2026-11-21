@@ -219,6 +219,10 @@ html.motion .meet-q[data-pinned] .meet-q-stage {
 html.motion .meet-q[data-pinned] .meet-q-progress {
   display: block;
 }
+/* The dot rides the head of the progress line. */
+.meet-q-mark {
+  left: calc(var(--p, 0) * 100%);
+}
 /* Waiting: the question sits where the pair's middle will be. */
 html.motion .meet-q[data-pinned] .meet-question {
   transform: translate3d(0, calc((var(--as) * var(--answer-lines) + var(--q-gap)) / 2), 0);
@@ -279,7 +283,8 @@ html.motion .meet-q[data-pinned]:not([data-step="3"]) .meet-dot {
   }
   /* Entrances that have not played yet print in their finished state: the
      ivory band and the hairlines drawn, the signature and the marker in place. */
-  .meet-creds .rule-draw {
+  .meet-creds .rule-draw,
+  .meet-signoff .rule-draw {
     transform: none !important;
   }
   .meet-signoff .wipe {
