@@ -52,7 +52,7 @@ export default function SpeakingPage() {
         <div className="mx-auto grid max-w-[1440px] px-5 md:px-10 lg:grid-cols-12 lg:gap-x-6">
           <div className="pt-12 md:pt-16 lg:col-span-6 lg:row-start-1 lg:pt-14 xl:col-span-7">
             <Label index="02">Speaking</Label>
-            <h1 className="display mt-7 text-[clamp(2.75rem,8.6vw,5.25rem)] leading-[0.92] md:text-[clamp(4.5rem,10vw,6.5rem)] lg:text-[clamp(3.6rem,6.3vw,6.75rem)]">
+            <h1 className="display mt-7 text-[clamp(2.6rem,13.2vw,5.25rem)] leading-[0.92] md:text-[clamp(4.5rem,10vw,6.5rem)] lg:text-[clamp(3.6rem,6.3vw,6.75rem)]">
               {/* Trailing spaces keep the words apart in the text content; they collapse visually. */}
               <LineReveal lines={["Presentations ", "grounded in ", <em key="c">clinical practice.</em>]} />
             </h1>
