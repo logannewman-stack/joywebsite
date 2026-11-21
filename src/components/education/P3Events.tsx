@@ -58,7 +58,7 @@ export async function P3Events({ lift = false }: { lift?: boolean }) {
   );
 }
 
-/** "P3 Events": its words rise one after another, the P3 in italic, as in the family name "Dr. Joy's P3". */
+/** "P3 Events": its words rise one after another, the P3 in italic as in the family name "Dr. Joy's P3", and pale pink on the black. */
 function risingP3(text: string): ReactNode {
   let word = 0;
   return text.split(/\b(P3)\b/).map((part, i) => {
@@ -70,7 +70,7 @@ function risingP3(text: string): ReactNode {
     return (
       <Fragment key={i}>
         {start > 0 && " "}
-        {part === "P3" ? <em>{words}</em> : words}
+        {part === "P3" ? <em className="text-blush">{words}</em> : words}
       </Fragment>
     );
   });
@@ -87,12 +87,12 @@ function Panel({ photo, lift, children }: { photo: PhotoSlot; lift: boolean; chi
   // centered beside it (the 1fr rows above and below take up the photo's
   // extra height). The heading is the section's masthead, on the same step as
   // "Dr. Joy's P3"; the event, or the notice, reads under it.
-  // Motion: the blush rule draws and the heading rises; the photograph drifts
+  // Motion: the gold rule draws and the heading rises; the photograph drifts
   // inside its frame and settles; the words follow one after another.
   return (
     <div className="grid gap-10 md:gap-12 lg:grid-cols-12 lg:grid-rows-[1fr_auto_auto_1fr] lg:gap-x-6 lg:gap-y-0">
       <InView className="order-2 lg:order-none lg:col-span-6 lg:col-start-1 lg:row-start-2">
-        <span aria-hidden className="rule-draw block h-px w-12 bg-blush" />
+        <span aria-hidden className="rule-draw block h-px w-12 bg-gold" />
         <h2 className="display mt-8 text-[clamp(3.6rem,19vw,6.4rem)] leading-[0.88] lg:text-[clamp(5.2rem,10.4vw,9.36rem)]">
           {risingP3(education.events.heading)}
         </h2>

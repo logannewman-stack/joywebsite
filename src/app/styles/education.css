@@ -220,6 +220,17 @@ html.motion .edu-arrive {
 [data-pinned] .edu-strip-bar {
   margin-top: calc(4.5 * var(--u));
 }
+/* The dot at the head of the progress line. */
+.edu-strip-dot {
+  position: absolute;
+  top: 50%;
+  left: calc(var(--p, 0) * 100%);
+  width: 0.4375rem;
+  height: 0.4375rem;
+  margin: -0.21875rem 0 0 -0.21875rem;
+  border-radius: 9999px;
+  background: currentColor;
+}
 [data-pinned] .edu-strip-scroll {
   position: relative;
   overflow: visible;
@@ -250,7 +261,7 @@ html.motion .edu-arrive {
 
 /* --------------------------------------------------------------------------
    Routes: each row is one object. The link covers the whole row; hover and
-   keyboard focus draw an ink rule over the hairline and lean the heading.
+   keyboard focus ink over its gold rule and lean the heading.
    -------------------------------------------------------------------------- */
 .edu-route {
   position: relative;

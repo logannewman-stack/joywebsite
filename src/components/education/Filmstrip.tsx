@@ -11,8 +11,8 @@ type Vars = CSSProperties & Record<`--${string}`, string | number>;
  * different heights, each on its paper border.
  *
  * From lg the section pins and the row slides sideways as the visitor scrolls
- * (the nearer prints a little faster), with a frame counter and a progress
- * line. Below lg, without JavaScript and with reduced motion it is a strip to
+ * (the nearer prints a little faster), with a frame counter and a gold
+ * progress line whose dot travels with the row. Below lg, without JavaScript and with reduced motion it is a strip to
  * swipe or scroll sideways: the group takes keyboard focus, so the arrow keys
  * move it. Sizes and offsets come from education.filmstrip; the styles are in
  * src/app/styles/education.css ("Filmstrip").
@@ -64,7 +64,10 @@ export function Filmstrip() {
       {/* Only while pinned: the frame in view, and how far the row has travelled. */}
       <div className="edu-strip-bar mx-auto hidden w-full max-w-[90rem] items-center gap-6 px-10 pinned:flex">
         <SceneCount total={prints.length} className="label text-stone" />
-        <SceneLine className="flex-1 text-ink" />
+        <span className="relative block flex-1 text-gold-deep">
+          <SceneLine />
+          <span aria-hidden className="edu-strip-dot" />
+        </span>
       </div>
     </Scene>
   );

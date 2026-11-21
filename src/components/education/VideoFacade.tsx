@@ -95,7 +95,7 @@ export function VideoFacade({
         >
           {poster && <span className="absolute inset-0 opacity-75 transition-opacity duration-300 group-hover:opacity-60">{poster}</span>}
           <span className="relative flex flex-col items-center gap-4 text-white">
-            <span className="inline-flex size-20 items-center justify-center rounded-full border border-white/70 transition-colors duration-300 group-hover:bg-white group-hover:text-ink">
+            <span className="inline-flex size-20 items-center justify-center rounded-full border border-gold transition-colors duration-(--duration-ui) group-hover:border-gold-soft group-hover:bg-gold-soft group-hover:text-ink">
               <Play className="ml-1 size-7" aria-hidden />
             </span>
             <span className="label text-white/80">Play video</span>

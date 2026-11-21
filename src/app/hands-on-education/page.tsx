@@ -110,7 +110,7 @@ export default function EducationPage() {
       <section className="bg-ivory">
         <div className="mx-auto grid max-w-[90rem] gap-12 px-5 pt-24 pb-20 md:px-10 md:pt-32 md:pb-24 lg:grid-cols-12 lg:grid-rows-[auto_1fr] lg:gap-x-6 lg:gap-y-16 lg:pt-0 lg:pb-28">
           <InView className="lg:col-span-5 lg:col-start-8 lg:row-start-1 lg:pt-32">
-            <span aria-hidden className="rule-draw block h-px w-12 bg-ink" />
+            <span aria-hidden className="rule-draw block h-px w-12 bg-gold-deep" />
             <h2 className="display mt-8 text-[clamp(3.6rem,19vw,6.4rem)] leading-[0.88] lg:text-[clamp(5.2rem,10.4vw,9.36rem)]">
               <Masthead text={family.heading} />
             </h2>
@@ -128,7 +128,7 @@ export default function EducationPage() {
           <InView className="grid gap-12 md:grid-cols-2 md:gap-x-6 lg:col-span-5 lg:col-start-8 lg:row-start-2 lg:grid-cols-1 lg:gap-10 lg:self-end">
             {family.items.map((item, i) => (
               <article key={item.title} style={{ "--d": `${i * 0.14}s` } as Vars}>
-                <span aria-hidden className="rule-draw block h-px bg-ink/25" />
+                <span aria-hidden className="rule-draw block h-px bg-gold-deep/70" />
                 <h3 className={`display mt-7 text-[clamp(2.2rem,3.4vw,3.06rem)] ${i === 0 ? "lg:text-[clamp(2.6rem,4.4vw,3.96rem)]" : ""}`}>
                   <WordRise delay={0.1 + i * 0.14}>{item.title}</WordRise>
                 </h3>
@@ -148,12 +148,12 @@ export default function EducationPage() {
       <P3Events lift={attendeeVoiceShown()} />
 
       {/* Other routes: a compact index, so they read as wayfinding, not as the page's offer.
-          Each row is one object: its link covers it, and hover or focus draws its rule. */}
+          Each row is one object: its link covers it. Its gold rule draws on entry; hover or focus inks it over. */}
       <section className="bg-paper">
         <ul className="mx-auto max-w-[90rem] px-5 py-16 md:px-10 md:py-24">
           {routes.map((r, i) => (
             <InView as="li" key={r.heading} delay={i * 0.1} className="edu-route">
-              <span aria-hidden className="rule-draw block h-px bg-ink/15" />
+              <span aria-hidden className="rule-draw block h-px bg-gold-deep/70" />
               <span aria-hidden className="edu-route-ink" />
               <div className="grid gap-3 py-9 md:grid-cols-12 md:items-baseline md:gap-x-6 md:py-11">
                 <h2 className="display text-[clamp(2rem,3vw,2.7rem)] md:col-span-6 xl:col-span-5">
