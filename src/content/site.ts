@@ -58,6 +58,12 @@ export const links = {
   privacy: "", // TODO: privacy policy URL
 };
 
+// Launch guard: consulting is a required pathway, so a launch build without
+// the Instrumental URL fails instead of shipping dead links.
+if (!site.showPlaceholders && !links.instrumental) {
+  throw new Error("links.instrumental must be set before launch (site.showPlaceholders is false).");
+}
+
 export const nav = [
   { label: "Meet Dr. Joy", href: "/meet-dr-joy" },
   { label: "Speaking", href: "/speaking" },
@@ -88,4 +94,6 @@ export type PhotoSlot = {
   original?: string;
   /** Focal point for object-position, e.g. "50% 30%". */
   focus?: string;
+  /** Focal point below 768px, when the mobile crop needs a different center. */
+  focusMobile?: string;
 };

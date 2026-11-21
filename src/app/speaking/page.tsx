@@ -41,7 +41,7 @@ export default function SpeakingPage() {
                 <LineReveal lines={["Presentations grounded", <em key="a">in clinical practice.</em>]} delay={0.1} />
               </h1>
             </div>
-            <Reveal delay={0.4} className="flex flex-col gap-5 md:col-span-4 md:self-end">
+            <Reveal immediate delay={0.4} className="flex flex-col gap-5 md:col-span-4 md:self-end">
               {hero.paragraphs.map((p) => (
                 <p key={p} className="text-[17px] leading-relaxed text-stone">
                   {p}
@@ -57,7 +57,7 @@ export default function SpeakingPage() {
           </div>
         </div>
         <div className="mx-auto mt-16 max-w-[1440px] md:mt-20 md:px-10">
-          <ImageReveal delay={0.2}>
+          <ImageReveal immediate delay={0.2}>
             <Photo slot={hero.photo} priority className="aspect-[4/3] w-full md:aspect-[21/9]" sizes="100vw" />
           </ImageReveal>
         </div>

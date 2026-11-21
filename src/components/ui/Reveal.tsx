@@ -1,53 +1,66 @@
-"use client";
+import type { CSSProperties, ReactNode } from "react";
 
-import { motion, useReducedMotion } from "motion/react";
-import type { ReactNode } from "react";
+/*
+ * Reveal motion that never hides content from the server HTML.
+ *
+ * Elements are hidden only once the `js` class is on <html> (an inline
+ * script in the layout's <head> adds it before first paint) and are shown
+ * again by a small inline IntersectionObserver at the end of <body>, which
+ * runs before React hydrates. Without JavaScript, for crawlers, in print,
+ * and with reduced motion, everything is simply visible. Styles live in
+ * globals.css under "Reveals".
+ *
+ * Above-the-fold content should use `immediate` (Reveal, ImageReveal) or
+ * LineReveal: those are plain CSS animations that start at first paint.
+ */
 
-const ease = [0.16, 1, 0.3, 1] as const;
+type Vars = CSSProperties & Record<`--${string}`, string>;
 
 /** Quiet fade-and-lift the first time content enters the viewport. */
 export function Reveal({
   children,
   delay = 0,
   y = 18,
-  className,
+  className = "",
+  immediate = false,
 }: {
   children: ReactNode;
   delay?: number;
   y?: number;
   className?: string;
+  /** Animate on page load instead of on scroll (use above the fold). */
+  immediate?: boolean;
 }) {
-  const reduce = useReducedMotion();
+  const style: Vars = { "--reveal-delay": `${delay}s`, "--reveal-y": `${y}px` };
   return (
-    <motion.div
-      className={className}
-      initial={reduce ? false : { opacity: 0, y }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "0px 0px -10% 0px" }}
-      transition={{ duration: 0.9, delay, ease }}
-    >
+    <div data-reveal={immediate ? "now" : ""} className={className} style={style} suppressHydrationWarning>
       {children}
-    </motion.div>
+    </div>
   );
 }
 
 /** Photographs uncover from the bottom edge, like a print being pulled. */
-export function ImageReveal({ children, className, delay = 0 }: { children: ReactNode; className?: string; delay?: number }) {
-  const reduce = useReducedMotion();
+export function ImageReveal({
+  children,
+  className = "",
+  delay = 0,
+  immediate = false,
+}: {
+  children: ReactNode;
+  className?: string;
+  delay?: number;
+  /** Animate on page load instead of on scroll (use for the opening photo). */
+  immediate?: boolean;
+}) {
+  const style: Vars = { "--reveal-delay": `${delay}s` };
   return (
-    <motion.div
-      className={className}
-      initial={reduce ? false : { clipPath: "inset(100% 0% 0% 0%)" }}
-      whileInView={{ clipPath: "inset(0% 0% 0% 0%)" }}
-      viewport={{ once: true, margin: "0px 0px -8% 0px" }}
-      transition={{ duration: 1.25, delay, ease }}
-    >
+    <div data-reveal-image={immediate ? "now" : ""} className={className} style={style} suppressHydrationWarning>
       {children}
-    </motion.div>
+    </div>
   );
 }
 
-/** Headline lines slide up from a mask, one after another. */
+/** Headline lines slide up from a mask, one after another, from first paint. */
 export function LineReveal({
   lines,
   className,
@@ -59,21 +72,28 @@ export function LineReveal({
   lineClassName?: string;
   delay?: number;
 }) {
-  const reduce = useReducedMotion();
   return (
     <span className={className}>
-      {lines.map((line, i) => (
-        <span key={i} className="block overflow-hidden pb-[0.08em]">
-          <motion.span
-            className={`block ${lineClassName}`}
-            initial={reduce ? false : { y: "108%" }}
-            animate={{ y: 0 }}
-            transition={{ duration: 1.1, delay: delay + i * 0.1, ease }}
-          >
-            {line}
-          </motion.span>
-        </span>
-      ))}
+      {lines.map((line, i) => {
+        const style: Vars = { "--line-delay": `${delay + i * 0.1}s` };
+        return (
+          <span key={i} className="block overflow-hidden pb-[0.08em]">
+            <span className={`line-rise block ${lineClassName}`} style={style}>
+              {line}
+            </span>
+          </span>
+        );
+      })}
     </span>
   );
 }
+
+/** Inline script for <head>: marks the document as JS-capable before paint. */
+export const REVEAL_HEAD_SCRIPT = `document.documentElement.classList.add('js')`;
+
+/**
+ * Inline script for the end of <body>: reveals [data-reveal] and
+ * [data-reveal-image] elements as they enter the viewport. A MutationObserver
+ * picks up content added by client-side navigation.
+ */
+export const REVEAL_BODY_SCRIPT = `(function(){var d=document.documentElement;if(!('IntersectionObserver' in window)){d.classList.remove('js');return}var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.setAttribute('data-in','');io.unobserve(e.target)}})},{rootMargin:'0px 0px -8% 0px'});function scan(){document.querySelectorAll('[data-reveal=""]:not([data-in]),[data-reveal-image=""]:not([data-in])').forEach(function(el){io.observe(el)})}scan();new MutationObserver(scan).observe(document.body,{childList:true,subtree:true})})();`;

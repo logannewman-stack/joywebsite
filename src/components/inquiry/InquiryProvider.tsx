@@ -9,7 +9,9 @@ import { links } from "@/content/site";
 import { InquiryForm } from "./InquiryForm";
 
 type Choice = InquiryType | "consulting";
-type Ctx = { open: (type?: Choice) => void };
+/** Optional limits for the general picker, e.g. only the two manufacturer categories. */
+type OpenOptions = { choices?: Choice[] };
+type Ctx = { open: (type?: Choice, opts?: OpenOptions) => void };
 
 const InquiryCtx = createContext<Ctx>({ open: () => {} });
 export const useInquiry = () => useContext(InquiryCtx);
@@ -20,12 +22,14 @@ export function InquiryProvider({ children }: { children: ReactNode }) {
   const [isOpen, setOpen] = useState(false);
   const [choice, setChoice] = useState<Choice | null>(null); // null = show the picker
   const [fromPicker, setFromPicker] = useState(false);
+  const [choices, setChoices] = useState<Choice[] | null>(null);
   const panel = useRef<HTMLDivElement>(null);
   const returnTo = useRef<HTMLElement | null>(null);
 
-  const open = useCallback((type?: Choice) => {
+  const open = useCallback((type?: Choice, opts?: OpenOptions) => {
     returnTo.current = document.activeElement as HTMLElement | null;
     const t = !type || type === "general" ? null : type;
+    setChoices(opts?.choices ?? null);
     setChoice(t);
     setFromPicker(t === null);
     setOpen(true);
@@ -125,7 +129,7 @@ export function InquiryProvider({ children }: { children: ReactNode }) {
                 <p className="mt-4 max-w-md text-[16px] leading-relaxed text-stone">{intro}</p>
 
                 <div className="mt-10">
-                  {choice === null && <Picker onPick={(c) => setChoice(c)} />}
+                  {choice === null && <Picker choices={choices ?? interestChoices} onPick={(c) => setChoice(c)} />}
                   {choice === "consulting" && <ConsultingRoute />}
                   {choice === "p3_interest" && education.events.featured && <FeaturedEventRoute />}
                   {choice !== null && choice !== "consulting" && !(choice === "p3_interest" && education.events.featured) && (
@@ -141,12 +145,12 @@ export function InquiryProvider({ children }: { children: ReactNode }) {
   );
 }
 
-function Picker({ onPick }: { onPick: (c: Choice) => void }) {
+function Picker({ choices, onPick }: { choices: Choice[]; onPick: (c: Choice) => void }) {
   return (
     <fieldset>
       <legend className="label mb-4 text-stone">What can I help with?</legend>
       <ul className="border-t border-line">
-        {interestChoices.map((c, i) => (
+        {choices.map((c, i) => (
           <li key={c} className="border-b border-line">
             <button
               type="button"
@@ -208,28 +212,35 @@ export function InquiryButton({
   variant = "solid",
   tone = "light",
   className = "",
+  choices,
 }: {
   type?: Choice;
   children: ReactNode;
   variant?: "solid" | "outline" | "text";
   tone?: "light" | "dark";
   className?: string;
+  /** Limit the general picker to these topics (only when `type` is omitted). */
+  choices?: Choice[];
 }) {
   const { open } = useInquiry();
+  const ring =
+    tone === "dark"
+      ? "focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-white"
+      : "focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-ink";
   const styles = {
-    solid: tone === "dark" ? "rounded-full bg-white px-6 text-ink hover:bg-ivory" : "rounded-full bg-ink px-6 text-white hover:bg-ink-soft",
+    solid: tone === "dark" ? "whitespace-nowrap rounded-full bg-white px-6 text-ink hover:bg-ivory" : "whitespace-nowrap rounded-full bg-ink px-6 text-white hover:bg-ink-soft",
     outline:
       tone === "dark"
-        ? "rounded-full border border-white/40 px-6 text-white hover:border-white"
-        : "rounded-full border border-ink/30 px-6 text-ink hover:border-ink",
+        ? "whitespace-nowrap rounded-full border border-white/40 px-6 text-white hover:border-white"
+        : "whitespace-nowrap rounded-full border border-ink/30 px-6 text-ink hover:border-ink",
     text: "",
   }[variant];
   return (
     <button
       type="button"
-      onClick={() => open(type)}
+      onClick={() => open(type, choices ? { choices } : undefined)}
       aria-haspopup="dialog"
-      className={`group inline-flex min-h-12 items-center gap-3 text-left text-[15px] font-medium transition-colors duration-300 ${styles} ${className}`}
+      className={`group inline-flex min-h-12 items-center gap-3 text-left text-[15px] font-medium transition-colors duration-300 ${ring} ${styles} ${className}`}
     >
       <span className={variant === "text" ? "link-draw pb-0.5" : ""}>{children}</span>
       <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" aria-hidden />

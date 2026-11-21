@@ -28,12 +28,12 @@ export default function InsightsPage() {
             <h1 className="display mt-8 text-[clamp(3rem,6.8vw,7.4rem)] leading-[0.92]">
               <LineReveal lines={["The conversation doesn’t", "end when the", <em key="a">presentation does.</em>]} delay={0.1} />
             </h1>
-            <Reveal delay={0.45} className="mt-10 max-w-md">
+            <Reveal immediate delay={0.45} className="mt-10 max-w-md">
               <p className="text-[19px] leading-relaxed text-stone">{hero.text}</p>
             </Reveal>
           </div>
           <div className="md:col-span-3 md:col-start-10 md:self-end">
-            <ImageReveal delay={0.25}>
+            <ImageReveal immediate delay={0.25}>
               <Photo slot={hero.photo} priority className="aspect-[3/4] w-full" sizes="25vw" />
             </ImageReveal>
           </div>

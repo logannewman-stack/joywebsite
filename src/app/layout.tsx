@@ -4,6 +4,8 @@ import { site } from "@/content/site";
 import { InquiryProvider } from "@/components/inquiry/InquiryProvider";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { Providers } from "@/components/layout/Providers";
+import { REVEAL_BODY_SCRIPT, REVEAL_HEAD_SCRIPT } from "@/components/ui/Reveal";
 import "./globals.css";
 
 const instrument = Instrument_Serif({
@@ -32,13 +34,21 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${instrument.variable} ${geist.variable}`}>
+    <html lang="en" className={`${instrument.variable} ${geist.variable}`} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: REVEAL_HEAD_SCRIPT }} />
+      </head>
       <body>
-        <InquiryProvider>
-          <Header />
-          <main id="main">{children}</main>
-          <Footer />
-        </InquiryProvider>
+        <Providers>
+          <InquiryProvider>
+            <Header />
+            <main id="main" tabIndex={-1} className="outline-none">
+              {children}
+            </main>
+            <Footer />
+          </InquiryProvider>
+        </Providers>
+        <script dangerouslySetInnerHTML={{ __html: REVEAL_BODY_SCRIPT }} />
       </body>
     </html>
   );

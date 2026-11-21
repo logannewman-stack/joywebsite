@@ -25,7 +25,7 @@ export default function MeetPage() {
             </h1>
           </div>
           <div className="md:col-span-5 md:row-span-2 md:mt-28">
-            <ImageReveal delay={0.2}>
+            <ImageReveal immediate delay={0.2}>
               <Photo slot={hero.portrait} priority className="aspect-[4/5] w-full" sizes="(max-width: 768px) 100vw, 40vw" />
             </ImageReveal>
           </div>

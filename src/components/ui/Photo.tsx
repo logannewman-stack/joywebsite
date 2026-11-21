@@ -1,4 +1,5 @@
 import Image from "next/image";
+import type React from "react";
 import { site, type PhotoSlot } from "@/content/site";
 
 const treatmentLabel: Record<PhotoSlot["treatment"], string> = {
@@ -28,6 +29,8 @@ export function Photo({
   showDirection?: boolean;
 }) {
   const src = slot.src && site.photoStyle === "bw" && slot.srcBw ? slot.srcBw : slot.src;
+  // At launch, a slot that never received its photograph disappears entirely.
+  if (!src && !site.showPlaceholders) return null;
   if (src) {
     // A cutout keeps its transparency and stands on the bottom edge of its frame.
     const cutout = slot.treatment === "cutout";
@@ -39,8 +42,12 @@ export function Photo({
           fill
           sizes={sizes}
           priority={priority}
-          className={cutout ? "object-contain object-bottom" : "object-cover"}
-          style={cutout ? undefined : { objectPosition: slot.focus ?? "50% 35%" }}
+          className={cutout ? "object-contain object-bottom" : "object-cover object-[var(--focus-sm)] md:object-[var(--focus)]"}
+          style={
+            cutout
+              ? undefined
+              : ({ "--focus": slot.focus ?? "50% 35%", "--focus-sm": slot.focusMobile ?? slot.focus ?? "50% 35%" } as React.CSSProperties)
+          }
         />
         {slot.stock && site.showPlaceholders && (
           <span className="label absolute top-3 left-3 bg-paper/90 px-2 py-1 !text-[9.5px] !tracking-[0.14em] text-ink">

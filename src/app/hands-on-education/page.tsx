@@ -26,7 +26,7 @@ export default function EducationPage() {
             <h1 className="display mt-8 text-[clamp(3.2rem,7vw,7.6rem)] leading-[0.9]">
               <LineReveal lines={["Skill-building", "with instruments", <em key="a">in hand.</em>]} delay={0.1} />
             </h1>
-            <Reveal delay={0.45} className="mt-10 flex max-w-md flex-col gap-5">
+            <Reveal immediate delay={0.45} className="mt-10 flex max-w-md flex-col gap-5">
               {hero.paragraphs.map((p, i) => (
                 <p key={p} className={`leading-relaxed ${i === 0 ? "text-[19px]" : "text-[17px] text-stone"}`}>
                   {p}
@@ -38,10 +38,10 @@ export default function EducationPage() {
             </Reveal>
           </div>
           <div className="relative md:col-span-6">
-            <ImageReveal delay={0.2}>
+            <ImageReveal immediate delay={0.2}>
               <Photo slot={hero.photo} priority className="aspect-[4/5] w-full md:ml-auto md:w-[86%]" sizes="(max-width: 768px) 100vw, 45vw" />
             </ImageReveal>
-            <ImageReveal delay={0.45} className="relative -mt-24 w-[52%] border-[6px] border-paper md:absolute md:bottom-[-3rem] md:left-0 md:mt-0 md:w-[42%]">
+            <ImageReveal immediate delay={0.45} className="relative -mt-24 w-[52%] border-[6px] border-paper md:absolute md:bottom-[-3rem] md:left-0 md:mt-0 md:w-[42%]">
               <Photo slot={hero.detail} className="aspect-square w-full" sizes="25vw" />
             </ImageReveal>
           </div>

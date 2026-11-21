@@ -1,9 +1,19 @@
 import { site } from "@/content/site";
 import { Reveal } from "./Reveal";
+import { typeset } from "./Typeset";
+
+type Tone = "dark" | "light" | "paper";
+
+const surfaces: Record<Tone, string> = {
+  dark: "grain grain-light bg-ink text-white",
+  light: "grain bg-ivory text-ink",
+  paper: "bg-paper text-ink",
+};
 
 /**
- * Testimonial set large. Testimonials awaiting republishing permission are
- * shown in review mode only, with a note, and hidden at launch.
+ * Testimonial set large, with a hanging opening quote mark. Testimonials
+ * awaiting republishing permission are shown in review mode only, with a
+ * note, and hidden at launch.
  */
 export function Quote({
   heading,
@@ -12,35 +22,45 @@ export function Quote({
   role,
   permission,
   tone = "dark",
+  size,
 }: {
   heading: string;
   quote: string;
   name: string;
   role?: string;
   permission: "pending" | "granted";
-  tone?: "dark" | "light";
+  tone?: Tone;
+  /** "lg" for short quotes, "md" for long ones. Defaults by word count. */
+  size?: "lg" | "md";
 }) {
   if (permission !== "granted" && !site.showPlaceholders) return null;
   const dark = tone === "dark";
+  const scale = size ?? (quote.split(/\s+/).length > 32 ? "md" : "lg");
   return (
-    <section className={`grain relative overflow-hidden ${dark ? "grain-light bg-ink text-white" : "bg-ivory text-ink"}`}>
+    <section className={`relative overflow-hidden ${surfaces[tone]}`}>
       <div className="mx-auto max-w-[1440px] px-5 py-24 md:px-10 md:py-36">
-        <div className="grid gap-10 md:grid-cols-12">
-          <div className="md:col-span-3">
-            <p className={`label ${dark ? "text-ash" : "text-stone"}`}>{heading}</p>
+        <div className="grid gap-10 lg:grid-cols-12">
+          <div className="lg:col-span-3">
+            <h2 className={`label ${dark ? "text-ash" : "text-stone"}`}>{heading}</h2>
             {permission !== "granted" && (
               <p className={`label mt-3 inline-block border px-2 py-1 !text-[9px] ${dark ? "border-white/25 text-white/60" : "border-ink/25 text-stone"}`}>
                 Permission to republish pending
               </p>
             )}
           </div>
-          <figure className="md:col-span-9">
+          <figure className="lg:col-span-9">
             <Reveal>
-              <span className={`display block text-[7rem] leading-[0.5] ${dark ? "text-blush" : "text-blush-deep"}`} aria-hidden>
-                “
-              </span>
-              <blockquote className="display mt-4 text-[clamp(2rem,4.4vw,4.2rem)] leading-[1.06]">
-                <p>{quote}</p>
+              <blockquote
+                className={`display relative ${
+                  scale === "lg" ? "text-[clamp(2rem,4.4vw,4.2rem)] leading-[1.06]" : "max-w-[34ch] text-[clamp(1.75rem,3.2vw,3rem)] leading-[1.1]"
+                }`}
+              >
+                <p>
+                  <span aria-hidden className={`md:absolute md:top-0 md:-left-[0.48em] ${dark ? "text-blush" : "text-blush-deep"}`}>
+                    “
+                  </span>
+                  {typeset(quote)}
+                </p>
               </blockquote>
             </Reveal>
             <Reveal delay={0.15}>

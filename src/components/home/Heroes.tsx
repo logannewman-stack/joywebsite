@@ -28,7 +28,7 @@ export function HeroA({ id = "hero-heading", as: H = "h1" }: HeroProps) {
           <H id={id} className="display text-[clamp(3.4rem,9.4vw,10.4rem)] leading-[0.88]">
             <LineReveal lines={["The work has", "always been", <em key="a">bigger than</em>, <em key="b">the chair.</em>]} delay={0.1} />
           </H>
-          <Reveal delay={0.55} className="mt-10 grid gap-8 md:grid-cols-[minmax(0,26rem)_auto] md:items-end lg:mt-auto lg:pt-14">
+          <Reveal immediate delay={0.55} className="mt-10 grid gap-8 md:grid-cols-[minmax(0,26rem)_auto] md:items-end lg:mt-auto lg:pt-14">
             <p className="text-[18px] leading-relaxed text-stone md:text-[19px]">{hero.sub}</p>
             <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
               <ButtonLink href={hero.primary.href}>{hero.primary.label}</ButtonLink>
@@ -39,7 +39,7 @@ export function HeroA({ id = "hero-heading", as: H = "h1" }: HeroProps) {
 
         <div className="relative col-span-12 mt-12 lg:col-span-4 lg:mt-24">
           <span className="absolute -top-4 -right-4 hidden h-28 w-28 bg-blush lg:block" aria-hidden />
-          <ImageReveal delay={0.25} className="relative">
+          <ImageReveal immediate delay={0.25} className="relative">
             <Photo slot={hero.portrait} priority className="aspect-[4/5] w-full" sizes="(max-width: 1024px) 100vw, 34vw" />
           </ImageReveal>
         </div>
@@ -66,12 +66,12 @@ export function HeroB({ id = "hero-heading", as: H = "h1" }: HeroProps) {
 
         {/* Cutout sits over the type: a designed moment, used once. */}
         <div className="pointer-events-none relative z-10 -mt-10 flex justify-end md:absolute md:inset-x-0 md:bottom-0 md:mx-auto md:mt-0 md:max-w-[1440px] md:px-10">
-          <ImageReveal delay={0.35} className="w-[72%] max-w-[560px] md:w-[40%]">
+          <ImageReveal immediate delay={0.35} className="w-[72%] max-w-[560px] md:w-[40%]">
             <Photo slot={hero.cutout} tone="dark" priority className="aspect-[4/5] w-full" sizes="40vw" />
           </ImageReveal>
         </div>
 
-        <Reveal delay={0.6} className="relative z-20 mt-8 grid max-w-xl gap-7 md:mt-auto md:pt-16">
+        <Reveal immediate delay={0.6} className="relative z-20 mt-8 grid max-w-xl gap-7 md:mt-auto md:pt-16">
           <p className="text-[18px] leading-relaxed text-white/80 md:text-[19px]">{hero.sub}</p>
           <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
             <ButtonLink href={hero.primary.href} tone="dark">
@@ -95,7 +95,7 @@ export function HeroC({ id = "hero-heading", as: H = "h1" }: HeroProps) {
           <H id={id} className="display text-[clamp(3.2rem,6.6vw,7.4rem)] leading-[0.92]">
             <LineReveal lines={[head.lead, <em key="a">{head.accent}</em>]} delay={0.1} />
           </H>
-          <Reveal delay={0.5} className="mt-10 max-w-md">
+          <Reveal immediate delay={0.5} className="mt-10 max-w-md">
             <p className="text-[18px] leading-relaxed text-stone md:text-[19px]">{hero.sub}</p>
             <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
               <ButtonLink href={hero.primary.href}>{hero.primary.label}</ButtonLink>
@@ -105,7 +105,7 @@ export function HeroC({ id = "hero-heading", as: H = "h1" }: HeroProps) {
         </div>
         <div className="relative min-h-[420px]">
           <div className="absolute top-0 -right-10 bottom-10 left-10 bg-blush/70" aria-hidden />
-          <ImageReveal delay={0.25} className="relative h-full lg:translate-y-10">
+          <ImageReveal immediate delay={0.25} className="relative h-full lg:translate-y-10">
             <Photo slot={hero.color} priority className="h-full min-h-[420px] w-full" sizes="(max-width: 1024px) 100vw, 50vw" />
           </ImageReveal>
         </div>

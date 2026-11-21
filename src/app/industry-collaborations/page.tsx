@@ -21,7 +21,7 @@ export default function IndustryPage() {
       <section className="bg-paper pt-[76px]">
         <div className="mx-auto grid max-w-[1440px] gap-12 px-5 pt-12 pb-24 md:grid-cols-12 md:gap-x-6 md:px-10 md:pt-20 md:pb-32">
           <div className="md:col-span-5 md:row-span-2">
-            <ImageReveal delay={0.2}>
+            <ImageReveal immediate delay={0.2}>
               <Photo slot={hero.photo} priority className="aspect-[3/4] w-full" sizes="(max-width: 768px) 100vw, 40vw" />
             </ImageReveal>
           </div>
@@ -31,7 +31,7 @@ export default function IndustryPage() {
               <LineReveal lines={["Education and", "clinical strategy", <em key="a">for dental manufacturers.</em>]} delay={0.1} />
             </h1>
           </div>
-          <Reveal delay={0.45} className="md:col-span-5 md:col-start-8 md:self-end">
+          <Reveal immediate delay={0.45} className="md:col-span-5 md:col-start-8 md:self-end">
             <p className="text-[19px] leading-relaxed">{hero.text}</p>
           </Reveal>
         </div>
