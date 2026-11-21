@@ -92,7 +92,7 @@ export const speaking = {
     // Stage frame cropped to 4:5. The black-and-white twin (red-weighted mix,
     // so the curtain falls to black) is used when site.photoStyle is "bw".
     photo: {
-      src: "/photos/speaking-keynote-stage-g.jpg",
+      src: "/photos/speaking-keynote-stage-v2-g.jpg",
       srcBw: "/photos/speaking-keynote-stage-bw.jpg",
       alt: "Dr. Joy delivering a keynote on stage",
       treatment: "color",

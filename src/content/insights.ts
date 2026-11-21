@@ -53,7 +53,9 @@ export const insights = {
     // A no-break space keeps "I am" together, so no line ends on a lone "I".
     text: "Published articles, clinical perspectives, and what I\u00a0am seeing across the profession.",
     photo: {
-      src: "/photos/insights-hero-142-g.jpg",
+      // Calm grade (scripts/grade_photos.py --foliage 0.45 --ceiling 0.30): the sunlit
+      // lime foliage is quieted to sage so the portrait sits with the rest of the set.
+      src: "/photos/insights-hero-142-v2-g.jpg",
       srcBw: "/photos/insights-hero-142-bw.jpg",
       alt: "Dr. Joy in a black blazer, smiling with her eyes lowered",
       treatment: "bw",
