@@ -1,4 +1,3 @@
-import type { CSSProperties } from "react";
 import { chapters } from "./chapters";
 
 /**
@@ -28,7 +27,6 @@ export function ChapterRail({ current, tone = "light" }: { current: number; tone
             tabIndex={-1}
             data-state={i === current ? "current" : i < current ? "past" : "next"}
             className="sp-rail-item"
-            style={{ "--i": i } as CSSProperties}
           >
             <span className="sp-rail-tick">
               <span className="sp-rail-run" />

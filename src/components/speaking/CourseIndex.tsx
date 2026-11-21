@@ -69,7 +69,7 @@ export function CourseIndex({ courses, className = "" }: { courses: Course[]; cl
                 </div>
               </div>
               <span aria-hidden className="sp-course-rule rule-draw" style={d(base)} />
-              <span aria-hidden className="sp-course-ink" />
+              <span aria-hidden className="sp-course-fill" />
             </InView>
           );
         })}

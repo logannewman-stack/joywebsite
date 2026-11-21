@@ -280,7 +280,7 @@ a:focus-visible > .sp-toc-arrow > svg + svg {
    Course index (CourseIndex.tsx)
    -------------------------------------------------------------------------- */
 .sp-course-rule,
-.sp-course-ink {
+.sp-course-fill {
   position: absolute;
   inset-inline: 0;
   bottom: 0;
@@ -288,7 +288,7 @@ a:focus-visible > .sp-toc-arrow > svg + svg {
   /* A fine gold hairline; the row's answer fills it to full gold. */
   background: color-mix(in srgb, var(--color-gold-deep) 50%, transparent);
 }
-.sp-course-ink {
+.sp-course-fill {
   background: var(--color-gold-deep);
   transform: scaleX(0);
   transform-origin: right center;
@@ -338,7 +338,7 @@ a:focus-visible > .sp-toc-arrow > svg + svg {
     color: var(--color-stone);
   }
   .sp-course:is(:hover, :has(:focus-visible)) .sp-course-band,
-  .sp-course:is(:hover, :has(:focus-visible)) .sp-course-ink {
+  .sp-course:is(:hover, :has(:focus-visible)) .sp-course-fill {
     transform: none;
     transform-origin: left center;
   }
