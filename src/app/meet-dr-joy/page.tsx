@@ -13,6 +13,7 @@ import { Couplet } from "@/components/meet/Couplet";
 import { Credentials } from "@/components/meet/Credentials";
 import { Question } from "@/components/meet/Question";
 import { StoryLight } from "@/components/meet/StoryLight";
+import { bindI } from "@/components/meet/text";
 import { InquiryButton } from "@/components/inquiry/InquiryProvider";
 import { NextPage } from "@/components/layout/NextPage";
 
@@ -48,20 +49,21 @@ export default function MeetPage() {
             </h1>
           </div>
 
-          <div className="relative z-10 mt-10 md:mt-14 md:ml-auto md:w-2/3 lg:col-span-6 lg:col-start-7 lg:row-span-2 lg:mt-0 lg:-mb-20 lg:bleed-right lg:ml-0 lg:min-h-[min(calc(100svh-4.75rem),67.5rem)] lg:w-auto">
-            <Parallax amount={4} className="aspect-[4/5] w-full lg:aspect-auto lg:h-full">
+          <div className="relative z-10 mt-10 md:mt-14 md:ml-auto md:w-2/3 lg:col-span-6 lg:col-start-7 lg:row-span-2 lg:mt-0 lg:-mb-16 lg:bleed-right lg:ml-0 lg:min-h-[min(calc(100svh-4.75rem),67.5rem)] lg:w-auto">
+            <Parallax amount={3} className="aspect-[4/5] w-full lg:aspect-auto lg:h-full">
+              {/* On desktop the frame is as tall as the story beside it, so the photo is fitted by height: about 900px wide up to 1440, then in proportion. */}
               <Photo
                 slot={hero.portrait}
                 priority
                 className="meet-settle h-full w-full"
-                sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1023px) calc(66vw - 53px), 56vw"
+                sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1023px) calc(66vw - 53px), (max-width: 1440px) 900px, 62vw"
               />
             </Parallax>
           </div>
 
           <StoryLight
             paragraphs={hero.paragraphs}
-            className="mt-12 flex max-w-[36rem] flex-col gap-6 md:mt-16 md:ml-[8%] lg:col-span-6 lg:col-start-1 lg:mt-10 lg:ml-0 lg:max-w-none lg:pr-6 lg:pb-24 xl:col-span-5 xl:col-start-2 xl:pr-0"
+            className="mt-12 flex max-w-[36rem] flex-col gap-6 md:mt-16 md:ml-[8%] lg:col-span-6 lg:col-start-1 lg:mt-10 lg:ml-0 lg:max-w-none lg:pr-6 lg:pb-20 xl:col-span-5 xl:col-start-2 xl:pr-0"
             paragraphClassName={(i) =>
               i === 0
                 ? "text-[1.25rem] leading-[1.55] text-ink md:text-[1.375rem] lg:text-[1.25rem] xl:text-[1.375rem]"
@@ -91,7 +93,7 @@ export default function MeetPage() {
       */}
       <section data-scene="lg" data-view="" data-header="dark" className="meet-stairs bg-ivory">
         <div data-scene-pin className="relative">
-          <Parallax amount={6} className="aspect-square w-full md:aspect-[16/9] lg:aspect-[2/1] pinned:aspect-auto pinned:h-full">
+          <Parallax amount={4} className="aspect-square w-full md:aspect-[16/9] lg:aspect-[2/1] pinned:aspect-auto pinned:h-full">
             <Photo slot={interlude} tone="dark" className="meet-stairs-photo h-full w-full" sizes="(max-width: 767px) 160vw, 106vw" />
           </Parallax>
           <div aria-hidden className="meet-stairs-dim pointer-events-none absolute inset-0 bg-ink opacity-0" />
@@ -108,11 +110,18 @@ export default function MeetPage() {
             </Label>
           </InView>
           <InView className="stagger mt-8 flex max-w-[46rem] flex-col gap-6 md:mt-10 lg:col-span-7 lg:col-start-5 lg:mt-0 lg:max-w-none">
-            {guides.before.map((p, i) => (
-              <p key={i} className="text-[1.3125rem] leading-[1.5] text-ink md:text-[1.5rem]">
-                {p}
-              </p>
-            ))}
+            {guides.before.map((p, i) =>
+              // The last line before the stage is set as its cue, in the display italic.
+              i === guides.before.length - 1 ? (
+                <p key={i} className="display mt-2 text-[clamp(1.75rem,2.9vw,2.75rem)] leading-[1.08] md:mt-4">
+                  <em>{bindI(p)}</em>
+                </p>
+              ) : (
+                <p key={i} className="text-[1.3125rem] leading-[1.5] text-ink md:text-[1.5rem]">
+                  {p}
+                </p>
+              ),
+            )}
           </InView>
         </div>
       </section>
@@ -152,7 +161,7 @@ export default function MeetPage() {
                 width={site.wordmark.width}
                 height={site.wordmark.height}
                 unoptimized
-                className="wipe mt-10 h-14 w-auto md:h-16"
+                className="wipe mt-10 h-16 w-auto md:mt-12 md:h-[5.25rem]"
                 style={{ "--d": "0.5s" } as Vars}
               />
             )}

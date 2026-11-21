@@ -136,7 +136,7 @@ html.motion .meet-stairs[data-pinned] > [data-scene-pin] {
   clip-path: inset(0 calc((1 - var(--open)) * 6vw));
 }
 html.motion .meet-stairs[data-pinned] .meet-stairs-photo {
-  transform: scale(calc(1 + var(--p, 0) * 0.07));
+  transform: scale(calc(1 + var(--p, 0) * 0.05));
   will-change: transform;
 }
 html.motion .meet-stairs[data-pinned] .meet-stairs-dim {
@@ -155,7 +155,7 @@ html.motion .meet-stairs[data-pinned] + .meet-creds {
    -------------------------------------------------------------------------- */
 .meet-q {
   --scene-length: 2.6;
-  --qs: clamp(2.75rem, 12.4vw, 4rem); /* question */
+  --qs: clamp(2.75rem, 12.4vw, 6rem); /* question: three or four lines on phones and upright tablets */
   --as: clamp(3.5rem, 19vw, 6rem); /* answer: two lines on phones */
   --answer-lines: 2;
   --q-gap: 2.75rem;
@@ -163,21 +163,29 @@ html.motion .meet-stairs[data-pinned] + .meet-creds {
 @media (min-width: 768px) {
   .meet-q {
     --scene-length: 3;
-    --qs: clamp(4rem, 8.6vw, 8.6rem);
     --as: clamp(4.5rem, 11vw, 11rem); /* one line */
     --answer-lines: 1;
     --q-gap: 4rem;
   }
 }
+@media (min-width: 1024px) {
+  .meet-q {
+    --qs: clamp(4rem, 8.6vw, 8.6rem); /* two lines */
+  }
+}
 /* On a pinned stage the type is also capped by the height of the screen. */
 .meet-q[data-pinned] {
-  --qs: clamp(2.5rem, min(12.4vw, 8svh), 4rem);
+  --qs: clamp(2.5rem, min(12.4vw, 8.5svh), 6rem);
   --as: clamp(3rem, min(19vw, 12.5svh), 6rem);
 }
 @media (min-width: 768px) {
   .meet-q[data-pinned] {
-    --qs: clamp(3rem, min(8.6vw, 14svh), 8.6rem);
     --as: clamp(4rem, min(11vw, 21svh), 11rem);
+  }
+}
+@media (min-width: 1024px) {
+  .meet-q[data-pinned] {
+    --qs: clamp(3rem, min(8.6vw, 14svh), 8.6rem);
   }
 }
 .meet-question {
