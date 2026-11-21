@@ -1,7 +1,8 @@
 import Image from "next/image";
 import { site } from "@/content/site";
 import { speaking } from "@/content/speaking";
-import { Reveal } from "@/components/ui/Reveal";
+import { InView } from "@/components/motion/InView";
+import { Marquee } from "@/components/motion/Marquee";
 
 /** Shown at launch only once the list is confirmed (or cleared logos exist). */
 export function showSpokenAt() {
@@ -9,55 +10,79 @@ export function showSpokenAt() {
   return logos.length > 0 || verified || site.showPlaceholders;
 }
 
+/** The venues in `count` rows of near-equal length, keeping their order. */
+function rows<T>(items: T[], count: number): T[][] {
+  const size = Math.ceil(items.length / count);
+  return Array.from({ length: count }, (_, i) => items.slice(i * size, (i + 1) * size)).filter((r) => r.length > 0);
+}
+
 /**
  * Where I've Spoken. Until conference logos are cleared, the venues are set
- * as one run of serif type, a credits roll rather than a logo wall. Review
- * mode tags the list as unconfirmed.
+ * as type only: a wall of names rather than a logo wall. Review mode tags the
+ * list as unconfirmed.
+ *
+ * From tablet width the names travel in three rows of display serif, in
+ * opposite directions, only as the visitor scrolls (Marquee; nothing moves on
+ * its own), with a gold mark between names. That wall is decoration: the
+ * real list sits beside it for assistive technology, and is what phones and
+ * print show, one venue per line, so every name can be read whole. Without
+ * JavaScript or with reduced motion the wall is a still, wrapped run of names.
  */
 export function SpokenAt({ className = "" }: { className?: string }) {
   if (!showSpokenAt()) return null;
   const { heading, logos, verified, venues } = speaking.spokenAt;
   return (
-    <section className={`grain bg-ivory ${className}`}>
-      <div className="mx-auto grid max-w-[90rem] gap-8 px-5 pt-24 md:px-10 md:pt-36 lg:grid-cols-12 lg:gap-x-6">
-        <div className="lg:col-span-3">
+    <section className={`grain overflow-x-clip bg-ivory pt-24 pb-24 md:pt-36 md:pb-36 ${className}`}>
+      <InView className="mx-auto max-w-[90rem] px-5 md:px-10">
+        <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
           <h2 className="label text-stone">{heading}</h2>
           {!verified && site.showPlaceholders && (
-            <p className="label mt-3 inline-block border border-ink/25 px-2 py-1 !text-[0.5625rem] leading-relaxed text-stone">
+            <p className="label inline-block border border-ink/25 px-2 py-1 !text-[0.5625rem] leading-relaxed text-stone">
               From Testimonials.pdf (partial listing): confirm before launch
             </p>
           )}
         </div>
-        <Reveal className="lg:col-span-9">
-          {logos.length > 0 ? (
-            <ul className="flex flex-wrap items-center gap-x-12 gap-y-10">
-              {logos.map((l) => (
-                <li key={l.name} className="relative h-10 w-32">
-                  <Image src={l.src} alt={l.name} fill sizes="(max-width: 1440px) 128px, 8.9vw" className="object-contain grayscale" />
+        <span aria-hidden className="rule-draw mt-5 block h-px bg-gold-deep/70" />
+      </InView>
+
+      {logos.length > 0 ? (
+        <div className="mx-auto mt-12 max-w-[90rem] px-5 md:px-10">
+          <ul className="flex flex-wrap items-center gap-x-12 gap-y-10">
+            {logos.map((l) => (
+              <li key={l.name} className="relative h-10 w-32">
+                <Image src={l.src} alt={l.name} fill sizes="(max-width: 1440px) 128px, 8.9vw" className="object-contain grayscale" />
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : (
+        <>
+          {/* The real list. Phones and print: one venue per line on hairline rules. From md it is read by assistive technology only. */}
+          <InView className="mx-auto max-w-[90rem] px-5 md:sr-only print:not-sr-only print:px-10">
+            <ul className="stagger font-serif text-[1.25rem] leading-snug tracking-[-0.005em] sm:columns-2 sm:gap-x-8 [--stagger:45ms]">
+              {venues.map((v) => (
+                <li key={v} className="break-inside-avoid border-b border-line py-2.5">
+                  {v}
                 </li>
               ))}
             </ul>
-          ) : (
-            <ul className="font-serif text-[clamp(1.4rem,2.3vw,2.07rem)] leading-[1.32] tracking-[-0.005em] [text-wrap:pretty] max-sm:border-t max-sm:border-line max-sm:text-[1.25rem] max-sm:leading-snug">
-              {venues.map((v, i) => (
-                // Phones: one venue per line on hairline rules, so every name
-                // reads whole. From sm up each name stays on one line with its
-                // separator; the space after it is where lines may break.
-                <li key={v} className="max-sm:border-b max-sm:border-line max-sm:py-2.5 sm:inline">
-                  <span className="sm:whitespace-nowrap">
+          </InView>
+
+          {/* The wall of names (decorative copy of the list above). */}
+          <div aria-hidden className="sp-wall mt-12 hidden md:block lg:mt-16 print:!hidden">
+            {rows(venues, 3).map((row, r) => (
+              <Marquee key={r} reverse={r % 2 === 1} travel={7} className="sp-wall-row">
+                {row.map((v) => (
+                  <span key={v} className="sp-wall-name">
                     {v}
-                    {i < venues.length - 1 && (
-                      <span aria-hidden className="relative -top-[0.32em] ml-[0.4em] text-[0.42em] text-blush-deep max-sm:hidden">
-                        ●
-                      </span>
-                    )}
-                  </span>{" "}
-                </li>
-              ))}
-            </ul>
-          )}
-        </Reveal>
-      </div>
+                    <span className="sp-wall-mark" />
+                  </span>
+                ))}
+              </Marquee>
+            ))}
+          </div>
+        </>
+      )}
     </section>
   );
 }

@@ -161,6 +161,18 @@ export const speaking = {
     name: "Anne Duffy",
     role: "Founder & CEO, Dental Entrepreneur Woman (DeW)",
     permission: "pending" as "pending" | "granted",
+    // Behind the quote, dimmed and in grayscale: the audience on its feet,
+    // seen from behind. The conference's sign on the podium is retouched to
+    // plain wood (third-party branding needs clearance).
+    backdrop: {
+      src: "/photos/speaking-audience-g.jpg",
+      alt: "A conference audience on its feet, seen from behind, with Dr. Joy on stage",
+      treatment: "color",
+      direction: "Audience or room frame behind the testimonial: no legible signage, faces not the subject.",
+      focus: "42% 40%",
+      focusMobile: "26% 40%",
+      original: "54708168189",
+    } satisfies PhotoSlot,
   },
 
   resources: {
