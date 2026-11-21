@@ -99,7 +99,7 @@ export const education = {
       },
     ],
     photo: {
-      src: "/photos/education-annual-g.jpg",
+      src: "/photos/education-annual-v2-g.jpg",
       alt: "Dr. Joy demonstrating a technique while participants work with their instrument kits",
       treatment: "color",
       direction: "The whole room at work: participants with instruments and kits on the tables.",
@@ -165,7 +165,7 @@ export const education = {
     },
     {
       photo: {
-        src: "/photos/education-strip-raised-g.jpg",
+        src: "/photos/education-strip-raised-v2-g.jpg",
         alt: "Participants raising their hands at their tables",
         treatment: "color",
         direction: "The room answering a question: hands up at the tables.",
