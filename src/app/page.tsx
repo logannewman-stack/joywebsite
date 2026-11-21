@@ -54,7 +54,7 @@ export default function Home() {
           <ArtDirected wide={perspective.photo} tall={perspective.photoTall} at="md" sizesWide="100vw" sizesTall="100vw" />
         </ImageReveal>
 
-        <div className="mx-auto grid max-w-[1440px] gap-y-8 px-5 pt-14 pb-24 md:px-10 md:pt-20 md:pb-32 lg:grid-cols-12 lg:gap-x-6 lg:pb-40">
+        <div className="mx-auto grid max-w-[1440px] gap-y-8 px-5 pt-14 pb-24 md:px-10 md:pt-20 md:pb-32 lg:grid-cols-12 lg:gap-x-6 lg:pb-36">
           <Reveal className="lg:col-span-5 lg:col-start-1">
             <p className="max-w-[36rem] text-[17px] leading-relaxed text-stone md:text-[18px]">{middle}</p>
           </Reveal>
@@ -66,7 +66,7 @@ export default function Home() {
 
       {/* Explore My Work: the four pathways */}
       <section id="work" className="bg-paper" aria-labelledby="work-heading">
-        <div className="mx-auto max-w-[1440px] px-5 pt-24 pb-28 md:px-10 md:pt-32 md:pb-36 lg:pt-36 lg:pb-44">
+        <div className="mx-auto max-w-[1440px] px-5 pt-24 pb-28 md:px-10 md:pt-32 md:pb-36 lg:pb-44">
           <Reveal>
             <h2 id="work-heading" className="display text-[clamp(2.75rem,6.4vw,6.5rem)] leading-[0.92]">
               {work.heading}
