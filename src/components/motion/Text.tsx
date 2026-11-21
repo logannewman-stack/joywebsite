@@ -31,7 +31,7 @@ export function WordRise({
   const style: Vars = { "--rise-delay": `${delay}s` };
   const trigger = immediate ? { "data-rise-now": "" } : { "data-inview": "" };
   return (
-    <span {...trigger} className={className} style={style}>
+    <span {...trigger} className={className} style={style} suppressHydrationWarning>
       {words.map((w, i) => (
         <Fragment key={i}>
           {i > 0 && " "}
@@ -63,7 +63,7 @@ export function LineRise({
   const style: Vars = { "--rise-delay": `${delay}s`, "--rise-stagger": "80ms" };
   const trigger = immediate ? { "data-rise-now": "" } : { "data-inview": "" };
   return (
-    <span {...trigger} className={className} style={style}>
+    <span {...trigger} className={className} style={style} suppressHydrationWarning>
       {lines.map((line, i) => (
         <Fragment key={i}>
           {i > 0 && " "}

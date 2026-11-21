@@ -31,7 +31,7 @@ export function InView({
 }) {
   const style: Vars | undefined = delay ? { "--d": `${delay}s` } : undefined;
   return (
-    <Tag id={id} data-inview="" className={className} style={style}>
+    <Tag id={id} data-inview="" className={className} style={style} suppressHydrationWarning>
       {children}
     </Tag>
   );
