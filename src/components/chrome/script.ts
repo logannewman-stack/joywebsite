@@ -47,6 +47,7 @@ export const CHROME_HEAD_SCRIPT = `(function(d){var i=false;try{if(d.classList.c
  * Inline script placed right after the curtain's markup. The wordmark writes
  * itself in (0.68s), then the curtain lifts (0.52s): about 1.3s in all. If
  * the wordmark file has not arrived after 0.3s it goes ahead without waiting.
+ * intro-lift stays a moment longer than the curtain, for the header's settle.
  * While it shows, the browser chrome is black; afterwards it follows the header.
  */
 export const CURTAIN_SCRIPT = `(function(){
@@ -54,9 +55,10 @@ var d=document.documentElement;if(!d.classList.contains('intro'))return;
 var c=document.querySelector('.intro-curtain'),img=c&&c.querySelector('img'),go=false;
 function theme(v){document.querySelectorAll('meta[name="theme-color"]').forEach(function(m){m.setAttribute('content',v)})}
 function done(){
-  d.classList.remove('intro','intro-hold','intro-write','intro-lift');
+  d.classList.remove('intro','intro-hold','intro-write');
   var h=document.querySelector('header[data-tone]');
   theme(h&&h.getAttribute('data-tone')==='dark'?'#0b0b0b':'#ffffff');
+  setTimeout(function(){d.classList.remove('intro-lift')},1200);
 }
 function lift(){d.classList.remove('intro-hold');d.classList.add('intro-lift');setTimeout(done,540)}
 function write(){if(go)return;go=true;d.classList.add('intro-write');setTimeout(lift,760)}

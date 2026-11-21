@@ -485,6 +485,16 @@ html.intro-lift .intro-mark {
   --ink-wipe: 115%;
   animation: intro-mark-out 0.4s var(--ease-soft) both;
 }
+/* As the curtain clears the top of the screen, the header settles into place. */
+html.intro-lift .site-header > div {
+  animation: intro-header 0.9s var(--ease-expo) 0.22s both;
+}
+@keyframes intro-header {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -0.75rem, 0);
+  }
+}
 @keyframes intro-write {
   from {
     --ink-wipe: 0%;
