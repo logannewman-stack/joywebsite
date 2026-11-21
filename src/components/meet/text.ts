@@ -7,9 +7,3 @@
 export function bindI(text: string): string {
   return text.replace(/\bI (?=\S)/g, "I ");
 }
-
-/** Ties the last two words together, so a short display line never ends on one word. */
-export function noWidow(text: string): string {
-  const i = text.lastIndexOf(" ");
-  return i > 0 ? `${text.slice(0, i)} ${text.slice(i + 1)}` : text;
-}
