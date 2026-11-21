@@ -10,9 +10,14 @@
 
 /* ==========================================================================
    Dr. Joy RDH: design tokens
-   Black-and-white foundation. Ivory adds warmth. Blush is a restrained
-   accent: use it for marks, rules and highlights on black, never as a page
-   color or for small text on white.
+   Black-and-white foundation. Ivory adds warmth. Two restrained accents:
+   - Pale pink (blush): emphasis in type. Italic display phrases and
+     highlighted phrases on black; a marker behind ink words on light.
+     Never a page color, never small text on white.
+   - Tan gold: structure and jewelry. Hairlines, progress lines, numerals,
+     quote marks, dots, rings, the monogram. On black it may also set large
+     display words; never small type on black. On white and ivory use
+     gold-deep, for marks and large type only.
    ========================================================================== */
 @theme {
   --color-ink: #0b0b0b;
@@ -20,8 +25,11 @@
   --color-paper: #ffffff;
   --color-ivory: #f5f1e9; /* brand cream */
   --color-sand: #e8e1d5;
-  --color-blush: #e7d3cb; /* brand blush */
-  --color-blush-deep: #c9a497;
+  --color-blush: #f0d3ce; /* pale pink */
+  --color-blush-deep: #cfa39b;
+  --color-gold: #c2a36b; /* tan gold: lines, marks and large type on black (8:1) */
+  --color-gold-soft: #d9c39a; /* champagne: large display words on black */
+  --color-gold-deep: #94753f; /* marks and large type on white or ivory (4.2:1) */
   --color-charcoal: #393839; /* logo charcoal */
   --color-stone: #625e59; /* secondary text on white, 6.3:1 */
   --color-ash: #a9a49d; /* secondary text on black, 8:1 */
