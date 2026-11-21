@@ -130,7 +130,7 @@ export default function MeetPage() {
       <Question question={guides.question} answer={guides.answer} />
 
       {/* The sign-off: the story's last lines, her signature, and the way to reach her */}
-      <section className="bg-paper">
+      <section className="meet-signoff bg-paper">
         <div className="mx-auto max-w-[90rem] px-5 pt-4 pb-28 md:px-10 md:pt-8 md:pb-40 lg:grid lg:grid-cols-12 lg:gap-x-6">
           {hasLifePhoto && (
             <ImageReveal className="md:w-2/3 lg:col-span-5 lg:w-auto">

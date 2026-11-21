@@ -271,4 +271,15 @@ html.motion .meet-q[data-pinned]:not([data-step="3"]) .meet-dot {
   .meet-q-progress {
     display: none !important;
   }
+  /* Entrances that have not played yet print in their finished state: the
+     ivory band and the hairlines drawn, the signature and the marker in place. */
+  .meet-creds .rule-draw {
+    transform: none !important;
+  }
+  .meet-signoff .wipe {
+    clip-path: none !important;
+  }
+  .meet-signoff .hl-light {
+    background-size: 100% 0.34em !important;
+  }
 }
