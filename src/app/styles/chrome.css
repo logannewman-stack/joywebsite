@@ -32,6 +32,19 @@ summary {
 }
 
 /* --------------------------------------------------------------------------
+   Accents in the frame: gold for structure (the progress line, short rules,
+   rings on arrow circles over black, the footer's rules), pale pink for
+   emphasis in type (the marker behind the current page in the menu).
+   The short rule in a Label is gold-deep on light surfaces and gold on black.
+   -------------------------------------------------------------------------- */
+.label-rule {
+  background: var(--color-gold-deep);
+}
+:is([data-header="dark"], [data-tone="dark"], .bg-ink, .text-white, .text-ash) .label-rule {
+  background: var(--color-gold);
+}
+
+/* --------------------------------------------------------------------------
    Buttons and links
    -------------------------------------------------------------------------- */
 /* Pills and circles: a soft fill change, and one press state everywhere. */
@@ -110,7 +123,7 @@ summary {
 /* --------------------------------------------------------------------------
    Scroll progress: a hairline under the header that fills with the page
    (--page-p from the scroll engine). When the header slides away it rides at
-   the top edge of the screen. Blush over black sections, ink over light.
+   the top edge of the screen. Gold over black sections, gold-deep over light.
    -------------------------------------------------------------------------- */
 .page-progress {
   position: fixed;
@@ -195,6 +208,15 @@ html.motion .menu-sheet[data-open="true"] .menu-fade {
   transition:
     opacity var(--duration-text) var(--ease-soft) calc(0.2s + var(--i, 0) * 0.055s),
     transform var(--duration-image) var(--ease-expo) calc(0.2s + var(--i, 0) * 0.055s);
+}
+/* The pale pink marker behind the current page draws once its name has risen. */
+html.motion .menu-sheet .hl-light {
+  background-size: 0% 0.34em;
+  transition: background-size 0s 0.24s;
+}
+html.motion .menu-sheet[data-open="true"] .hl-light {
+  background-size: 100% 0.34em;
+  transition: background-size var(--duration-image) var(--ease-expo) calc(0.5s + var(--i, 0) * 0.055s);
 }
 html.motion .menu-sheet .menu-item::after {
   transform: scaleX(0);
@@ -296,8 +318,16 @@ html.motion .foot-inner {
   height: auto;
 }
 @media (min-width: 80rem) {
+  /* Height left on the screen: 100svh less the footer's own paddings (the same
+     min() values as its classes) and 24.25rem for the columns and their gap.
+     The artwork is 3.07:1. */
   .foot-mark {
-    width: min(100%, calc(clamp(6rem, 100svh - 36rem, 21rem) * 3.07));
+    --foot-cols: 24.25rem;
+    width: min(100%, calc(clamp(6rem, 100svh - min(7rem, 11svh) - min(3rem, 5svh) - min(2.5rem, 4svh) - var(--foot-cols), 21rem) * 3.07));
+  }
+  /* Without the newsletter (Insights) the link lists sit in two columns and take less height. */
+  .site-footer:not(:has(#footer-newsletter)) .foot-mark {
+    --foot-cols: 14.75rem;
   }
 }
 /* It writes itself in, left to right, once it is in the open ([data-foot-in]
@@ -430,6 +460,8 @@ html.intro .intro-curtain {
   display: grid;
   place-items: center;
   background: var(--color-ink);
+  /* A gold hem: one hairline along the curtain's lower edge, seen as it lifts. */
+  box-shadow: 0 1px 0 var(--color-gold);
   will-change: transform;
 }
 html.intro .intro-mark {
@@ -494,6 +526,76 @@ html.intro-hold main [data-reveal=""] {
 }
 
 /* --------------------------------------------------------------------------
+   Cursor label. Any element can ask for it with data-cursor="View" (or
+   "Play", "Drag": one short word). Over that element, on a fine pointer with
+   motion on, a gold-ringed disc grows from a dot at the pointer and carries
+   the word; the native cursor steps aside on that element only while the
+   disc is showing. Everywhere else, on touch, with reduced motion and
+   without JavaScript there is only the native cursor. Do not put it on form
+   fields or on text meant to be selected.
+   -------------------------------------------------------------------------- */
+.site-cursor {
+  display: none;
+}
+html.has-cursor .site-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 95;
+  display: block;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  view-transition-name: site-cursor;
+}
+.cursor-disc {
+  position: absolute;
+  top: -2.875rem;
+  left: -2.875rem;
+  display: grid;
+  width: 5.75rem;
+  height: 5.75rem;
+  place-items: center;
+  border: 1px solid var(--color-gold);
+  border-radius: 50%;
+  background: rgb(11 11 11 / 0.62);
+  backdrop-filter: blur(6px);
+  color: #fff;
+  opacity: 0;
+  transform: scale(0.1);
+  transition:
+    transform 0.3s var(--ease-soft),
+    opacity 0.2s ease-out;
+}
+.site-cursor[data-on] .cursor-disc {
+  opacity: 1;
+  transform: none;
+  transition:
+    transform 0.55s var(--ease-expo),
+    opacity 0.15s ease-out;
+}
+.site-cursor[data-on][data-down] .cursor-disc {
+  transform: scale(0.9);
+  transition: transform 0.14s ease-out;
+}
+.cursor-label {
+  font-size: 0.6875rem;
+  opacity: 0;
+  transition: opacity 0.15s ease-out;
+}
+.site-cursor[data-on] .cursor-label {
+  opacity: 1;
+  transition: opacity 0.3s ease-out 0.12s;
+}
+html.cursor-live [data-cursor],
+html.cursor-live [data-cursor] * {
+  cursor: none;
+}
+html.cursor-live [data-cursor] :is(input, textarea, select, [contenteditable="true"]) {
+  cursor: auto;
+}
+
+/* --------------------------------------------------------------------------
    Page transitions (PageShell in components/chrome): React's <ViewTransition>
    around the page shell. Moving between pages, the new page dissolves in over
    the old one with a slight rise; from the NextPage link it comes up from
@@ -503,32 +605,50 @@ html.intro-hold main [data-reveal=""] {
 .site-header {
   view-transition-name: site-header;
 }
-#mobile-menu {
-  view-transition-name: site-menu;
+/* The menu only exists below 1280px; named so it stays above the page while it closes. */
+@media (max-width: 79.99rem) {
+  #mobile-menu {
+    view-transition-name: site-menu;
+  }
 }
 ::view-transition {
   pointer-events: none;
 }
-::view-transition-group(site-header),
-::view-transition-group(site-menu),
-::view-transition-new(site-header),
-::view-transition-new(site-menu),
-::view-transition-new(root) {
-  animation: none;
-}
-::view-transition-old(site-header),
-::view-transition-old(site-menu),
+/* Nothing else is in the root layer but the page colour: no cross-fade of its own. */
 ::view-transition-old(root) {
   display: none;
 }
-/* The old page holds still underneath, so nothing shows through. */
-::view-transition-old(.page-out),
-::view-transition-old(.spread-out) {
+::view-transition-new(root) {
+  animation: none;
+}
+/* The header changes tone in step with the page (the browser's own cross-fade, at the page's tempo). */
+::view-transition-group(site-header),
+::view-transition-old(site-header),
+::view-transition-new(site-header) {
+  animation-duration: 0.42s;
+  animation-timing-function: var(--ease-soft);
+}
+/* The closing menu and the cursor label are shown live, not as a snapshot. */
+::view-transition-group(site-menu),
+::view-transition-new(site-menu),
+::view-transition-group(site-cursor),
+::view-transition-new(site-cursor) {
+  animation: none;
+}
+::view-transition-old(site-menu),
+::view-transition-old(site-cursor) {
+  display: none;
+}
+/* Between pages: the old page holds still underneath (so nothing shows
+   through, black to black included) while the new one dissolves in. */
+::view-transition-old(.page-out) {
   animation: vt-hold 0.42s linear both;
 }
 ::view-transition-new(.page-in) {
   animation: vt-page-in 0.42s var(--ease-soft) both;
 }
+/* From NextPage: the next spread comes up from below and covers the old one,
+   which drifts up a little and dims as it is covered. */
 ::view-transition-old(.spread-out) {
   animation: vt-spread-out 0.75s var(--ease-expo) both;
 }
@@ -568,6 +688,7 @@ html.intro-hold main [data-reveal=""] {
 @media print {
   .intro-curtain,
   .page-progress,
+  .site-cursor,
   .foot-ghost {
     display: none !important;
   }

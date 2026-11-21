@@ -1,4 +1,4 @@
-import type { Metadata, Viewport } from "next";
+import type { Metadata } from "next";
 import { Geist, Instrument_Serif } from "next/font/google";
 import { launchBlockers, site } from "@/content/site";
 import { optIns } from "@/content/integrations";
@@ -49,9 +49,8 @@ export const metadata: Metadata = {
   ...(site.showPlaceholders ? { robots: { index: false, follow: false } } : {}),
 };
 
-export const viewport: Viewport = {
-  themeColor: "#ffffff",
-};
+// No themeColor in the viewport export: the theme-color tag is created and kept up to date by the
+// chrome scripts (black under the first-visit curtain, then ink or white with the header).
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
@@ -67,6 +66,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <Header />
           <PageShell footer={<Footer />}>{children}</PageShell>
         </InquiryProvider>
+        {/* The cursor label: shown by the chrome script over [data-cursor] elements (fine pointers, motion on). */}
+        <div className="site-cursor" aria-hidden="true">
+          <span className="cursor-disc">
+            <span className="cursor-label label" />
+          </span>
+        </div>
         <script dangerouslySetInnerHTML={{ __html: REVEAL_BODY_SCRIPT }} />
         <script dangerouslySetInnerHTML={{ __html: MOTION_BODY_SCRIPT }} />
         <script dangerouslySetInnerHTML={{ __html: CHROME_BODY_SCRIPT }} />

@@ -178,11 +178,11 @@ export function Header() {
         : "bg-paper";
   const tone = dark ? "dark" : "light";
 
-  // The browser's own chrome takes the header's colour. The first-visit curtain
-  // (html.intro) holds it black and hands back when it lifts.
+  // The browser's own chrome takes the header's colour. The tag is created by the chrome head
+  // script; the first-visit curtain (html.intro) holds it black and hands back when it lifts.
   useEffect(() => {
     if (document.documentElement.classList.contains("intro")) return;
-    document.querySelector('meta[name="theme-color"]')?.setAttribute("content", THEME[tone]);
+    document.querySelectorAll('meta[name="theme-color"]').forEach((m) => m.setAttribute("content", THEME[tone]));
   }, [tone, pathname]);
 
   return (
@@ -228,8 +228,8 @@ export function Header() {
                   {item.label}
                   <span
                     aria-hidden
-                    className={`absolute inset-x-0 -bottom-0.5 h-px origin-left bg-current transition-transform duration-[var(--duration-ui,320ms)] ${ease} ${
-                      active ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+                    className={`absolute inset-x-0 -bottom-0.5 h-px origin-left transition-transform duration-[var(--duration-ui,320ms)] ${ease} ${
+                      active ? `scale-x-100 ${dark ? "bg-gold" : "bg-gold-deep"}` : "scale-x-0 bg-current group-hover:scale-x-100"
                     }`}
                   />
                 </Link>
@@ -276,13 +276,13 @@ export function Header() {
 
       {/*
         Scroll progress: a hairline under the bar that fills with the page (--page-p, written by
-        the scroll engine). It rides at the top edge while the bar is away, and is off under the open menu.
+        the scroll engine), in gold. It rides at the top edge while the bar is away, and is off under the open menu.
       */}
       <div
         aria-hidden
         className={`page-progress mr-[var(--scroll-lock-gap,0px)] ${hidden && !open ? "translate-y-0" : "translate-y-[4.75rem]"} ${
           open ? "opacity-0" : "opacity-100"
-        } ${dark ? "text-blush" : "text-ink"}`}
+        } ${dark ? "text-gold" : "text-gold-deep"}`}
       >
         <span className="progress-page" />
       </div>
@@ -321,11 +321,9 @@ export function Header() {
                     >
                       {/* The label rises from behind its own baseline (the .wr frame clips only the bottom edge). */}
                       <span className="wr">
+                        {/* The current page is italic, with the pale pink marker behind it. */}
                         <span className="menu-rise inline-block">
-                          {typeset(item.label)}
-                          {current && (
-                            <span aria-hidden className="ml-[0.22em] inline-block size-[0.2em] -translate-y-[0.06em] rounded-full bg-blush-deep align-middle" />
-                          )}
+                          <span className={current ? "hl-light" : undefined}>{typeset(item.label)}</span>
                         </span>
                       </span>
                     </span>

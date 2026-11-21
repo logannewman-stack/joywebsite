@@ -236,7 +236,7 @@ export function InquiryButton({
   const styles = {
     // Pills share one hover and press (.press in styles/chrome.css): a soft fill change and a small scale.
     solid: `press min-h-12 max-w-full gap-3 whitespace-nowrap rounded-full px-6 max-[359px]:whitespace-normal ${
-      dark ? "bg-white text-ink hover:bg-blush" : "bg-ink text-white hover:bg-charcoal"
+      dark ? "bg-white text-ink hover:bg-gold-soft" : "bg-ink text-white hover:bg-charcoal"
     }`,
     outline: `press min-h-12 max-w-full gap-3 whitespace-nowrap rounded-full border px-6 max-[359px]:whitespace-normal ${
       dark ? "border-white/40 text-white hover:border-white hover:bg-white/10" : "border-ink/30 text-ink hover:border-ink hover:bg-ink/[0.04]"

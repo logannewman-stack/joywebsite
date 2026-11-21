@@ -193,7 +193,7 @@ export function InquiryForm({
   if (status === "ok") {
     return (
       <div ref={doneRef} tabIndex={-1} role="status" className="py-6 outline-none">
-        <span className="inline-flex size-12 items-center justify-center rounded-full bg-blush text-ink">
+        <span className="inline-flex size-12 items-center justify-center rounded-full border border-gold-deep text-gold-deep">
           <Check className="size-5" aria-hidden />
         </span>
         <p className="display mt-6 text-4xl">Thank you.</p>

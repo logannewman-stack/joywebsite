@@ -46,7 +46,7 @@ export function Footer() {
             <section aria-labelledby="footer-newsletter" className="@container xl:w-[44%] xl:shrink-0">
               <div className="grid grid-cols-1 gap-8 @2xl:grid-cols-2 @2xl:gap-x-12">
                 <div>
-                  <span aria-hidden className="mb-6 block h-px w-12 bg-blush" />
+                  <span aria-hidden className="mb-6 block h-px w-12 bg-gold" />
                   <p className="label text-ash">{insights.newsletter.heading}</p>
                   <h2 id="footer-newsletter" className="display mt-5 text-[clamp(2.75rem,4.6vw,4.25rem)]">
                     {insights.newsletter.name}
@@ -132,7 +132,7 @@ export function Footer() {
 
         {/* Signed off with the script wordmark, as large as the screen allows. */}
         <div className="foot-sign relative mt-20 pt-10 md:mt-24 md:pt-12 xl:mt-auto xl:pt-[min(3rem,5svh)]" suppressHydrationWarning>
-          <span aria-hidden className="foot-rule absolute inset-x-0 top-0 block h-px bg-line-dark" />
+          <span aria-hidden className="foot-rule absolute inset-x-0 top-0 block h-px bg-gold/70" />
           <div className="flex flex-col gap-10 md:flex-row md:items-end md:justify-between md:gap-12">
             <Link href="/" aria-label={`${site.name}, home`} className={`foot-mark-link block min-w-0 self-start md:self-end ${ring}`}>
               <Wordmark tone="dark" loading="lazy" className="foot-mark !h-auto w-full max-w-none" />
@@ -143,7 +143,7 @@ export function Footer() {
                 <span className="label hidden text-ash transition-colors duration-(--duration-hover) group-hover:text-white sm:inline">Back to top</span>
                 <span className="sr-only sm:hidden">Back to top</span>
                 <Magnetic strength={0.35}>
-                  <span className="press inline-flex size-14 items-center justify-center rounded-full border border-white/30 group-hover:border-white group-hover:bg-white group-hover:text-ink md:size-16">
+                  <span className="press inline-flex size-14 items-center justify-center rounded-full border border-gold/80 group-hover:border-gold group-hover:bg-gold group-hover:text-ink group-focus-visible:border-gold group-focus-visible:bg-gold group-focus-visible:text-ink md:size-16">
                     <SwapArrow direction="up" className="size-5" />
                   </span>
                 </Magnetic>

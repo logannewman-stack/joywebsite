@@ -81,10 +81,10 @@ export const focusRing = {
 /**
  * Shared interaction states (styles in src/app/styles/chrome.css).
  *
- * Pills: a soft fill change on hover (ink to the logo charcoal; white to blush
- * on black), the arrow swap below, and one press state everywhere: `press`
- * (a small, quick scale). Text links: the underline draws (`link-draw`) and
- * the same arrow swap; pressed, they dim.
+ * Pills: a soft fill change on hover (ink to the logo charcoal; white to
+ * champagne gold on black), the arrow swap below, and one press state
+ * everywhere: `press` (a small, quick scale). Text links: the underline draws
+ * (`link-draw`) and the same arrow swap; pressed, they dim.
  */
 export const press = "press";
 export const buttonStates = press;
@@ -92,7 +92,7 @@ export const textLink = "group inline-flex min-h-11 items-center gap-2 text-[0.9
 /** Fill for a solid pill, by the surface it sits on. */
 export const solidFill = {
   light: "bg-ink text-white hover:bg-charcoal",
-  dark: "bg-white text-ink hover:bg-blush",
+  dark: "bg-white text-ink hover:bg-gold-soft",
 };
 
 const solid = {
@@ -221,7 +221,8 @@ export function Label({
   return (
     <Tag className={`label flex items-center gap-3 ${className}`}>
       {index && <span className="tabular-nums">{index}</span>}
-      {index && <span className="h-px w-8 bg-current opacity-40" aria-hidden />}
+      {/* The short rule is gold: gold-deep on light surfaces, gold on black (.label-rule in styles/chrome.css). */}
+      {index && <span className="label-rule h-px w-8" aria-hidden />}
       <span>{children}</span>
     </Tag>
   );

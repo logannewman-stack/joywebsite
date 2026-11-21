@@ -41,17 +41,17 @@ export function NextPage({ current }: { current: string }) {
   const src = slot?.src && site.photoStyle === "bw" && slot.srcBw ? slot.srcBw : slot?.src;
   return (
     <Link href={next.href} transitionTypes={["next-page"]} data-inview="" data-magnetic="0.04" className="next-page group">
-      <span aria-hidden className="rule-draw absolute inset-x-0 top-0 block h-px bg-ink/15" />
+      <span aria-hidden className="rule-draw absolute inset-x-0 top-0 block h-px bg-gold-deep/70" />
       <div className="mx-auto flex max-w-[90rem] items-end justify-between gap-6 px-5 pt-14 pb-12 md:gap-10 md:px-10 md:pt-24 md:pb-20">
         <div className="min-w-0 flex-1">
           <p className="label flex items-center gap-3 text-stone">
             Next
-            <span aria-hidden className="h-px w-8 bg-current opacity-40" />
+            <span aria-hidden className="label-rule h-px w-8" />
             <span aria-hidden className="tabular-nums">
               {number}
             </span>
             {/* On phones the arrow sits with the label, so long page names keep the full width. */}
-            <span aria-hidden className="next-circle ml-auto inline-flex size-12 items-center justify-center rounded-full border border-ink/20 text-ink md:hidden">
+            <span aria-hidden className="next-circle ml-auto inline-flex size-12 items-center justify-center rounded-full border border-gold-deep/80 text-ink md:hidden">
               <SwapArrow className="size-4.5" />
             </span>
           </p>
@@ -73,7 +73,7 @@ export function NextPage({ current }: { current: string }) {
         )}
         <span aria-hidden className="hidden shrink-0 md:block">
           <Magnetic strength={0.3}>
-            <span className="next-circle inline-flex size-20 items-center justify-center rounded-full border border-ink/20 lg:size-24">
+            <span className="next-circle inline-flex size-20 items-center justify-center rounded-full border border-gold-deep/80 lg:size-24">
               <SwapArrow className="size-6" />
             </span>
           </Magnetic>

@@ -137,7 +137,7 @@ export default function InquiryPanel({ request, closing, close }: PanelProps) {
         {/* Keyed by view: a new view mounts fresh, so its blocks settle in again. */}
         <div key={`${sent ? "sent" : (choice ?? "picker")}${allTopics ? "-all" : ""}`} className="panel-settle">
           {sent && (
-            <span className="mb-8 inline-flex size-12 items-center justify-center rounded-full bg-blush text-ink">
+            <span className="mb-8 inline-flex size-12 items-center justify-center rounded-full border border-gold-deep text-gold-deep">
               <Check className="size-5" aria-hidden />
             </span>
           )}
