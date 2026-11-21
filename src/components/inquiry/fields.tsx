@@ -1,10 +1,29 @@
 "use client";
 
-import type { ReactNode } from "react";
+import type { ChangeEventHandler, InputHTMLAttributes, ReactNode } from "react";
 import { ChevronDown } from "lucide-react";
 
-const base =
-  "w-full rounded-none border-0 border-b border-ink/25 bg-transparent px-0 py-2.5 text-[16px] text-ink placeholder:text-ink/40 outline-none transition-colors focus:border-ink";
+export { Honeypot } from "./feedback";
+
+/*
+ * Form fields for the inquiry panel. Labels are sentence case at 14px so they
+ * read easily on a phone; optional fields say so on the right, required ones
+ * carry no mark. Each wrapper has data-field / data-label, which the email
+ * fallback uses to label what the visitor typed.
+ */
+
+const control =
+  "block w-full rounded-none border-0 border-b border-ink/45 bg-transparent px-0 pt-1.5 pb-2 text-[16px] leading-normal text-ink outline-none transition-[border-color,box-shadow] duration-[var(--duration-hover,180ms)] placeholder:text-stone hover:border-ink/70 focus:border-ink focus:shadow-[0_1px_0_0_var(--color-ink)]";
+
+function FieldLabel({ label, required, hint }: { label: string; required?: boolean; hint?: string }) {
+  const note = hint ?? (required ? null : "Optional");
+  return (
+    <span className="mb-1.5 flex items-baseline justify-between gap-4">
+      <span className="text-[14px] leading-snug font-medium text-ink">{label}</span>
+      {note && <span className="shrink-0 text-right text-[13px] leading-snug text-stone">{note}</span>}
+    </span>
+  );
+}
 
 export function Field({
   label,
@@ -14,6 +33,9 @@ export function Field({
   autoComplete,
   placeholder,
   className = "",
+  hint,
+  defaultValue,
+  inputProps,
 }: {
   label: string;
   name: string;
@@ -22,49 +44,103 @@ export function Field({
   autoComplete?: string;
   placeholder?: string;
   className?: string;
+  /** Replaces the "Optional" note, e.g. "Required for text messages". */
+  hint?: string;
+  defaultValue?: string;
+  inputProps?: InputHTMLAttributes<HTMLInputElement>;
 }) {
   return (
-    <label className={`block ${className}`}>
-      <span className="label !text-[10.5px] text-stone">
-        {label}
-        {required ? <span aria-hidden> *</span> : <span className="normal-case tracking-normal"> (optional)</span>}
-      </span>
-      <input name={name} type={type} required={required} autoComplete={autoComplete} placeholder={placeholder} className={base} />
+    <label className={`block ${className}`} data-field={name} data-label={label}>
+      <FieldLabel label={label} required={required} hint={hint} />
+      <input
+        {...inputProps}
+        name={name}
+        type={type}
+        required={required}
+        autoComplete={autoComplete}
+        placeholder={placeholder}
+        defaultValue={defaultValue}
+        className={control}
+      />
     </label>
   );
 }
 
-export function TextArea({ label, name, required = false, rows = 4 }: { label: string; name: string; required?: boolean; rows?: number }) {
+export function TextArea({
+  label,
+  name,
+  required = false,
+  rows = 4,
+  defaultValue,
+}: {
+  label: string;
+  name: string;
+  required?: boolean;
+  rows?: number;
+  defaultValue?: string;
+}) {
   return (
-    <label className="block">
-      <span className="label !text-[10.5px] text-stone">
-        {label}
-        {required ? <span aria-hidden> *</span> : <span className="normal-case tracking-normal"> (optional)</span>}
-      </span>
-      <textarea name={name} required={required} rows={rows} className={`${base} resize-y`} />
+    <label className="block" data-field={name} data-label={label}>
+      <FieldLabel label={label} required={required} />
+      <textarea
+        name={name}
+        required={required}
+        rows={rows}
+        defaultValue={defaultValue}
+        className={`${control} min-h-28 resize-none [field-sizing:content]`}
+      />
     </label>
   );
 }
 
-export function Select({ label, name, options, required = false }: { label: string; name: string; options: string[]; required?: boolean }) {
+export type SelectOption = string | { group: string; options: string[] };
+
+export function Select({
+  label,
+  name,
+  options,
+  required = false,
+  defaultValue = "",
+  hint,
+}: {
+  label: string;
+  name: string;
+  /** Plain values, or groups rendered as <optgroup>. */
+  options: SelectOption[];
+  required?: boolean;
+  defaultValue?: string;
+  hint?: string;
+}) {
   return (
-    <label className="block">
-      <span className="label !text-[10.5px] text-stone">
-        {label}
-        {required ? <span aria-hidden> *</span> : <span className="normal-case tracking-normal"> (optional)</span>}
-      </span>
+    <label className="block" data-field={name} data-label={label}>
+      <FieldLabel label={label} required={required} hint={hint} />
       <span className="relative block">
-        <select name={name} required={required} defaultValue="" className={`${base} cursor-pointer appearance-none pr-7`}>
+        <select
+          name={name}
+          required={required}
+          defaultValue={defaultValue}
+          className={`${control} cursor-pointer appearance-none pr-8 has-[option[value='']:checked]:text-stone [&_option]:text-ink`}
+        >
           <option value="" disabled>
             Choose one
           </option>
-          {options.map((o) => (
-            <option key={o} value={o}>
-              {o}
-            </option>
-          ))}
+          {options.map((o) =>
+            typeof o === "string" ? (
+              <option key={o} value={o}>
+                {o}
+              </option>
+            ) : (
+              <optgroup key={o.group} label={o.group}>
+                {o.options.map((v) => (
+                  <option key={v} value={v}>
+                    {v}
+                  </option>
+                ))}
+              </optgroup>
+            ),
+          )}
         </select>
-        <ChevronDown className="pointer-events-none absolute top-1/2 right-0 size-4 -translate-y-1/2" aria-hidden />
+        <ChevronDown className="pointer-events-none absolute top-1/2 right-0 size-4 -translate-y-1/2 text-ink" aria-hidden />
       </span>
     </label>
   );
@@ -72,15 +148,15 @@ export function Select({ label, name, options, required = false }: { label: stri
 
 export function CheckGroup({ legend, name, options }: { legend: string; name: string; options: string[] }) {
   return (
-    <fieldset>
-      <legend className="label mb-3 !text-[10.5px] text-stone">
-        {legend} <span className="normal-case tracking-normal">(optional)</span>
+    <fieldset data-field={name} data-label={legend}>
+      <legend className="w-full">
+        <FieldLabel label={legend} />
       </legend>
-      <div className="flex flex-wrap gap-2">
+      <div className="mt-1 flex flex-wrap gap-2">
         {options.map((o) => (
           <label key={o} className="cursor-pointer">
             <input type="checkbox" name={name} value={o} className="peer sr-only" />
-            <span className="inline-flex min-h-10 items-center rounded-full border border-ink/20 px-4 text-[14px] transition-colors peer-checked:border-ink peer-checked:bg-ink peer-checked:text-white peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-ink hover:border-ink/50">
+            <span className="inline-flex min-h-11 items-center rounded-full border border-ink/25 px-4 text-[14px] transition-colors duration-[var(--duration-hover,180ms)] select-none peer-checked:border-ink peer-checked:bg-ink peer-checked:text-white peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-ink hover:border-ink/60 active:scale-[0.98] motion-reduce:active:scale-100">
               {o}
             </span>
           </label>
@@ -90,23 +166,24 @@ export function CheckGroup({ legend, name, options }: { legend: string; name: st
   );
 }
 
-export function Consent({ name, children }: { name: string; children: ReactNode }) {
+export function Consent({
+  name,
+  label,
+  children,
+  onChange,
+}: {
+  name: string;
+  /** Short name for the email fallback, e.g. "Text messages". */
+  label?: string;
+  children: ReactNode;
+  onChange?: ChangeEventHandler<HTMLInputElement>;
+}) {
   return (
-    <label className="flex cursor-pointer items-start gap-3 text-[13.5px] leading-relaxed text-stone">
-      <input type="checkbox" name={name} className="mt-1 size-4 shrink-0 accent-ink" />
-      <span>{children}</span>
+    <label className="flex cursor-pointer items-start gap-3 text-[14.5px] leading-relaxed text-ink/80" data-field={name} data-label={label ?? name}>
+      <input type="checkbox" name={name} onChange={onChange} className="mt-[3px] size-[18px] shrink-0 cursor-pointer accent-ink" />
+      <span>
+        {children} <span className="text-stone">(optional)</span>
+      </span>
     </label>
-  );
-}
-
-/** Hidden field that only bots fill in. */
-export function Honeypot() {
-  return (
-    <div aria-hidden className="absolute -left-[9999px] h-0 w-0 overflow-hidden">
-      <label>
-        Company website
-        <input type="text" name="company_website" tabIndex={-1} autoComplete="off" />
-      </label>
-    </div>
   );
 }
