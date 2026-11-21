@@ -1,66 +1,95 @@
 import type { Metadata } from "next";
-import { ArrowUpRight } from "lucide-react";
 import { education } from "@/content/education";
 import { Photo } from "@/components/ui/Photo";
-import { ArrowLink, ButtonLink, Label, ReviewSlot } from "@/components/ui/Links";
+import { ArrowLink, ButtonLink, Label } from "@/components/ui/Links";
 import { ImageReveal, LineReveal, Reveal } from "@/components/ui/Reveal";
-import { Quote } from "@/components/ui/Quote";
-import { InquiryButton } from "@/components/inquiry/InquiryProvider";
+import { typeset } from "@/components/ui/Typeset";
 import { NextPage } from "@/components/layout/NextPage";
+import { AttendeeVoice } from "@/components/education/AttendeeVoice";
+import { P3Events } from "@/components/education/P3Events";
 
 export const metadata: Metadata = {
   title: "Hands-On Education",
   description: education.hero.paragraphs[0],
 };
 
-export default function EducationPage() {
-  const { hero, family, attendee, events, routes } = education;
-  const ev = events.featured;
+/** Sets a trailing "P3" in italic, on its own line from lg up (a two-line masthead). */
+function markP3(text: string) {
+  const m = text.match(/^(.*\S)\s+(P3)$/);
+  if (!m) return text;
   return (
     <>
-      {/* Opening */}
+      <span className="lg:block">{m[1]}</span> <em className="lg:block">{m[2]}</em>
+    </>
+  );
+}
+
+export default function EducationPage() {
+  const { hero, family, interlude, routes } = education;
+  return (
+    <>
+      {/* Opening. Phones: headline, photographs, then the words. Desktop: words left, collage right. */}
       <section className="bg-paper pt-[76px]">
-        <div className="mx-auto grid max-w-[1440px] gap-12 px-5 pt-12 pb-24 md:grid-cols-12 md:gap-x-6 md:px-10 md:pt-20 md:pb-32">
-          <div className="md:col-span-6">
+        <div className="mx-auto grid max-w-[1440px] px-5 pt-10 pb-20 md:px-10 md:pt-16 md:pb-28 lg:grid-cols-12 lg:grid-rows-[auto_1fr] lg:gap-x-6 lg:pt-20 lg:pb-40">
+          <div className="lg:col-span-6">
             <Label index="03">Hands-On Education</Label>
             <h1 className="display mt-8 text-[clamp(3.2rem,7vw,7.6rem)] leading-[0.9]">
-              <LineReveal lines={["Skill-building", "with instruments", <em key="a">in hand.</em>]} delay={0.1} />
+              <LineReveal lines={[typeset("Skill-building"), "with instruments", <em key="a">in hand.</em>]} />
             </h1>
-            <Reveal immediate delay={0.45} className="mt-10 flex max-w-md flex-col gap-5">
-              {hero.paragraphs.map((p, i) => (
-                <p key={p} className={`leading-relaxed ${i === 0 ? "text-[19px]" : "text-[17px] text-stone"}`}>
-                  {p}
-                </p>
-              ))}
-              <div className="mt-2">
-                <ButtonLink href={hero.cta.href}>{hero.cta.label}</ButtonLink>
-              </div>
-            </Reveal>
           </div>
-          <div className="relative md:col-span-6">
-            <ImageReveal immediate delay={0.2}>
-              <Photo slot={hero.photo} priority className="aspect-[4/5] w-full md:ml-auto md:w-[86%]" sizes="(max-width: 768px) 100vw, 45vw" />
+
+          <div className="relative mt-10 md:mt-14 lg:col-span-6 lg:col-start-7 lg:row-span-2 lg:row-start-1 lg:mt-0 lg:self-start">
+            <ImageReveal immediate delay={0.1}>
+              <Photo
+                slot={hero.photo}
+                priority
+                className="aspect-square w-full md:aspect-[4/3] lg:ml-auto lg:aspect-[4/5] lg:w-[86%]"
+                sizes="(min-width: 1440px) 720px, (min-width: 1024px) 50vw, (min-width: 768px) calc(100vw - 80px), calc(100vw - 40px)"
+              />
             </ImageReveal>
-            <ImageReveal immediate delay={0.45} className="relative -mt-24 w-[52%] border-[6px] border-paper md:absolute md:bottom-[-3rem] md:left-0 md:mt-0 md:w-[42%]">
-              <Photo slot={hero.detail} className="aspect-square w-full" sizes="25vw" />
+            <ImageReveal
+              immediate
+              delay={0.2}
+              className="relative -mt-16 ml-auto w-[46%] border-[6px] border-paper md:-mt-28 md:w-[36%] lg:absolute lg:bottom-[-3.5rem] lg:left-0 lg:mt-0 lg:ml-0 lg:w-[42%]"
+            >
+              <Photo slot={hero.detail} priority className="aspect-square w-full" sizes="(min-width: 1440px) 280px, (min-width: 1024px) 20vw, (min-width: 768px) 34vw, 46vw" />
             </ImageReveal>
           </div>
+
+          <Reveal immediate delay={0.25} className="mt-12 flex max-w-md flex-col gap-5 md:mt-14 lg:col-span-5 lg:row-start-2 lg:mt-10">
+            {hero.paragraphs.map((p, i) => (
+              <p key={p} className={`leading-relaxed ${i === 0 ? "text-[19px]" : "text-[17px] text-stone"}`}>
+                {p}
+              </p>
+            ))}
+            <div className="mt-2">
+              <ButtonLink href={hero.cta.href}>{hero.cta.label}</ButtonLink>
+            </div>
+          </Reveal>
         </div>
       </section>
 
-      {/* Dr. Joy's P3 */}
+      {/* Dr. Joy's P3: the room at work beside the family name, set as a masthead, and its two event types. */}
       <section className="bg-ivory">
-        <div className="mx-auto max-w-[1440px] px-5 py-24 md:px-10 md:py-32">
-          <Reveal>
-            <h2 className="display text-[clamp(2.8rem,6vw,6rem)]">{family.heading}</h2>
+        <div className="mx-auto grid max-w-[1440px] gap-12 px-5 py-24 md:px-10 md:py-32 lg:grid-cols-12 lg:grid-rows-[auto_1fr] lg:gap-x-6 lg:gap-y-16">
+          <Reveal className="lg:col-span-5 lg:col-start-8 lg:row-start-1">
+            <h2 className="display text-[clamp(3.6rem,8.4vw,7.6rem)] leading-[0.88]">{markP3(family.heading)}</h2>
           </Reveal>
-          <div className="mt-14 grid gap-px bg-line md:grid-cols-2">
+          <ImageReveal className="lg:col-span-6 lg:row-span-2 lg:row-start-1">
+            <Photo
+              slot={family.photo}
+              className="aspect-[4/5] w-full md:aspect-[4/3] lg:aspect-[4/5]"
+              sizes="(min-width: 1440px) 670px, (min-width: 1024px) 46vw, (min-width: 768px) calc(100vw - 80px), calc(100vw - 40px)"
+            />
+          </ImageReveal>
+          <div className="grid gap-12 md:grid-cols-2 md:gap-x-6 lg:col-span-5 lg:col-start-8 lg:row-start-2 lg:grid-cols-1 lg:gap-0 lg:self-end">
             {family.items.map((item, i) => (
-              <Reveal key={item.title} delay={i * 0.1} className="bg-ivory">
-                <article className={`flex h-full flex-col py-10 ${i === 0 ? "md:pr-10" : "md:pl-10"}`}>
-                  <span className="label text-stone tabular-nums">{String(i + 1).padStart(2, "0")}</span>
-                  <h3 className="display mt-8 text-[clamp(2.2rem,3.6vw,3.4rem)]">{item.title}</h3>
-                  <p className="mt-5 max-w-md text-[17px] leading-relaxed text-stone">{item.text}</p>
+              <Reveal key={item.title} delay={i * 0.08} className={i > 0 ? "lg:mt-11 lg:border-t lg:border-ink/15 lg:pt-11" : ""}>
+                <article>
+                  <h3 className={`display ${i === 0 ? "text-[clamp(2.6rem,4.4vw,4.4rem)]" : "text-[clamp(2.2rem,3.3vw,3.3rem)]"}`}>
+                    {typeset(item.title)}
+                  </h3>
+                  <p className="mt-5 max-w-[42ch] text-[17px] leading-relaxed text-stone">{item.text}</p>
                 </article>
               </Reveal>
             ))}
@@ -68,76 +97,34 @@ export default function EducationPage() {
         </div>
       </section>
 
-      {/* Attendee voice */}
-      {attendee ? (
-        <Quote heading="From a P3 participant" quote={attendee.quote} name={attendee.name} role={attendee.role} permission={attendee.permission} tone="light" />
-      ) : (
-        <section className="bg-ivory">
-          <div className="mx-auto max-w-[1440px] px-5 pb-24 md:px-10">
-            <ReviewSlot>Featured attendee testimonial or approved short video (permission required)</ReviewSlot>
-          </div>
-        </section>
-      )}
+      {/* Photo beat: participants at work, edge to edge. */}
+      <ImageReveal>
+        <Photo
+          slot={interlude}
+          className="aspect-[4/3] w-full md:aspect-[16/9] lg:aspect-[21/9]"
+          sizes="(min-width: 1024px) 100vw, (min-width: 768px) 135vw, 180vw"
+        />
+      </ImageReveal>
 
-      {/* P3 Events */}
-      <section id="events" className="grain grain-light scroll-mt-20 bg-ink text-white">
-        <div className="mx-auto max-w-[1440px] px-5 py-24 md:px-10 md:py-36">
-          <Reveal>
-            <Label className="text-ash">{events.heading}</Label>
-          </Reveal>
-          {ev ? (
-            <div className="mt-12 grid gap-12 md:grid-cols-12 md:gap-x-6">
-              <ImageReveal className="md:col-span-6">
-                <Photo slot={ev.photo} tone="dark" className="aspect-[4/3] w-full" sizes="50vw" />
-              </ImageReveal>
-              <Reveal delay={0.1} className="md:col-span-5 md:col-start-8 md:self-center">
-                <h2 className="display text-[clamp(2.6rem,5vw,4.8rem)]">{ev.name}</h2>
-                <p className="mt-5 text-[18px] text-blush">
-                  {ev.date} · {ev.location}
-                </p>
-                <p className="mt-6 text-[16.5px] leading-relaxed text-ash">{ev.details}</p>
-                <a
-                  href={ev.registrationUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group mt-10 inline-flex min-h-12 items-center gap-3 rounded-full bg-white px-6 text-[15px] font-medium text-ink hover:bg-ivory"
-                >
-                  {events.cta}
-                  <ArrowUpRight className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden />
-                </a>
-              </Reveal>
-            </div>
-          ) : (
-            <div className="mt-12 grid gap-10 md:grid-cols-12 md:gap-x-6">
-              <Reveal className="md:col-span-7">
-                <h2 className="display text-[clamp(2.4rem,4.8vw,4.6rem)]">{events.fallback.heading}</h2>
-              </Reveal>
-              <Reveal delay={0.1} className="md:col-span-4 md:col-start-9 md:self-end">
-                <p className="text-[17px] leading-relaxed text-ash">{events.fallback.text}</p>
-                <InquiryButton type="p3_interest" tone="dark" className="mt-8">
-                  {events.fallback.cta}
-                </InquiryButton>
-              </Reveal>
-            </div>
-          )}
-        </div>
-      </section>
+      <AttendeeVoice />
 
-      {/* Routing */}
+      <P3Events />
+
+      {/* Other routes: a compact index, so they read as wayfinding, not as the page's offer. */}
       <section className="bg-paper">
-        <div className="mx-auto grid max-w-[1440px] gap-px bg-line md:grid-cols-2">
+        <ul className="mx-auto max-w-[1440px] px-5 py-16 md:px-10 md:py-24">
           {routes.map((r, i) => (
-            <Reveal key={r.heading} delay={i * 0.08} className="bg-paper">
-              <div className="flex h-full flex-col px-5 py-16 md:px-10 md:py-24">
-                <h2 className="display text-[clamp(2.2rem,3.8vw,3.6rem)]">{r.heading}</h2>
-                <p className="mt-4 text-[17px] text-stone">{r.text}</p>
-                <ArrowLink href={r.cta.href} className="mt-6">
-                  {r.cta.label}
-                </ArrowLink>
-              </div>
-            </Reveal>
+            <li key={r.heading} className="border-t border-line">
+              <Reveal delay={i * 0.06} className="grid gap-3 py-9 md:grid-cols-12 md:items-baseline md:gap-x-6 md:py-11">
+                <h2 className="display text-[clamp(2rem,3vw,2.8rem)] md:col-span-6 xl:col-span-5">{typeset(r.heading)}</h2>
+                <p className="text-[16.5px] leading-relaxed text-stone md:col-span-6 xl:col-span-4">{r.text}</p>
+                <div className="md:col-span-12 md:col-start-7 xl:col-span-3 xl:col-start-auto xl:justify-self-end">
+                  <ArrowLink href={r.cta.href}>{r.cta.label}</ArrowLink>
+                </div>
+              </Reveal>
+            </li>
           ))}
-        </div>
+        </ul>
       </section>
 
       <NextPage current="/hands-on-education" />
