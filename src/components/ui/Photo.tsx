@@ -1,6 +1,7 @@
 import Image from "next/image";
 import type React from "react";
 import { site, type PhotoSlot } from "@/content/site";
+import blur from "@/content/blur.json";
 
 const treatmentLabel: Record<PhotoSlot["treatment"], string> = {
   bw: "B&W portrait",
@@ -8,9 +9,17 @@ const treatmentLabel: Record<PhotoSlot["treatment"], string> = {
   cutout: "Background-removed cutout",
 };
 
+/** Tiny previews from scripts/blur.mjs, keyed by photo path. */
+const previews: Record<string, string> = blur;
+
 /**
  * A photograph slot. Renders the supplied image, or (until it arrives) an
  * art-direction placeholder that tells the photo editor what belongs here.
+ *
+ * While a photo loads, its frame shows a soft color preview of it (from
+ * src/content/blur.json, cropped to the same focus point), and the photo fades
+ * in over it. Photos without a preview (new files before the generator has run,
+ * cutouts) fall back to the plain frame.
  */
 export function Photo({
   slot,
@@ -23,6 +32,11 @@ export function Photo({
   slot: PhotoSlot;
   className?: string;
   sizes?: string;
+  /**
+   * For the opening photo (the likely Largest Contentful Paint): loads eagerly
+   * at high fetch priority. Next 16 deprecated the image `priority` prop, so
+   * this maps to loading="eager" + fetchPriority="high" instead.
+   */
   priority?: boolean;
   /** Background the slot sits on, so the placeholder contrasts correctly. */
   tone?: "light" | "dark";
@@ -34,20 +48,31 @@ export function Photo({
   if (src) {
     // A cutout keeps its transparency and stands on the bottom edge of its frame.
     const cutout = slot.treatment === "cutout";
+    const preview = cutout ? undefined : previews[src];
+    const style = cutout
+      ? undefined
+      : ({
+          "--focus": slot.focus ?? "50% 35%",
+          "--focus-sm": slot.focusMobile ?? slot.focus ?? "50% 35%",
+          ...(preview ? { backgroundImage: `url("${preview}")` } : {}),
+        } as React.CSSProperties);
     return (
-      <div className={`relative overflow-hidden ${cutout ? "" : "bg-sand"} ${className}`}>
+      <div
+        className={`relative overflow-hidden ${cutout ? "" : "bg-sand"} ${
+          preview ? "bg-cover bg-no-repeat bg-[position:var(--focus-sm)] md:bg-[position:var(--focus)]" : ""
+        } ${className}`}
+        style={style}
+        data-blur={preview ? "" : undefined}
+        suppressHydrationWarning
+      >
         <Image
           src={src}
           alt={slot.alt}
           fill
           sizes={sizes}
-          priority={priority}
+          loading={priority ? "eager" : undefined}
+          fetchPriority={priority ? "high" : undefined}
           className={cutout ? "object-contain object-bottom" : "object-cover object-[var(--focus-sm)] md:object-[var(--focus)]"}
-          style={
-            cutout
-              ? undefined
-              : ({ "--focus": slot.focus ?? "50% 35%", "--focus-sm": slot.focusMobile ?? slot.focus ?? "50% 35%" } as React.CSSProperties)
-          }
         />
         {slot.stock && site.showPlaceholders && (
           <span className="label absolute top-3 left-3 bg-paper/90 px-2 py-1 !text-[9.5px] !tracking-[0.14em] text-ink">
