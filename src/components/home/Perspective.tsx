@@ -1,4 +1,4 @@
-import { Fragment, type CSSProperties, type ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import { home } from "@/content/home";
 import { Scene, SceneStep, SceneSteps } from "@/components/motion/Scene";
 import { InView } from "@/components/motion/InView";
@@ -19,8 +19,11 @@ if (statements.length !== perspective.marks.length) {
   throw new Error(`home.perspective.marks needs one list per sentence (${statements.length} sentences, ${perspective.marks.length} lists).`);
 }
 
-/** How many screens the pinned story lasts. Home's held opening reads it too. */
-export const PERSPECTIVE_LENGTH = 7.5;
+/**
+ * How many screens the pinned story lasts: about four fifths of a screen of
+ * scrolling per step. Home's held opening reads it too.
+ */
+export const PERSPECTIVE_LENGTH = 6.6;
 /**
  * Step 0 is the opening (the photograph's frame opening to the full screen),
  * steps 1 to n are the statements, and the last step holds the final
@@ -33,7 +36,7 @@ const pad = (n: number) => String(n).padStart(2, "0");
 /**
  * A statement as words that can rise one after another, with its marked
  * phrases in blush. Trailing punctuation stays outside a mark ("at 16," keeps
- * a white comma).
+ * a white comma), and a short marked phrase is never split across two lines.
  */
 function Words({ text, marks }: { text: string; marks: readonly string[] }) {
   const ranges = marks.map((m) => {
@@ -41,16 +44,30 @@ function Words({ text, marks }: { text: string; marks: readonly string[] }) {
     if (at < 0) throw new Error(`home.perspective.marks: “${m}” is not in “${text}”.`);
     return [at, at + m.length] as const;
   });
+  const out: ReactNode[] = [];
+  // The words of one short marked phrase, held together until the phrase ends.
+  let run: ReactNode[] = [];
+  let runOf: (typeof ranges)[number] | undefined;
+  const flush = (key: string) => {
+    if (!run.length) return;
+    if (out.length) out.push(" ");
+    out.push(
+      run.length > 1 ? (
+        <span key={key} className="whitespace-nowrap">
+          {run}
+        </span>
+      ) : (
+        run[0]
+      ),
+    );
+    run = [];
+  };
   let pos = 0;
-  let last: (typeof ranges)[number] | undefined;
-  return text.split(" ").map((word, i) => {
+  text.split(" ").forEach((word, i) => {
     const start = text.indexOf(word, pos);
     const end = start + word.length;
     pos = end;
     const hit = ranges.find(([a, b]) => start < b && end > a);
-    // A short marked phrase ("at 16") is never split across two lines.
-    const bound = hit && hit === last && hit[1] - hit[0] <= 8;
-    last = hit;
     let inner: ReactNode = typeset(word);
     if (hit) {
       const a = Math.max(start, hit[0]) - start;
@@ -63,17 +80,24 @@ function Words({ text, marks }: { text: string; marks: readonly string[] }) {
         </>
       );
     }
-    return (
-      <Fragment key={i}>
-        {i > 0 && (bound ? "\u00a0" : " ")}
-        <span className="wr">
-          <span className="wr-in" style={{ "--i": i } as Vars}>
-            {inner}
-          </span>
+    const node = (
+      <span key={i} className="wr">
+        <span className="wr-in" style={{ "--i": i } as Vars}>
+          {inner}
         </span>
-      </Fragment>
+      </span>
     );
+    const short = hit && hit[1] - hit[0] <= 8 ? hit : undefined;
+    if (short && short === runOf) {
+      run.push(" ", node);
+    } else {
+      flush(`run-${i}`);
+      run = [node];
+      runOf = short;
+    }
   });
+  flush("run-end");
+  return out;
 }
 
 /** The heading, with its marked phrase under a blush marker; the words rise as one sentence. */
@@ -135,17 +159,17 @@ export function Perspective({ tone = "bg-ivory" }: { tone?: string }) {
             {/* Static layout only: the statements sit on black, so the header goes dark over them. */}
             <div aria-hidden data-header="dark" className="persp-mark-static pointer-events-none absolute inset-0" />
             <div className="persp-copy-inner relative mx-auto max-w-[90rem] px-5 py-20 md:px-10 md:py-28">
-              <SceneSteps className="persp-steps flex flex-col gap-12 md:gap-16">
+              <SceneSteps className="persp-steps flex flex-col gap-10 md:gap-12">
                 {statements.map((text, i) => (
                   <SceneStep
                     key={i}
                     index={i + 1}
                     className={`persp-step grid gap-x-6 gap-y-4 md:grid-cols-12 ${i === statements.length - 1 ? "persp-step-last" : ""}`}
                   >
-                    <span aria-hidden className="persp-num label text-ash tabular-nums md:col-span-2 md:pt-3">
+                    <span aria-hidden className="persp-num label text-ash tabular-nums md:col-span-3 md:pt-3 lg:col-span-4">
                       {pad(i + 1)}
                     </span>
-                    <p className={`persp-say display md:col-span-9 ${text.length <= 60 ? "persp-say-short" : text.length > 130 ? "persp-say-long" : ""}`}>
+                    <p className={`persp-say display md:col-span-9 lg:col-span-8 ${text.length <= 60 ? "persp-say-short" : text.length > 130 ? "persp-say-long" : ""}`}>
                       <Words text={text} marks={perspective.marks[i]} />
                     </p>
                   </SceneStep>

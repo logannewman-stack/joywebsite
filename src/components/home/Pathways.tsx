@@ -56,18 +56,20 @@ export function Pathways() {
               <span aria-hidden className="work-numeral">
                 {pad(i + 1)}
               </span>
-              <div className="work-kicker mt-6 flex items-baseline gap-3 border-t border-ink pt-4">
-                <span className="work-index label text-stone tabular-nums">{pad(i + 1)}</span>
-                <h3 className="label">{p.kicker}</h3>
+              <div className="work-words">
+                <div className="work-kicker mt-6 flex items-baseline gap-3 border-t border-ink pt-4">
+                  <span className="work-index label text-stone tabular-nums">{pad(i + 1)}</span>
+                  <h3 className="label">{p.kicker}</h3>
+                </div>
+                <p className="work-heading display mt-5 text-[clamp(1.75rem,6.6vw,2.1rem)] leading-[1.04] sm:text-[clamp(1.85rem,3.4vw,2.25rem)] xl:text-[clamp(1.75rem,2vw,2.1rem)]">
+                  {typeset(p.heading)}
+                </p>
+                <p className="work-body mt-4 text-[0.96875rem] leading-relaxed text-stone">{p.body}</p>
+                {/* The link's ::after covers the card, so the photo and words are part of one target. */}
+                <ArrowLink href={p.link.href} className="mt-5 focus-visible:outline-none after:absolute after:inset-0 after:content-['']">
+                  {p.link.label}
+                </ArrowLink>
               </div>
-              <p className="work-heading display mt-5 text-[clamp(1.75rem,6.6vw,2.1rem)] leading-[1.04] sm:text-[clamp(1.85rem,3.4vw,2.25rem)] xl:text-[clamp(1.75rem,2vw,2.1rem)]">
-                {typeset(p.heading)}
-              </p>
-              <p className="work-body mt-4 text-[0.96875rem] leading-relaxed text-stone">{p.body}</p>
-              {/* The link's ::after covers the card, so the photo and words are part of one target. */}
-              <ArrowLink href={p.link.href} className="mt-5 focus-visible:outline-none after:absolute after:inset-0 after:content-['']">
-                {p.link.label}
-              </ArrowLink>
             </div>
           </li>
         ))}

@@ -25,7 +25,7 @@
 }
 html.motion .hero-settle {
   transform-origin: 62% 32%;
-  animation: hero-settle 2.6s var(--ease-expo) both;
+  animation: hero-settle 2.8s cubic-bezier(0.25, 0.6, 0.3, 1) both;
 }
 
 /* "Scroll": arrives after the headline; its hairline draws once. */
@@ -68,7 +68,7 @@ html.motion .hero-cue-line {
     top: 0;
   }
   html.motion .hero-hold[data-pinned] .hero-dim {
-    opacity: calc(clamp(0, var(--p, 0) * var(--hold-n, 6), 1) * 0.64);
+    opacity: calc(clamp(0, var(--p, 0) * var(--hold-n, 6), 1) * 0.58);
   }
   html.motion .hero-hold[data-pinned] .hero-cue {
     opacity: calc(1 - clamp(0, var(--p, 0) * var(--hold-n, 6) * 7, 1));
@@ -88,6 +88,11 @@ html.motion .hero-cue-line {
   font-size: clamp(1.7rem, 3.3vw, 3rem);
   line-height: 1.08;
   letter-spacing: -0.01em;
+}
+/* Static: a numbered list, a hairline above each statement. */
+.persp .persp-step {
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--color-line-dark);
 }
 /* The marker sits behind the lower half of the words, not under them. */
 .persp .persp-heading .hl-light {
@@ -123,7 +128,7 @@ html.motion .hero-cue-line {
   }
   .persp[data-pinned] .persp-heading {
     max-width: 19ch;
-    font-size: clamp(2.5rem, min(7.3vw, 12.4svh), 7.4rem);
+    font-size: clamp(2.5rem, min(7.9vw, 13svh), 8rem);
     line-height: 0.92;
   }
 
@@ -136,6 +141,18 @@ html.motion .hero-cue-line {
     height: auto;
     aspect-ratio: auto;
     clip-path: inset(calc(var(--shut) * var(--win-top)) calc(var(--shut) * var(--win-x)) 0 calc(var(--shut) * var(--win-x)));
+  }
+  /* Phones: when the browser's toolbar slides away the screen grows past the
+     pinned stage. The photograph runs to the taller height, so no strip of the
+     page shows under it. */
+  @supports (height: 100lvh) {
+    .persp[data-pinned] > .persp-stage {
+      overflow: visible;
+    }
+    .persp[data-pinned] .persp-photo {
+      inset: 0 0 auto;
+      height: 100lvh;
+    }
   }
   .persp[data-pinned] .persp-img {
     transform: translate3d(0, calc(var(--shut) * var(--win-shift)), 0) scale(calc(1.03 + var(--p, 0) * 0.12));
@@ -182,6 +199,8 @@ html.motion .hero-cue-line {
   }
   .persp[data-pinned] .persp-step {
     display: block;
+    padding-top: 0;
+    border-top: 0;
   }
   .persp[data-pinned] .persp-num {
     display: none;
@@ -216,7 +235,7 @@ html.motion .hero-cue-line {
   }
   html.motion .persp[data-pinned] [data-scene-step][data-active] .wr-in {
     transform: none;
-    transition: transform var(--duration-image) var(--ease-expo) calc(0.2s + var(--i, 0) * 26ms);
+    transition: transform var(--duration-image) var(--ease-expo) calc(0.18s + var(--i, 0) * 20ms);
   }
   /* The last statement stays while the next section covers the stage. */
   html.motion .persp[data-pinned] .persp-step-last:not([data-active]) {
@@ -284,14 +303,16 @@ html.motion .hero-cue-line {
     transform-origin: left center;
   }
 
-  /* The header turns dark once the photograph has reached the top of the screen. */
+  /* The header's dark marker: in place once the photograph has reached the top
+     of the screen, and gone again when the next section has covered the stage. */
   .persp[data-pinned] .persp-mark-pinned {
     --lit: clamp(0, (var(--open) - 0.8) * 1000, 1);
+    --gone: clamp(0, (var(--p, 0) - 0.9985) * 100000, 1);
     display: block;
     position: absolute;
     inset: 0 0 auto;
     height: var(--header-height);
-    transform: translate3d(0, calc((1 - var(--lit)) * -200%), 0);
+    transform: translate3d(0, calc((1 - var(--lit) * (1 - var(--gone))) * -200%), 0);
   }
 
   /* Portrait screens (phones, upright tablets): she fills the screen and the words sit low, on a deep shade. */
@@ -471,12 +492,14 @@ html.motion .hero-cue-line {
     transform: translate3d(calc(var(--p, 0) * (100cqw - 100%)), 0, 0);
   }
   .work[data-pinned] .work-panel {
-    --ph: min(35rem, calc(100svh - var(--header-height) - 17rem));
+    --ph: min(36rem, calc(100svh - var(--header-height) - 14rem));
+    --pw: calc(var(--ph) * 0.8);
     display: grid;
-    grid-template-columns: calc(var(--ph) * 0.8) 23.5rem;
+    grid-template-columns: var(--pw) 23.5rem;
     column-gap: 3rem;
     width: auto;
     margin-top: 0;
+    isolation: isolate;
   }
   .work[data-pinned] .work-photo {
     height: var(--ph);
@@ -490,17 +513,22 @@ html.motion .hero-cue-line {
     transform: translate3d(calc((var(--p, 0) - var(--c, 0)) * 5%), 0, 0) scale(1.1);
     will-change: transform;
   }
+  /* The words stand on the photograph's foot. */
   .work[data-pinned] .work-text {
     display: flex;
     flex-direction: column;
+    justify-content: flex-end;
     height: var(--ph);
   }
-  /* The large outlined numeral: texture, set behind the words' column and drifting slower than the row. */
+  /* The large outlined numeral: texture at the head of the words' column, drifting slower than the row. */
   .work[data-pinned] .work-numeral {
     display: block;
-    margin: -0.08em 0 auto -0.04em;
+    position: absolute;
+    top: -0.07em;
+    left: calc(var(--pw) + 3rem - 0.05em);
+    z-index: -1;
     font-family: var(--font-sans);
-    font-size: clamp(7rem, min(14vw, 26svh), 14.5rem);
+    font-size: min(15rem, calc(var(--ph) * 0.4));
     font-weight: 500;
     line-height: 0.8;
     letter-spacing: -0.05em;
@@ -510,19 +538,31 @@ html.motion .hero-cue-line {
     transform: translate3d(calc((var(--p, 0) - var(--c, 0)) * 7rem), 0, 0);
     transition: -webkit-text-stroke-color var(--duration-ui) var(--ease-soft);
     user-select: none;
+    pointer-events: none;
   }
   .work[data-pinned] .work-panel:hover .work-numeral,
   .work[data-pinned] .work-panel:has(:focus-visible) .work-numeral {
     -webkit-text-stroke-color: rgb(11 11 11 / 0.6);
   }
+  /* Where a short screen brings the two together, the numeral passes behind the words. */
+  .work[data-pinned] .work-words {
+    background: var(--color-paper);
+  }
   .work[data-pinned] .work-kicker {
-    margin-top: 1.5rem;
+    margin-top: 0;
   }
   .work[data-pinned] .work-index {
     display: none;
   }
   .work[data-pinned] .work-heading {
     font-size: clamp(1.8rem, min(2.6vw, 4.6svh), 2.6rem);
+  }
+
+  /* Upright screens from 1024px (a large tablet): the row sits midway between the heading and the progress line. */
+  @media (max-aspect-ratio: 1/1) {
+    .work[data-pinned] .work-list {
+      margin-top: auto;
+    }
   }
 
   /* Progress: a hairline along the foot of the stage, with a dot at its head. */
@@ -566,6 +606,83 @@ html.motion .hero-cue-line {
     .work[data-pinned] .work-count .roll {
       transform: translate3d(0, calc(round(var(--p, 0) * 3) * -1em), 0);
     }
+  }
+}
+
+/* Wide but very short screens: the pinned row would not fit, so the section is
+   the plain grid there (as it is without motion). */
+@media screen and (max-height: 640px) {
+  .work[data-scene][data-pinned] {
+    height: auto;
+  }
+  .work[data-scene][data-pinned] > .work-stage {
+    display: block;
+    position: static;
+    height: auto;
+    padding: 8rem 0 10rem;
+    overflow: visible;
+  }
+  .work[data-pinned] .work-head {
+    display: block;
+    max-width: 90rem;
+    margin-inline: auto;
+  }
+  .work[data-pinned] .work-count,
+  .work[data-pinned] .work-progress,
+  .work[data-pinned] .work-numeral {
+    display: none;
+  }
+  .work[data-pinned] .work-list {
+    margin-top: 5rem;
+  }
+  .work[data-scene][data-pinned] .work-track {
+    display: grid;
+    gap: 5rem 2rem;
+    width: auto;
+    max-width: 90rem;
+    margin-inline: auto;
+    transform: none;
+  }
+  .work[data-pinned] .work-panel {
+    display: block;
+  }
+  .work[data-pinned] .work-photo,
+  .work[data-pinned] .work-text {
+    height: auto;
+  }
+  .work[data-pinned] .work-photo-in {
+    height: auto;
+    aspect-ratio: 4 / 5;
+  }
+  .work[data-pinned] .work-photo-in > img {
+    transform: none;
+  }
+  .work[data-pinned] .work-kicker {
+    margin-top: 1.5rem;
+  }
+  .work[data-pinned] .work-index {
+    display: inline;
+  }
+}
+
+/* Print: the four cards as a plain two-column grid, whatever the screen was showing. */
+@media print {
+  .work [data-scene-track] {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 3rem 2rem !important;
+    width: auto !important;
+    max-width: none !important;
+    overflow: visible !important;
+    transform: none !important;
+  }
+  .work .work-panel {
+    width: auto !important;
+    margin-top: 0 !important;
+    break-inside: avoid;
+  }
+  .work .work-swipe {
+    display: none !important;
   }
 }
 
