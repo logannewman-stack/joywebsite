@@ -35,8 +35,9 @@ const pad = (n: number) => String(n).padStart(2, "0");
 
 /**
  * A statement as words that can rise one after another, with its marked
- * phrases in champagne gold (large display type on black). Trailing punctuation stays outside a mark ("at 16," keeps
- * a white comma), and a short marked phrase is never split across two lines.
+ * phrases in champagne gold (large display type on black). Trailing
+ * punctuation stays outside a mark ("at 16," keeps a white comma), and a short
+ * marked phrase is never split across two lines.
  */
 function Words({ text, marks }: { text: string; marks: readonly string[] }) {
   const ranges = marks.map((m) => {
@@ -100,7 +101,7 @@ function Words({ text, marks }: { text: string; marks: readonly string[] }) {
   return out;
 }
 
-/** The heading, with its marked phrase under a blush marker; the words rise as one sentence. */
+/** The heading, with its marked phrase over a pale pink marker; the words rise as one sentence. */
 function Heading() {
   const text = perspective.heading;
   const mark = perspective.headingMark;
@@ -129,7 +130,8 @@ function Heading() {
  * Animated, it is a pinned scene. It arrives as a title spread (the heading
  * above the framed photograph); the frame opens to the full screen, the light
  * goes down, and the five statements appear one at a time with a counter and
- * a progress line. Choreography: src/app/styles/home.css ("Perspective").
+ * a progress line. The last statement holds while the next section slides up
+ * over the stage. Choreography: src/app/styles/home.css ("Perspective").
  *
  * Without JavaScript, with reduced motion and in print it is a static
  * editorial section: the heading, the full-bleed photograph, then the five
