@@ -146,7 +146,17 @@ export function Select({
   );
 }
 
-export function CheckGroup({ legend, name, options }: { legend: string; name: string; options: string[] }) {
+export function CheckGroup({
+  legend,
+  name,
+  options,
+  defaultValues = [],
+}: {
+  legend: string;
+  name: string;
+  options: string[];
+  defaultValues?: string[];
+}) {
   return (
     <fieldset data-field={name} data-label={legend}>
       <legend className="w-full">
@@ -155,8 +165,8 @@ export function CheckGroup({ legend, name, options }: { legend: string; name: st
       <div className="mt-1 flex flex-wrap gap-2">
         {options.map((o) => (
           <label key={o} className="cursor-pointer">
-            <input type="checkbox" name={name} value={o} className="peer sr-only" />
-            <span className="inline-flex min-h-11 items-center rounded-full border border-ink/25 px-4 text-[14px] transition-colors duration-[var(--duration-hover,180ms)] select-none peer-checked:border-ink peer-checked:bg-ink peer-checked:text-white peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-ink hover:border-ink/60 active:scale-[0.98] motion-reduce:active:scale-100">
+            <input type="checkbox" name={name} value={o} defaultChecked={defaultValues.includes(o)} className="peer sr-only" />
+            <span className="inline-flex min-h-11 items-center rounded-full border border-ink/25 px-4 text-[14px] transition-colors duration-[var(--duration-hover,180ms)] select-none peer-checked:border-ink peer-checked:bg-ink peer-checked:text-white forced-colors:peer-checked:border-[Highlight] forced-colors:peer-checked:bg-[Highlight] forced-colors:peer-checked:text-[HighlightText] peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-ink hover:border-ink/60 active:scale-[0.98] motion-reduce:active:scale-100">
               {o}
             </span>
           </label>
@@ -171,16 +181,18 @@ export function Consent({
   label,
   children,
   onChange,
+  defaultChecked,
 }: {
   name: string;
   /** Short name for the email fallback, e.g. "Text messages". */
   label?: string;
   children: ReactNode;
   onChange?: ChangeEventHandler<HTMLInputElement>;
+  defaultChecked?: boolean;
 }) {
   return (
     <label className="flex cursor-pointer items-start gap-3 text-[14.5px] leading-relaxed text-ink/80" data-field={name} data-label={label ?? name}>
-      <input type="checkbox" name={name} onChange={onChange} className="mt-[3px] size-[18px] shrink-0 cursor-pointer accent-ink" />
+      <input type="checkbox" name={name} onChange={onChange} defaultChecked={defaultChecked} className="mt-[3px] size-[18px] shrink-0 cursor-pointer accent-ink" />
       <span>
         {children} <span className="text-stone">(optional)</span>
       </span>

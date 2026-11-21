@@ -3,7 +3,7 @@
 import { useEffect, useId, useRef, useState, type FormEvent } from "react";
 import { ArrowRight, Check, LoaderCircle } from "lucide-react";
 import { links } from "@/content/site";
-import { FormAlert, Honeypot, mailtoFrom, sendInquiry, type Status } from "./feedback";
+import { EMAIL_MESSAGE, emailInputProps, flagField, FormAlert, Honeypot, mailtoFrom, sendInquiry, type Status } from "./feedback";
 
 /** Single-field signup for the From Dr. Joy newsletter. Light enough for the footer of every page. */
 export function NewsletterForm({ tone = "light", cta = "Subscribe" }: { tone?: "light" | "dark"; cta?: string }) {
@@ -27,6 +27,11 @@ export function NewsletterForm({ tone = "light", cta = "Subscribe" }: { tone?: "
     const form = e.currentTarget;
     setStatus("sending");
     const result = await sendInquiry("newsletter", form);
+    if (result === "invalid_email") {
+      setStatus("idle");
+      flagField(form, "email", EMAIL_MESSAGE);
+      return;
+    }
     if (result !== "ok") setMailto(mailtoFrom(form, "Subscribe to From Dr. Joy"));
     setStatus(result);
     setAttempt((n) => n + 1);
@@ -69,6 +74,7 @@ export function NewsletterForm({ tone = "light", cta = "Subscribe" }: { tone?: "
           name="email"
           required
           autoComplete="email"
+          {...emailInputProps}
           // w-full keeps the field from widening narrow layouts (a percentage width gives it no minimum).
           className={`w-full min-w-0 flex-1 bg-transparent py-3 text-[17px] outline-none ${dark ? "text-white" : "text-ink"}`}
         />

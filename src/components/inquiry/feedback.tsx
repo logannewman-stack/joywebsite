@@ -1,6 +1,6 @@
 "use client";
 
-import type { Ref } from "react";
+import type { FormEvent, InputHTMLAttributes, Ref } from "react";
 import { CircleAlert } from "lucide-react";
 import type { InquiryType } from "@/content/integrations";
 import { site } from "@/content/site";
@@ -11,10 +11,31 @@ import { site } from "@/content/site";
  * full inquiry form.
  */
 
-export type Status = "idle" | "sending" | "ok" | "not_configured" | "error";
+export type Status = "idle" | "sending" | "ok" | "not_configured" | "error" | "invalid_email" | "phone_required";
+
+/** The same email rule the server applies (a domain ending is required), with a plain message. */
+export const EMAIL_MESSAGE = "Enter an email address like name@example.com.";
+export const emailInputProps: InputHTMLAttributes<HTMLInputElement> = {
+  pattern: "[^\\s@]+@[^\\s@]+\\.[^\\s@]+",
+  onInvalid: (e: FormEvent<HTMLInputElement>) => {
+    const el = e.currentTarget;
+    if (el.validity.typeMismatch || el.validity.patternMismatch) el.setCustomValidity(EMAIL_MESSAGE);
+  },
+  onInput: (e: FormEvent<HTMLInputElement>) => e.currentTarget.setCustomValidity(""),
+};
+export const PHONE_MESSAGE = "Add a mobile number to receive text messages.";
+
+/** When the server rejects a field, show it on that field, like the browser's own checks. */
+export function flagField(form: HTMLFormElement, name: string, message: string) {
+  const el = form.elements.namedItem(name);
+  if (el instanceof HTMLInputElement) {
+    el.setCustomValidity(message);
+    form.reportValidity();
+  }
+}
 
 /** Collects a form into a plain object; repeated names become arrays. */
-function collect(form: HTMLFormElement) {
+export function collect(form: HTMLFormElement) {
   const out: Record<string, string | string[]> = {};
   new FormData(form).forEach((v, k) => {
     if (typeof v !== "string") return;
@@ -33,6 +54,10 @@ export async function sendInquiry(type: InquiryType, form: HTMLFormElement): Pro
     });
     if (res.ok) return "ok";
     if (res.status === 503) return "not_configured";
+    if (res.status === 422) {
+      const { error } = (await res.json().catch(() => ({}))) as { error?: string };
+      if (error === "invalid_email" || error === "phone_required") return error;
+    }
     return "error";
   } catch {
     return "error";

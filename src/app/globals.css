@@ -80,9 +80,11 @@ body {
     text-wrap: pretty;
   }
 
-  /* In-page anchors (#topics, #events, #work...) land below the fixed header. */
-  [id] {
-    scroll-margin-top: calc(var(--header-height) + 1.25rem);
+  /* Anchors (#topics, #events, #work...) and keyboard focus both land below the
+     fixed header: scroll padding covers anchor jumps and focus scrolling alike
+     (WCAG 2.2, focus not obscured). */
+  html {
+    scroll-padding-top: calc(var(--header-height) + 1.25rem);
   }
 
   /* Underlined form fields: focus thickens the line to 2px. */
