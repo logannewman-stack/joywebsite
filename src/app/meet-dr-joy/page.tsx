@@ -1,125 +1,163 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { meet } from "@/content/meet";
+import { site } from "@/content/site";
 import { Photo } from "@/components/ui/Photo";
 import { Label } from "@/components/ui/Links";
 import { ImageReveal, LineReveal, Reveal } from "@/components/ui/Reveal";
+import { Credentials } from "@/components/meet/Credentials";
 import { Question } from "@/components/meet/Question";
+import { bindI } from "@/components/meet/text";
+import { InquiryButton } from "@/components/inquiry/InquiryProvider";
 import { NextPage } from "@/components/layout/NextPage";
 
 export const metadata: Metadata = {
   title: "Meet Dr. Joy",
-  description: meet.hero.paragraphs[0],
+  description: meet.seo.description,
 };
 
 export default function MeetPage() {
-  const { hero, credentials, guides } = meet;
+  const { hero, operatory, interlude, credentials, guides } = meet;
+  // At launch an empty slot renders nothing, so the story column takes its place.
+  const hasLifePhoto = Boolean(guides.photo.src) || site.showPlaceholders;
+
   return (
     <>
-      {/* Opening: photo-led, asymmetric */}
-      <section className="bg-paper pt-[76px]">
-        <div className="mx-auto grid max-w-[1440px] gap-12 px-5 pt-12 pb-24 md:grid-cols-12 md:gap-x-6 md:px-10 md:pt-20 md:pb-32">
-          <div className="md:col-span-7">
-            <Label index="01">Meet Dr. Joy</Label>
-            <h1 className="display mt-8 text-[clamp(3.2rem,7.6vw,8.4rem)] leading-[0.9]">
-              <LineReveal lines={["My career has", "never followed", <em key="a">a single lane.</em>]} delay={0.1} />
+      {/* Opening: the portrait owns the right half of the first screen, bleeding to the edge */}
+      <section className="overflow-x-clip bg-paper pt-[76px]">
+        <div className="mx-auto max-w-[1440px] px-5 pb-24 md:px-10 md:pb-32 lg:grid lg:grid-cols-12 lg:gap-x-6">
+          <div className="pt-10 md:pt-16 lg:col-span-6 lg:pt-14">
+            <Reveal immediate>
+              <Label index="01">Meet Dr. Joy</Label>
+            </Reveal>
+            <h1 className="display mt-7 text-[clamp(3.5rem,8vw,8.4rem)] leading-[0.9] md:mt-9">
+              {/* Trailing spaces keep the text "My career has never followed a single lane." for search and copy-paste; they do not render. */}
+              <LineReveal lines={["My career has ", "never followed ", <em key="lane">a single lane.</em>]} />
             </h1>
           </div>
-          <div className="md:col-span-5 md:row-span-2 md:mt-28">
-            <ImageReveal immediate delay={0.2}>
-              <Photo slot={hero.portrait} priority className="aspect-[4/5] w-full" sizes="(max-width: 768px) 100vw, 40vw" />
+
+          <div className="mt-10 md:mt-14 md:ml-auto md:w-2/3 lg:col-span-6 lg:col-start-7 lg:row-span-2 lg:mt-0 lg:mr-[calc(-1*max(2.5rem,(100vw-1440px)/2+2.5rem))] lg:ml-0 lg:w-auto">
+            <ImageReveal immediate delay={0.1}>
+              <Photo
+                slot={hero.portrait}
+                priority
+                className="aspect-[4/5] w-full lg:aspect-auto lg:h-[min(calc(100svh-76px),1080px)]"
+                sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1023px) calc(66vw - 53px), calc(50vw - 12px)"
+              />
             </ImageReveal>
           </div>
-          <div className="flex flex-col gap-5 md:col-span-5 md:col-start-2">
-            {hero.paragraphs.map((p, i) => (
-              <Reveal key={i} delay={0.1 + i * 0.06}>
-                <p className={`leading-relaxed ${i === 0 ? "text-[20px] text-ink" : "text-[17px] text-stone"}`}>{p}</p>
-              </Reveal>
-            ))}
+
+          <div className="mt-12 flex max-w-[36rem] flex-col gap-6 md:mt-16 md:ml-[8%] lg:col-span-6 lg:col-start-1 lg:mt-10 lg:ml-0 lg:max-w-none lg:pr-6 xl:col-span-5 xl:col-start-2 xl:pr-0">
+            {hero.paragraphs.map((p, i) =>
+              i === 0 ? (
+                <Reveal key={i} immediate delay={0.25}>
+                  <p className="text-[20px] leading-[1.55] text-ink md:text-[22px] lg:text-[20px] xl:text-[22px]">{p}</p>
+                </Reveal>
+              ) : (
+                <Reveal key={i} delay={(i - 1) * 0.06}>
+                  <p className="text-[18px] leading-relaxed text-ink">{p}</p>
+                </Reveal>
+              ),
+            )}
           </div>
         </div>
       </section>
 
-      {/* Couplet */}
-      <section className="border-y border-line bg-ivory">
-        <div className="mx-auto grid max-w-[1440px] md:grid-cols-2">
-          {hero.couplet.map((line, i) => (
-            <Reveal key={line} delay={i * 0.12} className={`px-5 py-16 md:px-10 md:py-24 ${i === 1 ? "border-t border-line md:border-t-0 md:border-l" : ""}`}>
-              <p className="display text-[clamp(2.2rem,4.2vw,4rem)] leading-[1]">{i === 1 ? <em>{line}</em> : line}</p>
-            </Reveal>
-          ))}
-        </div>
-      </section>
-
-      {/* Education, Leadership, and Service */}
-      <section className="grain grain-light bg-ink text-white">
-        <div className="mx-auto max-w-[1440px] px-5 py-24 md:px-10 md:py-32">
+      {/* Couplet: one turning sentence, with the operatory in the picture */}
+      <section className="bg-ivory">
+        <div className="mx-auto max-w-[1440px] px-5 py-20 md:px-10 md:py-32">
           <Reveal>
-            <Label index="02" className="text-ash">
-              Credentials
-            </Label>
-            <h2 className="display mt-6 max-w-3xl text-[clamp(2.6rem,5vw,4.8rem)]">{credentials.heading}</h2>
+            <p className="display text-[clamp(2.6rem,5.6vw,5.6rem)] leading-[0.98]">{bindI(hero.couplet[0])}</p>
           </Reveal>
-          <div className="mt-16 grid gap-14 md:grid-cols-12 md:gap-x-6">
-            {credentials.groups.map((g, gi) => (
-              <Reveal
-                key={g.title}
-                delay={gi * 0.08}
-                className={gi === 0 ? "md:col-span-4" : gi === 1 ? "md:col-span-5" : "md:col-span-3"}
-              >
-                <h3 className="label border-b border-line-dark pb-4 text-blush">{g.title}</h3>
-                <ul>
-                  {g.items.map((item) => {
-                    // "Role, Organization": lead with the first part. "What I've Built"
-                    // entries end in the role ("Jell-Ed, co-founder"), so split on the last comma.
-                    const cut = gi === 2 ? item.lastIndexOf(", ") : item.indexOf(", ");
-                    const first = cut > 0 ? item.slice(0, cut) : item;
-                    const rest = cut > 0 ? [item.slice(cut + 2)] : [];
-                    return (
-                      <li key={item} className="border-b border-line-dark py-4">
-                        <span className="block text-[16px] leading-snug text-white">{first}</span>
-                        {rest.length > 0 && <span className="mt-1 block text-[14px] leading-snug text-ash">{rest.join(", ")}</span>}
-                      </li>
-                    );
-                  })}
-                </ul>
-              </Reveal>
-            ))}
+          <div className="mt-6 grid gap-12 md:mt-10 md:grid-cols-12 md:items-end md:gap-x-6">
+            <Reveal delay={0.08} className="pl-[12%] md:col-span-7 md:col-start-6 md:row-start-1 md:pl-0 lg:col-span-8 lg:col-start-5">
+              <p className="display text-[clamp(2.6rem,5.6vw,5.6rem)] leading-[0.98]">
+                <em>{bindI(hero.couplet[1])}</em>
+              </p>
+            </Reveal>
+            <ImageReveal className="w-4/5 md:col-span-5 md:col-start-1 md:row-start-1 md:w-auto lg:col-span-4">
+              <Photo
+                slot={operatory}
+                className="aspect-[5/4] w-full"
+                sizes="(max-width: 767px) calc(80vw - 32px), (max-width: 1023px) calc(42vw - 47px), (max-width: 1440px) calc(33vw - 43px), 437px"
+              />
+            </ImageReveal>
           </div>
         </div>
+      </section>
+
+      {/* Education, Leadership, and Service, opened by a full-bleed pause */}
+      <section className="grain grain-light bg-ink text-white">
+        <ImageReveal>
+          <Photo
+            slot={interlude}
+            tone="dark"
+            className="aspect-square w-full md:aspect-[16/9] lg:aspect-[2/1]"
+            sizes="(max-width: 767px) 150vw, 100vw"
+          />
+        </ImageReveal>
+        <Credentials heading={credentials.heading} groups={credentials.groups} />
       </section>
 
       {/* What Guides My Work */}
       <section className="bg-paper">
-        <div className="mx-auto grid max-w-[1440px] gap-12 px-5 py-24 md:grid-cols-12 md:gap-x-6 md:px-10 md:py-36">
-          <div className="md:col-span-5">
+        <div className="mx-auto max-w-[1440px] px-5 pt-24 pb-28 md:px-10 md:pt-36 md:pb-40">
+          <div className="max-w-[46rem]">
             <Reveal>
-              <Label index="03">{guides.heading}</Label>
+              <Label as="h2">{guides.heading}</Label>
             </Reveal>
-            <h2 className="sr-only">{guides.heading}</h2>
-            <div className="mt-8 flex flex-col gap-5">
+            <div className="mt-8 flex flex-col gap-6 md:mt-10">
               {guides.before.map((p, i) => (
                 <Reveal key={i} delay={i * 0.06}>
-                  <p className="text-[19px] leading-relaxed">{p}</p>
+                  <p className="text-[21px] leading-[1.5] text-ink md:text-[24px]">{p}</p>
                 </Reveal>
               ))}
             </div>
           </div>
-          <div className="md:col-span-5 md:col-start-8">
-            <ImageReveal>
-              <Photo slot={guides.photo} className="aspect-[4/5] w-full" sizes="(max-width: 768px) 100vw, 40vw" />
-            </ImageReveal>
-          </div>
 
-          <div className="py-10 md:col-span-11 md:py-20">
+          <div className="mt-14 md:mt-20">
             <Question question={guides.question} answer={guides.answer} />
           </div>
 
-          <div className="flex flex-col gap-5 md:col-span-5 md:col-start-7">
-            {guides.after.map((p, i) => (
-              <Reveal key={i} delay={i * 0.06}>
-                <p className={`leading-relaxed ${i === 0 ? "text-[17px] text-stone" : "text-[19px] text-ink"}`}>{p}</p>
+          <div className="mt-24 md:mt-36 lg:grid lg:grid-cols-12 lg:gap-x-6">
+            {hasLifePhoto && (
+              <ImageReveal className="md:w-2/3 lg:col-span-5 lg:w-auto">
+                <Photo
+                  slot={guides.photo}
+                  className="aspect-[4/5] w-full"
+                  sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1023px) calc(66vw - 53px), (max-width: 1440px) calc(42vw - 47px), 553px"
+                />
+              </ImageReveal>
+            )}
+            <div
+              className={
+                hasLifePhoto
+                  ? "mt-12 max-w-[36rem] md:mt-16 md:ml-[8%] lg:col-span-6 lg:col-start-7 lg:mt-0 lg:ml-0 lg:max-w-none lg:self-end"
+                  : "max-w-[36rem] lg:col-span-6 lg:col-start-7 lg:max-w-none"
+              }
+            >
+              <Reveal>
+                <p className="text-[19px] leading-relaxed text-ink md:text-[20px]">{guides.after[0]}</p>
               </Reveal>
-            ))}
+              <Reveal delay={0.06}>
+                <p className="display mt-10 text-[clamp(2rem,3.1vw,2.9rem)] leading-[1.08]">{guides.after[1]}</p>
+              </Reveal>
+              {site.wordmark.onLight && (
+                <Reveal delay={0.12}>
+                  <Image
+                    src={site.wordmark.onLight}
+                    alt=""
+                    width={site.wordmark.width}
+                    height={site.wordmark.height}
+                    unoptimized
+                    className="mt-10 h-14 w-auto md:h-16"
+                  />
+                </Reveal>
+              )}
+              <Reveal delay={0.16} className="mt-14 border-t border-line pt-8">
+                <InquiryButton>Start a Conversation</InquiryButton>
+              </Reveal>
+            </div>
           </div>
         </div>
       </section>
