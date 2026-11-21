@@ -34,7 +34,7 @@ export function PublishedList({
           <div className="h-px bg-line" />
         </div>
       )}
-      <div className="mx-auto grid max-w-[1440px] gap-y-12 px-5 py-24 md:px-10 md:py-28 lg:grid-cols-12 lg:gap-x-6 lg:pt-32 lg:pb-36">
+      <div className="mx-auto grid grid-cols-1 max-w-[1440px] gap-y-12 px-5 py-24 md:px-10 md:py-28 lg:grid-cols-12 lg:gap-x-6 lg:pt-32 lg:pb-36">
         <Reveal className="lg:sticky lg:top-28 lg:col-span-5 lg:self-start">
           <h2 className="display text-[clamp(2.6rem,4.6vw,4.4rem)]">{heading}</h2>
           <p className="mt-5 max-w-sm text-[17px] leading-relaxed text-stone">{intro}</p>

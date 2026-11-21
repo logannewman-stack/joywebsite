@@ -48,7 +48,7 @@ export default function InsightsPage() {
     <>
       {/* Opening: the headline, and a large, quiet portrait */}
       <section className="bg-paper pt-[76px]">
-        <div className="mx-auto grid max-w-[1440px] gap-y-12 px-5 pt-12 pb-20 md:px-10 md:pt-20 md:pb-28 lg:grid-cols-12 lg:gap-x-6 lg:pb-32">
+        <div className="mx-auto grid grid-cols-1 max-w-[1440px] gap-y-12 px-5 pt-12 pb-20 md:px-10 md:pt-20 md:pb-28 lg:grid-cols-12 lg:gap-x-6 lg:pb-32">
           <div className="lg:col-span-7 lg:pt-6">
             <Label index="05">Insights</Label>
             <h1 className="display mt-8 text-[clamp(3rem,6.6vw,7.2rem)] leading-[0.92]">

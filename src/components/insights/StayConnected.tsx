@@ -18,7 +18,7 @@ export function StayConnected({ heading, name, text, cta }: { heading: string; n
   );
   return (
     <section className="grain grain-light bg-ink text-white">
-      <div className="mx-auto grid max-w-[1440px] gap-y-12 px-5 py-24 md:px-10 md:py-28 lg:grid-cols-12 lg:gap-x-6 lg:py-36">
+      <div className="mx-auto grid grid-cols-1 max-w-[1440px] gap-y-12 px-5 py-24 md:px-10 md:py-28 lg:grid-cols-12 lg:gap-x-6 lg:py-36">
         <Reveal className="lg:col-span-6">
           <h2>
             <span className="label flex items-center gap-3 text-ash">

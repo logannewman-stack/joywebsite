@@ -13,7 +13,7 @@ export function Collaborations({ heading, logos }: { heading: string; logos: { n
   const shown = logos.slice(0, 5);
   return (
     <section className="bg-paper">
-      <div className="mx-auto grid max-w-[1440px] gap-y-10 px-5 pt-24 md:px-10 md:pt-28 lg:grid-cols-12 lg:gap-x-6 lg:pt-36">
+      <div className="mx-auto grid grid-cols-1 max-w-[1440px] gap-y-10 px-5 pt-24 md:px-10 md:pt-28 lg:grid-cols-12 lg:gap-x-6 lg:pt-36">
         <Reveal className="lg:col-span-4">
           <h2 className="display max-w-[14ch] text-[clamp(2.2rem,3.4vw,3.2rem)] leading-[1]">{heading}</h2>
         </Reveal>

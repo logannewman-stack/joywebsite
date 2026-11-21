@@ -21,7 +21,7 @@ export function OriginalArticles({ heading, cta, articles }: { heading: string; 
         <Reveal>
           <h2 className="display text-[clamp(2.6rem,5vw,4.8rem)]">{heading}</h2>
         </Reveal>
-        <div className="mt-12 grid gap-y-14 md:mt-16 lg:grid-cols-12 lg:gap-x-6">
+        <div className="mt-12 grid grid-cols-1 gap-y-14 md:mt-16 lg:grid-cols-12 lg:gap-x-6">
           {articles.length > 0
             ? articles.slice(0, 2).map((a, i) => (
                 <Reveal key={a.href} delay={i * 0.08} className={geometry[i].box}>

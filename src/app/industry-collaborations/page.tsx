@@ -27,7 +27,7 @@ export default function IndustryPage() {
     <>
       {/* Opening: headline first on phones, then the portrait, then the two ways in */}
       <section className="bg-paper pt-[76px]">
-        <div className="mx-auto grid max-w-[1440px] gap-y-12 px-5 pt-12 pb-20 md:px-10 md:pt-20 md:pb-28 lg:grid-cols-12 lg:grid-rows-[auto_1fr] lg:gap-x-6 lg:gap-y-8 lg:pb-32">
+        <div className="mx-auto grid grid-cols-1 max-w-[1440px] gap-y-12 px-5 pt-12 pb-20 md:px-10 md:pt-20 md:pb-28 lg:grid-cols-12 lg:grid-rows-[auto_1fr] lg:gap-x-6 lg:gap-y-8 lg:pb-32">
           <div className="lg:col-span-7 lg:col-start-6 lg:row-start-1">
             <Label index="04">Industry Collaborations</Label>
             <h1 className="display mt-8 text-[clamp(2.6rem,13vw,4.4rem)] leading-[0.92] md:text-[clamp(2.6rem,7.4vw,6.4rem)] lg:text-[clamp(2.6rem,5.1vw,5.8rem)]">
@@ -59,7 +59,7 @@ export default function IndustryPage() {
 
       {/* Sponsorships and KOL Partnerships: the large portrait moment */}
       <section id="partnerships" className="bg-ivory">
-        <div className="mx-auto grid max-w-[1440px] gap-y-14 px-5 py-24 md:px-10 md:py-28 lg:grid-cols-12 lg:gap-x-6 lg:py-36">
+        <div className="mx-auto grid grid-cols-1 max-w-[1440px] gap-y-14 px-5 py-24 md:px-10 md:py-28 lg:grid-cols-12 lg:gap-x-6 lg:py-36">
           {/* Heading at the top of the column, the offer and its button at the foot */}
           <div className="flex flex-col lg:col-span-5 lg:justify-between lg:pb-2">
             <Reveal>
@@ -93,7 +93,7 @@ export default function IndustryPage() {
               <em className="text-blush">{launch.lead}</em>
             </p>
           </Reveal>
-          <div className="mt-16 grid gap-y-12 md:mt-24 lg:grid-cols-12 lg:gap-x-6">
+          <div className="mt-16 grid grid-cols-1 gap-y-12 md:mt-24 lg:grid-cols-12 lg:gap-x-6">
             <ImageReveal className="w-[78%] md:w-[48%] lg:col-span-4 lg:w-auto">
               <Photo
                 slot={launch.photo}
@@ -109,7 +109,8 @@ export default function IndustryPage() {
                 </Reveal>
               ))}
               <Reveal delay={0.12} className="mt-4">
-                <InquiryButton type="clinical_launch" tone="dark">
+                {/* The longest pill: below 360px it tightens, and wraps only if text spacing is enlarged. */}
+                <InquiryButton type="clinical_launch" tone="dark" className="max-[359px]:gap-2 max-[359px]:px-4 max-[359px]:text-[14px] max-[359px]:whitespace-normal">
                   {launch.cta}
                 </InquiryButton>
               </Reveal>
@@ -122,7 +123,7 @@ export default function IndustryPage() {
 
       {/* Let's Discuss Your Project: the picker offers only the manufacturer topics */}
       <section className="bg-paper">
-        <div className="mx-auto grid max-w-[1440px] gap-y-10 px-5 py-24 md:px-10 md:py-28 lg:grid-cols-12 lg:gap-x-6 lg:py-36">
+        <div className="mx-auto grid grid-cols-1 max-w-[1440px] gap-y-10 px-5 py-24 md:px-10 md:py-28 lg:grid-cols-12 lg:gap-x-6 lg:py-36">
           <Reveal className="lg:col-span-7">
             <h2 className="display text-[clamp(2.8rem,5.8vw,6.4rem)] leading-[0.92]">
               <span className="block">{closingA} </span>

@@ -24,7 +24,7 @@ export function Feature({ item, cta }: { item: FeatureItem; cta: string }) {
   return (
     <section className="bg-ivory">
       <div className="mx-auto max-w-[1440px] px-5 py-20 md:px-10 md:py-28 lg:py-36">
-        <article className="grid gap-y-10 border-t border-ink pt-8 md:pt-10 lg:grid-cols-12 lg:gap-x-6">
+        <article className="grid grid-cols-1 gap-y-10 border-t border-ink pt-8 md:pt-10 lg:grid-cols-12 lg:gap-x-6">
           <Reveal className="lg:col-span-5">
             {item.publication && <p className="font-serif text-[clamp(1.6rem,2.3vw,2.25rem)] leading-tight italic">{item.publication}</p>}
             <div className="mt-3 flex flex-wrap items-center gap-3">
