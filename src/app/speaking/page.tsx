@@ -189,7 +189,7 @@ export default function SpeakingPage() {
       </section>
 
       {/* Where I've Spoken */}
-      {(spokenAt.logos.length > 0 || site.showPlaceholders) && (
+      {(spokenAt.logos.length > 0 || spokenAt.verified || site.showPlaceholders) && (
         <section className="bg-paper">
           <div className="mx-auto max-w-[1440px] px-5 pb-24 md:px-10 md:pb-32">
             {spokenAt.logos.length > 0 ? (
@@ -204,7 +204,21 @@ export default function SpeakingPage() {
                 </ul>
               </>
             ) : (
-              <ReviewSlot>{spokenAt.heading}: curated, verified conference and association logos go here</ReviewSlot>
+              <>
+                <div className="flex flex-wrap items-baseline justify-between gap-4 border-t border-ink pt-6">
+                  <h2 className="label">{spokenAt.heading}</h2>
+                  {!spokenAt.verified && site.showPlaceholders && (
+                    <p className="label !text-[9.5px] text-stone">From Testimonials.pdf (partial listing) · confirm before launch</p>
+                  )}
+                </div>
+                <ul className="mt-8 columns-1 gap-x-10 sm:columns-2 lg:columns-3">
+                  {spokenAt.venues.map((v) => (
+                    <li key={v} className="break-inside-avoid border-b border-line py-3 font-serif text-[21px] leading-snug">
+                      {v}
+                    </li>
+                  ))}
+                </ul>
+              </>
             )}
           </div>
         </section>

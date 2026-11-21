@@ -47,7 +47,11 @@ export function StatusMessage({ status, tone = "light" }: { status: Status; tone
   if (status === "error") {
     return (
       <p role="alert" className={`text-[14px] ${tone === "dark" ? "text-blush" : "text-ink"}`}>
-        Something went wrong sending your message. Please try again.
+        Something went wrong sending your message. Please try again, or email{" "}
+        <a href={`mailto:${site.email}`} className="underline underline-offset-2">
+          {site.email}
+        </a>
+        .
       </p>
     );
   }

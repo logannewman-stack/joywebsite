@@ -16,7 +16,8 @@ export function Wordmark({ tone = "light", className = "" }: { tone?: "light" | 
         width={site.wordmark.width}
         height={site.wordmark.height}
         priority
-        className={className}
+        unoptimized
+        className={`h-[44px] w-auto md:h-[52px] ${className}`}
       />
     );
   }

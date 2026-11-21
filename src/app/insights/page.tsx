@@ -34,7 +34,7 @@ export default function InsightsPage() {
           </div>
           <div className="md:col-span-3 md:col-start-10 md:self-end">
             <ImageReveal delay={0.25}>
-              <Photo slot={hero.photo} priority className="aspect-[3/4] w-full grayscale" sizes="25vw" />
+              <Photo slot={hero.photo} priority className="aspect-[3/4] w-full" sizes="25vw" />
             </ImageReveal>
           </div>
         </div>

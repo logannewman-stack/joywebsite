@@ -10,10 +10,11 @@
   --color-ink: #0b0b0b;
   --color-ink-soft: #1a1a1a;
   --color-paper: #ffffff;
-  --color-ivory: #f6f2ea;
-  --color-sand: #e9e3d8;
-  --color-blush: #ecc9c2;
-  --color-blush-deep: #d6a399;
+  --color-ivory: #f5f1e9; /* brand cream */
+  --color-sand: #e8e1d5;
+  --color-blush: #e7d3cb; /* brand blush */
+  --color-blush-deep: #c9a497;
+  --color-charcoal: #393839; /* logo charcoal */
   --color-stone: #625e59; /* secondary text on white, 6.3:1 */
   --color-ash: #a9a49d; /* secondary text on black, 8:1 */
   --color-line: rgb(11 11 11 / 0.12);

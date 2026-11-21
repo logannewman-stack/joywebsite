@@ -6,10 +6,12 @@ export const industry = {
     heading: "Education and clinical strategy for dental manufacturers.",
     text: "I work with dental manufacturers to connect their products with clinical practice through education, advisory work, and long-term partnerships.",
     photo: {
-      src: null,
-      alt: "Dr. Joy, editorial portrait",
+      src: "/photos/industry-hero-bw-seated.jpg",
+      alt: "Dr. Joy seated in a black suit",
       treatment: "bw",
       direction: "Black-and-white editorial image. Professional and composed, black jacket; product or lab context optional.",
+      focus: "50% 35%",
+      original: "JVH-129",
     } satisfies PhotoSlot,
   },
 
@@ -18,11 +20,12 @@ export const industry = {
     text: "I partner with manufacturers on sponsored education, speaking engagements, hands-on programs, professional content, and clinical advisory roles.",
     cta: "Discuss a Partnership",
     photo: {
-      src: "/images/lecture-room.jpg",
-      alt: "Educator presenting to a room of dental professionals",
+      src: "/photos/industry-partnership.jpg",
+      alt: "Dr. Joy leading a session for a room of dental professionals",
       treatment: "color",
       direction: "Authentic photograph of sponsored education or teaching, in color.",
-      stock: true,
+      focus: "30% 45%",
+      original: "54707145282",
     } satisfies PhotoSlot,
   },
 
@@ -35,11 +38,12 @@ export const industry = {
     ],
     cta: "Discuss a Clinical Launch Project",
     photo: {
-      src: "/images/xray-review.jpg",
-      alt: "Clinician reviewing dental models and radiographs",
+      src: "/photos/industry-launch.jpg",
+      alt: "Dr. Joy working with a dental model",
       treatment: "color",
       direction: "Authentic product work or clinical training photograph.",
-      stock: true,
+      focus: "45% 40%",
+      original: "Facetune_22-10-2025",
     } satisfies PhotoSlot,
   },
 

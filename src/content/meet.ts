@@ -11,10 +11,12 @@ export const meet = {
     ],
     couplet: ["In lecture halls, I studied.", "In the operatory, I tested and refined."],
     portrait: {
-      src: null,
-      alt: "Dr. Joy, black-and-white portrait",
+      src: "/photos/meet-hero-bw.jpg",
+      alt: "Dr. Joy seated in a black suit, smiling",
       treatment: "bw",
       direction: "Black-and-white portrait. Black jacket, seated or standing, natural expression. Preserve skin texture.",
+      focus: "50% 25%",
+      original: "JVH-115",
     } satisfies PhotoSlot,
   },
 

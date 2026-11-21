@@ -12,18 +12,21 @@ export const site = {
   shortName: "Dr. Joy",
   description:
     "Dr. Joy RDH: dental hygiene speaker, educator and clinical strategist. Conference presentations, hands-on P3 education and industry collaborations.",
-  url: "https://example.com", // TODO: production domain
+  url: "https://www.drjoyrdh.com",
+  /** Public contact address (from the speaker materials). */
+  email: "info@DrJoyRDH.com",
 
   /**
-   * The existing Dr. Joy script wordmark. Add the supplied files to
-   * /public/brand and set the paths here. Until then a plain typographic
-   * stand-in is shown (it is NOT a logo and must not ship).
+   * The Dr. Joy script wordmark (from "New Dr Joy RDH Logos"). The files in
+   * /public/brand are the supplied SVGs with the background panel removed
+   * and the frame cropped to the mark. Set to null to show a text stand-in.
    */
   wordmark: {
-    onLight: null as string | null, // e.g. "/brand/dr-joy-wordmark-black.svg"
-    onDark: null as string | null, // e.g. "/brand/dr-joy-wordmark-white.svg"
-    width: 132,
-    height: 44,
+    onLight: "/brand/dr-joy-rdh-wordmark-charcoal.svg" as string | null,
+    onDark: "/brand/dr-joy-rdh-wordmark-cream.svg" as string | null,
+    // Cropped artwork is 3.07:1
+    width: 160,
+    height: 52,
   },
 
   /**
@@ -72,6 +75,8 @@ export type PhotoSlot = {
   direction: string;
   /** True for royalty-free stand-ins (Unsplash) that must be replaced. */
   stock?: boolean;
+  /** Original filename from the shoot or event folder, for tracing and retouching. */
+  original?: string;
   /** Focal point for object-position, e.g. "50% 30%". */
   focus?: string;
 };

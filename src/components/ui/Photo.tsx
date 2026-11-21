@@ -28,16 +28,18 @@ export function Photo({
   showDirection?: boolean;
 }) {
   if (slot.src) {
+    // A cutout keeps its transparency and stands on the bottom edge of its frame.
+    const cutout = slot.treatment === "cutout";
     return (
-      <div className={`relative overflow-hidden bg-sand ${className}`}>
+      <div className={`relative overflow-hidden ${cutout ? "" : "bg-sand"} ${className}`}>
         <Image
           src={slot.src}
           alt={slot.alt}
           fill
           sizes={sizes}
           priority={priority}
-          className="object-cover"
-          style={{ objectPosition: slot.focus ?? "50% 35%" }}
+          className={cutout ? "object-contain object-bottom" : "object-cover"}
+          style={cutout ? undefined : { objectPosition: slot.focus ?? "50% 35%" }}
         />
         {slot.stock && site.showPlaceholders && (
           <span className="label absolute top-3 left-3 bg-paper/90 px-2 py-1 !text-[9.5px] !tracking-[0.14em] text-ink">

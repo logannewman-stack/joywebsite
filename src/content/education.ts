@@ -13,18 +13,20 @@ export const education = {
     ],
     cta: { label: "Explore P3 Events", href: "#events" },
     photo: {
-      src: "/images/clinician-instruments.jpg",
-      alt: "Clinician working with dental instruments",
+      src: "/photos/education-workshop.jpg",
+      alt: "Dr. Joy teaching a hands-on workshop",
       treatment: "color",
       direction: "Color photograph of an actual P3 workshop: instruments, coaching, participants. Keep the room in frame.",
-      stock: true,
+      focus: "48% 40%",
+      original: "54707956836",
     } satisfies PhotoSlot,
     detail: {
-      src: "/images/instrument-closeup.jpg",
-      alt: "Close-up of instrumentation technique",
+      src: "/photos/education-coaching.jpg",
+      alt: "Dr. Joy coaching a participant with a dental model",
       treatment: "color",
       direction: "Close-up of hands and instruments during practice.",
-      stock: true,
+      focus: "50% 45%",
+      original: "IMG_7988",
     } satisfies PhotoSlot,
   },
 
@@ -43,7 +45,13 @@ export const education = {
   },
 
   /** Featured attendee testimonial or approved short video. null = not yet supplied. */
-  attendee: null as null | { quote: string; name: string; role?: string; videoUrl?: string },
+  attendee: {
+    quote:
+      "I truly enjoyed P3, Dr. Joy! You provided a unique opportunity to get additional hands-on training that isn’t always offered with an instrumentation CE. The content of the program was great, and everything was touched upon. I look forward to taking another course of yours soon.",
+    name: "Hailey Marie Ebue",
+    role: "RDH",
+    permission: "pending",
+  } as null | { quote: string; name: string; role?: string; videoUrl?: string; permission: "pending" | "granted" },
 
   events: {
     heading: "P3 Events",

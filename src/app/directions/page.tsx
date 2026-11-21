@@ -14,7 +14,7 @@ const directions = [
     name: "Editorial Monochrome",
     tag: "Closest to the brief",
     idea: "The brief’s own instinct, executed with restraint. A white page, an oversized serif headline, and one black-and-white portrait set off-axis. Typography does the work; the photograph confirms the person.",
-    image: "One strong monochrome portrait, three-quarter length. A black jacket separates cleanly on white. Composed with space on the left for the headline; safe to crop to 4:5 on mobile.",
+    image: "JVH-155: black suit, arms crossed, converted to black and white. The black jacket separates cleanly on white, and the composition leaves the left side for the headline. Safe to crop to 4:5 on mobile.",
     strengths: [
       "Most readable and fastest to load, especially on phones.",
       "Lets the color photography in the four pathways below carry the energy.",
@@ -32,7 +32,7 @@ const directions = [
     name: "Black Stage",
     tag: "Boldest",
     idea: "The drama of Alexandria Ohlinger’s photo-led opening, translated into black and white. A background-removed portrait stands in front of the headline: the one designed cutout moment the brief allows.",
-    image: "A cutout in the white blazer (a black jacket would disappear on black). Needs clean hair and jacket edges, waist-up, with headroom. Blush carries the closing phrase.",
+    image: "JVH-130: white blazer, background removed and converted to black and white (a black jacket would disappear on black). This is an automated test cutout; a retoucher should refine the hair and jacket edges before launch. Blush carries the closing phrase.",
     strengths: [
       "The most memorable and personal first screen.",
       "Signals keynote presence before a word is read.",
@@ -50,7 +50,7 @@ const directions = [
     name: "Ivory & Color",
     tag: "Departs from black and white",
     idea: "Warmth first. An ivory ground, a full-color photograph in a real room, and blush used once, as a single block behind the image.",
-    image: "A color photograph on stage or in a workshop that proves presence in a real room. Natural light; avoid heavy grading.",
+    image: "54707091267: color stage photograph in the white blazer, mid-gesture. It proves presence in a real room; the purple stage lighting is the one risk against the blush and ivory palette.",
     strengths: [
       "The most approachable and immediately human.",
       "Shows the work in context from the first second.",
@@ -59,7 +59,7 @@ const directions = [
     tradeoffs: [
       "Least distinctive; closer to many speaker sites.",
       "Weakens the black-and-white identity the rest of the site builds.",
-      "Depends on a strong color photograph that may not exist yet.",
+      "Stage lighting colors compete with the blush and ivory palette.",
     ],
   },
 ] as const;
@@ -73,8 +73,8 @@ export default function DirectionsPage() {
           <h1 className="display mt-6 max-w-4xl text-[clamp(2.8rem,6vw,6rem)]">Three directions for the opening screen.</h1>
           <div className="mt-10 grid gap-8 md:grid-cols-3">
             <p className="text-[16px] leading-relaxed text-stone">
-              Each direction uses the approved Home copy unchanged. Photographs are art-direction placeholders that describe the image each
-              direction needs.
+              Each direction uses the approved Home copy unchanged. Photographs are from the supplied shoot and event folders; the original
+              filename is noted under each direction.
             </p>
             <p className="text-[16px] leading-relaxed text-stone">
               Home currently uses <strong className="font-medium text-ink">Direction {site.homeHero.toUpperCase()}</strong>. Switching is one

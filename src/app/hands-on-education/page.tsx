@@ -70,7 +70,7 @@ export default function EducationPage() {
 
       {/* Attendee voice */}
       {attendee ? (
-        <Quote heading="From a P3 participant" quote={attendee.quote} name={attendee.name} role={attendee.role} permission="granted" />
+        <Quote heading="From a P3 participant" quote={attendee.quote} name={attendee.name} role={attendee.role} permission={attendee.permission} tone="light" />
       ) : (
         <section className="bg-ivory">
           <div className="mx-auto max-w-[1440px] px-5 pb-24 md:px-10">
