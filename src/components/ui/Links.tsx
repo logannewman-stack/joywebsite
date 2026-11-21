@@ -107,7 +107,9 @@ export function ButtonLink({
   className?: string;
 }) {
   const r = resolveHref(href);
-  const cls = `group inline-flex min-h-12 items-center gap-3 whitespace-nowrap rounded-full px-6 py-3 text-[15px] font-medium ${buttonStates} ${solid[tone]} ${className}`;
+  // One line at every normal size; below 360px a long label may wrap rather than push past the
+  // screen edge (e.g. at 320px with increased text spacing, WCAG 1.4.12).
+  const cls = `group inline-flex min-h-12 max-w-full items-center gap-3 whitespace-nowrap rounded-full px-6 py-3 text-[15px] font-medium max-[359px]:whitespace-normal ${buttonStates} ${solid[tone]} ${className}`;
   const inner = (
     <>
       {children}

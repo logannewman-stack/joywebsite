@@ -5,19 +5,21 @@ import { typeset } from "../ui/Typeset";
 
 /**
  * Editorial wayfinding at the foot of each page: the next page, set large.
- * The last page in the order points back to Home and says so, instead of
- * offering Home as if it were the next step.
+ * The order never leads back to Home as a "next" step: after the last page
+ * (Insights) it continues with the first page after Home, Meet Dr. Joy.
+ * `current` may be any page in the order (an article under /insights passes
+ * the page before Insights to point back to it).
  */
 export function NextPage({ current }: { current: string }) {
   const i = pageOrder.findIndex((p) => p.href === current);
-  const last = i === pageOrder.length - 1;
-  const next = pageOrder[(i + 1) % pageOrder.length];
+  const following = pageOrder[(i + 1) % pageOrder.length];
+  const next = following.href === "/" ? pageOrder[1] : following;
   return (
     <Link href={next.href} className="group block border-t border-line bg-paper">
       <div className="mx-auto flex max-w-[1440px] items-end justify-between gap-6 px-5 py-14 md:px-10 md:py-20">
         <div className="min-w-0">
           <p className="label flex items-center gap-2 text-stone">
-            {last ? "Back to" : "Next"}
+            Next
             {/* On phones the arrow sits with the label, so long page names keep the full width. */}
             <ArrowRight className="size-3.5 sm:hidden" aria-hidden />
           </p>
