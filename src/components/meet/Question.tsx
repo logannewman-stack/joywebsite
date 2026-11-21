@@ -59,10 +59,16 @@ export function Question({ question, answer }: { question: string; answer: strin
             </span>
           </p>
         </div>
-        {/* How far through the held scene the visitor is: a gold line and its dot. Decorative. */}
-        <span aria-hidden className="meet-q-progress pointer-events-none absolute inset-x-5 bottom-8 hidden h-px bg-gold-deep/25 md:inset-x-10">
-          <span className="scene-line absolute inset-0 bg-gold-deep" />
-          <span className="meet-q-mark absolute top-1/2 size-[0.4375rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gold-deep" />
+        {/*
+          The gold rule above the sign-off. While the stage is pinned it is also the scene's
+          progress line: it fills as the visitor scrolls, with a dot at its head. Decorative.
+        */}
+        <span aria-hidden className="meet-q-progress pointer-events-none absolute inset-x-5 bottom-8 h-px bg-gold-deep md:inset-x-10 pinned:bg-gold-deep/25">
+          <span className="scene-line absolute inset-0 hidden bg-gold-deep pinned:block" />
+          {/* The dot sits at the start of a track as wide as the line; the track slides, so nothing is laid out again. */}
+          <span className="meet-q-mark absolute inset-0 hidden pinned:block">
+            <span className="absolute top-1/2 left-0 size-[0.4375rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gold-deep" />
+          </span>
         </span>
       </div>
     </section>

@@ -216,12 +216,9 @@ html.motion .meet-q[data-pinned] .meet-q-stage {
   padding-top: var(--header-height);
   padding-bottom: 3rem;
 }
-html.motion .meet-q[data-pinned] .meet-q-progress {
-  display: block;
-}
-/* The dot rides the head of the progress line. */
+/* The dot rides the head of the progress line (a transform, so no layout). */
 .meet-q-mark {
-  left: calc(var(--p, 0) * 100%);
+  transform: translate3d(calc(var(--p, 0) * 100%), 0, 0);
 }
 /* Waiting: the question sits where the pair's middle will be. */
 html.motion .meet-q[data-pinned] .meet-question {
@@ -278,7 +275,11 @@ html.motion .meet-q[data-pinned]:not([data-step="3"]) .meet-dot {
     --veil: 5rem !important;
     margin-top: -5rem !important;
   }
+  /* The progress line prints as the plain gold rule it is without motion. */
   .meet-q-progress {
+    background-color: var(--color-gold-deep) !important;
+  }
+  .meet-q-progress > * {
     display: none !important;
   }
   /* Entrances that have not played yet print in their finished state: the
