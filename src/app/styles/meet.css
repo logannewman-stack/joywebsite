@@ -1,1 +1,297 @@
 /* meet: styles owned by the meet work stream. Loaded from globals.css. */
+
+/* ==========================================================================
+   Meet Dr. Joy: the page's scroll effects.
+
+   Everything here reads what the scroll engine writes (--v, --p, data-step,
+   data-pinned; see src/components/motion/engine.ts) and is scoped to
+   html.motion or to attributes only the engine sets. Without JavaScript, with
+   reduced motion and in print the page is its plain layout, every word in
+   full ink.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Opening
+   -------------------------------------------------------------------------- */
+/* The portrait is in place from the first paint and settles from slightly
+   large. It is never hidden: it is the page's largest paint. */
+@keyframes meet-settle {
+  from {
+    transform: scale(1.07);
+  }
+}
+html.motion .meet-settle {
+  animation: meet-settle 1.8s var(--ease-expo) both;
+}
+
+/* The story takes ink as it is read (StoryLight.tsx). --v runs 0 to 1 as the
+   block crosses the screen; --from and --to are the values where the first
+   word starts and the last word finishes, set so the edge of the ink sits
+   about three quarters of the way down the screen. Words not yet reached keep
+   58% ink: 4.8:1 on white, so they pass body-text contrast.
+   On desktop the first paragraph is above the fold and always in full ink
+   (--skip takes its words out of the count); the sweep starts with the second. */
+.meet-story {
+  --from: 0.14;
+  --to: 0.52;
+  --dim: 0.58;
+  --lead: 9;
+  --skip: 0;
+  --t: calc((var(--v, 1) - var(--from)) / (var(--to) - var(--from)));
+}
+@media (min-width: 1024px) {
+  .meet-story {
+    --from: 0.34;
+    --to: 0.5;
+    --skip: var(--n1);
+  }
+}
+html.motion .meet-story .sl {
+  opacity: clamp(
+    var(--dim),
+    calc((var(--t) * (var(--n) - var(--skip) + var(--lead)) - (var(--i) - var(--skip))) / var(--lead)),
+    1
+  );
+  transition: opacity 240ms linear;
+}
+@media (min-width: 1024px) {
+  html.motion .meet-story > :first-child .sl {
+    opacity: 1;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   2. The couplet (Couplet.tsx)
+   One clock for the whole block: its --v, which is 0 as the block enters at
+   the bottom of the screen and 0.5 when it is centered. Each line glides from
+   --start to --end of that clock with an ease-out, so it slows as it arrives;
+   the second line starts later (it enters the screen later) and both have
+   met by the time the block is centered. The photograph between them drifts
+   a little faster than the page, so it moves through the gap.
+   -------------------------------------------------------------------------- */
+.meet-line-a {
+  --travel: -16vw;
+  --start: 0.02;
+  --end: 0.5;
+}
+.meet-line-b {
+  --travel: 18vw;
+  --start: 0.2;
+  --end: 0.56;
+}
+@media (min-width: 768px) {
+  .meet-line-a {
+    --travel: -20vw;
+  }
+  .meet-line-b {
+    --travel: 24vw;
+  }
+}
+html.motion .meet-line {
+  --t: clamp(0, calc((var(--v, 1) - var(--start)) / (var(--end) - var(--start))), 1);
+  --e: calc(1 - (1 - var(--t)) * (1 - var(--t)));
+  transform: translate3d(calc((1 - var(--e)) * var(--travel)), 0, 0);
+  will-change: transform;
+}
+html.motion .meet-couplet-photo {
+  transform: translate3d(0, calc((0.5 - var(--v, 0.5)) * 6rem), 0);
+  will-change: transform;
+}
+
+/* --------------------------------------------------------------------------
+   3. Staircase and credentials
+   The black chapter's background starts as a veil, clear to black, that lies
+   over the foot of the photograph above it (a negative margin the height of
+   the veil), so the photograph carries the page into black at every size and
+   without JavaScript.
+   -------------------------------------------------------------------------- */
+.meet-stairs {
+  --scene-length: 2;
+}
+.meet-creds {
+  --veil: clamp(5rem, 17vw, 12rem);
+  margin-top: calc(-1 * var(--veil));
+  padding-top: var(--veil);
+  background:
+    linear-gradient(
+        to bottom,
+        rgb(11 11 11 / 0) 0%,
+        rgb(11 11 11 / 0.1) 18%,
+        rgb(11 11 11 / 0.36) 42%,
+        rgb(11 11 11 / 0.7) 68%,
+        rgb(11 11 11 / 0.92) 88%,
+        rgb(11 11 11) 100%
+      )
+      top / 100% var(--veil) no-repeat,
+    linear-gradient(var(--color-ink), var(--color-ink)) 0 var(--veil) / 100% calc(100% - var(--veil) + 1px) no-repeat;
+}
+
+/* Desktop, animated: the stage pins for one screen. As it arrives the
+   photograph opens from an inset print to the full screen (--v reaches 1/3 at
+   the moment a two-screen scene pins); while it holds, the black chapter
+   slides up over it (its margin pulls it one screen into the scene), and the
+   photograph pushes in and dims behind (--p). */
+html.motion .meet-stairs[data-pinned] > [data-scene-pin] {
+  --open: clamp(0, calc(var(--v, 1) * 3), 1);
+  clip-path: inset(0 calc((1 - var(--open)) * 6vw));
+}
+html.motion .meet-stairs[data-pinned] .meet-stairs-photo {
+  transform: scale(calc(1 + var(--p, 0) * 0.05));
+  will-change: transform;
+}
+html.motion .meet-stairs[data-pinned] .meet-stairs-dim {
+  opacity: calc(var(--p, 0) * 0.62);
+}
+html.motion .meet-stairs[data-pinned] + .meet-creds {
+  --veil: 36svh;
+  margin-top: -100svh;
+}
+
+/* --------------------------------------------------------------------------
+   4. The question (Question.tsx)
+   Type sizes live here because the stage has to know the answer's height:
+   pinned, the question waits in the middle of the stage and steps up to make
+   room when the answer lands.
+   -------------------------------------------------------------------------- */
+.meet-q {
+  --scene-length: 2.6;
+  --qs: clamp(2.75rem, 12.4vw, 6rem); /* question: three or four lines on phones and upright tablets */
+  --as: clamp(3.5rem, 19vw, 6rem); /* answer: two lines on phones */
+  --answer-lines: 2;
+  --q-gap: 2.75rem;
+}
+@media (min-width: 768px) {
+  .meet-q {
+    --scene-length: 3;
+    --as: clamp(4.5rem, 11vw, 11rem); /* one line */
+    --answer-lines: 1;
+    --q-gap: 4rem;
+  }
+}
+@media (min-width: 1024px) {
+  .meet-q {
+    --qs: clamp(4rem, 8.6vw, 8.6rem); /* two lines */
+  }
+}
+/* On a pinned stage the type is also capped by the height of the screen. */
+.meet-q[data-pinned] {
+  --qs: clamp(2.5rem, min(12.4vw, 8.5svh), 6rem);
+  --as: clamp(3rem, min(19vw, 12.5svh), 6rem);
+}
+@media (min-width: 768px) {
+  .meet-q[data-pinned] {
+    --as: clamp(4rem, min(11vw, 21svh), 11rem);
+  }
+}
+@media (min-width: 1024px) {
+  .meet-q[data-pinned] {
+    --qs: clamp(3rem, min(8.6vw, 14svh), 8.6rem);
+  }
+}
+/* An upright large tablet: the stage is tall, so the question takes three lines. */
+@media (min-width: 1024px) and (max-aspect-ratio: 1/1) {
+  .meet-q[data-pinned] {
+    --qs: clamp(3rem, min(12vw, 8.5svh), 8.6rem);
+  }
+}
+.meet-question {
+  font-size: var(--qs);
+}
+.meet-answer {
+  margin-top: var(--q-gap);
+  font-size: var(--as);
+}
+@media (min-width: 1024px) {
+  /* The answer comes back from the other side of the page. */
+  .meet-answer {
+    text-align: right;
+  }
+}
+
+html.motion .meet-q[data-pinned] .meet-q-stage {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  padding-top: var(--header-height);
+  padding-bottom: 3rem;
+}
+/* The dot rides the head of the progress line (a transform, so no layout). */
+.meet-q-mark {
+  transform: translate3d(calc(var(--p, 0) * 100%), 0, 0);
+}
+/* Waiting: the question sits where the pair's middle will be. */
+html.motion .meet-q[data-pinned] .meet-question {
+  transform: translate3d(0, calc((var(--as) * var(--answer-lines) + var(--q-gap)) / 2), 0);
+  transition: transform 1s var(--ease-expo);
+}
+html.motion .meet-q[data-pinned] .meet-question .word-light > span {
+  transition: opacity 220ms linear;
+}
+html.motion .meet-q[data-pinned] .meet-answer .wr-in {
+  transform: translate3d(0, 112%, 0);
+  transition: transform 0.9s var(--ease-expo) calc(0.1s + var(--i, 0) * 0.09s);
+}
+html.motion .meet-q[data-pinned] .meet-dot {
+  transform: scale(0);
+  transition: transform 0.5s var(--ease-expo) 0.6s;
+}
+/* The answer lands (the last step of the scene). */
+html.motion .meet-q[data-pinned][data-step="3"] .meet-question {
+  transform: none;
+}
+html.motion .meet-q[data-pinned][data-step="3"] .meet-question .word-light > span {
+  opacity: 0.5;
+  transition-duration: var(--duration-scene);
+}
+html.motion .meet-q[data-pinned][data-step="3"] .meet-answer .wr-in,
+html.motion .meet-q[data-pinned][data-step="3"] .meet-dot {
+  transform: none;
+}
+/* Leaving the last step (scrolling back up): no stagger on the way out. */
+html.motion .meet-q[data-pinned]:not([data-step="3"]) .meet-answer .wr-in,
+html.motion .meet-q[data-pinned]:not([data-step="3"]) .meet-dot {
+  transition-delay: 0s;
+  transition-duration: 0.45s;
+}
+
+@media print {
+  .meet-story .sl,
+  .meet-question .word-light > span {
+    opacity: 1 !important;
+  }
+  .meet-line,
+  .meet-couplet-photo,
+  .meet-question,
+  .meet-answer .wr-in,
+  .meet-dot,
+  .meet-stairs-photo {
+    transform: none !important;
+  }
+  .meet-stairs > [data-scene-pin] {
+    clip-path: none !important;
+  }
+  .meet-stairs + .meet-creds {
+    --veil: 5rem !important;
+    margin-top: -5rem !important;
+  }
+  /* The progress line prints as the plain gold rule it is without motion. */
+  .meet-q-progress {
+    background-color: var(--color-gold-deep) !important;
+  }
+  .meet-q-progress > * {
+    display: none !important;
+  }
+  /* Entrances that have not played yet print in their finished state: the
+     ivory band and the hairlines drawn, the signature and the marker in place. */
+  .meet-creds .rule-draw,
+  .meet-signoff .rule-draw {
+    transform: none !important;
+  }
+  .meet-signoff .wipe {
+    clip-path: none !important;
+  }
+  .meet-signoff .hl-light {
+    background-size: 100% 0.34em !important;
+  }
+}
