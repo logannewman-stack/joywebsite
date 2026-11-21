@@ -252,9 +252,27 @@ export function InquiryButton({
       aria-haspopup="dialog"
       className={`group inline-flex items-center text-left text-[15px] font-medium transition-[background-color,border-color,color,transform] duration-[var(--duration-hover,180ms)] ${ring} ${styles} ${className}`}
     >
-      <span className={variant === "text" ? "link-draw pb-0.5" : ""}>{children}</span>
-      {arrow && (
-        <ArrowRight className="size-4 shrink-0 transition-transform duration-[var(--duration-hover,180ms)] group-hover:translate-x-1" aria-hidden />
+      {variant === "text" ? (
+        // The arrow follows the last word when the label wraps (a word joiner keeps them together).
+        <span>
+          <span className="link-draw pb-0.5">{children}</span>
+          {arrow && (
+            <span className="whitespace-nowrap">
+              {"\u2060"}
+              <ArrowRight
+                className="ml-2 inline size-4 align-[-0.15em] transition-transform duration-[var(--duration-hover,180ms)] group-hover:translate-x-1"
+                aria-hidden
+              />
+            </span>
+          )}
+        </span>
+      ) : (
+        <>
+          <span>{children}</span>
+          {arrow && (
+            <ArrowRight className="size-4 shrink-0 transition-transform duration-[var(--duration-hover,180ms)] group-hover:translate-x-1" aria-hidden />
+          )}
+        </>
       )}
     </button>
   );

@@ -87,8 +87,8 @@ export function NewsletterForm({ tone = "light", cta = "Subscribe" }: { tone?: "
         </button>
       </div>
       {links.privacy && (
-        <p className={`mt-3 text-[13.5px] ${dark ? "text-ash" : "text-stone"}`}>
-          <a href={links.privacy} className="underline decoration-1 underline-offset-[3px]">
+        <p className={`mt-1 text-[13.5px] ${dark ? "text-ash" : "text-stone"}`}>
+          <a href={links.privacy} className="inline-flex min-h-11 items-center underline decoration-1 underline-offset-[3px]">
             Privacy Policy
           </a>
         </p>
