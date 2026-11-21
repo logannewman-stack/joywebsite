@@ -1,25 +1,10 @@
 import type { Metadata, Viewport } from "next";
-import { DM_Sans, Geist_Mono, Instrument_Serif } from "next/font/google";
-import localFont from "next/font/local";
+import { Geist, Instrument_Serif } from "next/font/google";
 import { site } from "@/content/site";
+import { InquiryProvider } from "@/components/inquiry/InquiryProvider";
+import { Header } from "@/components/layout/Header";
+import { Footer } from "@/components/layout/Footer";
 import "./globals.css";
-
-const clash = localFont({
-  variable: "--font-clash",
-  display: "swap",
-  src: [
-    { path: "../fonts/ClashDisplay-Medium.woff2", weight: "500", style: "normal" },
-    { path: "../fonts/ClashDisplay-Semibold.woff2", weight: "600", style: "normal" },
-    { path: "../fonts/ClashDisplay-Bold.woff2", weight: "700", style: "normal" },
-  ],
-});
-
-const dmSans = DM_Sans({
-  variable: "--font-dm-sans",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  style: ["normal", "italic"],
-});
 
 const instrument = Instrument_Serif({
   variable: "--font-instrument",
@@ -28,37 +13,33 @@ const instrument = Instrument_Serif({
   style: ["normal", "italic"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const geist = Geist({
+  variable: "--font-geist",
   subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
-  title: site.meta.title,
-  description: site.meta.description,
-  openGraph: {
-    title: site.meta.title,
-    description: site.meta.description,
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: site.meta.title,
-    description: site.meta.description,
-  },
+  metadataBase: new URL(site.url),
+  title: { default: site.name, template: `%s | ${site.name}` },
+  description: site.description,
+  openGraph: { siteName: site.name, type: "website" },
+  twitter: { card: "summary_large_image" },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0c0c0f",
+  themeColor: "#ffffff",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html
-      lang="en"
-      className={`${clash.variable} ${dmSans.variable} ${instrument.variable} ${geistMono.variable}`}
-    >
-      <body id="top">{children}</body>
+    <html lang="en" className={`${instrument.variable} ${geist.variable}`}>
+      <body>
+        <InquiryProvider>
+          <Header />
+          <main id="main">{children}</main>
+          <Footer />
+        </InquiryProvider>
+      </body>
     </html>
   );
 }

@@ -1,49 +1,28 @@
 @import "tailwindcss";
 
 /* ==========================================================================
-   Design tokens
-   Dark, editorial, high-contrast. Violet is the single accent.
-   Change the brand color here and it flows everywhere.
+   Dr. Joy RDH: design tokens
+   Black-and-white foundation. Ivory adds warmth. Blush is a restrained
+   accent: use it for marks, rules and highlights on black, never as a page
+   color or for small text on white.
    ========================================================================== */
 @theme {
-  --color-ink: #0c0c0f;
-  --color-coal: #131316;
-  --color-graphite: #1c1c21;
-  --color-steel: #2a2a31;
-  --color-porcelain: #efefed;
-  --color-paper: #f6f6f4;
-  --color-mute: #a0a0a9;
-  --color-mute-dark: #5d5d65;
+  --color-ink: #0b0b0b;
+  --color-ink-soft: #1a1a1a;
+  --color-paper: #ffffff;
+  --color-ivory: #f6f2ea;
+  --color-sand: #e9e3d8;
+  --color-blush: #ecc9c2;
+  --color-blush-deep: #d6a399;
+  --color-stone: #625e59; /* secondary text on white, 6.3:1 */
+  --color-ash: #a9a49d; /* secondary text on black, 8:1 */
+  --color-line: rgb(11 11 11 / 0.12);
+  --color-line-dark: rgb(255 255 255 / 0.16);
 
-  --color-violet: #7c3aed;
-  --color-violet-hi: #9b6dff;
-  --color-violet-soft: #bda5ff;
-  --color-violet-deep: #4c1d95;
-
-  --font-display: var(--font-clash), "Arial Black", Arial, sans-serif;
-  --font-sans: var(--font-dm-sans), system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-serif: var(--font-instrument), "Iowan Old Style", "Times New Roman", serif;
-  --font-mono: var(--font-geist-mono), ui-monospace, "SF Mono", Menlo, monospace;
+  --font-sans: var(--font-geist), system-ui, -apple-system, "Segoe UI", sans-serif;
 
   --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-back: cubic-bezier(0.34, 1.56, 0.64, 1);
-
-  --animate-marquee: marquee var(--marquee-duration, 40s) linear infinite;
-  --animate-marquee-reverse: marquee-reverse var(--marquee-duration, 40s) linear infinite;
-  --animate-float: float 6s ease-in-out infinite;
-
-  @keyframes marquee {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
-  }
-  @keyframes marquee-reverse {
-    from { transform: translateX(-50%); }
-    to { transform: translateX(0); }
-  }
-  @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-8px); }
-  }
 }
 
 /* ==========================================================================
@@ -53,111 +32,87 @@ html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: var(--color-ink);
+  text-rendering: optimizeLegibility;
 }
 
 body {
-  background: var(--color-ink);
-  color: var(--color-porcelain);
+  background: var(--color-paper);
+  color: var(--color-ink);
   font-family: var(--font-sans);
-  font-weight: 500;
-  overflow-x: hidden;
+  font-feature-settings: "ss01", "cv11";
 }
 
 ::selection {
-  background: var(--color-violet);
-  color: #fff;
+  background: var(--color-blush);
+  color: var(--color-ink);
 }
 
 :focus-visible {
-  outline: 2px solid var(--color-violet-hi);
+  outline: 2px solid currentColor;
   outline-offset: 3px;
-  border-radius: 4px;
+  border-radius: 2px;
 }
 
-/* ==========================================================================
-   Reusable surfaces
-   ========================================================================== */
-
-/* Subtle architectural grid, like a blueprint at night */
-.bg-grid {
-  background-color: var(--color-ink);
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
-  background-size: 44px 44px;
-  background-position: center top;
+/* Editorial display type */
+.display {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  letter-spacing: -0.015em;
+  line-height: 0.96;
 }
 
-/* Soft violet glow you can drop behind anything */
-.glow {
-  position: absolute;
-  pointer-events: none;
-  border-radius: 9999px;
-  background: radial-gradient(closest-side, rgba(139, 92, 246, 0.35), rgba(139, 92, 246, 0) 100%);
-  filter: blur(10px);
+/* Small uppercase label */
+.label {
+  font-family: var(--font-sans);
+  font-size: 11.5px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
 }
 
-/* Film grain to keep gradients from banding and to add warmth */
+/* Long-form reading */
+.prose-joy p + p {
+  margin-top: 1.1em;
+}
+
+/* Fine grain so photo placeholders and dark panels don't look flat */
+.grain {
+  position: relative;
+}
 .grain::after {
   content: "";
   position: absolute;
   inset: 0;
   pointer-events: none;
-  opacity: 0.07;
-  mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  opacity: 0.08;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+.grain-light::after {
+  mix-blend-mode: screen;
+  opacity: 0.06;
 }
 
-/* Stage lighting: violet beams falling from above */
-.stage-beams {
-  background:
-    radial-gradient(60% 50% at 50% 0%, rgba(124, 58, 237, 0.55), transparent 70%),
-    conic-gradient(from 180deg at 18% -10%, transparent 0deg, rgba(155, 109, 255, 0.22) 12deg, transparent 26deg),
-    conic-gradient(from 180deg at 82% -10%, transparent 0deg, rgba(155, 109, 255, 0.22) 12deg, transparent 26deg) ,
-    conic-gradient(from 168deg at 50% -20%, transparent 0deg, rgba(189, 165, 255, 0.16) 10deg, transparent 22deg),
-    linear-gradient(180deg, #160a33 0%, #0c0c0f 100%);
+/* Underline that draws in on hover */
+.link-draw {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0% 1px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size 0.45s var(--ease-expo);
 }
-
-/* Outline text, for marquees */
-.text-outline {
-  color: transparent;
-  -webkit-text-stroke: 1.2px currentColor;
-}
-.text-outline-dark {
-  color: transparent;
-  -webkit-text-stroke: 1.2px rgba(12, 12, 15, 0.55);
-}
-
-/* Arch top, the signature frame */
-.arch {
-  border-radius: 999px 999px 0 0;
-}
-
-/* Eyebrow label: [ 01 ] SECTION */
-.eyebrow {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-}
-
-/* Marquee masks */
-.mask-x {
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
-  mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
-}
-
-/* Faux-italic for the display face, which has no italic cut */
-.display-italic {
-  font-style: normal;
-  display: inline-block;
-  transform: skewX(-9deg);
+.link-draw:hover,
+.link-draw:focus-visible {
+  background-size: 100% 1px;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  *, *::before, *::after {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
