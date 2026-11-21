@@ -20,16 +20,23 @@ export const meet = {
       "I earned my master’s and my doctorate to bring research into daily practice, and I stayed in clinical care the entire time.",
     ],
     couplet: ["In lecture halls, I studied.", "In the operatory, I tested and refined."],
+    /**
+     * The white blazer in the garden, so Meet opens on a different look, set and
+     * moment from Home's black suit on the steps. Full-height 4:5 crop of the
+     * landscape frame (Drive 1l_8UVQCQnQ1HR0259KGmr8s4Tvf7OQfX), graded with
+     * --foliage 0.45 --ceiling 0.30 so the hedge reads as calm sage.
+     */
     portrait: {
-      src: "/photos/meet-hero-g.jpg",
-      srcBw: "/photos/meet-hero-bw.jpg",
-      alt: "Dr. Joy seated on stone steps in a black suit, smiling, her chin resting on her hand",
+      src: "/photos/meet-hero-133-g.jpg",
+      srcBw: "/photos/meet-hero-133-bw.jpg",
+      alt: "Dr. Joy in a white blazer with black trim, smiling, in front of a garden hedge",
       treatment: "bw",
-      direction: "Black-and-white portrait. Black jacket, seated or standing, natural expression. Preserve skin texture.",
-      // Eyes on the upper third: the tall desktop frame and the 4:5 phone frame crop differently.
-      focus: "50% 50%",
-      focusMobile: "50% 68%",
-      original: "JVH-115",
+      direction: "Portrait in the white blazer, natural expression, on a different set from Home’s opening portrait. Preserve skin texture.",
+      // Phone and tablet frames are 4:5 like the photo and show all of it; wider desktop
+      // frames crop from the bottom, so her bun keeps its headroom.
+      focus: "50% 8%",
+      focusMobile: "50% 30%",
+      original: "JVH-133 (landscape frame, Headshots folder)",
     } satisfies PhotoSlot,
   },
 

@@ -22,7 +22,7 @@ photo graded without them comes out exactly as before.
                 never touched, muted colors barely move, and soft out-of-focus
                 edges follow their neighbours instead of keeping a bright fringe.
 Calmed colors keep the luma the shared grade gives them, so neon turns muted
-rather than pastel. The photos graded this way end in -v2-g.jpg.
+rather than pastel. A photo re-graded this way gets a -v2-g.jpg name.
 
 Usage:
   grade_photos.py IN.jpg OUT.jpg [--mask MASK.png] [--bg-sat 0.35] [--stage 0.45]
