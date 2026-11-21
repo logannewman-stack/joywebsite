@@ -33,12 +33,20 @@ export type OpenOptions = {
   preset?: Record<string, string>;
   /** Speaking form: the program to preselect in "Program of interest" (a title from programTitles). */
   program?: string;
+  /** A page's own approved line to show as the panel intro for the view it opens on. */
+  intro?: string;
   /** Where focus returns on close. Defaults to the element that opened the panel. */
   returnFocus?: HTMLElement | null;
 };
 
 /** What the panel was opened with. `type: null` shows the topic picker. */
-export type PanelRequest = { id: number; type: Choice | null; choices: Choice[] | null; preset: Record<string, string> };
+export type PanelRequest = {
+  id: number;
+  type: Choice | null;
+  choices: Choice[] | null;
+  preset: Record<string, string>;
+  intro: string | null;
+};
 export type PanelProps = { request: PanelRequest; closing: boolean; close: () => void };
 
 type Ctx = { open: (type?: Choice, opts?: OpenOptions) => void; preload: () => void };
@@ -76,6 +84,7 @@ export function InquiryProvider({ children }: { children: ReactNode }) {
       type: !type || type === "general" ? null : type,
       choices: opts?.choices?.length ? opts.choices : null,
       preset: { ...opts?.preset, ...(opts?.program ? { program: opts.program } : {}) },
+      intro: opts?.intro || null,
     });
     setClosing(false);
     setFailed(false);
@@ -198,6 +207,7 @@ export function InquiryButton({
   choices,
   preset,
   program,
+  intro,
   arrow = true,
 }: {
   type?: Choice;
@@ -214,6 +224,8 @@ export function InquiryButton({
    * <InquiryButton program="GLP-1s in Your Chair">…</InquiryButton>. Implies type "speaking".
    */
   program?: string;
+  /** The page's own approved line for the panel intro, e.g. the section text beside the button. */
+  intro?: string;
   /** Set false for a plain text link without the arrow. */
   arrow?: boolean;
 }) {
@@ -230,7 +242,7 @@ export function InquiryButton({
     text: "min-h-11 gap-2",
   }[variant];
   const onClick = (e: MouseEvent<HTMLButtonElement>) =>
-    open(type ?? (program ? "speaking" : undefined), { choices, preset, program, returnFocus: e.currentTarget });
+    open(type ?? (program ? "speaking" : undefined), { choices, preset, program, intro, returnFocus: e.currentTarget });
   return (
     <button
       type="button"

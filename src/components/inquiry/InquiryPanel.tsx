@@ -38,11 +38,15 @@ export default function InquiryPanel({ request, closing, close }: PanelProps) {
   const [choice, setChoice] = useState<Choice | null>(request.type);
   const [left, setLeft] = useState<Choice | null>(null); // the topic just left, refocused in the picker
   const [sent, setSent] = useState<InquiryType | null>(null);
+  const [allTopics, setAllTopics] = useState(false); // a limited picker expanded to every topic
   const sheet = useRef<HTMLDivElement>(null);
   const body = useRef<HTMLDivElement>(null);
   const heading = useRef<HTMLHeadingElement>(null);
 
   const event = choice === "p3_interest" ? liveEvent() : null;
+  const limited = !!request.choices && !allTopics;
+  // A page's own intro line applies to the view the panel opened on.
+  const ownIntro = request.intro && choice === request.type && !sent && !allTopics ? request.intro : null;
   const title = sent
     ? "Thank you."
     : choice === null
@@ -52,15 +56,17 @@ export default function InquiryPanel({ request, closing, close }: PanelProps) {
         : event
           ? education.events.heading
           : inquiryTypes[choice].title;
-  const intro = sent
-    ? successMessage(sent)
-    : choice === null
-      ? inquiryTypes.general.intro
-      : choice === "consulting"
-        ? consultingChoice.note
-        : event
-          ? null
-          : inquiryTypes[choice].intro;
+  const intro =
+    ownIntro ??
+    (sent
+      ? successMessage(sent)
+      : choice === null
+        ? inquiryTypes.general.intro
+        : choice === "consulting"
+          ? consultingChoice.note
+          : event
+            ? null
+            : inquiryTypes[choice].intro);
 
   // Modal while open: the page behind is inert and Tab cycles inside the panel.
   // Released as soon as closing starts, so focus can return to the page.
@@ -81,7 +87,7 @@ export default function InquiryPanel({ request, closing, close }: PanelProps) {
     const previous = choice === null && left ? sheet.current?.querySelector<HTMLElement>(`[data-choice="${left}"]`) : null;
     if (previous) previous.focus();
     else heading.current?.focus({ preventScroll: true });
-  }, [choice, left, sent]);
+  }, [choice, left, sent, allTopics]);
 
   const pick = (c: Choice) => {
     setLeft(null);
@@ -107,10 +113,10 @@ export default function InquiryPanel({ request, closing, close }: PanelProps) {
       }`}
     >
       <div className="flex h-[72px] shrink-0 items-center justify-between border-b border-line px-6 md:px-10">
-        {choice !== null && !sent ? (
+        {(choice !== null || limited) && !sent ? (
           <button
             type="button"
-            onClick={back}
+            onClick={choice !== null ? back : () => setAllTopics(true)}
             className={`-ml-1 inline-flex min-h-11 items-center gap-2 px-1 text-[14px] font-medium text-stone transition-colors duration-[var(--duration-hover,180ms)] hover:text-ink ${ring}`}
           >
             <ArrowLeft className="size-4" aria-hidden /> All topics
@@ -149,7 +155,7 @@ export default function InquiryPanel({ request, closing, close }: PanelProps) {
               Close
             </button>
           ) : choice === null ? (
-            <Picker choices={request.choices ?? interestChoices} onPick={pick} />
+            <Picker choices={limited && request.choices ? request.choices : interestChoices} onPick={pick} />
           ) : choice === "consulting" ? (
             <ConsultingRoute />
           ) : event ? (
