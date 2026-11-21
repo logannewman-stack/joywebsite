@@ -115,7 +115,7 @@ html.motion .hero-cue-line {
     --exit: clamp(0, (var(--at) - var(--n) + 1) * 1000, 1);
     --win-top: 45svh;
     --win-x: 2.5rem;
-    --win-shift: 21svh;
+    --win-shift: 25svh;
   }
 
   /* Title spread: the heading sits on the page, above the framed photograph. */
