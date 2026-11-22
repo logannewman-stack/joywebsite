@@ -50,7 +50,8 @@ export default function Home() {
   return (
     <>
       {hold ? (
-        // The engine gives this wrapper --p; home.css ("Opening") uses it to dim the held stage.
+        // A scene only for its progress: the engine writes --p on the stage's dim and cue (data-scene-vars
+        // in Heroes.tsx), and home.css ("Opening") uses it to dim the held stage.
         <div data-scene="lg" className="hero-hold relative" style={{ "--hold-n": PERSPECTIVE_LENGTH } as Vars}>
           {/* Where the stage holds, this marker scrolls in its place and keeps the header's dark variant in step. */}
           <div aria-hidden data-header="dark" className="pointer-events-none absolute inset-x-0 top-0 hidden h-[100svh] lg:landscape:block" />

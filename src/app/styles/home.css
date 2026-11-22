@@ -55,7 +55,10 @@ html.motion .hero-cue-line {
   animation: hero-cue-draw 1.2s var(--ease-expo) 1.35s both;
 }
 
-/* The wrapper is a scene only to receive --p: it keeps its natural height. */
+/* The wrapper is a scene only so the engine reports its progress: it keeps its
+   natural height. --p is written on the two elements that read it (the dim and
+   the cue carry data-scene-vars), not on the wrapper: a variable there would
+   restyle the opening and the whole story on every scroll frame. */
 .hero-hold[data-scene] {
   height: auto;
 }
@@ -102,20 +105,25 @@ html.motion .hero-cue-line {
 @media screen {
   /* The scene has --n steps (set in Perspective.tsx): step 0 is the opening,
      then one step per statement, then a last step that holds the final
-     statement while the next section slides up over the stage.
+     statement while the next section slides up over the stage. */
+  .persp[data-pinned] .persp-set {
+    --win-top: max(45svh, 13.25rem);
+    --win-x: 2.5rem;
+    --win-shift: 25svh;
+  }
+  /* The engine writes --p only on the three parts that move with it (they carry
+     data-scene-vars in Perspective.tsx: the photograph, the meter and the
+     header's marker), so a scroll frame restyles those and not every word of
+     the story. The timings are worked out on each of them:
      --at:   progress counted in steps (0 to n).
      --open: the photograph's frame opening to the full screen (0 to 1).
      --dark: the light going down for the white type (0 to 1).
-     --exit: 1 during the last step. */
-  .persp[data-pinned] .persp-set {
+     The statements themselves follow the engine's step attributes. */
+  .persp[data-pinned] [data-scene-vars] {
     --at: calc(var(--p, 0) * var(--n));
     --open: clamp(0, var(--at) / 0.62, 1);
     --shut: calc(1 - var(--open));
     --dark: clamp(0, (var(--at) - 0.46) / 0.44, 1);
-    --exit: clamp(0, (var(--at) - var(--n) + 1) * 1000, 1);
-    --win-top: max(45svh, 13.25rem);
-    --win-x: 2.5rem;
-    --win-shift: 25svh;
   }
 
   /* Title spread: the heading sits on the page, above the framed photograph. */
@@ -233,19 +241,20 @@ html.motion .hero-cue-line {
     transform: translate3d(0, 115%, 0);
     transition: transform 0s linear 0.32s;
   }
-  html.motion .persp[data-pinned] [data-scene-step][data-active] {
+  /* The last statement stays while the next section covers the stage: it is
+     "past" only during the scene's final step, and is shown then exactly as
+     when it is the current one. */
+  html.motion .persp[data-pinned] .persp-step-last[data-past] {
+    opacity: 1;
+  }
+  html.motion .persp[data-pinned] [data-scene-step][data-active],
+  html.motion .persp[data-pinned] .persp-step-last[data-past] {
     transition: opacity 0.25s var(--ease-soft) 0.18s;
   }
-  html.motion .persp[data-pinned] [data-scene-step][data-active] .wr-in {
+  html.motion .persp[data-pinned] [data-scene-step][data-active] .wr-in,
+  html.motion .persp[data-pinned] .persp-step-last[data-past] .wr-in {
     transform: none;
     transition: transform var(--duration-image) var(--ease-expo) calc(0.18s + var(--i, 0) * 20ms);
-  }
-  /* The last statement stays while the next section covers the stage. */
-  html.motion .persp[data-pinned] .persp-step-last:not([data-active]) {
-    opacity: var(--exit);
-  }
-  html.motion .persp[data-pinned] .persp-step-last:not([data-active]) .wr-in {
-    transform: translate3d(0, calc((1 - var(--exit)) * 115%), 0);
   }
   /* Arriving mid-story (a reload, or coming Back to the page): until the engine
      has marked the current step, no statement shows and none fades. Otherwise
@@ -542,6 +551,12 @@ html.motion .hero-cue-line {
     transform: none;
   }
 }
+/* Back and Forward: the returning page is simply there (as the shared entrances are, in motion.css). */
+html.restoring .work .work-panel[data-inview],
+html.restoring .work .work-line,
+html.restoring .work .work-photo-in > img {
+  transition: none !important;
+}
 /* Side by side, a card follows the one to its left: two across (640px to 1023px, and upright
    screens up to 1279px), or four across (wider upright screens). */
 @media screen and (min-width: 640px) and (max-width: 1023px), screen and (min-width: 1024px) and (max-width: 1279px) and (max-aspect-ratio: 1/1) {
@@ -583,7 +598,9 @@ html.motion .hero-cue-line {
     --words: 23.5rem; /* the words' column */
     --split: 3rem; /* between a photograph and its words */
     --gap: 7rem; /* between panels */
-    --edge: 2.5rem;
+    /* The page's side margin: 2.5rem, or the edge of the centred 90rem column on very wide screens,
+       so the heading, the first and last panel at rest and the progress line stand where the header does. */
+    --edge: max(2.5rem, calc((100cqw - 90rem) / 2 + 2.5rem));
     --row: calc(var(--panels) * (var(--pw) + var(--split) + var(--words)) + (var(--panels) - 1) * var(--gap) + 2 * var(--edge));
     display: flex;
     flex-direction: column;
@@ -596,7 +613,7 @@ html.motion .hero-cue-line {
     justify-content: space-between;
     width: 100%;
     max-width: none;
-    padding-inline: 2.5rem;
+    padding-inline: var(--edge);
   }
   .work[data-pinned] .work-title {
     font-size: clamp(2.75rem, min(6.4vw, 9.5svh), 6.5rem);
@@ -705,7 +722,7 @@ html.motion .hero-cue-line {
     display: block;
     position: relative;
     height: 1px;
-    margin: auto 2.5rem clamp(1.5rem, 4.5svh, 2.75rem);
+    margin: auto var(--edge) clamp(1.5rem, 4.5svh, 2.75rem);
     background: var(--color-line);
     container-type: inline-size;
   }
@@ -767,6 +784,7 @@ html.motion .hero-cue-line {
     display: block;
     max-width: 90rem;
     margin-inline: auto;
+    padding-inline: 2.5rem;
   }
   .work[data-pinned] .work-count,
   .work[data-pinned] .work-progress,
@@ -787,6 +805,15 @@ html.motion .hero-cue-line {
   }
   .work[data-pinned] .work-panel {
     display: block;
+  }
+  /* Every second card sits lower, as in the grid without motion. */
+  .work[data-pinned] .work-panel:nth-child(even) {
+    margin-top: 6rem;
+  }
+  @media (min-width: 1280px) {
+    .work[data-pinned] .work-panel:nth-child(even) {
+      margin-top: 7rem;
+    }
   }
   .work[data-pinned] .work-photo,
   .work[data-pinned] .work-text {
@@ -848,20 +875,43 @@ html.motion .hero-cue-line {
    ========================================================================== */
 /* The JD monogram, pressed into the ivory in pale gold and lit from the upper
    left. The sheen crosses it as the section scrolls past, like foil turning.
-   Every shade of the foil comes from the gold tokens (globals.css). */
+   Every shade of the foil comes from the gold tokens (globals.css).
+
+   Two copies of the mark are stacked. The lower one never changes and carries
+   the embossing (the highlight and the shadow around the edge); the upper one
+   holds the moving sheen and has no filter. A filter over the moving copy
+   would be worked out again on every scroll frame.
+   (The mask is written out on both copies, not held in a variable: a url() in a
+   variable is resolved again each time the scroll restyles the mark, and the
+   embossing would be repainted every frame.) */
 .finale .finale-mark {
   --foil: var(--color-gold-soft);
   --foil-rest: color-mix(in srgb, var(--color-gold-soft) 92%, white);
   --foil-lit: color-mix(in srgb, var(--color-gold-soft) 77%, white);
   --foil-peak: color-mix(in srgb, var(--color-gold-soft) 42%, white);
+  position: relative;
   width: min(46rem, 96vw, 98svh);
   aspect-ratio: 771.4 / 702.9;
-  filter: drop-shadow(-1px -1px 0.5px rgb(255 255 255 / 0.9)) drop-shadow(1.5px 2px 2.5px color-mix(in srgb, var(--color-gold-deep) 22%, transparent));
+}
+.finale .finale-mark-emboss,
+.finale .finale-mark-shape {
+  position: absolute;
+  inset: 0;
+}
+/* The filter sits on the frame and the mask on the fill inside it: a mask on the same box would cut the shadow off. */
+.finale .finale-mark-emboss {
+  filter: drop-shadow(-0.0625rem -0.0625rem 0.03125rem rgb(255 255 255 / 0.9))
+    drop-shadow(0.09375rem 0.125rem 0.15625rem color-mix(in srgb, var(--color-gold-deep) 22%, transparent));
+}
+.finale .finale-mark-emboss::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--foil-rest);
+  -webkit-mask: url("/brand/dr-joy-monogram-charcoal.svg") center / contain no-repeat;
+  mask: url("/brand/dr-joy-monogram-charcoal.svg") center / contain no-repeat;
 }
 .finale .finale-mark-shape {
-  position: relative;
-  width: 100%;
-  height: 100%;
   overflow: hidden;
   background: var(--foil-rest);
   -webkit-mask: url("/brand/dr-joy-monogram-charcoal.svg") center / contain no-repeat;

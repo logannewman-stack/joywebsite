@@ -142,10 +142,13 @@ export function Perspective({ tone = "bg-ivory" }: { tone?: string }) {
   return (
     <section aria-labelledby="perspective-heading" className="relative z-10">
       <Scene as="div" from="all" steps={STEPS} length={PERSPECTIVE_LENGTH} className={`persp ${tone}`} pinClassName="persp-stage">
-        {/* Carries the step count for the timings in home.css; it adds no box. */}
+        {/* Carries the step count for the timings in home.css; it adds no box.
+            data-scene-vars marks the three parts that move with the scroll (the header's marker, the photograph
+            and the meter): the engine writes the scene's progress on them only, so the words are not restyled
+            on every scroll frame. */}
         <div className="persp-set contents" style={{ "--n": STEPS } as Vars}>
           {/* While pinned, the header turns dark once the photograph fills the screen. */}
-          <div aria-hidden data-header="dark" className="persp-mark-pinned pointer-events-none" />
+          <div aria-hidden data-header="dark" data-scene-vars="" suppressHydrationWarning className="persp-mark-pinned pointer-events-none" />
 
           <InView className="persp-title mx-auto max-w-[90rem] px-5 pt-24 pb-12 md:px-10 md:pt-32 md:pb-16 lg:pt-36">
             {/* A short gold rule opens each chapter of the page. */}
@@ -155,7 +158,7 @@ export function Perspective({ tone = "bg-ivory" }: { tone?: string }) {
             </h2>
           </InView>
 
-          <div className="persp-photo relative aspect-[4/5] w-full overflow-hidden bg-sand md:aspect-[16/9] lg:aspect-auto lg:h-[min(84svh,55rem)]">
+          <div data-scene-vars="" suppressHydrationWarning className="persp-photo relative aspect-[4/5] w-full overflow-hidden bg-sand md:aspect-[16/9] lg:aspect-auto lg:h-[min(84svh,55rem)]">
             {/* Pinned, the photograph covers the screen's height: on upright screens that is wider than the screen. */}
             <ArtDirected
               wide={perspective.photo}
@@ -190,7 +193,7 @@ export function Perspective({ tone = "bg-ivory" }: { tone?: string }) {
               </SceneSteps>
 
               {/* "01 / 05" and the progress line: pinned only. Decorative; the statements are all in the page. */}
-              <div aria-hidden className="persp-meter label text-white/80">
+              <div aria-hidden data-scene-vars="" suppressHydrationWarning className="persp-meter label text-white/80">
                 <span className="persp-count tabular-nums">
                   <span className="persp-roll">
                     {statements.map((_, i) => (
