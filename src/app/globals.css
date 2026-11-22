@@ -280,7 +280,8 @@ html.js [data-reveal=""][data-in] {
   html.js [data-blur] > img {
     transition: opacity var(--duration-ui) ease-out;
   }
-  html.js [data-blur]:not([data-shown]) > img {
+  /* Never the opening photo (fetchpriority="high"): it paints the moment it decodes. */
+  html.js [data-blur]:not([data-shown]) > img:not([fetchpriority="high"]) {
     opacity: 0;
   }
   @media print {

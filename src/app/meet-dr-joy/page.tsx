@@ -43,7 +43,7 @@ export default function MeetPage() {
             <Reveal immediate>
               <Label index="01">Meet Dr. Joy</Label>
             </Reveal>
-            <h1 className="display mt-7 text-[clamp(3.5rem,8vw,8.4rem)] leading-[0.9] md:mt-9">
+            <h1 className="display mt-7 text-[clamp(3.5rem,min(8vw,13.8svh),7.3rem)] leading-[0.9] md:mt-9">
               {/* Trailing spaces keep the text "My career has never followed a single lane." for search and copy-paste; they do not render. */}
               <LineReveal lines={["My career has ", "never followed ", <em key="lane">a single lane.</em>]} />
             </h1>
