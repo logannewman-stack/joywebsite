@@ -7,7 +7,7 @@ import { SIGNATURE_SCRIPT } from "./signature";
  * (first arrival and reload), a black curtain carries the cream script
  * wordmark, large and centred. It is signed, slowly, the line drawn as a pen
  * would write it (signature.ts); a gold hairline draws beneath it; and after
- * a beat the curtain lifts into the page (about seven seconds in all). Any
+ * a beat the curtain lifts into the page (about six and a half seconds in all). Any
  * click, tap, key or scroll skips it.
  *
  * It is in the server HTML but shown only when the head script has put
