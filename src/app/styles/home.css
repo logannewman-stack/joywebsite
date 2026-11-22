@@ -102,6 +102,18 @@ html.motion .hero-cue-line {
   background-position: 0 66%;
 }
 
+/* The story's length in screens (both set in Perspective.tsx): the longer one
+   where a thumb scrolls it, the shorter on wide landscape screens, where a
+   wheel or trackpad does and every notch should bring something. */
+.persp[data-scene] {
+  --scene-length: var(--story-tall, 6.6);
+}
+@media (min-width: 1024px) and (orientation: landscape) {
+  .persp[data-scene] {
+    --scene-length: var(--story-wide, 5);
+  }
+}
+
 @media screen {
   /* The scene has --n steps (set in Perspective.tsx): step 0 is the opening,
      then one step per statement, then a last step that holds the final
@@ -579,11 +591,11 @@ html.restoring .work .work-photo-in > img {
 @media screen {
   /* Pinned (from 1024px, animated): the heading stays; the row slides past.
 
-     The scene is 3.5 screens of scrolling (its length is set in page.tsx),
+     The scene is 3.25 screens of scrolling (its length is set in page.tsx),
      counted here in fourteenths. The stage settles for the first one (--lead:
-     a quarter of a screen, the first panel whole), the row travels until the
-     twelfth (--arrive), and the last panel then stands whole for the two that
-     are left (half a screen) before the stage lets go.
+     just under a quarter of a screen, the first panel whole), the row travels
+     until the twelfth (--arrive), and the last panel then stands whole for the
+     two that are left (just under half a screen) before the stage lets go.
      --t is the travel, 0 to 1: the photographs' drift, the numerals, the
      progress line, its dot and the counter all read it, so they start and
      finish with the row. */
@@ -639,9 +651,17 @@ html.restoring .work .work-photo-in > img {
      panel, and the first and last land in their resting places. */
   .work[data-pinned] .work-track {
     --slack: calc(max(0px, var(--row) - 100cqw) / (var(--arrive) - var(--lead)));
-    display: flex;
-    gap: var(--gap);
+    /* One line of panels on two rows that all four share: the band the numerals
+       stand in, and the words. The words' row is as tall as the tallest of the
+       four blocks of words, so every numeral is given the same room. */
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: max-content;
+    grid-template-columns: none;
+    grid-template-rows: minmax(0, 1fr) auto;
+    gap: 0 var(--gap);
     width: max-content;
+    height: var(--ph);
     max-width: none;
     margin: 0;
     padding: 0 calc(var(--edge) + var(--slack) * (1 - var(--arrive))) 0 calc(var(--edge) + var(--slack) * var(--lead));
@@ -650,13 +670,17 @@ html.restoring .work .work-photo-in > img {
   }
   .work[data-pinned] .work-panel {
     display: grid;
+    grid-row: 1 / span 2;
     grid-template-columns: var(--pw) var(--words);
-    column-gap: var(--split);
+    grid-template-rows: minmax(0, 1fr) auto; /* where subgrid is not supported, each panel keeps its own two rows */
+    grid-template-rows: subgrid;
+    gap: 0 var(--split);
     width: auto;
     margin-top: 0;
     isolation: isolate;
   }
   .work[data-pinned] .work-photo {
+    grid-area: 1 / 1 / 3 / 2;
     height: var(--ph);
   }
   .work[data-pinned] .work-photo-in {
@@ -668,24 +692,31 @@ html.restoring .work .work-photo-in > img {
     transform: translate3d(calc((var(--t) - var(--c, 0)) * 5%), 0, 0) scale(1.1);
     will-change: transform;
   }
-  /* The words stand on the photograph's foot. */
+  /* The words stand on the photograph's foot; the numeral has the band above them. */
   .work[data-pinned] .work-text {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    height: var(--ph);
+    display: grid;
+    grid-area: 1 / 2 / 3 / 3;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr) auto;
+    grid-template-rows: subgrid;
+    row-gap: 0;
   }
-  /* The large outlined numeral, in gold: texture at the head of the words' column, drifting slower than the row. */
+  .work[data-pinned] .work-words {
+    grid-row: 2;
+    align-self: end;
+  }
+  /* The large outlined numeral, in gold: texture at the head of the words' column, drifting slower than the
+     row. Its box is the band above the words, and the digits are sized from that band's height (a size
+     container), so on a short screen they shrink to stand clear of the hairline instead of being cut by
+     the words, and all four are the same size. */
   .work[data-pinned] .work-numeral {
     display: block;
-    position: absolute;
-    top: -0.07em;
-    left: calc(var(--pw) + var(--split) - 0.05em);
+    grid-row: 1;
+    position: relative;
     z-index: -1;
+    container-type: size;
     font-family: var(--font-sans);
-    font-size: min(15rem, calc(var(--ph) * 0.4));
     font-weight: 500;
-    line-height: 0.8;
     letter-spacing: -0.05em;
     font-variant-numeric: tabular-nums;
     /* Outlined: a 2px stroke with the page's white painted over its inner half, so the
@@ -693,17 +724,26 @@ html.restoring .work .work-photo-in > img {
     color: var(--color-paper);
     -webkit-text-stroke: 2px color-mix(in srgb, var(--color-gold-deep) 62%, transparent);
     paint-order: stroke fill;
-    transform: translate3d(calc((var(--t) - var(--c, 0)) * 7rem), 0, 0);
-    will-change: transform;
     transition: -webkit-text-stroke-color var(--duration-ui) var(--ease-soft);
     user-select: none;
     pointer-events: none;
+  }
+  /* The digits' ink runs from the top of the band to 0.685em below it (line-height 0.8, set 0.07em high):
+     the size keeps their foot 1rem clear of the words' hairline, up to the size of the roomy layout. */
+  .work[data-pinned] .work-numeral > span {
+    position: absolute;
+    top: -0.07em;
+    left: -0.05em;
+    font-size: min(15rem, calc(var(--ph) * 0.4));
+    font-size: max(0px, min(15rem, calc(var(--ph) * 0.4), calc((100cqh - 1rem) / 0.685)));
+    line-height: 0.8;
+    transform: translate3d(calc((var(--t) - var(--c, 0)) * 7rem), 0, 0);
+    will-change: transform;
   }
   .work[data-pinned] .work-panel:hover .work-numeral,
   .work[data-pinned] .work-panel:has(:focus-visible) .work-numeral {
     -webkit-text-stroke-color: var(--color-gold-deep);
   }
-  /* Where a short screen brings the two together, the numeral passes behind the words. */
   .work[data-pinned] .work-words {
     background: var(--color-paper);
   }
@@ -796,14 +836,27 @@ html.restoring .work .work-photo-in > img {
   }
   .work[data-scene][data-pinned] .work-track {
     display: grid;
+    grid-auto-flow: row;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: none;
     gap: 5rem 2rem;
     width: auto;
+    height: auto;
     max-width: 90rem;
     margin-inline: auto;
     padding: 0 2.5rem;
     transform: none;
   }
+  @media (min-width: 1280px) {
+    .work[data-scene][data-pinned] .work-track {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
   .work[data-pinned] .work-panel {
+    display: block;
+    grid-row: auto;
+  }
+  .work[data-pinned] .work-text {
     display: block;
   }
   /* Every second card sits lower, as in the grid without motion. */

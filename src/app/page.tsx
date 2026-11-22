@@ -63,10 +63,10 @@ export default function Home() {
 
       {/* Explore My Work: the four pathways. A sideways-scrolling sequence from 1024px; four rows on phones and a two-by-two grid on tablets. */}
       <section id="work" className="work-sheet relative z-10 bg-paper" aria-labelledby="work-heading">
-        {/* Three and a half screens of scrolling while pinned, counted in fourteenths (the engine's steps): the stage
-            settles for one, the row travels for eleven, and the last panel holds, whole, for two (half a screen)
-            before the stage lets go. home.css ("Explore My Work") sets the timing. */}
-        <Scene as="div" from="lg" length={4.5} steps={14} className="work" pinClassName="work-stage pt-20 pb-20 sm:pt-24 sm:pb-24 md:pt-32 md:pb-32 lg:pb-40">
+        {/* Three and a quarter screens of scrolling while pinned, counted in fourteenths (the engine's steps): the
+            stage settles for one, the row travels for eleven, and the last panel holds, whole, for two (just under
+            half a screen) before the stage lets go. home.css ("Explore My Work") sets the timing. */}
+        <Scene as="div" from="lg" length={4.25} steps={14} className="work" pinClassName="work-stage pt-20 pb-20 sm:pt-24 sm:pb-24 md:pt-32 md:pb-32 lg:pb-40">
           <div className="work-head mx-auto max-w-[90rem] px-5 md:px-10">
             <InView>
               <span aria-hidden className="work-rule rule-draw mb-6 block h-px w-16 bg-gold-deep md:mb-8" />

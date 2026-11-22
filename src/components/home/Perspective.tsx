@@ -20,10 +20,18 @@ if (statements.length !== perspective.marks.length) {
 }
 
 /**
- * How many screens the pinned story lasts: about four fifths of a screen of
- * scrolling per step. Home's held opening reads it too.
+ * How many screens the pinned story lasts on wide landscape screens (from
+ * 1024px, where a wheel or trackpad scrolls it): four screens of scrolling, a
+ * little over half a screen per step. Home's held opening reads it too.
  */
-export const PERSPECTIVE_LENGTH = 6.6;
+export const PERSPECTIVE_LENGTH = 5;
+/**
+ * And on phones and upright screens: about four fifths of a screen per step,
+ * one swipe of a thumb. The statements sit low there, where the next section
+ * covers them first, so the last one needs the longer step as well.
+ * home.css ("Perspective") chooses between the two.
+ */
+const PERSPECTIVE_LENGTH_TALL = 6.6;
 /**
  * Step 0 is the opening (the photograph's frame opening to the full screen),
  * steps 1 to n are the statements, and the last step holds the final
@@ -140,8 +148,13 @@ function Heading() {
  */
 export function Perspective({ tone = "bg-ivory" }: { tone?: string }) {
   return (
-    <section aria-labelledby="perspective-heading" className="relative z-10">
-      <Scene as="div" from="all" steps={STEPS} length={PERSPECTIVE_LENGTH} className={`persp ${tone}`} pinClassName="persp-stage">
+    <section
+      aria-labelledby="perspective-heading"
+      className="relative z-10"
+      style={{ "--story-wide": PERSPECTIVE_LENGTH, "--story-tall": PERSPECTIVE_LENGTH_TALL } as Vars}
+    >
+      {/* No length here: home.css sets the scene's length from the two values above. */}
+      <Scene as="div" from="all" steps={STEPS} className={`persp ${tone}`} pinClassName="persp-stage">
         {/* Carries the step count for the timings in home.css; it adds no box.
             data-scene-vars marks the three parts that move with the scroll (the header's marker, the photograph
             and the meter): the engine writes the scene's progress on them only, so the words are not restyled

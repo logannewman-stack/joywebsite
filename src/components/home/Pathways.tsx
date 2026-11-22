@@ -63,8 +63,9 @@ export function Pathways() {
             />
           </div>
           <div className="work-text">
+            {/* The inner span is the digits; the outer one is the band they are sized from in the pinned row. */}
             <span aria-hidden className="work-numeral">
-              {pad(i + 1)}
+              <span>{pad(i + 1)}</span>
             </span>
             <div className="work-words">
               {/* The hairline over the words: gold, and it draws, below 1024px; ink in the wide layouts. */}
