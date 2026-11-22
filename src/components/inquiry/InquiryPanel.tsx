@@ -105,7 +105,7 @@ export default function InquiryPanel({ request, closing, close }: PanelProps) {
       aria-labelledby="inquiry-title"
       aria-describedby={intro ? "inquiry-intro" : undefined}
       inert={closing}
-      className={`absolute inset-y-0 right-0 flex w-full max-w-[37.5rem] flex-col bg-paper shadow-[0_0_80px_rgba(11,11,11,0.18)] transition-transform starting:translate-x-full motion-reduce:transition-none ${
+      className={`absolute inset-y-0 right-0 flex w-full max-w-[37.5rem] flex-col bg-paper shadow-[0_0_5rem_rgba(11,11,11,0.18)] transition-transform starting:translate-x-full motion-reduce:transition-none ${
         closing
           ? "translate-x-full duration-[320ms] ease-[cubic-bezier(0.7,0,0.84,0)]"
           : "translate-x-0 duration-[420ms] ease-[cubic-bezier(0.16,1,0.3,1)]"

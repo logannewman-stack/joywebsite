@@ -1,7 +1,7 @@
 /* ==========================================================================
    Chrome: everything that frames every page (header, menu, inquiry panel,
    footer, the link to the next page, buttons and links, page transitions and
-   the first-visit signature). Loaded from globals.css.
+   the signature curtain). Loaded from globals.css.
 
    The same rule as motion.css: every moving effect is scoped to
    <html class="motion"> (JavaScript on, reduced motion off) or to something
@@ -269,6 +269,13 @@ html.motion .panel-settle-list {
    the screen sticks with its top at the top instead, shows its first screen
    the same way, then scrolls on normally (--foot-h is measured by the chrome
    script). Without motion it is an ordinary footer.
+
+   It is only held from three screens before the end of the page
+   ([data-near], set by the chrome script); until then it is an ordinary block
+   below the fold. A sticky element is always inside the viewport, even while
+   the page covers it: the browser would composite it on every frame and count
+   it as a layout shift whenever the page above changes height (web fonts
+   arriving late), a shift nobody sees.
    -------------------------------------------------------------------------- */
 .page-shell {
   position: relative;
@@ -289,15 +296,17 @@ html.motion .page-shell > main {
   z-index: 1;
   background: var(--color-paper);
 }
-html.motion .site-footer {
+html.motion .site-footer[data-near] {
   position: sticky;
   bottom: min(0px, calc(100svh - var(--foot-h, 0px)));
+  /* The content's covered offset (below) must not add to the page's scroll height. */
+  overflow: clip;
 }
 /* Depth while it is uncovered: the content rises a little slower than the
    page and comes up out of the dark (--foot-p: 0 covered, 1 in the open). */
-html.motion .foot-inner {
-  transform: translate3d(0, calc((1 - var(--foot-p, 1)) * 4.5rem), 0);
-  opacity: calc(0.3 + 0.7 * var(--foot-p, 1));
+html.motion .site-footer[data-near] .foot-inner {
+  transform: translate3d(0, calc((1 - var(--foot-p, 0)) * 4.5rem), 0);
+  opacity: calc(0.3 + 0.7 * var(--foot-p, 0));
 }
 /* With keyboard focus inside, it is at rest and fully lit, so the focus ring is where it will stay. */
 html.motion .site-footer:has(:focus-visible) .foot-inner {
@@ -324,15 +333,30 @@ html.motion .site-footer:has(:focus-visible) .foot-inner {
 }
 @media (min-width: 80rem) {
   /* Height left on the screen: 100svh less the footer's own paddings (the same
-     min() values as its classes) and 24.25rem for the columns and their gap.
-     The artwork is 3.07:1. */
+     min() values as its classes) and 24.25rem for the columns and the space
+     under them (their bottom padding, 2.125rem, is the least it can be).
+     The artwork is 3.07:1. On a short, wide screen that would leave a small
+     signature, so it keeps at least 58% of the content width (--foot-min, as
+     a height) and the footer runs a little past one screen instead. */
   .foot-mark {
     --foot-cols: 24.25rem;
-    width: min(100%, calc(clamp(6rem, 100svh - min(7rem, 11svh) - min(3rem, 5svh) - min(2.5rem, 4svh) - var(--foot-cols), 21rem) * 3.07));
+    --foot-min: calc((min(100vw, 90rem) - 5rem) * 0.58 / 3.07);
+    width: min(
+      100%,
+      calc(clamp(var(--foot-min), 100svh - min(7rem, 11svh) - min(3rem, 5svh) - min(2.5rem, 4svh) - var(--foot-cols), 21rem) * 3.07)
+    );
   }
-  /* Without the newsletter (Insights) the link lists sit in two columns and take less height. */
+  /* Without the newsletter (Insights) the link lists sit in two columns and take
+     less height. There the footer is as tall as its content, not a full screen,
+     so no empty band opens between the lists and the signature. */
   .site-footer:not(:has(#footer-newsletter)) .foot-mark {
     --foot-cols: 14.75rem;
+  }
+  .site-footer:not(:has(#footer-newsletter)) .foot-inner {
+    min-height: 0;
+  }
+  .site-footer:not(:has(#footer-newsletter)) .foot-sign {
+    margin-top: 0.875rem;
   }
 }
 /* It writes itself in, left to right, once it is in the open ([data-foot-in]
@@ -448,46 +472,115 @@ html.motion .foot-sign[data-foot-in] .foot-rule {
 }
 
 /* --------------------------------------------------------------------------
-   First-visit signature (Curtain in components/chrome): on the first page of
-   a visit a black curtain carries the script wordmark, which writes itself
-   in; then the curtain lifts into the page. The page underneath renders at
-   once; its on-load entrances wait for the lift (html.intro-hold).
+   The signature curtain (Curtain in components/chrome): the opening titles.
+   On every full page load (first arrival or reload) a black curtain carries
+   the script wordmark, large and centred. It is signed, slowly; a gold
+   hairline draws beneath it as the last stroke lands; and after a beat the
+   curtain lifts into the page, its gold hem leading. The page underneath
+   renders at once; its on-load entrances wait for the lift (html.intro-hold).
    html.intro is only ever set by the head script (JavaScript on, motion on,
-   first page of the session), so without it there is no curtain at all.
+   a full load that is not Back/Forward), so without it there is no curtain.
+
+   The clock is here, not in a script: every part is an animation that starts
+   with the first paint, and each moves only transform and opacity, so it runs
+   on the compositor and keeps time while the page hydrates. Three variables
+   set it, and everything after the writing is derived from them:
+     --intro-w0    0.45s   when the writing begins
+     --intro-wd    3.4s    how long the writing takes
+     --intro-beat  0.65s   the hold once the last stroke has landed
+     --intro-at    4.5s    = w0 + wd + beat: the lift begins
+   On that clock:
+     0s       the signature eases from a slight push-in (scale 1.04) to rest
+     0.45s    it is written (3.4s)
+     3.65s    the gold hairline draws beneath it (as the last stroke lands)
+     4.5s     the curtain lifts (1.2s); the signature rises a little slower
+              than the curtain and fades
+     4.95s    the header settles into place (0.9s)
+   html.intro-late (the page took long to arrive): the writing takes 1.6s and
+   the lift begins at 2.2s. Any click, tap, key or scroll skips to the lift
+   (the script moves these animations forward; it never times anything).
    -------------------------------------------------------------------------- */
 .intro-curtain {
   display: none;
+}
+html.intro,
+html.intro-lift {
+  --intro-w0: 0.45s;
+  --intro-wd: 3.4s;
+  --intro-beat: 0.65s;
+  --intro-at: calc(var(--intro-w0) + var(--intro-wd) + var(--intro-beat));
+}
+html.intro-late {
+  --intro-w0: 0.2s;
+  --intro-wd: 1.6s;
+  --intro-beat: 0.4s;
 }
 html.intro .intro-curtain {
   position: fixed;
   inset: 0;
   z-index: 90;
+  display: block;
+  overflow: hidden;
+  background: var(--color-ink);
+  /* A gold hem along the curtain's lower edge, seen as it lifts. */
+  box-shadow: 0 0.125rem 0 var(--color-gold);
+  will-change: transform;
+  animation: intro-lift 1.2s cubic-bezier(0.4, 0, 0.1, 1) var(--intro-at) both;
+}
+/* The stage moves back down inside the lifting curtain, so the signature
+   rises at half the hem's speed, and it has faded before the hem reaches it. */
+html.intro .intro-stage {
+  position: absolute;
+  inset: 0;
   display: grid;
   place-items: center;
-  background: var(--color-ink);
-  /* A gold hem: one hairline along the curtain's lower edge, seen as it lifts. */
-  box-shadow: 0 1px 0 var(--color-gold);
+  padding-bottom: 3svh;
+  will-change: transform, opacity;
+  animation:
+    intro-drift 1.2s cubic-bezier(0.4, 0, 0.1, 1) var(--intro-at) both,
+    intro-fade 0.45s ease-in var(--intro-at) both;
+}
+html.intro .intro-sign {
+  width: min(78vw, 46rem);
   will-change: transform;
+  animation: intro-push var(--intro-at) cubic-bezier(0.25, 0.5, 0.3, 1) both;
+}
+html.intro .intro-pen {
+  position: relative;
+  display: block;
+  overflow: hidden;
 }
 html.intro .intro-mark {
-  --ink-wipe: 0%;
-  width: min(64vw, 30rem);
+  display: block;
+  width: 100%;
   height: auto;
-  mask-image: linear-gradient(90deg, #000 calc(var(--ink-wipe) - 14%), transparent var(--ink-wipe));
 }
-html.intro-write .intro-mark {
-  animation: intro-write 0.68s var(--ease-soft) both;
+/* The writing, timed by --intro-w0 and --intro-wd. The cover is ink on the
+   ink curtain, so only its soft edge is seen: it starts over the whole
+   signature (the soft edge just off its left end) and travels 115% of the
+   signature's width, its own width, to the right. */
+html.intro .intro-pen::after {
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  left: -14%;
+  width: 115%;
+  background: linear-gradient(90deg, transparent, var(--color-ink) 12%);
+  will-change: transform;
+  animation: intro-write var(--intro-wd) cubic-bezier(0.4, 0.1, 0.55, 1) var(--intro-w0) both;
 }
-html.intro-lift .intro-curtain {
-  animation: intro-lift 0.52s cubic-bezier(0.72, 0, 0.18, 1) both;
-}
-html.intro-lift .intro-mark {
-  --ink-wipe: 115%;
-  animation: intro-mark-out 0.4s var(--ease-soft) both;
+html.intro .intro-rule {
+  display: block;
+  height: 1px;
+  margin-top: 1.5rem;
+  background: var(--color-gold);
+  transform-origin: left center;
+  animation: intro-rule 0.8s var(--ease-expo) calc(var(--intro-w0) + var(--intro-wd) - 0.2s) both;
 }
 /* As the curtain clears the top of the screen, the header settles into place. */
+html.intro .site-header > div,
 html.intro-lift .site-header > div {
-  animation: intro-header 0.9s var(--ease-expo) 0.22s both;
+  animation: intro-header 0.9s var(--ease-expo) calc(var(--intro-at) + 0.45s) both;
 }
 @keyframes intro-header {
   from {
@@ -496,11 +589,18 @@ html.intro-lift .site-header > div {
   }
 }
 @keyframes intro-write {
-  from {
-    --ink-wipe: 0%;
-  }
   to {
-    --ink-wipe: 115%;
+    transform: translate3d(100%, 0, 0);
+  }
+}
+@keyframes intro-push {
+  from {
+    transform: scale(1.04);
+  }
+}
+@keyframes intro-rule {
+  from {
+    transform: scaleX(0);
   }
 }
 @keyframes intro-lift {
@@ -508,9 +608,13 @@ html.intro-lift .site-header > div {
     transform: translate3d(0, -100%, 0);
   }
 }
-@keyframes intro-mark-out {
+@keyframes intro-drift {
   to {
-    transform: translate3d(0, 35%, 0);
+    transform: translate3d(0, 50%, 0);
+  }
+}
+@keyframes intro-fade {
+  to {
     opacity: 0;
   }
 }
@@ -527,17 +631,17 @@ html.intro-hold main [data-inview].rise,
 html.intro-hold main [data-inview] .rule-draw,
 html.intro-hold main [data-inview] .wipe,
 html.intro-hold main [data-inview] .settle {
-  transition-delay: calc(var(--d, 0s) + var(--intro-wait, 0.8s));
+  transition-delay: calc(var(--d, 0s) + var(--intro-wait, var(--intro-at, 0.8s)));
 }
 html.intro-hold main [data-inview] .stagger > *,
 html.intro-hold main [data-inview].stagger > * {
-  transition-delay: calc(var(--d, 0s) + var(--si, 0) * var(--stagger, 70ms) + var(--intro-wait, 0.8s));
+  transition-delay: calc(var(--d, 0s) + var(--si, 0) * var(--stagger, 70ms) + var(--intro-wait, var(--intro-at, 0.8s)));
 }
 html.intro-hold main [data-inview] .wr-in {
-  transition-delay: calc(var(--rise-delay, 0s) + var(--i, 0) * var(--rise-stagger, 40ms) + var(--intro-wait, 0.8s));
+  transition-delay: calc(var(--rise-delay, 0s) + var(--i, 0) * var(--rise-stagger, 40ms) + var(--intro-wait, var(--intro-at, 0.8s)));
 }
 html.intro-hold main [data-reveal=""] {
-  transition-delay: calc(var(--reveal-delay, 0s) + var(--intro-wait, 0.8s));
+  transition-delay: calc(var(--reveal-delay, 0s) + var(--intro-wait, var(--intro-at, 0.8s)));
 }
 
 /* --------------------------------------------------------------------------
@@ -574,7 +678,7 @@ html.has-cursor .site-cursor {
   border: 1px solid var(--color-gold);
   border-radius: 50%;
   background: rgb(11 11 11 / 0.62);
-  backdrop-filter: blur(6px);
+  backdrop-filter: blur(0.375rem);
   color: #fff;
   opacity: 0;
   transform: scale(0.1);
@@ -636,6 +740,16 @@ html.cursor-live [data-cursor] :is(input, textarea, select, [contenteditable="tr
 ::view-transition-new(root) {
   animation: none;
 }
+/* The header, the open menu and the cursor label stay above both pages for
+   the whole transition. (The entering page's group is created after theirs,
+   so without this it would be painted over them.) */
+::view-transition-group(site-header) {
+  z-index: 2;
+}
+::view-transition-group(site-menu),
+::view-transition-group(site-cursor) {
+  z-index: 3;
+}
 /* The header changes tone in step with the page (the browser's own cross-fade, at the page's tempo). */
 ::view-transition-group(site-header),
 ::view-transition-old(site-header),
@@ -654,10 +768,12 @@ html.cursor-live [data-cursor] :is(input, textarea, select, [contenteditable="tr
 ::view-transition-old(site-cursor) {
   display: none;
 }
-/* Between pages: the old page holds still underneath (so nothing shows
-   through, black to black included) while the new one dissolves in. */
+/* Between pages: the old page holds still underneath and is gone within the
+   first third (140ms), so its headline and the new one are never both legible;
+   the new page dissolves in over the page canvas, which already has the new
+   page's tone. */
 ::view-transition-old(.page-out) {
-  animation: vt-hold 0.42s linear both;
+  animation: vt-page-out 0.42s linear both;
 }
 ::view-transition-new(.page-in) {
   animation: vt-page-in 0.42s var(--ease-soft) both;
@@ -670,9 +786,10 @@ html.cursor-live [data-cursor] :is(input, textarea, select, [contenteditable="tr
 ::view-transition-new(.spread-in) {
   animation: vt-spread-in 0.75s var(--ease-expo) both;
 }
-@keyframes vt-hold {
-  to {
-    opacity: 1;
+@keyframes vt-page-out {
+  33%,
+  100% {
+    opacity: 0;
   }
 }
 @keyframes vt-page-in {
