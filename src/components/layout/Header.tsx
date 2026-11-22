@@ -98,7 +98,8 @@ export function Header() {
     };
   }, []);
 
-  // Dark variant while any [data-header="dark"] element is behind the bar. The
+  // Dark variant while any [data-header="dark"] element is behind the bar, unless a
+  // [data-header="light"] element is too (a light band inside a dark section). The
   // band is re-measured on resize, and the targets re-read if the page adds content.
   useEffect(() => {
     const behind = new Set<Element>();
@@ -107,14 +108,20 @@ export function Header() {
     const watch = () => {
       io?.disconnect();
       behind.clear();
-      const targets = document.querySelectorAll('[data-header="dark"]');
+      const targets = document.querySelectorAll('[data-header="dark"], [data-header="light"]');
       io = new IntersectionObserver(
         (entries) => {
           for (const e of entries) {
             if (e.isIntersecting) behind.add(e.target);
             else behind.delete(e.target);
           }
-          setOverDark(behind.size > 0);
+          let darkBehind = false;
+          let lightBehind = false;
+          behind.forEach((el) => {
+            if (el.getAttribute("data-header") === "light") lightBehind = true;
+            else darkBehind = true;
+          });
+          setOverDark(darkBehind && !lightBehind);
         },
         { rootMargin: `0px 0px -${Math.max(0, window.innerHeight - (headerRef.current?.offsetHeight ?? BAR))}px 0px` },
       );
@@ -180,7 +187,10 @@ export function Header() {
 
   // The browser's own chrome takes the header's colour. The tag is created by the chrome head
   // script; the first-visit curtain (html.intro) holds it black and hands back when it lifts.
+  // The page canvas follows too (html[data-tone]): it shows in a classic scrollbar's gutter
+  // and when the page is pulled past its edge, so black sections have no white strip.
   useEffect(() => {
+    document.documentElement.dataset.tone = tone;
     if (document.documentElement.classList.contains("intro")) return;
     document.querySelectorAll('meta[name="theme-color"]').forEach((m) => m.setAttribute("content", THEME[tone]));
   }, [tone, pathname]);

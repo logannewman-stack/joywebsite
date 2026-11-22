@@ -21,17 +21,20 @@ export function InView({
   as: Tag = "div",
   delay,
   id,
+  "data-header": header,
 }: {
   children: ReactNode;
   className?: string;
   as?: ElementType;
+  /** Marks the block for the header: "dark" over black, "light" for a light band inside a dark section. */
+  "data-header"?: "dark" | "light";
   /** Seconds added to every entrance inside (sets --d). */
   delay?: number;
   id?: string;
 }) {
   const style: Vars | undefined = delay ? { "--d": `${delay}s` } : undefined;
   return (
-    <Tag id={id} data-inview="" className={className} style={style} suppressHydrationWarning>
+    <Tag id={id} data-inview="" data-header={header} className={className} style={style} suppressHydrationWarning>
       {children}
     </Tag>
   );
