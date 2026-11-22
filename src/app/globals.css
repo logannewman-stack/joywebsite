@@ -69,9 +69,17 @@ html {
   color-scheme: light;
   /* Opening the menu or inquiry panel locks scrolling without shifting the page sideways. */
   scrollbar-gutter: stable;
+  /* The page canvas: it shows in a classic scrollbar's gutter and past the page's edges. */
+  background: var(--color-paper);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+}
+/* Over black (the header's tone, or the first-visit curtain) the canvas is black too. */
+html.intro,
+html[data-tone="dark"] {
+  background: var(--color-ink);
+  scrollbar-color: rgb(255 255 255 / 0.35) transparent;
 }
 
 body {

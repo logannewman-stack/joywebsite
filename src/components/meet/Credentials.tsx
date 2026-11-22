@@ -121,7 +121,7 @@ export function Credentials({ heading, groups }: { heading: string; groups: Grou
       </div>
 
       {/* What I've Built: the chapter closes on an ivory band that draws across the black. */}
-      <InView className="meet-built relative mt-20 md:mt-28 lg:mt-32">
+      <InView data-header="light" className="meet-built relative mt-20 md:mt-28 lg:mt-32">
         <span aria-hidden className="rule-draw absolute inset-0 block bg-ivory" />
         <div className="relative mx-auto max-w-[90rem] px-5 py-14 text-ink md:px-10 md:py-20 lg:grid lg:grid-cols-12 lg:gap-x-6 lg:py-24">
           <h3 className="label rise text-stone lg:col-span-4" style={{ "--d": "0.3s" } as Vars}>
