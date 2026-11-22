@@ -20,6 +20,10 @@
  *                              bottom leaves the top edge).
  *   [data-inview] [data-in]    set once, the first time the element is seen.
  *   [data-magnetic] { --mx, --my }  a few pixels toward a fine pointer.
+ *   <html class="restoring">   for a second after Back or Forward: entrances
+ *                              are skipped, and anything above the restored
+ *                              scroll position counts as already seen, so a
+ *                              returning page is simply there.
  *
  * Keyboard focus inside a scene scrolls the focused step or panel into place.
  */
@@ -81,8 +85,14 @@ scan();
 new MutationObserver(scan).observe(document.body,{childList:true,subtree:true});
 window.addEventListener('scroll',req,{passive:true});
 window.addEventListener('resize',function(){pin();req()});
-window.addEventListener('load',req);
+window.addEventListener('load',function(){req();if(window.scrollY>0)seenAbove()});
 req();
+function seenAbove(){document.querySelectorAll('[data-inview]:not([data-in]),[data-reveal=""]:not([data-in]),[data-reveal-image=""]:not([data-in])').forEach(function(el){if(el.getBoundingClientRect().bottom<0)el.setAttribute('data-in','')})}
+window.addEventListener('popstate',function(){
+  d.classList.add('restoring');
+  setTimeout(seenAbove,80);
+  setTimeout(function(){seenAbove();d.classList.remove('restoring')},1000);
+});
 document.addEventListener('focusin',function(e){
   var t=e.target;if(!t||!t.closest||!t.matches(':focus-visible'))return;
   var item=t.closest('[data-scene-step],[data-scene-panel]');if(!item)return;
@@ -99,4 +109,28 @@ document.addEventListener('focusin',function(e){
   }
   window.scrollTo({top:window.scrollY+r.top+target*span,behavior:'instant'});
 });
+})();`;
+
+/**
+ * Inline script for the end of <body>, always on (with or without motion):
+ * links to a section of the current page scroll there every time they are
+ * pressed, smoothly unless the visitor asked for reduced motion. The fixed
+ * header is cleared by the page's scroll padding, the address keeps its hash,
+ * and keyboard focus follows to the section.
+ */
+export const ANCHOR_BODY_SCRIPT = `(function(){
+document.addEventListener('click',function(e){
+  if(e.defaultPrevented||e.button!==0||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;
+  var a=e.target&&e.target.closest&&e.target.closest('a[href]');if(!a||a.target==='_blank'||a.hasAttribute('download'))return;
+  var u;try{u=new URL(a.href)}catch(x){return}
+  if(u.origin!==location.origin||u.pathname!==location.pathname||u.search!==location.search||u.hash.length<2)return;
+  var t;try{t=document.getElementById(decodeURIComponent(u.hash.slice(1)))}catch(x){return}
+  if(!t)return;
+  e.preventDefault();
+  if(location.hash!==u.hash)history.pushState(history.state,'',u.hash);
+  var calm=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+  t.scrollIntoView({behavior:calm?'auto':'smooth',block:'start'});
+  if(!t.hasAttribute('tabindex'))t.setAttribute('tabindex','-1');
+  t.focus({preventScroll:true});
+},true);
 })();`;

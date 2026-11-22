@@ -69,29 +69,32 @@ html.motion .meet-story .sl {
    met by the time the block is centered. The photograph between them drifts
    a little faster than the page, so it moves through the gap.
    -------------------------------------------------------------------------- */
+/* Each line starts toward the middle of the page and glides out to its own
+   edge, fading up as it goes, so no letter is ever cut by the screen edge. */
 .meet-line-a {
-  --travel: -16vw;
+  --travel: 12vw;
   --start: 0.02;
   --end: 0.5;
 }
 .meet-line-b {
-  --travel: 18vw;
+  --travel: -12vw;
   --start: 0.2;
   --end: 0.56;
 }
 @media (min-width: 768px) {
   .meet-line-a {
-    --travel: -20vw;
+    --travel: 16vw;
   }
   .meet-line-b {
-    --travel: 24vw;
+    --travel: -18vw;
   }
 }
 html.motion .meet-line {
   --t: clamp(0, calc((var(--v, 1) - var(--start)) / (var(--end) - var(--start))), 1);
   --e: calc(1 - (1 - var(--t)) * (1 - var(--t)));
   transform: translate3d(calc((1 - var(--e)) * var(--travel)), 0, 0);
-  will-change: transform;
+  opacity: clamp(0, calc(var(--t) * 2.5), 1);
+  will-change: transform, opacity;
 }
 html.motion .meet-couplet-photo {
   transform: translate3d(0, calc((0.5 - var(--v, 0.5)) * 6rem), 0);
