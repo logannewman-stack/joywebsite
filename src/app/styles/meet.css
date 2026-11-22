@@ -204,6 +204,16 @@ html.motion .meet-stairs[data-pinned] + .meet-creds {
   margin-top: var(--q-gap);
   font-size: var(--as);
 }
+/* The answer is sized to fill the line, and "the board." never breaks. When
+   the visitor's own stylesheet opens up the text (WCAG 1.4.12: line height 1.5
+   with wider letter and word spacing), that line would run off a phone's
+   screen. 1lh is 1em here unless line height has been raised, so by default
+   this is exactly 1em (the 0.05em of slack absorbs rounding); with the raised
+   spacing the type steps down (to 0.7em at line height 1.5) and the line
+   fits again. */
+.meet-answer > span {
+  font-size: calc(1em - max(0px, 1lh - 1.05em) * 0.66);
+}
 @media (min-width: 1024px) {
   /* The answer comes back from the other side of the page. */
   .meet-answer {
@@ -215,6 +225,10 @@ html.motion .meet-q[data-pinned] .meet-q-stage {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  /* If the pair is ever taller than the room (larger text), it starts below
+     the header and runs down, never up behind the header; once it passes the
+     foot of the stage the engine un-pins the scene (engine.ts, "Fit"). */
+  justify-content: safe center;
   height: 100%;
   padding-top: var(--header-height);
   padding-bottom: 3rem;
