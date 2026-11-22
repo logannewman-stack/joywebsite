@@ -486,18 +486,18 @@ html.motion .foot-sign[data-foot-in] .foot-rule {
    with the first paint, and each moves only transform and opacity, so it runs
    on the compositor and keeps time while the page hydrates. Three variables
    set it, and everything after the writing is derived from them:
-     --intro-w0    0.5s    when the writing begins
-     --intro-wd    4s      how long the writing takes
-     --intro-beat  0.7s    the hold once the last stroke has landed
-     --intro-at    5.2s    = w0 + wd + beat: the lift begins
+     --intro-w0    0.25s   when the writing begins
+     --intro-wd    2s      how long the writing takes
+     --intro-beat  0.35s   the hold once the last stroke has landed
+     --intro-at    2.6s    = w0 + wd + beat: the lift begins
    On that clock:
      0s       the signature eases from a slight push-in (scale 1.04) to rest
-     0.5s     it is written (4s): the line is drawn stroke by stroke, the way
+     0.25s    it is written (2s): the line is drawn stroke by stroke, the way
               a pen writes it (see .intro-ink below)
-     4.3s     the gold hairline draws beneath it (as the last stroke lands)
-     5.2s     the curtain lifts (1.2s); the signature rises a little slower
+     2.05s    the gold hairline draws beneath it (as the last stroke lands)
+     2.6s     the curtain lifts (1s); the signature rises a little slower
               than the curtain and fades
-     5.65s    the header settles into place (0.9s)
+     3.05s    the header settles into place (0.9s)
    html.intro-late (the page took long to arrive): the signing is the same,
    with shorter pauses around it. Any click, tap, key or scroll skips to the lift
    (the script moves these animations forward; it never times anything).
@@ -507,15 +507,15 @@ html.motion .foot-sign[data-foot-in] .foot-rule {
 }
 html.intro,
 html.intro-lift {
-  --intro-w0: 0.5s;
-  --intro-wd: 4s;
-  --intro-beat: 0.7s;
+  --intro-w0: 0.25s;
+  --intro-wd: 2s;
+  --intro-beat: 0.35s;
   --intro-at: calc(var(--intro-w0) + var(--intro-wd) + var(--intro-beat));
 }
 /* A page that arrived late keeps the whole signing; only the pauses around it are shorter. */
 html.intro-late {
-  --intro-w0: 0.2s;
-  --intro-beat: 0.5s;
+  --intro-w0: 0.1s;
+  --intro-beat: 0.25s;
 }
 html.intro .intro-curtain {
   position: fixed;
@@ -527,7 +527,7 @@ html.intro .intro-curtain {
   /* A gold hem along the curtain's lower edge, seen as it lifts. */
   box-shadow: 0 0.125rem 0 var(--color-gold);
   will-change: transform;
-  animation: intro-lift 1.2s cubic-bezier(0.4, 0, 0.1, 1) var(--intro-at) both;
+  animation: intro-lift 1s cubic-bezier(0.4, 0, 0.1, 1) var(--intro-at) both;
 }
 /* The stage moves back down inside the lifting curtain, so the signature
    rises at half the hem's speed, and it has faded before the hem reaches it. */
@@ -539,8 +539,8 @@ html.intro .intro-stage {
   padding-bottom: 3svh;
   will-change: transform, opacity;
   animation:
-    intro-drift 1.2s cubic-bezier(0.4, 0, 0.1, 1) var(--intro-at) both,
-    intro-fade 0.45s ease-in var(--intro-at) both;
+    intro-drift 1s cubic-bezier(0.4, 0, 0.1, 1) var(--intro-at) both,
+    intro-fade 0.4s ease-in var(--intro-at) both;
 }
 html.intro .intro-sign {
   /* Large enough to watch being written; never taller than about two fifths of a short window. */
@@ -584,13 +584,13 @@ html.intro .intro-ink i {
   animation: intro-ink 0.07s linear calc(var(--intro-w0) + var(--intro-wd) * var(--f)) both;
 }
 html.intro .intro-ink i.dot {
-  animation: intro-dab 0.32s cubic-bezier(0.2, 0.9, 0.3, 1.2) calc(var(--intro-w0) + var(--intro-wd) * var(--f)) both;
+  animation: intro-dab 0.22s cubic-bezier(0.2, 0.9, 0.3, 1.2) calc(var(--intro-w0) + var(--intro-wd) * var(--f)) both;
 }
 html.intro .intro-ink i.cap {
-  animation: intro-cap 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) calc(var(--intro-w0) + var(--intro-wd) * var(--f)) both;
+  animation: intro-cap 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) calc(var(--intro-w0) + var(--intro-wd) * var(--f)) both;
 }
 html.intro .intro-ink i.all {
-  animation: intro-ink 0.3s linear calc(var(--intro-w0) + var(--intro-wd) + 0.05s) both;
+  animation: intro-ink 0.2s linear calc(var(--intro-w0) + var(--intro-wd) + 0.05s) both;
 }
 /* Without the pieces (the script did not run, or clip-path is not supported)
    the whole signature simply fades in. */
@@ -599,7 +599,7 @@ html.intro .intro-mark {
   inset: 0;
   background-size: 100% 100%;
   opacity: 0;
-  animation: intro-ink 1.2s ease var(--intro-w0) both;
+  animation: intro-ink 0.8s ease var(--intro-w0) both;
 }
 html.intro .intro-ink[data-inked] + .intro-mark {
   display: none;
@@ -610,7 +610,7 @@ html.intro .intro-rule {
   margin-top: 1.5rem;
   background: var(--color-gold);
   transform-origin: left center;
-  animation: intro-rule 0.9s var(--ease-expo) calc(var(--intro-w0) + var(--intro-wd) - 0.2s) both;
+  animation: intro-rule 0.6s var(--ease-expo) calc(var(--intro-w0) + var(--intro-wd) - 0.2s) both;
 }
 /* As the curtain clears the top of the screen, the header settles into place. */
 html.intro .site-header > div,
