@@ -5,8 +5,8 @@
    scoped to <html class="motion"> (JavaScript on, reduced motion off) or to
    hover and focus, so without it the page is its plain, complete layout.
    Scroll effects read the engine's variables (--v on [data-view]); nothing
-   here animates in JavaScript. One refinement, the chapter rail's progress,
-   uses a CSS scroll timeline where the browser has one.
+   here animates in JavaScript. One refinement, the chapter indicator's
+   progress, uses a CSS scroll timeline where the browser has one.
 
    Accents: gold for structure (the rules that draw, the rail's current mark,
    the marks between venue names, the reel's ring; gold-deep on white and
@@ -14,6 +14,7 @@
 
      Opening        short-screen fit, the photo settling, the chapter list
      Chapter rail   the fixed indicator in the left margin (desktop)
+     Chapter bar    its counterpart at the top of the screen (phones, tablets)
      Course index   rows that answer as one object
      Room band      the photo drifting, the reel control
      Keynotes       the sticky photo growing with the chapter
@@ -49,6 +50,39 @@
   }
   .sp-toc {
     margin-top: max(calc(3.5rem - var(--tight) * 0.16), min(calc((50.4rem - 100svh) * 50), 9rem));
+  }
+}
+/* From 1280px wide the text column is wide enough to go further: a maximised
+   window on a 16:9 or 16:10 monitor leaves only about 46rem of height (the
+   root scales with the screen), and the whole opening still fits there.
+   --short is how far the screen falls short of 50.4rem, up to 4.4rem: the
+   headline gives a little more and the spacing and the list's rows close up,
+   a rem for every rem lost. Below 46rem the list steps down whole, as above.
+   --squat (under 41rem) then keeps both actions clear of the fold on the
+   shortest laptop windows. */
+@media (min-width: 1280px) {
+  .sp-open {
+    --short: clamp(0rem, 50.4rem - 100svh, 4.4rem);
+    --squat: clamp(0rem, 41rem - 100svh, 4.5rem);
+  }
+  .sp-open-head {
+    padding-top: calc(3.5rem - var(--tight) * 0.19 - var(--short) * 0.13 - var(--squat) * 0.1);
+  }
+  .sp-open-title {
+    margin-top: calc(1.75rem - var(--tight) * 0.05 - var(--short) * 0.06);
+    font-size: clamp(3.6rem, 6.3vw, calc(5.67rem - var(--tight) * 0.067 - var(--short) * 0.105 - var(--squat) * 0.13));
+  }
+  .sp-open-body {
+    padding-top: calc(3rem - var(--tight) * 0.13 - var(--short) * 0.115 - var(--squat) * 0.08);
+  }
+  .sp-open-actions {
+    margin-top: calc(2rem - var(--tight) * 0.05 - var(--short) * 0.06);
+  }
+  .sp-toc {
+    margin-top: max(calc(3.5rem - var(--tight) * 0.16 - var(--short) * 0.15), min(calc((46rem - 100svh) * 50), 9rem));
+  }
+  .sp-toc a {
+    min-height: calc(3.25rem - var(--short) * 0.1);
   }
 }
 
@@ -205,12 +239,30 @@ a:focus-visible > .sp-toc-arrow > svg + svg {
     opacity: 0;
     transition: opacity var(--duration-ui) var(--ease-soft);
   }
-  .sp-rail-item[data-state="current"] .sp-rail-name,
   .sp-rail-item:hover .sp-rail-name {
     opacity: 1;
   }
-  .sp-rail:has(.sp-rail-item:hover) .sp-rail-item[data-state="current"]:not(:hover) .sp-rail-name {
+  /* The chapter's own name: a second layer over the marks, with the name in the same place. It steps aside while another mark's name is previewed. */
+  .sp-rail-clip-name .sp-rail {
+    pointer-events: none;
+  }
+  .sp-rail-clip-name .sp-rail-name {
+    opacity: 1;
+  }
+  .sp-rail-clip:has(.sp-rail-item:not([data-state="current"]):hover) + .sp-rail-clip-name .sp-rail-name {
     opacity: 0;
+  }
+}
+/* The name runs from 3.875rem above the middle of the screen to (the longest)
+   9.6rem below it. It must never be cut by a chapter's edge, or two names
+   would show at once, half each. Without scroll-driven animations its layer
+   ends 13.5rem before the chapter does: the name has left through the layer's
+   end by the time the next chapter's edge, and with it the next name, arrives. */
+@supports not (animation-timeline: view()) {
+  @media screen and (min-width: 1024px) and (min-height: 480px) {
+    .sp-rail-clip-name {
+      bottom: 13.5rem;
+    }
   }
 }
 @media screen and (min-width: 1024px) and (min-height: 480px) and (max-height: 620px) {
@@ -259,6 +311,40 @@ a:focus-visible > .sp-toc-arrow > svg + svg {
     }
   }
 }
+/* With them, the name fades instead: in once the chapter's top edge has
+   passed above it (4rem after that edge crosses the middle of the screen), and
+   out before the chapter's end reaches its foot (11rem before the end crosses
+   the middle). Not tied to html.motion: this is a correction, not an effect. */
+@supports (animation-timeline: view()) {
+  @media screen and (min-width: 1024px) and (min-height: 480px) {
+    .sp-rail-name-in {
+      animation: sp-name-in linear both;
+      animation-timeline: --sp-chapter;
+      animation-range: cover 4rem cover 5.75rem;
+    }
+    .sp-rail-name-out {
+      animation: sp-name-out linear both;
+      animation-timeline: --sp-chapter;
+      animation-range: cover calc(100% - 13rem) cover calc(100% - 11rem);
+    }
+  }
+}
+@keyframes sp-name-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes sp-name-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
 @keyframes sp-fill {
   from {
     transform: scaleY(0);
@@ -273,6 +359,85 @@ a:focus-visible > .sp-toc-arrow > svg + svg {
   }
   to {
     transform: translateY(100%);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Chapter bar (ChapterRail.tsx): the rail's counterpart on phones and
+   tablets. A slim bar at the top of the screen that names the chapter being
+   read, built like the rail: each chapter holds its own copy, fixed to the
+   viewport inside a layer clipped to the chapter. The layer starts a little
+   way down, so the bar arrives once the chapter's heading has left the top of
+   the screen, and it ends with the chapter.
+
+   The bar lies under the site header (a lower layer, the same place): it
+   shows while the header is away, and the header covers it on its return.
+   The page's gold progress line rides along its top edge, so the bar carries
+   no second meter of its own: it counts the chapter instead (02 / 04).
+   -------------------------------------------------------------------------- */
+.sp-bar-clip {
+  display: none;
+}
+@media screen and (max-width: 1023px), screen and (max-height: 479px) {
+  .sp-bar-clip {
+    display: block;
+    position: absolute;
+    inset: 15rem 0 0;
+    z-index: 10;
+    clip-path: inset(0);
+    pointer-events: none;
+  }
+  .sp-bar {
+    position: fixed;
+    inset: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    height: 2.25rem;
+    /* 2px at the top for the page's progress line. */
+    padding: 2px 1.25rem 0;
+    border-bottom: 1px solid var(--color-line);
+    background: var(--color-paper);
+    color: var(--color-ink);
+  }
+  .sp-bar-ivory {
+    background: var(--color-ivory);
+  }
+  .sp-bar-dark {
+    border-color: var(--color-line-dark);
+    background: var(--color-ink);
+    color: #fff;
+  }
+  .sp-bar-name,
+  .sp-bar-count {
+    font-size: 0.625rem;
+    letter-spacing: 0.14em;
+    white-space: nowrap;
+  }
+  .sp-bar-name {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .sp-bar-count {
+    flex: none;
+    color: var(--color-stone);
+    font-variant-numeric: tabular-nums;
+  }
+  .sp-bar-dark .sp-bar-count {
+    color: var(--color-ash);
+  }
+}
+/* The narrowest phones: the longest heading takes the whole bar, so the count steps aside. */
+@media screen and (max-width: 389px) {
+  .sp-bar-count {
+    display: none;
+  }
+}
+@media screen and (min-width: 768px) and (max-width: 1023px), screen and (min-width: 768px) and (max-height: 479px) {
+  .sp-bar {
+    padding-inline: 2.5rem;
   }
 }
 
@@ -405,67 +570,122 @@ html.motion .sp-keynote-zoom {
 }
 
 /* --------------------------------------------------------------------------
-   Wall of names (SpokenAt.tsx). Still: a wrapped run of names inside the page
-   margins. Animated: three full-width rows that travel with the scroll.
+   Wall of names (SpokenAt.tsx).
+
+   The list: a flowing run of names, alternately roman and italic, a gold
+   mark between them. It is what phones, tablets, touch screens, print,
+   reduced motion and no JavaScript show.
+
+   The wall: with motion on, from laptop width, on a device with a mouse or
+   trackpad, the list is left to assistive technology and the names are set
+   as a band of display type: full-width rows, each about as wide as the
+   screen, that drift with the scroll by exactly their own overflow. (Not on
+   touch screens: a row that runs off the screen looks swipeable, and these
+   are not.)
    -------------------------------------------------------------------------- */
-.sp-wall {
-  max-width: 90rem;
-  margin-inline: auto;
-  padding-inline: 2.5rem;
+.sp-venues-list {
   font-family: var(--font-serif);
-  font-size: clamp(1.4rem, 2.3vw, 2.07rem);
-  line-height: 1.32;
-  letter-spacing: -0.005em;
+  font-size: clamp(1.125rem, 5.4vw, 1.3125rem);
+  line-height: 1.36;
+  letter-spacing: -0.008em;
 }
-.sp-wall-name {
-  margin-right: 0.45em;
-  white-space: nowrap;
+.sp-venues-list > li {
+  display: inline;
 }
-.sp-wall-mark {
+.sp-venues-list > li:nth-child(even) {
+  font-style: italic;
+}
+.sp-venues-mark,
+.sp-wall-mark::before {
   display: inline-block;
   width: 0.2em;
   height: 0.2em;
-  margin-left: 0.45em;
   border-radius: 9999px;
   background: var(--color-gold-deep);
   vertical-align: 0.26em;
 }
-/* Still: the run ends on a name, not on a mark. */
-html:not(.motion) .sp-wall-row:last-child .sp-wall-name:last-child .sp-wall-mark {
+.sp-venues-mark {
+  margin-left: 0.45em;
+  margin-right: 0.2em;
+}
+@media (min-width: 768px) {
+  .sp-venues-list {
+    font-size: clamp(1.5rem, 3vw, 2.07rem);
+    line-height: 1.32;
+  }
+}
+
+.sp-wall {
   display: none;
 }
-html.motion .sp-wall {
-  max-width: none;
-  padding-inline: 0;
-  font-size: clamp(2.5rem, 4.2vw, 3.8rem);
-  line-height: 1.1;
+@media screen and (min-width: 1024px) and (hover: hover) and (pointer: fine) {
+  html.motion .sp-wall {
+    display: block;
+  }
+  /* The list stays for assistive technology only. */
+  html.motion .sp-venues {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
+/* The type is set in vw, so each row keeps the same width against the screen
+   at every size from a small laptop to a large monitor. */
+.sp-wall {
+  overflow-x: clip;
+  container-type: inline-size;
+  font-family: var(--font-serif);
+  font-size: 3vw;
+  line-height: 1.16;
   letter-spacing: -0.015em;
-  mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+  /* Names fade out inside the page margin; a name that sits at the margin is at full strength. */
+  mask-image: linear-gradient(90deg, transparent, #000 1rem, #000 calc(100% - 1rem), transparent);
 }
-html.motion .sp-wall-row {
-  /* Room for descenders inside the row's clip. */
-  padding-block: 0.13em;
+/* --w: 0 to 1 while the row crosses the middle of the screen (its own --v from
+   0.32 to 0.6). It holds its first position through the lower third of the
+   screen and its last through the upper third, so the names at either end of
+   a row can be read whole, at rest. Every other row runs the other way. */
+.sp-wall-row {
+  --w: clamp(0, calc((var(--v, 0) - 0.32) / 0.28), 1);
+  padding-block: 0.07em;
 }
-html.motion .sp-wall-row:nth-child(2) {
+.sp-wall-row:nth-child(even) {
+  --w: clamp(0, calc((0.6 - var(--v, 0)) / 0.28), 1);
+}
+.sp-wall-row-italic {
   font-style: italic;
 }
-/* Each row starts from its own offset, far enough left that its travel never opens a gap at the edge. */
-html.motion .sp-wall-row .marquee-track {
-  translate: -4% 0;
+/* The row is as wide as its names, page margins included. 100% is that
+   width, so the row travels from flush with the left page margin (--w 0) to
+   flush with the right (--w 1): a row wider than the screen slides its far
+   end into view, and a shorter one crosses the space it leaves. */
+.sp-wall-line {
+  display: flex;
+  align-items: baseline;
+  width: max-content;
+  padding-inline: 2.5rem;
+  white-space: nowrap;
+  translate: calc(var(--w) * (100vw - 100%)) 0;
+  will-change: translate;
 }
-html.motion .sp-wall-row:nth-child(2) .marquee-track {
-  translate: -9.5% 0;
+/* Measured against the wall itself where container units exist (a classic scrollbar makes 100vw a little wider). */
+@supports (width: 1cqw) {
+  .sp-wall-line {
+    translate: calc(var(--w) * (100cqw - 100%)) 0;
+  }
 }
-html.motion .sp-wall-row:nth-child(3) .marquee-track {
-  translate: -6.5% 0;
+.sp-wall-mark {
+  padding-inline: 0.55em;
 }
-html.motion .sp-wall-name {
-  margin-right: 0;
-}
-html.motion .sp-wall-mark {
+.sp-wall-mark::before {
+  content: "";
   width: 0.17em;
   height: 0.17em;
-  margin-inline: 0.6em;
 }
 
 /* --------------------------------------------------------------------------

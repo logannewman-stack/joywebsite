@@ -144,7 +144,7 @@ export default function SpeakingPage() {
 
       {/* For Dental Teams & Organizations: a staggered spread on ivory */}
       <section className="relative bg-ivory">
-        <ChapterRail current={1} />
+        <ChapterRail current={1} ground="ivory" />
         <div className="mx-auto max-w-[90rem] px-5 pt-28 pb-24 md:px-10 md:pt-36 md:pb-40">
           <div id="teams" className="max-w-[60rem]">
             <h2 className="display text-[clamp(2.75rem,5.6vw,5.04rem)]">
@@ -189,7 +189,7 @@ export default function SpeakingPage() {
         <ChapterRail current={2} tone="dark" />
         <div className="mx-auto grid max-w-[90rem] px-5 pt-28 pb-24 md:px-10 md:pt-36 md:pb-36 lg:grid-cols-12 lg:gap-x-6">
           <div id="keynotes" className="lg:col-span-7 lg:row-start-1">
-            <h2 className="display text-[clamp(2.4rem,3.6vw,3.24rem)] text-gold-soft">
+            <h2 className="display text-[clamp(2.75rem,5.6vw,5.04rem)] text-gold-soft">
               <WordRise>{keynotes.heading}</WordRise>
             </h2>
           </div>
@@ -242,21 +242,21 @@ export default function SpeakingPage() {
         <ChapterRail current={3} />
         <div className="mx-auto grid max-w-[90rem] gap-10 px-5 pt-28 pb-24 md:px-10 md:py-36 lg:grid-cols-12 lg:gap-x-6">
           <div id="p3" className="lg:col-span-4">
-            <h2 className="display text-[clamp(2.75rem,4.6vw,4.14rem)]">
+            <h2 className="display text-[clamp(2.75rem,5.6vw,5.04rem)]">
               <WordRise>{p3.heading}</WordRise>
             </h2>
           </div>
           <InView className="relative grid md:grid-cols-2 lg:col-span-8">
             <span aria-hidden className="rule-draw absolute inset-x-0 top-0 block h-px bg-gold-deep" />
             <div className="rise border-b border-line py-9 md:border-r md:pr-10" style={d(0.1)}>
-              <h3 className="font-serif text-[clamp(1.75rem,2.4vw,2.1rem)] leading-tight">{p3.bring.title}</h3>
+              <h3 className="font-serif text-[clamp(1.85rem,2.8vw,2.5rem)] leading-tight">{p3.bring.title}</h3>
               <p className="mt-3 max-w-md text-[1.03125rem] leading-relaxed text-stone">{p3.bring.text}</p>
               <InquiryButton type="p3_conference" variant="text" className="mt-4">
                 {p3.bring.cta}
               </InquiryButton>
             </div>
             <div className="rise border-b border-line py-9 md:pl-10" style={d(0.18)}>
-              <h3 className="font-serif text-[clamp(1.75rem,2.4vw,2.1rem)] leading-tight">{p3.attend.title}</h3>
+              <h3 className="font-serif text-[clamp(1.85rem,2.8vw,2.5rem)] leading-tight">{p3.attend.title}</h3>
               <p className="mt-3 max-w-md text-[1.03125rem] leading-relaxed text-stone">{p3.attend.text}</p>
               <ArrowLink href={p3.attend.cta.href} className="mt-4">
                 {p3.attend.cta.label}
