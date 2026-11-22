@@ -184,6 +184,9 @@ export function Header() {
         ? "bg-paper/90 backdrop-blur-md shadow-[0_1px_0_rgba(11,11,11,0.08)]"
         : "bg-paper";
   const tone = dark ? "dark" : "light";
+  // On paper the bar sits once at the top of the first page, so it takes the tone that page opens with,
+  // not the tone of wherever the visitor had scrolled to.
+  const printDark = opensDark(pathname);
 
   // The browser's own chrome takes the header's colour. The tag is created by the chrome head
   // script; the first-visit curtain (html.intro) holds it black and hands back when it lifts.
@@ -199,7 +202,7 @@ export function Header() {
     <>
       <a
         href="#main"
-        className="label fixed top-3 left-3 z-[80] -translate-y-20 bg-ink px-4 py-3 text-white transition-transform focus:translate-y-0 focus-visible:outline-white"
+        className="label fixed top-3 left-3 z-[80] -translate-y-20 bg-ink px-4 py-3 text-white transition-transform focus:translate-y-0 focus-visible:outline-white print:hidden"
       >
         Skip to content
       </a>
@@ -207,9 +210,10 @@ export function Header() {
         ref={headerRef}
         data-tone={tone}
         onFocusCapture={() => setHidden(false)}
-        className={`site-header fixed inset-x-0 top-0 z-50 mr-[var(--scroll-lock-gap,0px)] transition-[translate,background-color,box-shadow,color] duration-[var(--duration-ui,320ms)] ${ease} ${surface} ${
+        // Print: a fixed bar would repeat on every sheet, over the words. It is placed once, at the top of the first.
+        className={`site-header fixed inset-x-0 top-0 z-50 mr-[var(--scroll-lock-gap,0px)] transition-[translate,background-color,box-shadow,color] duration-[var(--duration-ui,320ms)] print:absolute print:translate-y-0 print:shadow-none ${ease} ${surface} ${
           hidden && !open ? "-translate-y-full" : "translate-y-0"
-        } ${dark ? "text-white" : "text-ink"}`}
+        } ${dark ? "text-white" : "text-ink"} ${printDark ? "print:bg-transparent print:text-white" : "print:bg-paper print:text-ink"}`}
       >
         <div className="mx-auto flex h-[4.75rem] max-w-[90rem] items-center justify-between gap-6 px-5 md:px-10">
           <Link
@@ -219,8 +223,8 @@ export function Header() {
             className="shrink-0 rounded-sm focus-visible:outline-offset-4"
           >
             {/* Both artworks are in the page so switching tone never waits for a download. */}
-            <Wordmark tone="light" className={dark ? "hidden" : ""} />
-            <Wordmark tone="dark" className={dark ? "" : "hidden"} />
+            <Wordmark tone="light" className={`${dark ? "hidden" : ""} ${printDark ? "print:hidden" : "print:block"}`} />
+            <Wordmark tone="dark" className={`${dark ? "" : "hidden"} ${printDark ? "print:block" : "print:hidden"}`} />
           </Link>
 
           <nav aria-label="Main" className="hidden items-center gap-7 xl:flex">
@@ -238,7 +242,8 @@ export function Header() {
                   {item.label}
                   <span
                     aria-hidden
-                    className={`absolute inset-x-0 -bottom-0.5 h-px origin-left transition-transform duration-[var(--duration-ui,320ms)] ${ease} ${
+                    // Windows contrast themes repaint backgrounds: the line is given the theme's link colour there.
+                    className={`absolute inset-x-0 -bottom-0.5 h-px origin-left transition-transform duration-[var(--duration-ui,320ms)] forced-colors:bg-[LinkText] ${ease} ${
                       active ? `scale-x-100 ${dark ? "bg-gold" : "bg-gold-deep"}` : "scale-x-0 bg-current group-hover:scale-x-100"
                     }`}
                   />
@@ -277,8 +282,9 @@ export function Header() {
                 dark ? "focus-visible:outline-white" : "focus-visible:outline-ink"
               }`}
             >
-              <span aria-hidden className={`h-[1.5px] w-5 bg-current transition-transform duration-[var(--duration-ui,320ms)] ${ease} ${open ? "translate-y-[3.75px] rotate-45" : ""}`} />
-              <span aria-hidden className={`h-[1.5px] w-5 bg-current transition-transform duration-[var(--duration-ui,320ms)] ${ease} ${open ? "-translate-y-[3.75px] -rotate-45" : ""}`} />
+              {/* The two bars are backgrounds, which Windows contrast themes repaint: there they take the theme's button text colour. */}
+              <span aria-hidden className={`h-[1.5px] w-5 bg-current transition-transform duration-[var(--duration-ui,320ms)] forced-colors:bg-[ButtonText] ${ease} ${open ? "translate-y-[3.75px] rotate-45" : ""}`} />
+              <span aria-hidden className={`h-[1.5px] w-5 bg-current transition-transform duration-[var(--duration-ui,320ms)] forced-colors:bg-[ButtonText] ${ease} ${open ? "-translate-y-[3.75px] -rotate-45" : ""}`} />
             </button>
           </div>
         </div>
@@ -309,7 +315,7 @@ export function Header() {
         id="mobile-menu"
         inert={!open}
         data-open={open}
-        className="menu-sheet thin-scroll fixed inset-0 z-40 flex scroll-pt-[calc(4.75rem+1rem)] flex-col overflow-y-auto overscroll-contain bg-paper px-5 pt-[calc(4.75rem+1rem)] pb-[max(2rem,env(safe-area-inset-bottom))] max-md:[@media(max-height:660px)]:pt-[calc(4.75rem+0.5rem)] max-md:[@media(max-height:660px)]:pb-[max(1.25rem,env(safe-area-inset-bottom))] md:px-10 md:pt-[calc(4.75rem+2.5rem)] [@media(max-height:500px)]:pt-[calc(4.75rem+0.25rem)]! xl:hidden"
+        className="menu-sheet thin-scroll fixed inset-0 z-40 flex scroll-pt-[calc(4.75rem+1rem)] flex-col overflow-y-auto overscroll-contain bg-paper px-5 pt-[calc(4.75rem+1rem)] pb-[max(2rem,env(safe-area-inset-bottom))] max-md:[@media(max-height:660px)]:pt-[calc(4.75rem+0.5rem)] max-md:[@media(max-height:660px)]:pb-[max(1.25rem,env(safe-area-inset-bottom))] md:px-10 md:pt-[calc(4.75rem+2.5rem)] [@media(max-height:500px)]:pt-[calc(4.75rem+0.25rem)]! xl:hidden print:hidden"
       >
         <nav aria-label="Menu" className="flex flex-1 flex-col">
           <ul>

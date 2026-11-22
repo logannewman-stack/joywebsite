@@ -233,6 +233,7 @@ html.motion .partner-photo .parallax-inner {
 }
 .launch-accent {
   font-style: italic;
+  --dim: 0.5; /* the gold words before they are lit: 3.5:1 on black, as the white ones */
 }
 /* The words sit one level down from .word-light, so its brightening is
    repeated here for them (same formula, same variables). */

@@ -125,6 +125,23 @@ body {
   }
 }
 
+/* Windows contrast themes (forced colours): the page takes the visitor's own
+   colours, and the script wordmark follows them, wherever it is used: black on
+   a light theme, white on a dark one. Left as artwork it vanished (cream on a
+   white canvas, charcoal on a black one). The header and footer are not opted
+   out of the theme: their own colours over the visitor's canvas would hide
+   the navigation instead. */
+@media (forced-colors: active) {
+  img[src*="/brand/"] {
+    filter: brightness(0);
+  }
+  @media (prefers-color-scheme: dark) {
+    img[src*="/brand/"] {
+      filter: brightness(0) invert(1);
+    }
+  }
+}
+
 /* Editorial display type */
 .display {
   font-family: var(--font-serif);

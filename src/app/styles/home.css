@@ -153,6 +153,13 @@ html.motion .hero-cue-line {
     max-width: 19ch;
     font-size: clamp(2.5rem, min(7.9vw, 13svh), 8rem);
     line-height: 0.92;
+    /* Not seen: the heading's box is carried down by the height of the
+       photograph's window, so it ends at the foot of the stage when the words
+       end where the window begins. If the words ever run under the window (the
+       visitor's own text spacing or font size), the box leaves the stage, and
+       the engine then un-pins the story (engine.ts, "Fit"): it becomes the
+       plain layout, where the photograph follows the heading. */
+    padding-bottom: calc(100svh - var(--win-top));
   }
 
   /* The photograph: a window that opens to the full screen, then a slow push-in. */
@@ -407,6 +414,11 @@ html.motion .hero-cue-line {
   /* The next section slides up over the held stage, as the story did over the opening. */
   html.motion .work-sheet {
     margin-top: -100svh;
+  }
+  /* Not when the story is its plain layout (its words did not fit one screen):
+     there is no held stage then, and the sheet would cover the last statements. */
+  html.motion :has(.persp:not([data-pinned])) + .work-sheet {
+    margin-top: 0;
   }
   html.motion .work-sheet::before {
     content: "";

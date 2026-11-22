@@ -40,11 +40,15 @@
   overflow: clip;
 }
 
-/* Steps share one grid cell; the engine marks the current one. */
-[data-scene][data-pinned] [data-scene-steps] {
+/* Steps share one grid cell; the engine marks the current one.
+   The stage is named in each selector (inside :where(), which adds no weight)
+   so the rules reach only the steps and track of the scene that is pinned
+   itself: Home's story sits inside another scene (the held opening), and when
+   the story is not pinned (see "Fit" in engine.ts) the opening still is. */
+[data-scene][data-pinned] > :where([data-scene-pin]) [data-scene-steps] {
   display: grid;
 }
-[data-scene][data-pinned] [data-scene-step] {
+[data-scene][data-pinned] > :where([data-scene-pin]) [data-scene-step] {
   grid-area: 1 / 1;
   opacity: 0;
   transform: translate3d(0, var(--step-shift, 1.75rem), 0);
@@ -53,18 +57,18 @@
     transform var(--duration-scene) var(--ease-expo);
   pointer-events: none;
 }
-[data-scene][data-pinned] [data-scene-step][data-past] {
+[data-scene][data-pinned] > :where([data-scene-pin]) [data-scene-step][data-past] {
   transform: translate3d(0, calc(var(--step-shift, 1.75rem) * -1), 0);
 }
-[data-scene][data-pinned] [data-scene-step][data-active],
-[data-scene][data-pinned]:not([data-step]) [data-scene-step="0"] {
+[data-scene][data-pinned] > :where([data-scene-pin]) [data-scene-step][data-active],
+[data-scene][data-pinned]:not([data-step]) > :where([data-scene-pin]) [data-scene-step="0"] {
   opacity: 1;
   transform: none;
   pointer-events: auto;
 }
 
 /* A horizontal track: slides its full width past the stage as --p runs. */
-[data-scene][data-pinned] [data-scene-track] {
+[data-scene][data-pinned] > :where([data-scene-pin]) [data-scene-track] {
   display: flex;
   width: max-content;
   transform: translate3d(calc(var(--p, 0) * (100vw - 100%)), 0, 0);
@@ -332,6 +336,35 @@ html.motion .magnetic {
   transition: transform 0.6s var(--ease-expo);
 }
 
+/* --------------------------------------------------------------------------
+   Printing (engine.ts, "Print"): paper gets the plain layout. For the print
+   the engine takes html.motion and every data-pinned away, and html.printing
+   is set from just before the print until a few seconds after it.
+   -------------------------------------------------------------------------- */
+/* The screen behind the print dialog keeps its length, so the page has not
+   moved when the dialog closes. */
+@media screen {
+  html.printing {
+    min-height: var(--print-hold, 0);
+    overflow-anchor: none;
+  }
+}
+/* Entrances that play on load are at their end: on paper, and when the page
+   comes back (they do not play a second time). */
+html.printing *,
+html.printing *::before,
+html.printing *::after {
+  animation-delay: -30s !important;
+}
+/* And it comes back at once (html.restoring is set for the first second). */
+html.printing.restoring *,
+html.printing.restoring *::before,
+html.printing.restoring *::after {
+  transition: none !important;
+}
+
+/* Where the engine could not step in (no beforeprint and no print media
+   query), a pinned scene still prints unpinned. */
 @media print {
   [data-scene][data-pinned] {
     height: auto !important;
