@@ -487,17 +487,17 @@ html.motion .foot-sign[data-foot-in] .foot-rule {
    on the compositor and keeps time while the page hydrates. Three variables
    set it, and everything after the writing is derived from them:
      --intro-w0    0.25s   when the writing begins
-     --intro-wd    2s      how long the writing takes
+     --intro-wd    1.5s    how long the writing takes
      --intro-beat  0.35s   the hold once the last stroke has landed
-     --intro-at    2.6s    = w0 + wd + beat: the lift begins
+     --intro-at    2.1s    = w0 + wd + beat: the lift begins
    On that clock:
      0s       the signature eases from a slight push-in (scale 1.04) to rest
-     0.25s    it is written (2s): the line is drawn stroke by stroke, the way
+     0.25s    it is written (1.5s): the line is drawn stroke by stroke, the way
               a pen writes it (see .intro-ink below)
-     2.05s    the gold hairline draws beneath it (as the last stroke lands)
-     2.6s     the curtain lifts (1s); the signature rises a little slower
+     1.55s    the gold hairline draws beneath it (as the last stroke lands)
+     2.1s     the curtain lifts (1s); the signature rises a little slower
               than the curtain and fades
-     3.05s    the header settles into place (0.9s)
+     2.55s    the header settles into place (0.9s)
    html.intro-late (the page took long to arrive): the signing is the same,
    with shorter pauses around it. Any click, tap, key or scroll skips to the lift
    (the script moves these animations forward; it never times anything).
@@ -508,7 +508,7 @@ html.motion .foot-sign[data-foot-in] .foot-rule {
 html.intro,
 html.intro-lift {
   --intro-w0: 0.25s;
-  --intro-wd: 2s;
+  --intro-wd: 1.5s;
   --intro-beat: 0.35s;
   --intro-at: calc(var(--intro-w0) + var(--intro-wd) + var(--intro-beat));
 }
@@ -584,10 +584,10 @@ html.intro .intro-ink i {
   animation: intro-ink 0.07s linear calc(var(--intro-w0) + var(--intro-wd) * var(--f)) both;
 }
 html.intro .intro-ink i.dot {
-  animation: intro-dab 0.22s cubic-bezier(0.2, 0.9, 0.3, 1.2) calc(var(--intro-w0) + var(--intro-wd) * var(--f)) both;
+  animation: intro-dab 0.18s cubic-bezier(0.2, 0.9, 0.3, 1.2) calc(var(--intro-w0) + var(--intro-wd) * var(--f)) both;
 }
 html.intro .intro-ink i.cap {
-  animation: intro-cap 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) calc(var(--intro-w0) + var(--intro-wd) * var(--f)) both;
+  animation: intro-cap 0.4s cubic-bezier(0.2, 0.7, 0.2, 1) calc(var(--intro-w0) + var(--intro-wd) * var(--f)) both;
 }
 html.intro .intro-ink i.all {
   animation: intro-ink 0.2s linear calc(var(--intro-w0) + var(--intro-wd) + 0.05s) both;
@@ -610,7 +610,7 @@ html.intro .intro-rule {
   margin-top: 1.5rem;
   background: var(--color-gold);
   transform-origin: left center;
-  animation: intro-rule 0.6s var(--ease-expo) calc(var(--intro-w0) + var(--intro-wd) - 0.2s) both;
+  animation: intro-rule 0.5s var(--ease-expo) calc(var(--intro-w0) + var(--intro-wd) - 0.2s) both;
 }
 /* As the curtain clears the top of the screen, the header settles into place. */
 html.intro .site-header > div,
