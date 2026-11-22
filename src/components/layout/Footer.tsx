@@ -34,6 +34,8 @@ const ring = "rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 
  * the footer's place in the flow (.foot-ghost, in PageShell), keyboard focus
  * on a covered link scrolls it into the open, and the wordmark's entrance is
  * triggered by the chrome script instead of an [data-inview] observer.
+ * It is only held near the end of the page ([data-near], from the same
+ * script); above that it is an ordinary block below the fold.
  * Without motion it is an ordinary footer at the end of the page.
  */
 export function Footer() {
@@ -41,7 +43,8 @@ export function Footer() {
   return (
     <footer className="site-footer grain grain-light bg-ink text-white" suppressHydrationWarning>
       <div className="foot-inner mx-auto flex max-w-[90rem] flex-col px-5 pt-20 pb-8 md:px-10 md:pt-24 xl:min-h-svh xl:pt-[min(7rem,11svh)] xl:pb-[min(2.5rem,4svh)]">
-        <div className="flex flex-col gap-16 xl:flex-row xl:gap-24">
+        {/* From 1280px the bottom padding is the least space above the signature's rule (part of --foot-cols in chrome.css). */}
+        <div className="flex flex-col gap-16 xl:flex-row xl:gap-24 xl:pb-[2.125rem]">
           <FooterNewsletter>
             <section aria-labelledby="footer-newsletter" className="@container xl:w-[44%] xl:shrink-0">
               <div className="grid grid-cols-1 gap-8 @2xl:grid-cols-2 @2xl:gap-x-12">
@@ -137,7 +140,8 @@ export function Footer() {
             <Link href="/" aria-label={`${site.name}, home`} className={`foot-mark-link block min-w-0 self-start md:self-end ${ring}`}>
               <Wordmark tone="dark" loading="lazy" className="foot-mark !h-auto w-full max-w-none" />
             </Link>
-            <div className="flex shrink-0 flex-row-reverse items-end justify-between gap-8 md:flex-col md:items-end md:justify-end md:gap-[min(2.5rem,4svh)]">
+            {/* A set width from tablet up, so the wordmark beside it never resizes when the web fonts arrive. */}
+            <div className="flex shrink-0 flex-row-reverse items-end justify-between gap-8 md:w-[15rem] md:flex-col md:items-end md:justify-end md:gap-[min(2.5rem,4svh)]">
               {/* Back to the start of the page: the skip link's target, so keyboard focus moves up with the view. */}
               <a href="#main" data-to-top className={`group inline-flex items-center gap-4 rounded-full ${ring}`}>
                 <span className="label hidden text-ash transition-colors duration-(--duration-hover) group-hover:text-white sm:inline">Back to top</span>
@@ -149,7 +153,7 @@ export function Footer() {
                 </Magnetic>
               </a>
               <div className="flex flex-col gap-x-6 gap-y-1 text-[0.8125rem] text-ash md:flex-row md:flex-wrap md:items-center md:justify-end md:text-right">
-                <span>
+                <span className="md:whitespace-nowrap">
                   © <Year /> {site.name}. All rights reserved.
                 </span>
                 {links.privacy && (

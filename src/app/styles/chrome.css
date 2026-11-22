@@ -1,7 +1,7 @@
 /* ==========================================================================
    Chrome: everything that frames every page (header, menu, inquiry panel,
    footer, the link to the next page, buttons and links, page transitions and
-   the first-visit signature). Loaded from globals.css.
+   the signature curtain). Loaded from globals.css.
 
    The same rule as motion.css: every moving effect is scoped to
    <html class="motion"> (JavaScript on, reduced motion off) or to something
@@ -269,6 +269,13 @@ html.motion .panel-settle-list {
    the screen sticks with its top at the top instead, shows its first screen
    the same way, then scrolls on normally (--foot-h is measured by the chrome
    script). Without motion it is an ordinary footer.
+
+   It is only held from three screens before the end of the page
+   ([data-near], set by the chrome script); until then it is an ordinary block
+   below the fold. A sticky element is always inside the viewport, even while
+   the page covers it: the browser would composite it on every frame and count
+   it as a layout shift whenever the page above changes height (web fonts
+   arriving late), a shift nobody sees.
    -------------------------------------------------------------------------- */
 .page-shell {
   position: relative;
@@ -289,15 +296,17 @@ html.motion .page-shell > main {
   z-index: 1;
   background: var(--color-paper);
 }
-html.motion .site-footer {
+html.motion .site-footer[data-near] {
   position: sticky;
   bottom: min(0px, calc(100svh - var(--foot-h, 0px)));
+  /* The content's covered offset (below) must not add to the page's scroll height. */
+  overflow: clip;
 }
 /* Depth while it is uncovered: the content rises a little slower than the
    page and comes up out of the dark (--foot-p: 0 covered, 1 in the open). */
-html.motion .foot-inner {
-  transform: translate3d(0, calc((1 - var(--foot-p, 1)) * 4.5rem), 0);
-  opacity: calc(0.3 + 0.7 * var(--foot-p, 1));
+html.motion .site-footer[data-near] .foot-inner {
+  transform: translate3d(0, calc((1 - var(--foot-p, 0)) * 4.5rem), 0);
+  opacity: calc(0.3 + 0.7 * var(--foot-p, 0));
 }
 /* With keyboard focus inside, it is at rest and fully lit, so the focus ring is where it will stay. */
 html.motion .site-footer:has(:focus-visible) .foot-inner {
@@ -324,15 +333,31 @@ html.motion .site-footer:has(:focus-visible) .foot-inner {
 }
 @media (min-width: 80rem) {
   /* Height left on the screen: 100svh less the footer's own paddings (the same
-     min() values as its classes) and 24.25rem for the columns and their gap.
-     The artwork is 3.07:1. */
+     min() values as its classes) and 24.25rem for the columns and the space
+     under them (their bottom padding, 2.125rem, is the least it can be).
+     The artwork is 3.07:1. On a short, wide screen that would leave a small
+     signature, so it keeps at least 58% of the content width (--foot-min, as
+     a height) and the footer runs a little past one screen instead. */
   .foot-mark {
     --foot-cols: 24.25rem;
-    width: min(100%, calc(clamp(6rem, 100svh - min(7rem, 11svh) - min(3rem, 5svh) - min(2.5rem, 4svh) - var(--foot-cols), 21rem) * 3.07));
+    --foot-min: calc((min(100vw, 90rem) - 5rem) * 0.58 / 3.07);
+    width: min(
+      100%,
+      calc(clamp(var(--foot-min), 100svh - min(7rem, 11svh) - min(3rem, 5svh) - min(2.5rem, 4svh) - var(--foot-cols), 21rem) * 3.07)
+    );
   }
-  /* Without the newsletter (Insights) the link lists sit in two columns and take less height. */
+  /* Without the newsletter (Insights) the link lists sit in two columns and take
+     less height. The footer still fills the screen, so the page above never
+     shows as a cropped strip over it; the height that is left is shared evenly
+     above and below the lists, so no one empty band opens. */
   .site-footer:not(:has(#footer-newsletter)) .foot-mark {
     --foot-cols: 14.75rem;
+  }
+  .site-footer:not(:has(#footer-newsletter)) .foot-inner > :first-child {
+    margin-block: auto;
+  }
+  .site-footer:not(:has(#footer-newsletter)) .foot-sign {
+    margin-top: 0;
   }
 }
 /* It writes itself in, left to right, once it is in the open ([data-foot-in]
@@ -448,46 +473,149 @@ html.motion .foot-sign[data-foot-in] .foot-rule {
 }
 
 /* --------------------------------------------------------------------------
-   First-visit signature (Curtain in components/chrome): on the first page of
-   a visit a black curtain carries the script wordmark, which writes itself
-   in; then the curtain lifts into the page. The page underneath renders at
-   once; its on-load entrances wait for the lift (html.intro-hold).
+   The signature curtain (Curtain in components/chrome): the opening titles.
+   On every full page load (first arrival or reload) a black curtain carries
+   the script wordmark, large and centred. It is signed, slowly; a gold
+   hairline draws beneath it as the last stroke lands; and after a beat the
+   curtain lifts into the page, its gold hem leading. The page underneath
+   renders at once; its on-load entrances wait for the lift (html.intro-hold).
    html.intro is only ever set by the head script (JavaScript on, motion on,
-   first page of the session), so without it there is no curtain at all.
+   a full load that is not Back/Forward), so without it there is no curtain.
+
+   The clock is here, not in a script: every part is an animation that starts
+   with the first paint, and each moves only transform and opacity, so it runs
+   on the compositor and keeps time while the page hydrates. Three variables
+   set it, and everything after the writing is derived from them:
+     --intro-w0    0.45s   when the writing begins
+     --intro-wd    3.4s    how long the writing takes
+     --intro-beat  0.65s   the hold once the last stroke has landed
+     --intro-at    4.5s    = w0 + wd + beat: the lift begins
+   On that clock:
+     0s       the signature eases from a slight push-in (scale 1.04) to rest
+     0.45s    it is written (3.4s): the line is drawn stroke by stroke, the way
+              a pen writes it (see .intro-ink below)
+     3.65s    the gold hairline draws beneath it (as the last stroke lands)
+     4.5s     the curtain lifts (1.2s); the signature rises a little slower
+              than the curtain and fades
+     4.95s    the header settles into place (0.9s)
+   html.intro-late (the page took long to arrive): the writing takes 1.6s and
+   the lift begins at 2.2s. Any click, tap, key or scroll skips to the lift
+   (the script moves these animations forward; it never times anything).
    -------------------------------------------------------------------------- */
 .intro-curtain {
   display: none;
+}
+html.intro,
+html.intro-lift {
+  --intro-w0: 0.45s;
+  --intro-wd: 3.4s;
+  --intro-beat: 0.65s;
+  --intro-at: calc(var(--intro-w0) + var(--intro-wd) + var(--intro-beat));
+}
+html.intro-late {
+  --intro-w0: 0.2s;
+  --intro-wd: 1.6s;
+  --intro-beat: 0.4s;
 }
 html.intro .intro-curtain {
   position: fixed;
   inset: 0;
   z-index: 90;
+  display: block;
+  overflow: hidden;
+  background: var(--color-ink);
+  /* A gold hem along the curtain's lower edge, seen as it lifts. */
+  box-shadow: 0 0.125rem 0 var(--color-gold);
+  will-change: transform;
+  animation: intro-lift 1.2s cubic-bezier(0.4, 0, 0.1, 1) var(--intro-at) both;
+}
+/* The stage moves back down inside the lifting curtain, so the signature
+   rises at half the hem's speed, and it has faded before the hem reaches it. */
+html.intro .intro-stage {
+  position: absolute;
+  inset: 0;
   display: grid;
   place-items: center;
-  background: var(--color-ink);
-  /* A gold hem: one hairline along the curtain's lower edge, seen as it lifts. */
-  box-shadow: 0 1px 0 var(--color-gold);
+  padding-bottom: 3svh;
+  will-change: transform, opacity;
+  animation:
+    intro-drift 1.2s cubic-bezier(0.4, 0, 0.1, 1) var(--intro-at) both,
+    intro-fade 0.45s ease-in var(--intro-at) both;
+}
+html.intro .intro-sign {
+  /* Large enough to watch being written; never taller than about two fifths of a short window. */
+  width: min(80vw, 54rem, 125svh);
   will-change: transform;
+  animation: intro-push var(--intro-at) cubic-bezier(0.25, 0.5, 0.3, 1) both;
 }
+html.intro .intro-pen {
+  position: relative;
+  display: block;
+  aspect-ratio: 1357.2 / 441.8;
+}
+/* The ink. The wordmark's artwork is held here as a data URI (the same paths
+   as /brand/dr-joy-rdh-wordmark-cream.svg; scripts/signature/trace.py --uri
+   prints it), so it is there at the first paint and the writing never waits
+   on a request. It is written out in full, not kept in a custom property: a
+   url() in a variable is resolved again on every restyle. */
+html.intro .intro-mark,
+html.intro .intro-ink i {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='172 133.2 1357.2 441.8' fill='%23f5f1e9'%3E%3Cpath d='M750.7,410.8c2.1-2,8.1.5,9.6,3.1,1.4,2.4-.1,8-2.7,10-1.9,1.5-5.9,0-8.6-2-2.3-1.8-2.5-7,1.7-11.1Z'/%3E%3Cpath d='M1241.7,461.4c0,2.6.5,5,1.3,7.3.9,2.3,2.7,3.9,5.4,4.8h-26.6c2.7-.9,4.4-2.5,5.3-4.9.8-2.3,1.3-4.8,1.3-7.4v-58.4c0-2.5-.4-4.7-1.3-6.9-.9-2.1-2.6-3.6-5.2-4.5h29.3c4,0,8,.4,11.9,1.3,3.9.8,7.4,2.2,10.5,4.2,3.1,2,5.6,4.5,7.5,7.7,2,3.2,2.9,7.1,2.9,11.8s-1.8,11.9-5.5,16c-3.7,4.1-8.6,6.9-14.7,8.5l13.4,22.8c1.2,1.9,2.8,3.8,4.9,5.8,2,2,4.1,3.3,6.4,4.1h-19.4l-18.6-32.3h-8.5v20.3ZM1241.7,440h7.5c7.1,0,12.6-2.2,16.2-6.7,3.7-4.5,5.5-10.1,5.5-16.9s-1.7-13-5.2-17.2c-3.5-4.2-9-6.4-16.6-6.4h-7.5v47.2Z'/%3E%3Cpath d='M1375.5,432.5c0,5.5-.9,10.7-2.7,15.6-1.8,5-4.3,9.4-7.6,13.1-3.3,3.8-7.3,6.8-11.9,8.9-4.6,2.2-9.8,3.3-15.6,3.3h-37.5c2.8-.9,4.6-2.5,5.4-4.7.8-2.2,1.2-4.6,1.2-7.2v-58.6c0-2.6-.4-4.9-1.3-7-.8-2.1-2.6-3.6-5.3-4.5h36.2c5.7,0,10.9,1.1,15.7,3.3,4.8,2.2,8.9,5.1,12.4,8.9,3.5,3.7,6.2,8.1,8.1,13.1,1.9,5,2.9,10.2,2.9,15.8ZM1320.2,472h5.2c6.3,0,11.6-1,16.2-2.9,4.5-1.9,8.2-4.6,11.1-8.1,2.9-3.5,5-7.7,6.4-12.6,1.4-4.9,2.1-10.2,2.1-16s-.7-11.3-2.1-16.2c-1.4-4.9-3.5-9-6.4-12.5-2.9-3.5-6.6-6.2-11.1-8.1-4.5-2-9.9-2.9-16.2-2.9h-5.2v79.2Z'/%3E%3Cpath d='M1407.3,461.4c0,2.6.4,5,1.3,7.3.8,2.3,2.6,3.9,5.3,4.8h-26.6c2.7-.9,4.4-2.5,5.3-4.8.8-2.3,1.3-4.7,1.3-7.3v-58.6c0-2.6-.4-4.9-1.3-6.9-.8-2.1-2.6-3.5-5.3-4.4h26.6c-2.7.9-4.4,2.4-5.3,4.4-.8,2.1-1.3,4.4-1.3,6.9v28h34.8v-28c0-2.6-.4-4.9-1.3-6.9-.8-2.1-2.6-3.5-5.3-4.4h26.6c-2.7.9-4.4,2.4-5.3,4.4-.8,2.1-1.3,4.4-1.3,6.9v58.4c0,2.6.4,5,1.3,7.4.8,2.3,2.6,4,5.3,4.9h-26.6c2.8-.9,4.6-2.5,5.4-4.9.8-2.3,1.2-4.8,1.2-7.4v-29.1h-34.8v29.3Z'/%3E%3Cpath d='M679.9,400.2s0,0,0,0c-18.9,18.9-46.1,43.7-52.9,36.3-10.9-11.8,27.3-72.1,26.6-85.6,0,0-17-13.5-25.3-20.7,7.3-14.6,14.3-27.4,15.2-42.7.7-12.4-11-21.5-21.2-21.6-10.9-.2-19.8,7.6-22.4,19.3-4.3,18.7,5,36.5,20.9,49.4-16.7,28.2-33.7,55.7-53.9,82.1-3.1,4.1-10.3,11.1-15.6,8.4-13.6-6.9-15.1-62.7-16.8-78.6,15.2-29.4,29-57.8,40-89,7.6-21.4,29.3-88.5,10.1-104.2-16-12.9-38.3-6.3-48.4,10.9-26.2,44.6-26.3,113.1-23.4,164.6-9.1-5.7-19.3-6.7-29.5-3.4-10.1,3.3-20.1,7.9-30,13h0s0,0-.1,0c-6.9,3.6-13.7,7.5-20.6,11.4-21.3,11.4-56.4,28.9-92.2,42.1-.2,0-.4.1-.5.2-8,2.8-16.1,5.6-24.2,8.1-46.5,13.8-74.6,13.2-86.4,11.8-4.1-.6-8.1-1.4-12.2-2.4-8.8-2.3-18.2-7.4-22.5-13.8,2.8-3.5,1.6-7.3.6-9-1.5-2.5-4.1-3.2-6.1-2.8-2.5.5-3.9,2.5-3.8,5.4h0s0,.4.2,1.2c0,.5.2,1,.4,1.5,2.2,7.1,12.3,26.2,57.2,26.2s1.2,0,1.9,0c4.8,0,9.5-.1,14.3-.6,45.2-3.1,87.5-18.7,133.3-40.5,36.8-17.4,66.2-34.3,79.8-42.5,0,0,0,0,0,0,0,0,0,0,0,0,0,0-9.8,12.5-9.4,30.7,0,.4,0,.7,0,1.1.2,4.9,1.1,10.1,3.2,15.6,6.2,16.3,16.5,23.8,29.2,16.6.1,0,.2-.1.3-.2,6.9-4.1,14.6-12.5,22.7-26.4,0,0,8.6,58.5,34.4,57.9,13.9.3,28.1-24.3,34.9-34.1.5-.7.9-1.3,1.2-1.8,12.7-18.1,24.1-36.9,36-56.3l13.4,9.4c-15.6,24.3-51.8,74.7-17.7,91.6,4.2,2.1,8.5,2.6,12.7,1.9,0,0,0,0,0,0,12.2-.7,38-24.4,67.4-55.6,29.3-31.3,42.6-54.9,42.6-54.9,0,0-43.2,50.6-63.4,69.7ZM489.6,396.5c-13.3-2.4-5.9-69.4,12.9-68.4,3.5.2,9.8,4.9,10.4,8.8l4.9,30.1c-5.3,7.6-19.3,31.2-28.2,29.6ZM550.6,175.3c.2-.5.4-1,.6-1.6,1-2.5,2-4.9,3.1-7.3,4-8,8.6-11.7,11-13.2,2.7-1.6,5.6-2.4,8.5-1.9,6.7,1.1,10.7,6.3,13.1,12.8.3,1.1.6,2.3.8,3.9.2,2.4.3,4.9.3,7.4,0,.6,0,1.2,0,1.7-.4,50.1-31.1,115.2-53.4,159.9-.9-44.1-.8-115.9,16.1-161.8ZM616.4,312c-1.9-7.5-1.7-15.5.2-22.9,0,0,0,0,0,0,.3-1,.6-2.1.9-3.1,0-.2.1-.4.2-.6.7-2.2,1.6-4.3,2.6-6.3,2-3.9,4.9-7.4,8.5-7.4,4,0,6.5,2.4,8,4.8.3.6.7,1.2.9,1.8,0,0,0,0,0,0,5.9,14.5-5.3,35.9-12.9,48.6-5.1-5.5-7.8-13-8.4-15Z'/%3E%3Cpath d='M895.5,296.2c3.3-2,3.2-10.4,1.3-13.8-1.7-2.9-10.1-4.8-13.1-2.7-4.2,2.8-5.7,12.2-2.8,15.5,2.6,2.9,10.9,3.3,14.7,1Z'/%3E%3Cpath d='M1515.3,385.8c-1.4-8.4-10.8-15.2-16.6-19.3-.2-.2-.4-.3-.7-.5,0,0-.2-.1-.2-.2-.1,0-.2-.1-.3-.2-9.1-6.2-22.5-12.8-42.5-19.1-.2,0-.4-.1-.5-.2-.2,0-.4-.1-.5-.2-1.6-.5-3.3-1-5.1-1.5-17.2-4.7-34.6-6.8-53.3-7.7-70-4.6-173.5,4.7-254.3,44.2,6.6-44.1,11-83.9,11-83.9-2.7-2.5-6-3.4-9.2-3.1,0,0,0,0,0,0-.3,0-.5.1-.8.1-.1,0-.3,0-.4,0-7.1,1.1-10.7,7.7-12.5,12.1-1.9,4.6-4.3,11.1-14.1,29.3-1.1,2.1-2.2,4-3.3,5.8-3.5,5.5-7.3,10.9-11.5,16-3.8,4.3-6.7,6.7-7.8,6.9-1.8.4-2.6-2-2.9-3.1-4-16.5,10.7-65.3-14.5-45.7-3.9,3.1-5.8,6.3-6,10.1h0s0,3.2.2,7.9c-5.8,3.7-13.3,7.5-22.3,10.1-.2,0-.3,0-.5.1-1.3.4-2.6.7-4,1-1.6.4-3.3.7-4.9,1-.5,0-1,.2-1.5.3-1.1.2-2.2.3-3.3.4-1.5.2-3,.3-4.5.4-4.9.3-9.4.3-13.6.1.7-4.7,9.2-62.3-27.6-71.5-.2,0-3-.7-4.7-.9-4.9-.5-8.9-.3-12.5.4-12.1,2.2-25.2,9.4-28.5,21.4-5,17.8,6.6,28.8,6.6,28.8h0c1.8,3.4,2.1,6.2-2.1,9.5,0,0-23.9,17.1-50.5,39.4.4-10.3.5-16.7.5-16.7.7-23,.7-38.5.7-38.9,0-.8,0-1.8-.2-2.3-.3-.6-2.4-2.8-6.4-3.1-2.7-.2-5,.9-6.2,1.7-2.2,1.1-3.9,2.7-3.9,4.4-.6,24.5-1.2,47.5-3.1,71.1-9.3,8.4-18.4,17.2-26.3,25.7-3,3.3-6,6.6-8.8,9.8-6.4,7.1-12.5,14.4-18,22.1-14.2,19.1-24,37.4-27.1,54.2h0s-9.9,38.4,20.7,46.4c3.2.9,6.4,1.3,9.1,1.4.1,0,.2,0,.3,0,41.9,2,54.2-54.9,56.7-65,5.1-20.6,7.5-43,9.1-64.2,1-13.8,2-26.8,2.5-37.4l42.5-34.2c-2.4,6.9-10.3,34,8.5,51.8,21.7,20.5,38.5,5.9,38.5,5.9h0c15.9-10.9,25.3-39.5,29-54.7,5.7,0,11.8-.3,18.3-1.3,20.7-2.9,32-8.1,37.9-12.1,1.2,12.1,5,28.7,16.2,30.7,17.8,3.2,40-45.6,47-60.1,0,0-5.4,39.6-14.6,84.3-6.5,3.9-12.8,8-18.8,12.4-106.9,77.6-90.8,132.2-73.5,145.2,16,11.9,37,14.6,52.5,4.2,1.5-.9,3-2,4.4-3.2,3.3-2.5,5.1-4.2,5.8-5.3,12.7-13.2,22.4-34,29.9-57,3.7-11.1,6.7-22.5,9.3-34.1.2-.7.3-1.3.5-2,4.3-19.3,8.4-42.9,11.9-65.9,50.5-25.2,116.8-42.3,200.6-46.6,13-.7,25.1-.9,36.3-.8,12.4.5,24.8,1.3,37.2,2.7,15.3,1.7,39.1,6.8,59.4,15.1,8.4,3.8,15.9,8.2,22.8,13,.4.3.7.5,1.1.8.3.2.6.4.9.7,4.4,3.3,6.9,5.9,8.4,7.6.7.9,1.3,1.8,1.9,2.7,0,0-4.7,1.1-4.1,6.3.3,3,2.8,4.7,5.3,4.8h0c0,0,6.9.4,5.4-8.5ZM804.1,491c15.6-37.6,41.2-64,72.1-92.6-3.2,38.1-8.9,85.9-28.7,117.9-7.6,12.2-25.8,26.2-38.5,18.5-12.9-7.9-9.1-30.5-4.8-43.9ZM965.2,406.7c-20-8.5-3.3-49.8,3.7-63,0,0,15.5,7.5,39.9,8.4-3.1,17.7-23.2,63.3-43.6,54.6ZM1009.9,347c-14.6-1.1-24.7-4.6-30.4-7.2-.4-.2-.7-.3-1.1-.5,0,0-.1,0-.2-.1-1.4-.7-2.8-1.5-4.2-2.3,1.7-3.2,4.3-7.5,4.8-9.8-1.2-5.7-10.6-8.6-16.2-6.4-6.2-11.9-1.7-30.6,11.1-37.4,11.2-5.9,24.5,1.2,30.1,11.8,8.4,16.1,8.6,34.4,5.9,51.9ZM1102,458.9c-12,35.5-29.1,74.6-48.2,88.3,0,0,0,0-.1,0,0,0,0,0,0,0-4.2,2.8-14,7.3-25.2-1-13.1-9.6-10.5-36.4-.9-56.4.1-.2.2-.4.3-.7,1.4-2.7,3-5.3,4.5-7.9,13.1-19.9,43.4-54.4,84.3-80-4.2,19.5-9.1,39.7-14.5,57.6Z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+}
+/* The writing, timed by --intro-w0 and --intro-wd. The signature script
+   (components/chrome/signature.ts) fills .intro-ink with about 260 small
+   pieces of the artwork, each clipped to the stroke around one stretch of
+   the pen's path and each carrying --f, its moment as a fraction of the
+   writing. A piece only fades in, quickly, so the line grows the way a pen
+   draws it, on the compositor. The two dots are dabbed, the capitals rise
+   under the last flourish, and when the last stroke has landed the whole
+   artwork (i.all) is laid over the pieces. */
+html.intro .intro-ink {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: 0 0;
+}
+html.intro .intro-ink i {
+  position: absolute;
+  opacity: 0;
+  background-size: var(--sw) var(--sh);
+  animation: intro-ink 0.07s linear calc(var(--intro-w0) + var(--intro-wd) * var(--f)) both;
+}
+html.intro .intro-ink i.dot {
+  animation: intro-dab 0.28s cubic-bezier(0.2, 0.9, 0.3, 1.2) calc(var(--intro-w0) + var(--intro-wd) * var(--f)) both;
+}
+html.intro .intro-ink i.cap {
+  animation: intro-cap 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) calc(var(--intro-w0) + var(--intro-wd) * var(--f)) both;
+}
+html.intro .intro-ink i.all {
+  animation: intro-ink 0.3s linear calc(var(--intro-w0) + var(--intro-wd) + 0.05s) both;
+}
+/* Without the pieces (the script did not run, or clip-path is not supported)
+   the whole signature simply fades in. */
 html.intro .intro-mark {
-  --ink-wipe: 0%;
-  width: min(64vw, 30rem);
-  height: auto;
-  mask-image: linear-gradient(90deg, #000 calc(var(--ink-wipe) - 14%), transparent var(--ink-wipe));
+  position: absolute;
+  inset: 0;
+  background-size: 100% 100%;
+  opacity: 0;
+  animation: intro-ink 1.2s ease var(--intro-w0) both;
 }
-html.intro-write .intro-mark {
-  animation: intro-write 0.68s var(--ease-soft) both;
+html.intro .intro-ink[data-inked] + .intro-mark {
+  display: none;
 }
-html.intro-lift .intro-curtain {
-  animation: intro-lift 0.52s cubic-bezier(0.72, 0, 0.18, 1) both;
-}
-html.intro-lift .intro-mark {
-  --ink-wipe: 115%;
-  animation: intro-mark-out 0.4s var(--ease-soft) both;
+html.intro .intro-rule {
+  display: block;
+  height: 1px;
+  margin-top: 1.5rem;
+  background: var(--color-gold);
+  transform-origin: left center;
+  animation: intro-rule 0.8s var(--ease-expo) calc(var(--intro-w0) + var(--intro-wd) - 0.2s) both;
 }
 /* As the curtain clears the top of the screen, the header settles into place. */
+html.intro .site-header > div,
 html.intro-lift .site-header > div {
-  animation: intro-header 0.9s var(--ease-expo) 0.22s both;
+  animation: intro-header 0.9s var(--ease-expo) calc(var(--intro-at) + 0.45s) both;
 }
 @keyframes intro-header {
   from {
@@ -495,12 +623,37 @@ html.intro-lift .site-header > div {
     transform: translate3d(0, -0.75rem, 0);
   }
 }
-@keyframes intro-write {
+@keyframes intro-ink {
+  to {
+    opacity: 1;
+  }
+}
+@keyframes intro-dab {
   from {
-    --ink-wipe: 0%;
+    opacity: 0;
+    transform: scale(0.3);
   }
   to {
-    --ink-wipe: 115%;
+    opacity: 1;
+  }
+}
+@keyframes intro-cap {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 0.5rem, 0);
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes intro-push {
+  from {
+    transform: scale(1.04);
+  }
+}
+@keyframes intro-rule {
+  from {
+    transform: scaleX(0);
   }
 }
 @keyframes intro-lift {
@@ -508,9 +661,13 @@ html.intro-lift .site-header > div {
     transform: translate3d(0, -100%, 0);
   }
 }
-@keyframes intro-mark-out {
+@keyframes intro-drift {
   to {
-    transform: translate3d(0, 35%, 0);
+    transform: translate3d(0, 50%, 0);
+  }
+}
+@keyframes intro-fade {
+  to {
     opacity: 0;
   }
 }
@@ -527,17 +684,17 @@ html.intro-hold main [data-inview].rise,
 html.intro-hold main [data-inview] .rule-draw,
 html.intro-hold main [data-inview] .wipe,
 html.intro-hold main [data-inview] .settle {
-  transition-delay: calc(var(--d, 0s) + var(--intro-wait, 0.8s));
+  transition-delay: calc(var(--d, 0s) + var(--intro-wait, var(--intro-at, 0.8s)));
 }
 html.intro-hold main [data-inview] .stagger > *,
 html.intro-hold main [data-inview].stagger > * {
-  transition-delay: calc(var(--d, 0s) + var(--si, 0) * var(--stagger, 70ms) + var(--intro-wait, 0.8s));
+  transition-delay: calc(var(--d, 0s) + var(--si, 0) * var(--stagger, 70ms) + var(--intro-wait, var(--intro-at, 0.8s)));
 }
 html.intro-hold main [data-inview] .wr-in {
-  transition-delay: calc(var(--rise-delay, 0s) + var(--i, 0) * var(--rise-stagger, 40ms) + var(--intro-wait, 0.8s));
+  transition-delay: calc(var(--rise-delay, 0s) + var(--i, 0) * var(--rise-stagger, 40ms) + var(--intro-wait, var(--intro-at, 0.8s)));
 }
 html.intro-hold main [data-reveal=""] {
-  transition-delay: calc(var(--reveal-delay, 0s) + var(--intro-wait, 0.8s));
+  transition-delay: calc(var(--reveal-delay, 0s) + var(--intro-wait, var(--intro-at, 0.8s)));
 }
 
 /* --------------------------------------------------------------------------
@@ -574,7 +731,7 @@ html.has-cursor .site-cursor {
   border: 1px solid var(--color-gold);
   border-radius: 50%;
   background: rgb(11 11 11 / 0.62);
-  backdrop-filter: blur(6px);
+  backdrop-filter: blur(0.375rem);
   color: #fff;
   opacity: 0;
   transform: scale(0.1);
@@ -636,6 +793,16 @@ html.cursor-live [data-cursor] :is(input, textarea, select, [contenteditable="tr
 ::view-transition-new(root) {
   animation: none;
 }
+/* The header, the open menu and the cursor label stay above both pages for
+   the whole transition. (The entering page's group is created after theirs,
+   so without this it would be painted over them.) */
+::view-transition-group(site-header) {
+  z-index: 2;
+}
+::view-transition-group(site-menu),
+::view-transition-group(site-cursor) {
+  z-index: 3;
+}
 /* The header changes tone in step with the page (the browser's own cross-fade, at the page's tempo). */
 ::view-transition-group(site-header),
 ::view-transition-old(site-header),
@@ -654,10 +821,17 @@ html.cursor-live [data-cursor] :is(input, textarea, select, [contenteditable="tr
 ::view-transition-old(site-cursor) {
   display: none;
 }
-/* Between pages: the old page holds still underneath (so nothing shows
-   through, black to black included) while the new one dissolves in. */
+/* Between pages: the old page holds still underneath and is gone within the
+   first third (140ms), so its headline and the new one are never both legible.
+   It leaves toward the new page's tone: to white (it fades, over the white
+   page canvas) when the new page opens light, to black (it darkens and stays
+   opaque, so no white shows through) when the new page opens on black. The
+   header already carries the new page's tone when the transition starts. */
 ::view-transition-old(.page-out) {
-  animation: vt-hold 0.42s linear both;
+  animation: vt-page-out 0.42s linear both;
+}
+:root:has(.site-header[data-tone="dark"])::view-transition-old(.page-out) {
+  animation-name: vt-page-out-dark;
 }
 ::view-transition-new(.page-in) {
   animation: vt-page-in 0.42s var(--ease-soft) both;
@@ -670,9 +844,19 @@ html.cursor-live [data-cursor] :is(input, textarea, select, [contenteditable="tr
 ::view-transition-new(.spread-in) {
   animation: vt-spread-in 0.75s var(--ease-expo) both;
 }
-@keyframes vt-hold {
-  to {
-    opacity: 1;
+@keyframes vt-page-out {
+  33%,
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes vt-page-out-dark {
+  0% {
+    filter: brightness(1);
+  }
+  33%,
+  100% {
+    filter: brightness(0);
   }
 }
 @keyframes vt-page-in {
