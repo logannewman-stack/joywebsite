@@ -15,7 +15,7 @@ import { bindI } from "./text";
  * without it the two lines simply sit in order around the photograph.
  */
 export function Couplet({ lines, photo }: { lines: string[]; photo: PhotoSlot }) {
-  const size = "display text-[clamp(2.6rem,6.8vw,7.4rem)] leading-[0.98] lg:text-[clamp(2.6rem,7.4vw,7.4rem)]";
+  const size = "display text-[clamp(2.6rem,6.8vw,6.7rem)] leading-[0.98] lg:text-[clamp(2.6rem,7.4vw,6.7rem)]";
   return (
     <section className="meet-couplet overflow-x-clip bg-ivory">
       <div className="mx-auto max-w-[90rem] px-5 pt-24 pb-24 md:px-10 md:pt-40 md:pb-44">

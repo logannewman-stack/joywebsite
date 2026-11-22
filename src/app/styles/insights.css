@@ -61,11 +61,13 @@ html.motion .insights-band-inner {
 /* ==========================================================================
    Stay Connected: the JD monogram, pressed into the black like the mark on
    her card. The mark is the brand SVG used as a mask over a tone one step
-   above the section's black; a champagne-gold edge above-left and a dark edge
-   below-right give it the embossed relief of the brand board.
+   above the section's black (the ink warmed with a little champagne gold); a
+   champagne-gold edge above-left and a dark edge below-right give it the
+   embossed relief of the brand board. Both tones come from the color tokens.
    ========================================================================== */
 .stay-seal {
-  filter: drop-shadow(-0.0625rem -0.0625rem 0 rgb(217 195 154 / 0.2)) drop-shadow(0.09375rem 0.125rem 0.0625rem rgb(0 0 0 / 0.95));
+  filter: drop-shadow(-0.0625rem -0.0625rem 0 color-mix(in srgb, var(--color-gold-soft) 20%, transparent))
+    drop-shadow(0.09375rem 0.125rem 0.0625rem rgb(0 0 0 / 0.95));
 }
 html.motion .stay-seal {
   transform: translate3d(0, calc((0.5 - var(--v, 0.5)) * 3rem), 0);
@@ -74,7 +76,7 @@ html.motion .stay-seal {
   display: block;
   width: 100%;
   aspect-ratio: 771.4 / 702.9;
-  background-color: #181615;
+  background-color: color-mix(in srgb, var(--color-ink) 94%, var(--color-gold-soft));
   -webkit-mask: url("/brand/dr-joy-monogram-cream.svg") center / contain no-repeat;
   mask: url("/brand/dr-joy-monogram-cream.svg") center / contain no-repeat;
 }

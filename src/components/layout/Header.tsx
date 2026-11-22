@@ -299,7 +299,7 @@ export function Header() {
         id="mobile-menu"
         inert={!open}
         data-open={open}
-        className="menu-sheet thin-scroll fixed inset-0 z-40 flex scroll-pt-[calc(4.75rem+1rem)] flex-col overflow-y-auto overscroll-contain bg-paper px-5 pt-[calc(4.75rem+1rem)] pb-[max(2rem,env(safe-area-inset-bottom))] max-md:[@media(max-height:660px)]:pt-[calc(4.75rem+0.5rem)] max-md:[@media(max-height:660px)]:pb-[max(1.25rem,env(safe-area-inset-bottom))] md:px-10 md:pt-[calc(4.75rem+2.5rem)] xl:hidden"
+        className="menu-sheet thin-scroll fixed inset-0 z-40 flex scroll-pt-[calc(4.75rem+1rem)] flex-col overflow-y-auto overscroll-contain bg-paper px-5 pt-[calc(4.75rem+1rem)] pb-[max(2rem,env(safe-area-inset-bottom))] max-md:[@media(max-height:660px)]:pt-[calc(4.75rem+0.5rem)] max-md:[@media(max-height:660px)]:pb-[max(1.25rem,env(safe-area-inset-bottom))] md:px-10 md:pt-[calc(4.75rem+2.5rem)] [@media(max-height:500px)]:pt-[calc(4.75rem+0.25rem)]! xl:hidden"
       >
         <nav aria-label="Menu" className="flex flex-1 flex-col">
           <ul>
@@ -310,14 +310,16 @@ export function Header() {
                   <Link
                     href={item.href}
                     aria-current={current ? "page" : undefined}
-                    onClick={() => closeMenu(true)}
-                    className="group flex items-baseline gap-4 py-3.5 focus-visible:outline-offset-0 max-md:[@media(max-height:660px)]:py-2 md:gap-6 md:py-4 md:[@media(min-height:900px)]:py-6"
+                    // Going to another page: the sheet stays until the new page is in place (the path effect closes it),
+                    // so the page being left never flashes. The current page's link simply closes the menu.
+                    onClick={() => current && closeMenu(true)}
+                    className="group flex items-baseline gap-4 py-3.5 focus-visible:outline-offset-0 max-md:[@media(max-height:660px)]:py-2 md:gap-6 md:py-4 md:[@media(min-height:900px)]:py-6 [@media(max-height:500px)]:py-1.5!"
                   >
                     <span aria-hidden className="menu-fade label w-6 shrink-0 text-stone tabular-nums group-aria-[current=page]:text-ink">
                       {item.index}
                     </span>
                     <span
-                      className={`display text-[clamp(2.15rem,5.4vw,3.5rem)] max-md:[@media(max-height:660px)]:text-[1.9rem] md:[@media(min-height:900px)]:text-[clamp(2.5rem,6.6vw,4.25rem)] transition-transform duration-[var(--duration-ui,320ms)] ${ease} group-hover:translate-x-1.5 group-aria-[current=page]:italic`}
+                      className={`display text-[clamp(2.15rem,5.4vw,3.5rem)] max-md:[@media(max-height:660px)]:text-[1.9rem] md:[@media(min-height:900px)]:text-[clamp(2.5rem,6.6vw,4.25rem)] [@media(max-height:500px)]:text-[1.6rem]! transition-transform duration-[var(--duration-ui,320ms)] ${ease} group-hover:translate-x-1.5 group-aria-[current=page]:italic`}
                     >
                       {/* The label rises from behind its own baseline (the .wr frame clips only the bottom edge). */}
                       <span className="wr">
@@ -333,7 +335,7 @@ export function Header() {
             })}
           </ul>
           <div
-            className="menu-fade mt-auto flex flex-wrap items-center justify-between gap-x-8 gap-y-5 pt-12 max-md:[@media(max-height:660px)]:pt-5"
+            className="menu-fade mt-auto flex flex-wrap items-center justify-between gap-x-8 gap-y-5 pt-12 max-md:[@media(max-height:660px)]:pt-5 [@media(max-height:500px)]:pt-4!"
             style={{ "--i": menu.length } as Vars}
           >
             {/* Below tablet width the CTA lives here instead of the bar, first, so it is the action short screens still show. */}
