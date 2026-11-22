@@ -7,7 +7,13 @@
  *                              the visitor has not asked for reduced motion.
  *                              Every scroll effect is scoped to it, so without
  *                              it the page is its plain, fully visible layout.
- *   html { --page-p }          0 to 1 through the whole page.
+ *   .page-progress { --page-p } 0 to 1 through the whole page, written on the progress
+ *                              line itself (also .progress-page and [data-page-progress]):
+ *                              a variable on <html> would restyle the whole document
+ *                              on every scroll frame.
+ *   [data-scene-vars]          inside a scene: --p is written there instead of on the
+ *                              scene element, so a large scene restyles only what
+ *                              reads the variable.
  *   [data-scene]  { --p }      0 to 1 while a tall section scrolls past its
  *                              pinned stage. data-scene is "all", "md" or
  *                              "lg": the width from which it pins; the engine
@@ -35,17 +41,19 @@ export const MOTION_HEAD_SCRIPT = `(function(d){d.classList.add('js');try{if(!ma
 export const MOTION_BODY_SCRIPT = `(function(){
 var d=document.documentElement;
 if(!d.classList.contains('motion')||!('IntersectionObserver' in window)){d.classList.remove('motion');return}
-var near=new Set(),ticking=false;
+var near=new Set(),ticking=false,bars=[],lastPP='';
 function clamp(x){return x<0?0:x>1?1:x}
 function update(){
   ticking=false;
   var vh=window.innerHeight,max=d.scrollHeight-vh;
-  d.style.setProperty('--page-p',max>0?clamp(window.scrollY/max).toFixed(4):'0');
+  var pp=max>0?clamp(window.scrollY/max).toFixed(4):'0';
+  if(pp!==lastPP){lastPP=pp;for(var b=0;b<bars.length;b++)bars[b].style.setProperty('--page-p',pp)}
   near.forEach(function(el){
     var r=el.getBoundingClientRect();
     if(el.hasAttribute('data-scene')){
       var span=r.height-vh,p=span>0?clamp(-r.top/span):0;
-      el.style.setProperty('--p',p.toFixed(4));
+      var ps=p.toFixed(4),tg=el.__v&&el.__v.length?el.__v:[el];
+      for(var k=0;k<tg.length;k++)tg[k].style.setProperty('--p',ps);
       var n=+el.getAttribute('data-steps')||0;
       if(n){
         var s=Math.min(n-1,Math.floor(p*n));
@@ -77,6 +85,8 @@ var MQ={md:'(min-width: 768px)',lg:'(min-width: 1024px)'};
 function pin(){document.querySelectorAll('[data-scene]').forEach(function(el){var q=MQ[el.getAttribute('data-scene')];el.toggleAttribute('data-pinned',!q||matchMedia(q).matches)})}
 function scan(){
   pin();
+  bars=[].slice.call(document.querySelectorAll('.page-progress,.progress-page,[data-page-progress]'));lastPP='';
+  document.querySelectorAll('[data-scene]').forEach(function(el){el.__v=[].filter.call(el.querySelectorAll('[data-scene-vars]'),function(n){return n.closest('[data-scene]')===el})});
   document.querySelectorAll('[data-scene],[data-view]').forEach(function(el){if(!el.__m){el.__m=1;io.observe(el)}});
   document.querySelectorAll('[data-inview]:not([data-in])').forEach(function(el){if(!el.__o){el.__o=1;once.observe(el)}});
   if(fine)document.querySelectorAll('[data-magnetic]').forEach(function(el){if(!el.__g){el.__g=1;magnet(el)}});
