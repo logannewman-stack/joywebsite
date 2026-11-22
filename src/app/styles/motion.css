@@ -209,6 +209,26 @@ html.motion [data-inview][data-in].stagger > * {
 .stagger > :nth-child(11) { --si: 10; }
 .stagger > :nth-child(n + 12) { --si: 11; }
 
+/* Back and Forward: the returning page is simply there (no entrances replayed). */
+html.restoring [data-inview] .rise,
+html.restoring [data-inview].rise,
+html.restoring [data-inview] .stagger > *,
+html.restoring [data-inview].stagger > *,
+html.restoring [data-inview] .wr-in,
+html.restoring [data-inview] .rule-draw,
+html.restoring [data-inview] .wipe,
+html.restoring [data-inview] .settle,
+html.restoring [data-inview] .hl-light,
+html.restoring [data-reveal],
+html.restoring [data-reveal-image],
+html.restoring [data-scene-step] {
+  transition: none !important;
+}
+/* A section reached from an in-page link takes focus without a ring of its own. */
+:where(section, div, h1, h2, h3, ol, ul)[tabindex="-1"]:focus {
+  outline: none;
+}
+
 /* Keyboard focus never waits for an entrance: a focused control shows at once, ring included. */
 html.motion [data-inview] .rise:focus-within,
 html.motion [data-inview].rise:focus-within,
