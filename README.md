@@ -2,7 +2,7 @@
 
 A six-page, photo-led personal website for Dr. Joy RDH. It has separate pathways for speaking, hands-on education, industry collaborations and consulting (which links out to Instrumental).
 
-Built with Next.js 16 and Tailwind CSS 4. The look is a black-and-white editorial foundation, with ivory for warmth and blush as a restrained accent. Type is Instrument Serif for display and Geist for text.
+Built with Next.js 16 and Tailwind CSS 4. The look is an editorial foundation of black, white and ivory, photographs in color under one shared grade, and two accents: pale pink for emphasis in type and tan gold for structure. Type is Instrument Serif for display and Geist for text.
 
 ## Run it
 
@@ -39,6 +39,9 @@ Unknown addresses show a branded 404 that leads back into the four journeys.
 | Site settings, outbound links, nav, wordmark, launch checks | `src/content/site.ts` |
 | Form types and GoHighLevel tags | `src/content/integrations.ts` |
 | Colors, type and motion tokens | `src/app/globals.css` |
+| Scroll engine and motion building blocks | `src/components/motion/`, `src/app/styles/motion.css` |
+| Header, footer finale, page transitions, opening signature | `src/components/chrome/`, `src/components/layout/`, `src/app/styles/chrome.css` |
+| Each page's own styles | `src/app/styles/home.css`, `meet.css`, `speaking.css`, `education.css`, `industry.css`, `insights.css` |
 | Titles, descriptions, canonical URLs, structured data | `src/app/layout.tsx`, each page's `metadata`, `src/components/ui/StructuredData.tsx` |
 | Share image and icons | `src/app/opengraph-image.jpg`, `twitter-image.jpg` (+ `.alt.txt`), `icon.svg`, `apple-icon.png`, `favicon.ico` |
 | Sitemap, robots | `src/app/sitemap.ts`, `src/app/robots.ts` |
@@ -73,7 +76,10 @@ Set it to `false` for launch. Then:
 
 `public/brand/` holds the Dr. Joy script wordmark and the JD monogram, taken from "New Dr Joy RDH Logos" (variants -04 charcoal and -01 cream). The supplied SVGs include a solid background panel; it has been removed and each frame cropped to the mark. The favicon (`src/app/icon.svg`) is the primary monogram on charcoal; `apple-icon.png` (180 px) and `favicon.ico` (16, 32, 48 px) are rendered from it.
 
-Brand colors come from the logo files: cream `#F5F1E9`, blush `#E7D3CB`, charcoal `#393839`. Gold appears only in the logo files and is not used for type on the site.
+The cream `#F5F1E9` and charcoal `#393839` come from the logo files. The two accents are tokens in `src/app/globals.css`:
+
+- Pale pink (`--color-blush` `#F0D3CE`) is for emphasis in type: italic display phrases and highlights on black, and a marker behind ink-colored words on white or ivory. It is never used for small text on white.
+- Tan gold (`--color-gold` `#C2A36B`, with a softer champagne and a deeper tone for light backgrounds) is for structure: hairlines, progress lines, numerals, quote marks, and a few large display words on black. It is never used for small type.
 
 ### The opening signature
 
@@ -105,7 +111,13 @@ The share image (`src/app/opengraph-image.jpg`, also `twitter-image.jpg`, 1200×
 
 ## Motion
 
-Motion uses one tempo, set as tokens in `src/app/globals.css`: hover 180 ms, interface 320 ms, text reveals 600 ms, photo uncovers and headline lines 800 ms. Reveals are visible in the server HTML and without JavaScript, and everything is still for visitors who ask for reduced motion.
+Motion uses one tempo, set as tokens in `src/app/globals.css`: hover 180 ms, interface 320 ms, text reveals 600 ms, photo uncovers and headline lines 800 ms.
+
+Scroll effects (pinned stories, the sideways rows, words that light as they are read, photographs that drift) use no animation library. One small inline script (`src/components/motion/engine.ts`) turns scroll position into CSS variables and attributes, and the styles in `src/app/styles/motion.css` and each page's stylesheet read them. The building blocks are in `src/components/motion/`; `/motion-lab` shows each one (review mode only).
+
+Everything is scoped to `<html class="motion">`, which is set only when JavaScript runs and the visitor has not asked for reduced motion. Without it every page is its plain, complete layout: all words and photographs are in the server HTML, nothing waits on a script, and nothing moves.
+
+The whole site scales up on large screens: sizes are in rem, and the root font size grows with the window above 1440 px wide (see `html` in `globals.css`), so a 2560 px monitor shows the 1440 px composition, larger. Write new sizes in rem, not px.
 
 ## Forms and GoHighLevel
 
