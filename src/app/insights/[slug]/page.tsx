@@ -9,6 +9,11 @@ import { NextPage } from "@/components/layout/NextPage";
 // Every page of this route is listed by generateStaticParams; navigations into it need not be instant.
 export const instant = false;
 
+// The complete page is static. An address that is not listed waits for its full render instead of
+// receiving the shared shell first, so an unknown slug answers 404 from the first request (a shell
+// would have started the response with 200 before notFound() ran).
+export const ensureStatic = "navigation";
+
 /** Original articles published on this site (those with a slug and a body). */
 function onSite() {
   return insights.original.articles.filter((a) => a.slug && a.body && a.body.length > 0);

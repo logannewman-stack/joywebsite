@@ -54,6 +54,16 @@ export default function InsightsPage() {
   const books = records.filter((a) => a.kind === "book");
   const showOriginals = listedOriginals.length > 0 || (site.showPlaceholders && originals.length === 0);
   const showPublished = articles.length > 0 || books.length > 0;
+  // When the feature is the only piece of its kind, its section's list is not on the page.
+  // The cover story then stands under that section's approved heading (and line), so the
+  // approved copy stays on the page and the card is never unlabeled.
+  const featureSection = featuredOriginal
+    ? showOriginals
+      ? null
+      : { heading: original.heading }
+    : featuredRecord && !showPublished
+      ? { heading: published.heading, intro: published.intro }
+      : null;
 
   return (
     <>
@@ -94,7 +104,7 @@ export default function InsightsPage() {
         </div>
       </section>
 
-      {feature && <Feature item={feature} cta={original.cta} />}
+      {feature && <Feature item={feature} cta={original.cta} {...featureSection} />}
 
       {/* The conversation after a session: a full-bleed photograph that opens and drifts with the scroll */}
       <Band slot={band} />
