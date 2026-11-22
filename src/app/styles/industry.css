@@ -127,6 +127,55 @@ html.motion .group:has(:focus-visible) .lean {
 }
 
 /* ==========================================================================
+   Opening (lg and up)
+
+   The headline's two italic lines ("for dental", "manufacturers.") share one
+   line, so it is set in three lines across the right column. They stay two
+   pieces and still rise one after the other; if the column is ever too narrow
+   they simply wrap back to four lines.
+
+   The portrait is a 4:5 photograph in a 4:5 frame, five columns wide. On a
+   short, wide screen that frame is taller than the first screen (a maximised
+   16:9 window gives the page about 46rem of height, however large the
+   monitor), and the fold used to cut it through her shoes. So the frame is
+   capped by the height left under the header (--cap: the screen less the
+   header, the grid's top padding and 2.5rem of air), and when it is capped
+   the photograph is set as a three-quarter portrait instead: enlarged from
+   its top edge so the frame ends at her shin, with her face and hands in
+   it. The switch is all or nothing (--short is zero or less while the whole
+   photograph fits, and a very large length as soon as it does not), because
+   any crop in between would cut through her feet.
+   ========================================================================== */
+@media screen and (min-width: 1024px) {
+  .open-title .wr-block:nth-of-type(n + 3),
+  .open-title .wr-block:nth-of-type(n + 3) > .wr-in {
+    display: inline-block;
+  }
+
+  /* The five columns: 100cqw is their width, so 125cqw is the 4:5 frame's full height. */
+  .open-figure {
+    container-type: inline-size;
+  }
+  .open-portrait {
+    --cap: max(20rem, calc(100svh - var(--header-height) - min(5rem, 6.5svh) - 2.5rem));
+    --short: calc((125cqw - var(--cap)) * 9999);
+    /* The photograph's height in its frame: all of it, or 145% (the frame then shows its top 69%). */
+    --photo-h: max(100%, min(145%, var(--short)));
+    height: min(125cqw, var(--cap));
+  }
+  .open-portrait img {
+    /* next/image sets the height inline. */
+    height: var(--photo-h) !important;
+    object-position: 50% 0;
+  }
+  /* The soft preview behind the photograph follows the same crop. */
+  .open-portrait [data-blur] {
+    background-position: 50% 0;
+    background-size: auto var(--photo-h);
+  }
+}
+
+/* ==========================================================================
    Sponsorships and KOL Partnerships: the stage photograph hangs past the
    ivory section's bottom edge into the black chapter below (--hang), so the
    eye is carried across the change of colour. The section's bottom padding
@@ -298,30 +347,48 @@ html.motion .launch-lead .launch-word {
     font-size: 1.25rem;
     line-height: 1.6;
   }
-  /* They follow one another in when the step takes the stage. */
+  /* The two never show at once. The step that leaves goes first, quickly;
+     the step that arrives waits for it (in both directions). */
+  html.motion .launch[data-pinned] .launch-step {
+    transition:
+      opacity 0.2s var(--ease-soft),
+      transform var(--duration-scene) var(--ease-expo);
+  }
+  html.motion .launch[data-pinned] .launch-step[data-active],
+  html.motion .launch[data-pinned][data-step="1"] [data-scene-step="0"],
+  html.motion .launch[data-pinned]:not([data-step]) [data-scene-step="0"] {
+    transition:
+      opacity var(--duration-scene) var(--ease-soft) 0.2s,
+      transform var(--duration-scene) var(--ease-expo) 0.2s;
+  }
+  /* The details follow one another in once the lead has gone, and leave at once. */
   html.motion .launch[data-pinned] .launch-details .launch-item {
     opacity: 0;
     transform: translate3d(0, 1.25rem, 0);
     transition:
-      opacity var(--duration-text) var(--ease-soft),
-      transform var(--duration-image) var(--ease-expo);
+      opacity 0.18s var(--ease-soft),
+      transform 0.18s var(--ease-soft);
   }
   html.motion .launch[data-pinned] .launch-details[data-active] .launch-item {
     opacity: 1;
     transform: none;
-    transition-delay: calc(0.12s + var(--k, 0) * 90ms);
-  }
-  /* Keyboard focus brings the step up at once: no waiting on the cascade. */
-  html.motion .launch[data-pinned] .launch-details:focus-within .launch-item {
-    transition-delay: 0s;
+    transition:
+      opacity var(--duration-text) var(--ease-soft) calc(0.3s + var(--k, 0) * 90ms),
+      transform var(--duration-image) var(--ease-expo) calc(0.3s + var(--k, 0) * 90ms);
   }
   html.motion .launch[data-pinned] .launch-details .launch-rule {
     opacity: 1;
     transform: scaleX(0);
-    transition: transform 1.1s var(--ease-expo);
+    transition: transform 0.18s var(--ease-soft);
   }
   html.motion .launch[data-pinned] .launch-details[data-active] .launch-rule {
     transform: none;
+    transition: transform 1.1s var(--ease-expo) 0.3s;
+  }
+  /* Keyboard focus brings the step up at once: no waiting on the cascade. */
+  html.motion .launch[data-pinned] .launch-details:focus-within,
+  html.motion .launch[data-pinned] .launch-details:focus-within .launch-item {
+    transition-delay: 0s;
   }
 
   .launch[data-pinned] .launch-foot {
