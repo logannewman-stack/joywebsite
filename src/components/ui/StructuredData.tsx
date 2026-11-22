@@ -39,7 +39,7 @@ export function StructuredData() {
         ...(site.fullName ? { honorificPrefix: "Dr." } : {}),
         honorificSuffix: "RDH",
         url: site.url,
-        image: `${site.url}/photos/home-hero-g.jpg`,
+        image: `${site.url}/photos/home-hero-stage-g.jpg`,
         email: site.email,
         alumniOf: universities().map((u) => ({ "@type": "CollegeOrUniversity", name: u })),
         // The Speaking page's approved topics.
