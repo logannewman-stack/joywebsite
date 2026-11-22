@@ -821,11 +821,16 @@ html.cursor-live [data-cursor] :is(input, textarea, select, [contenteditable="tr
   display: none;
 }
 /* Between pages: the old page holds still underneath and is gone within the
-   first third (140ms), so its headline and the new one are never both legible;
-   the new page dissolves in over the page canvas, which already has the new
-   page's tone. */
+   first third (140ms), so its headline and the new one are never both legible.
+   It leaves toward the new page's tone: to white (it fades, over the white
+   page canvas) when the new page opens light, to black (it darkens and stays
+   opaque, so no white shows through) when the new page opens on black. The
+   header already carries the new page's tone when the transition starts. */
 ::view-transition-old(.page-out) {
   animation: vt-page-out 0.42s linear both;
+}
+:root:has(.site-header[data-tone="dark"])::view-transition-old(.page-out) {
+  animation-name: vt-page-out-dark;
 }
 ::view-transition-new(.page-in) {
   animation: vt-page-in 0.42s var(--ease-soft) both;
@@ -842,6 +847,15 @@ html.cursor-live [data-cursor] :is(input, textarea, select, [contenteditable="tr
   33%,
   100% {
     opacity: 0;
+  }
+}
+@keyframes vt-page-out-dark {
+  0% {
+    filter: brightness(1);
+  }
+  33%,
+  100% {
+    filter: brightness(0);
   }
 }
 @keyframes vt-page-in {
