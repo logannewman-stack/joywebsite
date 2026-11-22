@@ -18,6 +18,10 @@ const pad = (n: number) => String(n).padStart(2, "0");
  *
  * Decorative: every print carries its own frame number. Hidden from assistive
  * technology, and hidden without JavaScript (education.css, "Filmstrip").
+ *
+ * It also keeps the strip's group a tab stop only while there is something
+ * to move with the arrow keys: pinned, or fitted to a wide window, the strip
+ * does not scroll sideways, so the tab stop and the meter are taken away.
  */
 export function StripMeter({ total }: { total: number }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -27,9 +31,13 @@ export function StripMeter({ total }: { total: number }) {
     if (!el || !row) return;
     let frame = 0;
     let stops: number[] = [];
-    // Where each print rests, as a scroll position. Read on load and on resize only.
+    // Read on load and on resize only: whether the strip scrolls sideways, and where each print rests, as a scroll position.
     const measure = () => {
       const max = row.scrollWidth - row.clientWidth;
+      const scrolls = max > 1 && getComputedStyle(row).overflowX !== "visible";
+      if (scrolls) row.tabIndex = 0;
+      else row.removeAttribute("tabindex");
+      el.toggleAttribute("data-still", !scrolls);
       const lefts = Array.from(row.querySelectorAll<HTMLElement>("[data-scene-panel]"), (p) => p.getBoundingClientRect().left);
       const raw = lefts.map((x) => x - lefts[0]);
       const reach = raw.findIndex((x) => x >= max - 1);
@@ -47,8 +55,6 @@ export function StripMeter({ total }: { total: number }) {
       });
       el.style.setProperty("--p", max > 0 ? (x / max).toFixed(4) : "0");
       el.style.setProperty("--i", String(i));
-      // Nothing to swipe (every print fits): no meter.
-      el.toggleAttribute("data-still", max <= 0);
     };
     const queue = () => {
       if (!frame) frame = requestAnimationFrame(update);
@@ -65,6 +71,7 @@ export function StripMeter({ total }: { total: number }) {
       cancelAnimationFrame(frame);
       row.removeEventListener("scroll", queue);
       window.removeEventListener("resize", resize);
+      row.tabIndex = 0;
     };
   }, [total]);
   return (

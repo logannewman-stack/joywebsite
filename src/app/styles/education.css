@@ -152,8 +152,8 @@ html.motion .edu-arrive {
     scroll-padding-inline: 2.5rem;
   }
 }
-/* A wide window without the pinned scene (no JavaScript, reduced motion): show
-   the scrollbar, since a mouse cannot swipe. */
+/* From 1024px a strip that still scrolls (an upright screen) shows its
+   scrollbar, since a mouse cannot swipe. */
 @media (min-width: 1024px) {
   .edu-strip-scroll {
     scrollbar-width: thin;
@@ -211,6 +211,25 @@ html.motion .edu-arrive {
 .edu-print-no-end {
   left: auto;
   right: var(--u);
+}
+
+/* A wide window without the scroll engine (no JavaScript, reduced motion):
+   nothing slides, and prints left off screen would have no cue. So the whole
+   row is fitted to the window: every print in view at once, in the same
+   arrangement, smaller. --row is the row's width in units (Filmstrip.tsx);
+   cqw is the strip's own width, and 5rem its side padding. */
+@media (min-width: 1024px) {
+  [data-scene]:not([data-pinned]) .edu-strip-scroll {
+    container-type: inline-size;
+  }
+  [data-scene]:not([data-pinned]) .edu-strip-track {
+    --u: calc((100vw - 6.5rem) / var(--row));
+  }
+  @supports (width: 1cqw) {
+    [data-scene]:not([data-pinned]) .edu-strip-track {
+      --u: calc((100cqw - 5rem - 1px) / var(--row));
+    }
+  }
 }
 
 /* Swiped (with motion): the row drifts a little as the page scrolls past,
@@ -525,14 +544,46 @@ html.motion .edu-strip-roll > span {
     opacity: 1 !important;
     animation: none !important;
   }
-  .edu-strip-scroll {
-    overflow: visible;
+
+  /* The filmstrip prints as a contact sheet: every photograph at one height
+     on its paper, with its frame number, wrapping across the page. No counter
+     and no progress line. None of this reads the scroll engine's attributes,
+     so it prints the same whether or not the scene was pinned on screen. */
+  .edu-strip .edu-strip-stage {
+    display: block !important;
+    height: auto !important;
+    padding-block: 2rem !important;
+    /* The sheet stays on one page. */
+    break-inside: avoid;
   }
-  .edu-strip-track {
+  .edu-strip .edu-strip-scroll {
+    overflow: visible !important;
+    padding-block: 0 !important;
+    margin-block: 0 !important;
+  }
+  .edu-strip .edu-strip-scroll .edu-strip-track {
+    --u: 0.3rem;
+    display: flex !important;
     flex-wrap: wrap;
-    width: auto;
+    align-items: flex-start;
+    gap: 0.75rem;
+    width: auto !important;
   }
-  .edu-strip-meter {
+  .edu-strip .edu-print {
+    break-inside: avoid;
+  }
+  .edu-strip .edu-print-body {
+    margin: 0 !important;
+  }
+  .edu-strip .edu-print-paper {
+    box-shadow: none;
+    outline: 1px solid var(--color-line);
+  }
+  .edu-strip .edu-print-photo {
+    height: 9.5rem;
+  }
+  .edu-strip .edu-strip-bar,
+  .edu-strip .edu-strip-meter {
     display: none !important;
   }
 }

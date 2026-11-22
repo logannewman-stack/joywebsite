@@ -16,9 +16,15 @@ type Vars = CSSProperties & Record<`--${string}`, string | number>;
  * with a frame counter and a gold progress line whose dot travels with the
  * row. Below lg, and on upright screens of any width, it is a strip to swipe,
  * which drifts a little as the page scrolls to show that it moves; the same
- * counter and line follow the swipe (StripMeter). Without JavaScript and with
- * reduced motion it is a still strip to scroll sideways. The group takes
- * keyboard focus, so the arrow keys move it.
+ * counter and line follow the swipe (StripMeter).
+ *
+ * Without JavaScript and with reduced motion: below lg it is a still strip to
+ * swipe; from lg the whole row is fitted to the window, so every print is in
+ * view with nothing to scroll. In print it is a contact sheet.
+ *
+ * Keyboard: while the strip scrolls sideways its group is a tab stop, so the
+ * arrow keys move it. Pinned or fitted there is nothing to move, and
+ * StripMeter takes the tab stop away (the page's own scrolling slides the row).
  * Sizes and offsets come from education.filmstrip; the styles are in
  * src/app/styles/education.css ("Filmstrip").
  */
@@ -27,6 +33,8 @@ export function Filmstrip() {
   if (!prints.length) return null;
   // How long the scene pins: about one screen of scrolling per two prints.
   const length = 1 + prints.length * 0.26;
+  // The row's width in strip units: each photograph, its paper border (a unit each side) and the space before it.
+  const row = prints.reduce((sum, p, i) => sum + p.height * p.ratio + 2 + (i ? p.gap : 0), 0);
   return (
     <Scene
       from="lg"
@@ -35,7 +43,15 @@ export function Filmstrip() {
       className="edu-strip bg-ivory"
       pinClassName="edu-strip-stage py-16 md:py-24"
     >
-      <div data-view="" data-filmstrip="" tabIndex={0} role="group" aria-label="Photographs from a P3 workshop" className="edu-strip-scroll">
+      <div
+        data-view=""
+        data-filmstrip=""
+        tabIndex={0}
+        role="group"
+        aria-label="Photographs from a P3 workshop"
+        className="edu-strip-scroll"
+        style={{ "--row": Number(row.toFixed(2)) } as Vars}
+      >
         <SceneTrack className="edu-strip-track">
           {prints.map((p, i) => {
             const style: Vars = { "--h": p.height, "--y": p.drop, "--ar": p.ratio, "--gap": i ? p.gap : 0, "--drift": p.drift, zIndex: p.layer };
