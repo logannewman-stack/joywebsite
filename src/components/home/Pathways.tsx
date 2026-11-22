@@ -7,23 +7,29 @@ import { typeset } from "../ui/Typeset";
 type Vars = CSSProperties & Record<`--${string}`, string | number>;
 
 /*
- * The four pathways, one list in four layouts. All four are on the page in
+ * The four pathways, one list in several layouts. All four are on the page in
  * every one of them; nothing waits behind a swipe.
  *
- * - Animated, from 1024px: a sideways-scrolling sequence. The section pins
- *   (page.tsx wraps this in a Scene) and the row slides past as the visitor
- *   scrolls: each panel is its 4:5 photograph beside its words, with a large
- *   outlined numeral as texture. Layout and motion: home.css ("Explore My Work").
+ * - Animated, landscape screens from 1024px: a sideways-scrolling sequence.
+ *   The section pins (page.tsx wraps this in a Scene) and the row slides past
+ *   as the visitor scrolls: each panel is its 4:5 photograph beside its words,
+ *   with a large outlined numeral as texture. The row settles, travels, and
+ *   rests with the last panel whole before the stage lets go.
  * - Phones (below 640px): four compact rows, one under another. Each row is
- *   its photograph beside its name and heading, with the paragraph and the
- *   link beneath, under a gold hairline (home.css places the pieces).
- * - 640px to 1023px: a two-by-two grid of cards, photograph above the words.
+ *   its photograph beside an outlined numeral, its name and its heading, with
+ *   the paragraph and the link beneath, under a gold hairline. A phone on its
+ *   side shows the same rows two across.
+ * - 640px to 1023px, and upright screens of any width (a large tablet held
+ *   upright is not pinned): a two-by-two grid of cards, photograph above the
+ *   words (four across from 1280px).
  * - From 1024px without motion (reduced motion, no JavaScript, print): the
- *   four cards side by side as a grid.
+ *   cards side by side as a grid.
+ * Layout and motion for all of them: home.css ("Explore My Work").
  *
- * Entrances: from 1024px the cards rise one after another the first time the
- * row is seen (the list is the [data-inview]). Below that each row is its own
- * [data-inview]: it rises, and its hairline draws, when it is reached.
+ * Entrances: in the pinned row the cards rise one after another the first
+ * time the row is seen (the list is the [data-inview]). In the stacked
+ * layouts each row is its own [data-inview]: it rises, and its hairline
+ * draws, when it is reached.
  *
  * In every layout the whole card is one link (the link's ::after covers it),
  * so pointer, touch and keyboard users get the same target; hover and
@@ -32,8 +38,9 @@ type Vars = CSSProperties & Record<`--${string}`, string | number>;
  * technology everywhere.
  */
 
-// Photo widths: about 36% of a phone screen beside its words, just under half a tablet's, and about a third of a wide screen's.
-const sizes = "(max-width: 639px) 36vw, (max-width: 1023px) 46vw, 33vw";
+// Photo widths: about 36% of a phone screen beside its words; just under half the screen in the two-by-two grid
+// (tablets, and upright screens up to 1279px); about a third of a wide screen in the pinned row and the four-across grid.
+const sizes = "(max-width: 639px) 36vw, (max-width: 1023px) 46vw, (max-width: 1279px) and (orientation: portrait) 46vw, 33vw";
 
 const pad = (n: number) => String(n).padStart(2, "0");
 

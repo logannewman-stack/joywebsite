@@ -458,18 +458,19 @@ html.motion .hero-cue-line {
    head of the column with the pathway's name and heading standing on the
    photograph's foot (the wide layout in miniature); then the paragraph and
    the link across the full width. The wrappers around the words step aside
-   so the pieces can be placed on the row's own grid. */
-@media screen and (max-width: 639px) {
+   so the pieces can be placed on the row's own grid.
+   A phone on its side (up to 1023px wide and no taller than 540px) uses the
+   same compact row, two side by side: a 4:5 photograph the width of a column
+   would be taller than the screen there. */
+@media screen and (max-width: 639px), screen and (max-width: 1023px) and (max-height: 540px) {
   .work .work-panel {
     display: grid;
     grid-template-columns: min(40%, 11.5rem) minmax(0, 1fr);
     grid-template-rows: auto 1fr auto auto auto auto;
     column-gap: 1.125rem;
-    /* A margin, not padding: the ring around a focused row stops short of the next row's hairline. */
-    margin-bottom: 1.25rem;
-  }
-  .work .work-panel:last-child {
-    margin-bottom: 0;
+    /* Side by side, each row keeps its own height, so its heading stays on its photograph's foot. */
+    align-self: start;
+    margin-top: 0;
   }
   .work .work-text,
   .work .work-words {
@@ -477,7 +478,7 @@ html.motion .hero-cue-line {
   }
   .work .work-line {
     grid-area: 1 / 1 / 2 / -1;
-    margin-bottom: 1.25rem;
+    margin: 0 0 1.25rem;
   }
   .work .work-photo {
     grid-area: 2 / 1 / 5 / 2;
@@ -509,14 +510,30 @@ html.motion .hero-cue-line {
   }
   .work .work-heading {
     grid-area: 4 / 2;
+    margin-top: 0;
     padding-top: 0.625rem;
+    font-size: clamp(1.3125rem, 6vw, 1.625rem);
   }
   .work .work-body {
     grid-area: 5 / 1 / 6 / -1;
+    margin-top: 0.875rem;
+    font-size: 0.9375rem;
+    line-height: 1.55;
   }
   .work .work-link {
     grid-area: 6 / 1 / 7 / -1;
     justify-self: start;
+    margin-top: 0.25rem;
+  }
+}
+/* One under another on phones. The space between rows is a margin, not padding:
+   the ring around a focused row stops short of the next row's hairline. */
+@media screen and (max-width: 639px) {
+  .work .work-panel {
+    margin-bottom: 1.25rem;
+  }
+  .work .work-panel:last-child {
+    margin-bottom: 0;
   }
 }
 
@@ -744,6 +761,7 @@ html.restoring .work .work-photo-in > img {
   .work[data-pinned] .work-panel:has(:focus-visible) .work-numeral {
     -webkit-text-stroke-color: var(--color-gold-deep);
   }
+  /* Should the digits ever reach the words (a browser without container units keeps the larger size), they pass behind them. */
   .work[data-pinned] .work-words {
     background: var(--color-paper);
   }
