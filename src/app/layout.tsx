@@ -9,7 +9,7 @@ import { PageShell } from "@/components/chrome/PageShell";
 import { Curtain } from "@/components/chrome/Curtain";
 import { CHROME_BODY_SCRIPT, CHROME_HEAD_SCRIPT } from "@/components/chrome/script";
 import { REVEAL_BODY_SCRIPT } from "@/components/ui/Reveal";
-import { MOTION_BODY_SCRIPT, MOTION_HEAD_SCRIPT } from "@/components/motion/engine";
+import { ANCHOR_BODY_SCRIPT, MOTION_BODY_SCRIPT, MOTION_HEAD_SCRIPT } from "@/components/motion/engine";
 import { StructuredData } from "@/components/ui/StructuredData";
 import { insights } from "@/content/insights";
 import { isShown } from "@/components/insights/records";
@@ -54,7 +54,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" data-scroll-behavior="smooth" className={`${instrument.variable} ${geist.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`${instrument.variable} ${geist.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: MOTION_HEAD_SCRIPT }} />
         <script dangerouslySetInnerHTML={{ __html: CHROME_HEAD_SCRIPT }} />
@@ -74,6 +74,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         </div>
         <script dangerouslySetInnerHTML={{ __html: REVEAL_BODY_SCRIPT }} />
         <script dangerouslySetInnerHTML={{ __html: MOTION_BODY_SCRIPT }} />
+        <script dangerouslySetInnerHTML={{ __html: ANCHOR_BODY_SCRIPT }} />
         <script dangerouslySetInnerHTML={{ __html: CHROME_BODY_SCRIPT }} />
       </body>
     </html>

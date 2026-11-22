@@ -34,9 +34,15 @@ export type FeatureItem = {
  * circle (a gold ring at rest) fills, leans toward the pointer and sends its
  * arrow out. Type only: no cover art
  * is invented for the publisher.
+ *
+ * `heading` and `intro` are the approved heading and line of the feature's own
+ * section. The page passes them when the feature is the only piece of its kind
+ * (so that section's list is not on the page): the cover story then stands
+ * under its section heading, and its headline steps down to an h3.
  */
-export function Feature({ item, cta }: { item: FeatureItem; cta: string }) {
+export function Feature({ item, cta, heading, intro }: { item: FeatureItem; cta: string; heading?: string; intro?: string }) {
   const id = useId();
+  const Title = heading ? "h3" : "h2";
   // A long headline steps down a size so it still reads as one cover line group.
   const long = item.title.length > 40;
   const linkClass =
@@ -53,6 +59,20 @@ export function Feature({ item, cta }: { item: FeatureItem; cta: string }) {
   return (
     <section className="bg-ivory">
       <div className="mx-auto max-w-[90rem] px-5 py-20 md:px-10 md:py-28 lg:py-32">
+        {heading && (
+          <div className="mb-12 md:mb-16 lg:mb-20">
+            <h2 className="display text-[clamp(2.6rem,4.6vw,4.4rem)]">
+              <WordRise>{heading}</WordRise>
+            </h2>
+            {intro && (
+              <InView>
+                <p className="rise mt-5 max-w-sm text-[1.0625rem] leading-relaxed text-stone" style={{ "--d": "0.12s" } as Vars}>
+                  {intro}
+                </p>
+              </InView>
+            )}
+          </div>
+        )}
         <article className="cover group relative bg-paper px-6 pt-7 pb-8 has-[a:focus-visible]:outline-2 has-[a:focus-visible]:outline-offset-4 has-[a:focus-visible]:outline-ink md:px-12 md:pt-10 md:pb-12 lg:px-16 lg:pt-12 lg:pb-16">
           {/* Masthead: the publication, the issue date, and in review the confirm tag */}
           <InView as="header" className="relative flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2 pb-6 md:pb-8">
@@ -68,9 +88,9 @@ export function Feature({ item, cta }: { item: FeatureItem; cta: string }) {
 
           {/* The headline at cover scale; from lg the standfirst and the way in stand beside it like a spread */}
           <div className="mt-10 md:mt-14 lg:mt-16 lg:grid lg:grid-cols-12 lg:gap-x-6">
-            <h2 id={`${id}-title`} className={`cover-title display leading-[0.92] lg:col-span-8 ${long ? scale.long : scale.short}`}>
+            <Title id={`${id}-title`} className={`cover-title display leading-[0.92] lg:col-span-8 ${long ? scale.long : scale.short}`}>
               <WordRise>{item.title}</WordRise>
-            </h2>
+            </Title>
 
             <InView className="mt-6 md:mt-10 md:flex md:items-end md:justify-between md:gap-10 lg:col-span-4 lg:mt-0 lg:flex-col lg:items-stretch lg:pt-3">
               <div>

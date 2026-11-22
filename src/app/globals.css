@@ -63,7 +63,8 @@ html {
      windows from over-scaling; the cap is a 2560px-wide layout. Up to 1440px
      nothing changes, and the visitor's own font size still applies. */
   font-size: clamp(100%, min(1.1111vw, 2.16vh), 177.78%);
-  scroll-behavior: smooth;
+  /* No CSS smooth scrolling: it made Back and Forward replay a scroll through the
+     whole page. In-page links scroll smoothly from a small script instead (engine.ts). */
   /* The site is designed light. Keeps form controls and scrollbars light in dark mode. */
   color-scheme: light;
   /* Opening the menu or inquiry panel locks scrolling without shifting the page sideways. */
@@ -279,7 +280,8 @@ html.js [data-reveal=""][data-in] {
   html.js [data-blur] > img {
     transition: opacity var(--duration-ui) ease-out;
   }
-  html.js [data-blur]:not([data-shown]) > img {
+  /* Never the opening photo (fetchpriority="high"): it paints the moment it decodes. */
+  html.js [data-blur]:not([data-shown]) > img:not([fetchpriority="high"]) {
     opacity: 0;
   }
   @media print {
