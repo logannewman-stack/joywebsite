@@ -406,7 +406,8 @@ html.motion .sp-keynote-zoom {
 
 /* --------------------------------------------------------------------------
    Wall of names (SpokenAt.tsx). Still: a wrapped run of names inside the page
-   margins. Animated: three full-width rows that travel with the scroll.
+   margins. Animated: full-width rows, each a little wider than the screen,
+   that drift with the scroll by exactly their own overflow.
    -------------------------------------------------------------------------- */
 .sp-wall {
   max-width: 90rem;
@@ -417,55 +418,96 @@ html.motion .sp-keynote-zoom {
   line-height: 1.32;
   letter-spacing: -0.005em;
 }
-.sp-wall-name {
-  margin-right: 0.45em;
+.sp-wall-row,
+.sp-wall-line {
+  display: inline;
+}
+.sp-wall-item {
+  margin-right: 0.24em;
   white-space: nowrap;
 }
 .sp-wall-mark {
+  padding-left: 0.45em;
+}
+.sp-wall-mark::before {
+  content: "";
   display: inline-block;
   width: 0.2em;
   height: 0.2em;
-  margin-left: 0.45em;
   border-radius: 9999px;
   background: var(--color-gold-deep);
   vertical-align: 0.26em;
 }
-/* Still: the run ends on a name, not on a mark. */
-html:not(.motion) .sp-wall-row:last-child .sp-wall-name:last-child .sp-wall-mark {
-  display: none;
-}
+
+/* Animated. The type is set in vw, so each row keeps the same width against
+   the screen at every size from tablet to a large monitor. */
 html.motion .sp-wall {
   max-width: none;
   padding-inline: 0;
-  font-size: clamp(2.5rem, 4.2vw, 3.8rem);
-  line-height: 1.1;
+  overflow-x: clip;
+  container-type: inline-size;
+  font-size: max(1.2rem, 2.3vw);
+  line-height: 1.16;
   letter-spacing: -0.015em;
-  mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+  /* Names fade out inside the page margin; a name that sits at the margin is at full strength. */
+  mask-image: linear-gradient(90deg, transparent, #000 1rem, #000 calc(100% - 1rem), transparent);
 }
+/* --w: 0 to 1 while the row crosses the middle of the screen (its own --v from
+   0.32 to 0.6). It holds its first position through the lower third of the
+   screen and its last through the upper third, so the names at either end of
+   a row can be read whole, at rest. Every other row runs the other way. */
 html.motion .sp-wall-row {
-  /* Room for descenders inside the row's clip. */
-  padding-block: 0.13em;
+  --w: clamp(0, calc((var(--v, 0) - 0.32) / 0.28), 1);
+  display: block;
+  padding-block: 0.07em;
 }
-html.motion .sp-wall-row:nth-child(2) {
+html.motion .sp-wall-row:nth-child(even) {
+  --w: clamp(0, calc((0.6 - var(--v, 0)) / 0.28), 1);
+}
+html.motion .sp-wall-row-italic {
   font-style: italic;
 }
-/* Each row starts from its own offset, far enough left that its travel never opens a gap at the edge. */
-html.motion .sp-wall-row .marquee-track {
-  translate: -4% 0;
+/* The row is as wide as its names (never less than a little wider than the
+   wall, so every row bleeds: a short row spreads its marks). 100% is that
+   width, so the row travels from flush with the left page margin (--w 0) to
+   flush with the right (--w 1). */
+html.motion .sp-wall-line {
+  display: flex;
+  align-items: baseline;
+  width: max-content;
+  min-width: 103vw;
+  padding-inline: 2.5rem;
+  translate: calc(var(--w) * (100vw - 100%)) 0;
+  will-change: translate;
 }
-html.motion .sp-wall-row:nth-child(2) .marquee-track {
-  translate: -9.5% 0;
+/* Measured against the wall itself where container units exist (a classic scrollbar makes 100vw a little wider). */
+@supports (width: 1cqw) {
+  html.motion .sp-wall-line {
+    min-width: 103cqw;
+    translate: calc(var(--w) * (100cqw - 100%)) 0;
+  }
 }
-html.motion .sp-wall-row:nth-child(3) .marquee-track {
-  translate: -6.5% 0;
-}
-html.motion .sp-wall-name {
+html.motion .sp-wall-item {
+  display: flex;
+  flex: 1 0 auto;
+  align-items: baseline;
   margin-right: 0;
 }
+html.motion .sp-wall-item:last-child {
+  flex: none;
+}
+/* A row ends on a name, not on a mark. */
+html.motion .sp-wall-item:last-child .sp-wall-mark {
+  display: none;
+}
 html.motion .sp-wall-mark {
+  flex: 1 0 auto;
+  padding-inline: 0.55em;
+  text-align: center;
+}
+html.motion .sp-wall-mark::before {
   width: 0.17em;
   height: 0.17em;
-  margin-inline: 0.6em;
 }
 
 /* --------------------------------------------------------------------------
