@@ -430,7 +430,7 @@ a:focus-visible > .sp-toc-arrow > svg + svg {
   }
 }
 /* The narrowest phones: the longest heading takes the whole bar, so the count steps aside. */
-@media screen and (max-width: 374px) {
+@media screen and (max-width: 389px) {
   .sp-bar-count {
     display: none;
   }
@@ -578,9 +578,10 @@ html.motion .sp-keynote-zoom {
 
    The wall: with motion on, from laptop width, on a device with a mouse or
    trackpad, the list is left to assistive technology and the names are set
-   as full-width rows, each a little wider than the screen, that drift with
-   the scroll by exactly their own overflow. (Not on touch screens: a row
-   that runs off the screen looks swipeable, and these are not.)
+   as a band of display type: full-width rows, each about as wide as the
+   screen, that drift with the scroll by exactly their own overflow. (Not on
+   touch screens: a row that runs off the screen looks swipeable, and these
+   are not.)
    -------------------------------------------------------------------------- */
 .sp-venues-list {
   font-family: var(--font-serif);
