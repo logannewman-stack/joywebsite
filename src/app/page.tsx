@@ -50,7 +50,8 @@ export default function Home() {
   return (
     <>
       {hold ? (
-        // The engine gives this wrapper --p; home.css ("Opening") uses it to dim the held stage.
+        // A scene only for its progress: the engine writes --p on the stage's dim and cue (data-scene-vars
+        // in Heroes.tsx), and home.css ("Opening") uses it to dim the held stage.
         <div data-scene="lg" className="hero-hold relative" style={{ "--hold-n": PERSPECTIVE_LENGTH } as Vars}>
           {/* Where the stage holds, this marker scrolls in its place and keeps the header's dark variant in step. */}
           <div aria-hidden data-header="dark" className="pointer-events-none absolute inset-x-0 top-0 hidden h-[100svh] lg:landscape:block" />
@@ -60,9 +61,12 @@ export default function Home() {
         opening
       )}
 
-      {/* Explore My Work: the four pathways, a sideways-scrolling sequence from 1024px and a swipeable row below. */}
+      {/* Explore My Work: the four pathways. A sideways-scrolling sequence from 1024px; four rows on phones and a two-by-two grid on tablets. */}
       <section id="work" className="work-sheet relative z-10 bg-paper" aria-labelledby="work-heading">
-        <Scene as="div" from="lg" length={4} steps={pathways.length} className="work" pinClassName="work-stage pt-24 pb-24 md:pt-32 md:pb-32 lg:pb-40">
+        {/* Three and a quarter screens of scrolling while pinned, counted in fourteenths (the engine's steps): the
+            stage settles for one, the row travels for eleven, and the last panel holds, whole, for two (just under
+            half a screen) before the stage lets go. home.css ("Explore My Work") sets the timing. */}
+        <Scene as="div" from="lg" length={4.25} steps={14} className="work" pinClassName="work-stage pt-20 pb-20 sm:pt-24 sm:pb-24 md:pt-32 md:pb-32 lg:pb-40">
           <div className="work-head mx-auto max-w-[90rem] px-5 md:px-10">
             <InView>
               <span aria-hidden className="work-rule rule-draw mb-6 block h-px w-16 bg-gold-deep md:mb-8" />

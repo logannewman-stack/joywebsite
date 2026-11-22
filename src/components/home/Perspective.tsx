@@ -20,10 +20,18 @@ if (statements.length !== perspective.marks.length) {
 }
 
 /**
- * How many screens the pinned story lasts: about four fifths of a screen of
- * scrolling per step. Home's held opening reads it too.
+ * How many screens the pinned story lasts on wide landscape screens (from
+ * 1024px, where a wheel or trackpad scrolls it): four screens of scrolling, a
+ * little over half a screen per step. Home's held opening reads it too.
  */
-export const PERSPECTIVE_LENGTH = 6.6;
+export const PERSPECTIVE_LENGTH = 5;
+/**
+ * And on phones and upright screens: about four fifths of a screen per step,
+ * one swipe of a thumb. The statements sit low there, where the next section
+ * covers them first, so the last one needs the longer step as well.
+ * home.css ("Perspective") chooses between the two.
+ */
+const PERSPECTIVE_LENGTH_TALL = 6.6;
 /**
  * Step 0 is the opening (the photograph's frame opening to the full screen),
  * steps 1 to n are the statements, and the last step holds the final
@@ -114,7 +122,8 @@ function Heading() {
     <>
       {before && <WordRise>{before}</WordRise>}
       {before && " "}
-      <span className="hl-light">
+      {/* The marked phrase stays on one line, so the marker is never cut in two. */}
+      <span className="hl-light whitespace-nowrap">
         <WordRise start={count(before)}>{mark}</WordRise>
       </span>
       {after && " "}
@@ -139,12 +148,20 @@ function Heading() {
  */
 export function Perspective({ tone = "bg-ivory" }: { tone?: string }) {
   return (
-    <section aria-labelledby="perspective-heading" className="relative z-10">
-      <Scene as="div" from="all" steps={STEPS} length={PERSPECTIVE_LENGTH} className={`persp ${tone}`} pinClassName="persp-stage">
-        {/* Carries the step count for the timings in home.css; it adds no box. */}
+    <section
+      aria-labelledby="perspective-heading"
+      className="relative z-10"
+      style={{ "--story-wide": PERSPECTIVE_LENGTH, "--story-tall": PERSPECTIVE_LENGTH_TALL } as Vars}
+    >
+      {/* No length here: home.css sets the scene's length from the two values above. */}
+      <Scene as="div" from="all" steps={STEPS} className={`persp ${tone}`} pinClassName="persp-stage">
+        {/* Carries the step count for the timings in home.css; it adds no box.
+            data-scene-vars marks the three parts that move with the scroll (the header's marker, the photograph
+            and the meter): the engine writes the scene's progress on them only, so the words are not restyled
+            on every scroll frame. */}
         <div className="persp-set contents" style={{ "--n": STEPS } as Vars}>
           {/* While pinned, the header turns dark once the photograph fills the screen. */}
-          <div aria-hidden data-header="dark" className="persp-mark-pinned pointer-events-none" />
+          <div aria-hidden data-header="dark" data-scene-vars="" suppressHydrationWarning className="persp-mark-pinned pointer-events-none" />
 
           <InView className="persp-title mx-auto max-w-[90rem] px-5 pt-24 pb-12 md:px-10 md:pt-32 md:pb-16 lg:pt-36">
             {/* A short gold rule opens each chapter of the page. */}
@@ -154,7 +171,7 @@ export function Perspective({ tone = "bg-ivory" }: { tone?: string }) {
             </h2>
           </InView>
 
-          <div className="persp-photo relative aspect-[4/5] w-full overflow-hidden bg-sand md:aspect-[16/9] lg:aspect-auto lg:h-[min(84svh,55rem)]">
+          <div data-scene-vars="" suppressHydrationWarning className="persp-photo relative aspect-[4/5] w-full overflow-hidden bg-sand md:aspect-[16/9] lg:aspect-auto lg:h-[min(84svh,55rem)]">
             {/* Pinned, the photograph covers the screen's height: on upright screens that is wider than the screen. */}
             <ArtDirected
               wide={perspective.photo}
@@ -189,7 +206,7 @@ export function Perspective({ tone = "bg-ivory" }: { tone?: string }) {
               </SceneSteps>
 
               {/* "01 / 05" and the progress line: pinned only. Decorative; the statements are all in the page. */}
-              <div aria-hidden className="persp-meter label text-white/80">
+              <div aria-hidden data-scene-vars="" suppressHydrationWarning className="persp-meter label text-white/80">
                 <span className="persp-count tabular-nums">
                   <span className="persp-roll">
                     {statements.map((_, i) => (

@@ -19,6 +19,8 @@ export function Finale() {
     <section className="finale relative isolate overflow-clip bg-ivory" aria-labelledby="closing-heading">
       <div aria-hidden data-view className="finale-mark-frame pointer-events-none absolute inset-0 -z-10 flex items-center justify-center">
         <InView className="finale-mark">
+          {/* The still, embossed copy, and over it the copy the sheen crosses (home.css, "Finale"). */}
+          <div className="finale-mark-emboss" />
           <div className="finale-mark-shape" />
         </InView>
       </div>
