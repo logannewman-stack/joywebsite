@@ -403,12 +403,11 @@ html.motion .hero-cue-line {
    ========================================================================== */
 .work .work-count,
 .work .work-progress,
-.work .work-numeral,
-.work .work-swipe {
+.work .work-numeral {
   display: none;
 }
 
-/* "01 / 04": a number that rolls, shared by the pinned row and the swipe row. */
+/* "01 / 04": a number that rolls (the pinned row's counter). */
 .work .roll-count {
   display: inline-block;
   height: 1em;
@@ -425,41 +424,142 @@ html.motion .hero-cue-line {
   line-height: 1;
 }
 
-/* Phones and tablets: the swipe row's progress. Shown only when the script that drives it runs. */
-@media (max-width: 1023px) {
-  html.js .work .work-swipe {
-    display: flex;
+/* Phones (below 640px): four compact rows, all on the page. Each row sits under
+   a gold hairline: the photograph, and beside it the outlined numeral at the
+   head of the column with the pathway's name and heading standing on the
+   photograph's foot (the wide layout in miniature); then the paragraph and
+   the link across the full width. The wrappers around the words step aside
+   so the pieces can be placed on the row's own grid. */
+@media screen and (max-width: 639px) {
+  .work .work-panel {
+    display: grid;
+    grid-template-columns: min(40%, 11.5rem) minmax(0, 1fr);
+    grid-template-rows: auto 1fr auto auto auto auto;
+    column-gap: 1.125rem;
+    padding-bottom: 1.25rem;
+  }
+  .work .work-panel:last-child {
+    padding-bottom: 0;
+  }
+  .work .work-text,
+  .work .work-words {
+    display: contents;
+  }
+  .work .work-line {
+    grid-area: 1 / 1 / 2 / -1;
+    margin-bottom: 1.25rem;
+  }
+  .work .work-photo {
+    grid-area: 2 / 1 / 5 / 2;
+    align-self: start;
+  }
+  .work .work-numeral {
+    display: block;
+    grid-area: 2 / 2;
+    margin-left: -0.04em;
+    font-family: var(--font-sans);
+    font-size: clamp(2.75rem, 13.5vw, 3.5rem);
+    font-weight: 500;
+    line-height: 0.78;
+    letter-spacing: -0.05em;
+    font-variant-numeric: tabular-nums;
+    /* Outlined: a 2px stroke with the page's white painted over its inner half, so the
+       joins inside a glyph (the foot of the 1) never show. */
+    color: var(--color-paper);
+    -webkit-text-stroke: 2px color-mix(in srgb, var(--color-gold-deep) 70%, transparent);
+    paint-order: stroke fill;
+    user-select: none;
+  }
+  .work .work-index {
+    display: none;
+  }
+  .work .work-kicker {
+    grid-area: 3 / 2;
+    padding-top: 0.875rem;
+  }
+  .work .work-heading {
+    grid-area: 4 / 2;
+    padding-top: 0.625rem;
+  }
+  .work .work-body {
+    grid-area: 5 / 1 / 6 / -1;
+  }
+  .work .work-link {
+    grid-area: 6 / 1 / 7 / -1;
+    justify-self: start;
   }
 }
-.work .work-swipe-rule {
-  position: relative;
-  flex: 1;
-  height: 1px;
-  margin-left: 1.25rem;
-  overflow: hidden;
-  background: var(--color-line);
+
+/* Below 1024px a row enters when it is reached itself, not when the list is
+   first seen: it rises, its photograph settles, and its hairline draws. (From
+   1024px the list's own entrance applies: .stagger in motion.css.) */
+@media screen and (max-width: 1023px) {
+  html.motion .work .work-track.stagger > .work-panel[data-inview] {
+    opacity: 0;
+    transform: translate3d(0, 1.5rem, 0);
+    transition:
+      opacity var(--duration-text) var(--ease-soft) var(--d, 0s),
+      transform var(--duration-image) var(--ease-expo) var(--d, 0s);
+  }
+  html.motion .work .work-track.stagger > .work-panel[data-inview][data-in] {
+    opacity: 1;
+    transform: none;
+  }
+  /* Keyboard focus never waits for an entrance. */
+  html.motion .work .work-track.stagger > .work-panel[data-inview]:focus-within {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  html.motion .work .work-panel[data-inview] .work-line {
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 1.2s var(--ease-expo) calc(var(--d, 0s) + 0.12s);
+  }
+  html.motion .work .work-panel[data-inview][data-in] .work-line,
+  html.motion .work .work-panel[data-inview]:focus-within .work-line {
+    transform: none;
+  }
+  html.motion .work .work-panel[data-inview] .work-photo-in > img {
+    transform: scale(1.08);
+    transition: transform 1.6s var(--ease-expo) var(--d, 0s);
+  }
+  html.motion .work .work-panel[data-inview][data-in] .work-photo-in > img,
+  html.motion .work .work-panel[data-inview]:focus-within .work-photo-in > img {
+    transform: none;
+  }
 }
-/* One quarter per card: full when the fourth card is in place. */
-.work .work-swipe-rule > span {
-  position: absolute;
-  inset: 0;
-  background: var(--color-gold-deep);
-  transform: scaleX(calc(0.25 + var(--cx, 0) * 0.75));
-  transform-origin: left center;
-}
-.work .work-swipe[data-i="1"] .roll {
-  transform: translate3d(0, -1em, 0);
-}
-.work .work-swipe[data-i="2"] .roll {
-  transform: translate3d(0, -2em, 0);
-}
-.work .work-swipe[data-i="3"] .roll {
-  transform: translate3d(0, -3em, 0);
+/* Two by two (640px to 1023px): the right-hand card of a pair follows the left. */
+@media screen and (min-width: 640px) and (max-width: 1023px) {
+  .work .work-panel:nth-child(even) {
+    --d: 0.09s;
+  }
 }
 
 @media screen {
-  /* Pinned (from 1024px, animated): the heading stays; the row slides past. */
+  /* Pinned (from 1024px, animated): the heading stays; the row slides past.
+
+     The scene is 3.5 screens of scrolling (its length is set in page.tsx),
+     counted here in fourteenths. The stage settles for the first one (--lead:
+     a quarter of a screen, the first panel whole), the row travels until the
+     twelfth (--arrive), and the last panel then stands whole for the two that
+     are left (half a screen) before the stage lets go.
+     --t is the travel, 0 to 1: the photographs' drift, the numerals, the
+     progress line, its dot and the counter all read it, so they start and
+     finish with the row. */
   .work[data-pinned] .work-stage {
+    --lead: calc(1 / 14);
+    --arrive: calc(12 / 14);
+    --t: clamp(0, calc((var(--p, 0) - var(--lead)) / (var(--arrive) - var(--lead))), 1);
+    /* The row's measurements, in one place: the panels are laid out from them, and so is the row's length. */
+    --panels: 4;
+    --ph: min(36rem, calc(100svh - var(--header-height) - 15rem)); /* a photograph's height */
+    --pw: calc(var(--ph) * 0.8); /* and its width: 4:5 */
+    --words: 23.5rem; /* the words' column */
+    --split: 3rem; /* between a photograph and its words */
+    --gap: 7rem; /* between panels */
+    --edge: 2.5rem;
+    --row: calc(var(--panels) * (var(--pw) + var(--split) + var(--words)) + (var(--panels) - 1) * var(--gap) + 2 * var(--edge));
     display: flex;
     flex-direction: column;
     padding: calc(var(--header-height) + clamp(1rem, 3svh, 2rem)) 0 0;
@@ -487,22 +587,29 @@ html.motion .hero-cue-line {
   .work[data-pinned] .work-list {
     margin-top: clamp(1.25rem, 4svh, 2.75rem);
   }
+  /* While it travels, the row moves in step with --p. The scroll engine counts
+     on that when keyboard focus asks for a panel: it scrolls the scene to
+     offsetLeft / (scrollWidth - screen width). So the two rests are built into
+     the row itself, as empty space before the first panel and after the last,
+     each as long as the row would have traveled in that part of the scene
+     (--slack is the distance the panels really travel), and "100%" below
+     includes them. Tabbing to a panel's link therefore still centers that
+     panel, and the first and last land in their resting places. */
   .work[data-pinned] .work-track {
+    --slack: calc(max(0px, var(--row) - 100cqw) / (var(--arrive) - var(--lead)));
     display: flex;
-    gap: 7rem;
+    gap: var(--gap);
     width: max-content;
     max-width: none;
     margin: 0;
-    padding: 0 2.5rem;
+    padding: 0 calc(var(--edge) + var(--slack) * (1 - var(--arrive))) 0 calc(var(--edge) + var(--slack) * var(--lead));
     overflow: visible;
-    transform: translate3d(calc(var(--p, 0) * (100cqw - 100%)), 0, 0);
+    transform: translate3d(calc(clamp(var(--lead), var(--p, 0), var(--arrive)) * (100cqw - 100%)), 0, 0);
   }
   .work[data-pinned] .work-panel {
-    --ph: min(36rem, calc(100svh - var(--header-height) - 15rem));
-    --pw: calc(var(--ph) * 0.8);
     display: grid;
-    grid-template-columns: var(--pw) 23.5rem;
-    column-gap: 3rem;
+    grid-template-columns: var(--pw) var(--words);
+    column-gap: var(--split);
     width: auto;
     margin-top: 0;
     isolation: isolate;
@@ -516,7 +623,7 @@ html.motion .hero-cue-line {
   }
   /* Depth: each photograph drifts a little inside its frame as the row passes. */
   .work[data-pinned] .work-photo-in > img {
-    transform: translate3d(calc((var(--p, 0) - var(--c, 0)) * 5%), 0, 0) scale(1.1);
+    transform: translate3d(calc((var(--t) - var(--c, 0)) * 5%), 0, 0) scale(1.1);
     will-change: transform;
   }
   /* The words stand on the photograph's foot. */
@@ -531,7 +638,7 @@ html.motion .hero-cue-line {
     display: block;
     position: absolute;
     top: -0.07em;
-    left: calc(var(--pw) + 3rem - 0.05em);
+    left: calc(var(--pw) + var(--split) - 0.05em);
     z-index: -1;
     font-family: var(--font-sans);
     font-size: min(15rem, calc(var(--ph) * 0.4));
@@ -539,9 +646,12 @@ html.motion .hero-cue-line {
     line-height: 0.8;
     letter-spacing: -0.05em;
     font-variant-numeric: tabular-nums;
-    color: transparent;
-    -webkit-text-stroke: 1px color-mix(in srgb, var(--color-gold-deep) 62%, transparent);
-    transform: translate3d(calc((var(--p, 0) - var(--c, 0)) * 7rem), 0, 0);
+    /* Outlined: a 2px stroke with the page's white painted over its inner half, so the
+       joins inside a glyph (the foot of the 1) never show. */
+    color: var(--color-paper);
+    -webkit-text-stroke: 2px color-mix(in srgb, var(--color-gold-deep) 62%, transparent);
+    paint-order: stroke fill;
+    transform: translate3d(calc((var(--t) - var(--c, 0)) * 7rem), 0, 0);
     will-change: transform;
     transition: -webkit-text-stroke-color var(--duration-ui) var(--ease-soft);
     user-select: none;
@@ -555,7 +665,7 @@ html.motion .hero-cue-line {
   .work[data-pinned] .work-words {
     background: var(--color-paper);
   }
-  .work[data-pinned] .work-kicker {
+  .work[data-pinned] .work-line {
     margin-top: 0;
   }
   .work[data-pinned] .work-index {
@@ -585,7 +695,7 @@ html.motion .hero-cue-line {
     position: absolute;
     inset: 0;
     background: var(--color-gold-deep);
-    transform: scaleX(var(--p, 0));
+    transform: scaleX(var(--t, 0));
     transform-origin: left center;
   }
   .work .work-progress-dot {
@@ -596,22 +706,25 @@ html.motion .hero-cue-line {
     height: 0.4375rem;
     border-radius: 50%;
     background: var(--color-gold-deep);
-    transform: translate3d(calc(var(--p, 0) * 100cqw), 0, 0);
+    transform: translate3d(calc(var(--t, 0) * 100cqw), 0, 0);
   }
 
-  /* The counter follows the panel nearest the middle of the screen. */
-  .work[data-step="1"] .work-count .roll {
+  /* The counter follows the panel nearest the middle of the screen: it turns a
+     sixth, a half and five sixths of the way through the travel. Written out
+     in the engine's fourteenths of the scene (data-step, 0 to 13) to the
+     nearest one; browsers with round() follow --t instead. */
+  .work:is([data-step="3"], [data-step="4"], [data-step="5"], [data-step="6"]) .work-count .roll {
     transform: translate3d(0, -1em, 0);
   }
-  .work[data-step="2"] .work-count .roll {
+  .work:is([data-step="7"], [data-step="8"], [data-step="9"]) .work-count .roll {
     transform: translate3d(0, -2em, 0);
   }
-  .work[data-step="3"] .work-count .roll {
+  .work:is([data-step="10"], [data-step="11"], [data-step="12"], [data-step="13"]) .work-count .roll {
     transform: translate3d(0, -3em, 0);
   }
   @supports (transform: translateY(calc(round(1.4) * 1em))) {
     .work[data-pinned] .work-count .roll {
-      transform: translate3d(0, calc(round(var(--p, 0) * 3) * -1em), 0);
+      transform: translate3d(0, calc(round(var(--t, 0) * (var(--panels) - 1)) * -1em), 0);
     }
   }
 }
@@ -648,6 +761,7 @@ html.motion .hero-cue-line {
     width: auto;
     max-width: 90rem;
     margin-inline: auto;
+    padding: 0 2.5rem;
     transform: none;
   }
   .work[data-pinned] .work-panel {
@@ -664,7 +778,7 @@ html.motion .hero-cue-line {
   .work[data-pinned] .work-photo-in > img {
     transform: none;
   }
-  .work[data-pinned] .work-kicker {
+  .work[data-pinned] .work-line {
     margin-top: 1.5rem;
   }
   .work[data-pinned] .work-index {
@@ -688,8 +802,14 @@ html.motion .hero-cue-line {
     margin-top: 0 !important;
     break-inside: avoid;
   }
-  .work .work-swipe {
-    display: none !important;
+  .work .work-line {
+    margin-top: 1.5rem;
+  }
+  .work .work-kicker {
+    padding-top: 1rem;
+  }
+  .work .work-heading {
+    margin-top: 1.25rem;
   }
 }
 
@@ -706,18 +826,23 @@ html.motion .hero-cue-line {
    Finale: "Let's start a conversation."
    ========================================================================== */
 /* The JD monogram, pressed into the ivory in pale gold and lit from the upper
-   left. The sheen crosses it as the section scrolls past, like foil turning. */
+   left. The sheen crosses it as the section scrolls past, like foil turning.
+   Every shade of the foil comes from the gold tokens (globals.css). */
 .finale .finale-mark {
+  --foil: var(--color-gold-soft);
+  --foil-rest: color-mix(in srgb, var(--color-gold-soft) 92%, white);
+  --foil-lit: color-mix(in srgb, var(--color-gold-soft) 77%, white);
+  --foil-peak: color-mix(in srgb, var(--color-gold-soft) 42%, white);
   width: min(46rem, 96vw, 98svh);
   aspect-ratio: 771.4 / 702.9;
-  filter: drop-shadow(-1px -1px 0.5px rgb(255 255 255 / 0.9)) drop-shadow(1.5px 2px 2.5px rgb(148 117 63 / 0.22));
+  filter: drop-shadow(-1px -1px 0.5px rgb(255 255 255 / 0.9)) drop-shadow(1.5px 2px 2.5px color-mix(in srgb, var(--color-gold-deep) 22%, transparent));
 }
 .finale .finale-mark-shape {
   position: relative;
   width: 100%;
   height: 100%;
   overflow: hidden;
-  background: #dfcba0;
+  background: var(--foil-rest);
   -webkit-mask: url("/brand/dr-joy-monogram-charcoal.svg") center / contain no-repeat;
   mask: url("/brand/dr-joy-monogram-charcoal.svg") center / contain no-repeat;
 }
@@ -726,7 +851,7 @@ html.motion .hero-cue-line {
   content: "";
   position: absolute;
   inset: 0 -70%;
-  background: linear-gradient(112deg, #d9c495 0%, #e5d4ae 30%, #f5ead0 50%, #e5d4ae 70%, #d9c495 100%);
+  background: linear-gradient(112deg, var(--foil) 0%, var(--foil-lit) 30%, var(--foil-peak) 50%, var(--foil-lit) 70%, var(--foil) 100%);
 }
 html.motion .finale .finale-mark-shape::before {
   transform: translate3d(calc((var(--v, 0.5) - 0.5) * 56%), 0, 0);
