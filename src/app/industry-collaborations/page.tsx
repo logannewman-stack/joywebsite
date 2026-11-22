@@ -44,12 +44,16 @@ export default function IndustryPage() {
   return (
     <>
       {/* Opening: headline first on phones, then the portrait, then the two ways in.
-          On short, wide screens the top padding gives way so the index stays in the first screen. */}
+          On short, wide screens (a maximised 16:9 window) the top padding gives way, the headline is
+          capped by height and so is the portrait's frame (.open-portrait in industry.css), so the
+          portrait and both ways in stay on the first screen. */}
       <section className="bg-paper pt-[4.75rem]">
         <div className="mx-auto grid max-w-[90rem] grid-cols-1 gap-y-12 px-5 pt-12 pb-20 md:px-10 md:pt-20 md:pb-28 lg:grid-cols-12 lg:grid-rows-[auto_1fr] lg:gap-x-6 lg:gap-y-8 lg:pt-[min(5rem,6.5svh)] lg:pb-32">
           <div className="lg:col-span-7 lg:col-start-6 lg:row-start-1">
             <Label index="04">Industry Collaborations</Label>
-            <h1 className="display mt-8 text-[clamp(2.6rem,13vw,4.4rem)] leading-[0.92] md:text-[clamp(2.6rem,7.4vw,6.4rem)] lg:text-[clamp(2.6rem,5.1vw,4.59rem)]">
+            {/* Four hand-set lines; from lg the two italic lines share one (.open-title), so the
+                headline fills the right column in three lines at a larger size. */}
+            <h1 className="open-title display mt-8 text-[clamp(2.6rem,13vw,4.4rem)] leading-[0.92] md:text-[clamp(2.6rem,7.4vw,6.4rem)] lg:text-[clamp(2.6rem,min(5.6vw,10.2svh),5.04rem)]">
               <LineRise
                 immediate
                 lines={[
@@ -67,13 +71,14 @@ export default function IndustryPage() {
             </h1>
           </div>
           {/* The portrait is there from the first paint (it is the largest thing on the screen): it only settles and drifts. */}
-          <InView className="md:w-[62%] lg:col-span-5 lg:col-start-1 lg:row-span-2 lg:row-start-1 lg:w-auto">
-            <Parallax className="aspect-[4/5] w-full" amount={6}>
+          <InView className="open-figure md:w-[62%] lg:col-span-5 lg:col-start-1 lg:row-span-2 lg:row-start-1 lg:w-auto">
+            <Parallax className="open-portrait aspect-[4/5] w-full" amount={6}>
               <Photo
                 slot={hero.photo}
                 priority
                 className="settle h-full w-full"
-                sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1023px) 62vw, (max-width: 1440px) 42vw, 38.9vw"
+                // From lg the photograph can be set larger than its frame (the three-quarter crop on short screens).
+                sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1023px) 62vw, (max-width: 1440px) 50vw, 46vw"
               />
             </Parallax>
           </InView>

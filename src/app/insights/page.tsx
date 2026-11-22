@@ -67,12 +67,13 @@ export default function InsightsPage() {
 
   return (
     <>
-      {/* Opening: the headline's three hand-set lines rise; the portrait is there from the first paint, settles and drifts */}
+      {/* Opening: the headline's three hand-set lines rise; the portrait is there from the first paint, settles and drifts.
+          On phones the spacing is a step tighter, so her eyes are on the first screen under the three lines of text. */}
       <section className="overflow-x-clip bg-paper pt-[4.75rem]">
-        <div className="mx-auto grid max-w-[90rem] grid-cols-1 gap-y-12 px-5 pt-12 pb-20 md:px-10 md:pt-20 md:pb-28 lg:grid-cols-12 lg:gap-x-6 lg:pb-32">
+        <div className="mx-auto grid max-w-[90rem] grid-cols-1 gap-y-7 px-5 pt-8 pb-20 md:gap-y-12 md:px-10 md:pt-20 md:pb-28 lg:grid-cols-12 lg:gap-x-6 lg:pb-32">
           <div className="lg:col-span-7 lg:pt-6">
             <Label index="05">Insights</Label>
-            <h1 className="display mt-8 text-[clamp(2.4rem,12.4vw,4.4rem)] leading-[0.92] md:text-[clamp(3rem,9vw,6rem)] lg:text-[clamp(3rem,6.6vw,5.94rem)]">
+            <h1 className="display mt-6 text-[clamp(2.4rem,12.4vw,4.4rem)] leading-[0.92] md:mt-8 md:text-[clamp(3rem,9vw,6rem)] lg:text-[clamp(3rem,6.6vw,5.94rem)]">
               <LineRise
                 immediate
                 lines={[
@@ -87,7 +88,7 @@ export default function InsightsPage() {
                 ]}
               />
             </h1>
-            <Reveal immediate delay={0.3} className="mt-10 max-w-md md:mt-12">
+            <Reveal immediate delay={0.3} className="mt-6 max-w-md md:mt-12">
               <p className="text-[1.1875rem] leading-relaxed text-stone">{hero.text}</p>
             </Reveal>
           </div>
