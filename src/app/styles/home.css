@@ -247,6 +247,14 @@ html.motion .hero-cue-line {
   html.motion .persp[data-pinned] .persp-step-last:not([data-active]) .wr-in {
     transform: translate3d(0, calc((1 - var(--exit)) * 115%), 0);
   }
+  /* Arriving mid-story (a reload, or coming Back to the page): until the engine
+     has marked the current step, no statement shows and none fades. Otherwise
+     all five would be seen on top of one another for a moment, fading out of
+     the static layout. */
+  html.motion .persp[data-pinned]:not([data-step]) [data-scene-step] {
+    opacity: 0;
+    transition: none;
+  }
 
   /* "01 / 05" and the progress line. */
   .persp[data-pinned] .persp-meter {
@@ -436,10 +444,11 @@ html.motion .hero-cue-line {
     grid-template-columns: min(40%, 11.5rem) minmax(0, 1fr);
     grid-template-rows: auto 1fr auto auto auto auto;
     column-gap: 1.125rem;
-    padding-bottom: 1.25rem;
+    /* A margin, not padding: the ring around a focused row stops short of the next row's hairline. */
+    margin-bottom: 1.25rem;
   }
   .work .work-panel:last-child {
-    padding-bottom: 0;
+    margin-bottom: 0;
   }
   .work .work-text,
   .work .work-words {
@@ -490,10 +499,14 @@ html.motion .hero-cue-line {
   }
 }
 
-/* Below 1024px a row enters when it is reached itself, not when the list is
-   first seen: it rises, its photograph settles, and its hairline draws. (From
-   1024px the list's own entrance applies: .stagger in motion.css.) */
-@media screen and (max-width: 1023px) {
+/* Below 1024px, and on upright screens of any width (the section is not pinned
+   there: see below), a row enters when it is reached itself, not when the
+   list is first seen: it rises, its photograph settles, and its hairline
+   draws. (Elsewhere the list's own entrance applies: .stagger in motion.css.) */
+@media screen and (max-width: 1023px), screen and (max-aspect-ratio: 1/1) {
+  .work .work-line {
+    background: var(--color-gold-deep);
+  }
   html.motion .work .work-track.stagger > .work-panel[data-inview] {
     opacity: 0;
     transform: translate3d(0, 1.5rem, 0);
@@ -529,10 +542,22 @@ html.motion .hero-cue-line {
     transform: none;
   }
 }
-/* Two by two (640px to 1023px): the right-hand card of a pair follows the left. */
-@media screen and (min-width: 640px) and (max-width: 1023px) {
+/* Side by side, a card follows the one to its left: two across (640px to 1023px, and upright
+   screens up to 1279px), or four across (wider upright screens). */
+@media screen and (min-width: 640px) and (max-width: 1023px), screen and (min-width: 1024px) and (max-width: 1279px) and (max-aspect-ratio: 1/1) {
   .work .work-panel:nth-child(even) {
     --d: 0.09s;
+  }
+}
+@media screen and (min-width: 1280px) and (max-aspect-ratio: 1/1) {
+  .work .work-panel:nth-child(2) {
+    --d: 0.07s;
+  }
+  .work .work-panel:nth-child(3) {
+    --d: 0.14s;
+  }
+  .work .work-panel:nth-child(4) {
+    --d: 0.21s;
   }
 }
 
@@ -675,13 +700,6 @@ html.motion .hero-cue-line {
     font-size: clamp(1.8rem, min(2.6vw, 4.6svh), 2.6rem);
   }
 
-  /* Upright screens from 1024px (a large tablet): the row sits midway between the heading and the progress line. */
-  @media (max-aspect-ratio: 1/1) {
-    .work[data-pinned] .work-list {
-      margin-top: auto;
-    }
-  }
-
   /* Progress: a gold hairline along the foot of the stage, with a dot at its head. */
   .work[data-pinned] .work-progress {
     display: block;
@@ -729,9 +747,12 @@ html.motion .hero-cue-line {
   }
 }
 
-/* Wide but very short screens: the pinned row would not fit, so the section is
-   the plain grid there (as it is without motion). */
-@media screen and (max-height: 640px) {
+/* Screens the pinned row does not suit: wide but very short ones, where it
+   would not fit, and upright ones from 1024px (a large tablet held upright),
+   where it would be a band across a tall, mostly empty stage. The section is
+   not pinned there: it is the plain grid, as it is without motion (two cards
+   across up to 1279px, four beyond). */
+@media screen and (max-height: 640px), screen and (max-aspect-ratio: 1/1) {
   .work[data-scene][data-pinned] {
     height: auto;
   }

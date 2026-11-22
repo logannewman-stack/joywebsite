@@ -114,7 +114,8 @@ function Heading() {
     <>
       {before && <WordRise>{before}</WordRise>}
       {before && " "}
-      <span className="hl-light">
+      {/* The marked phrase stays on one line, so the marker is never cut in two. */}
+      <span className="hl-light whitespace-nowrap">
         <WordRise start={count(before)}>{mark}</WordRise>
       </span>
       {after && " "}
