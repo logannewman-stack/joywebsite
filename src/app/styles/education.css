@@ -136,9 +136,9 @@ html.motion .edu-arrive {
   scroll-snap-type: x proximity;
   scroll-padding-inline: 1.25rem;
   scrollbar-width: none;
-  /* Room for the prints' shadows inside the scroller. */
-  padding-block: 0.5rem 2.75rem;
-  margin-block: -0.5rem -2.75rem;
+  /* Room for the prints' shadows inside the scroller (a shadow reaches about 5 units below its print). */
+  padding-block: 0.5rem calc(5.5 * var(--u));
+  margin-block: -0.5rem calc(-5.5 * var(--u));
 }
 .edu-strip-scroll::-webkit-scrollbar {
   display: none;
@@ -222,10 +222,11 @@ html.motion [data-scene]:not([data-pinned]) .edu-strip-track {
 
 /* Swiped: the frame in place and how far the strip has travelled
    (StripMeter.tsx). Its script writes --i and --p from the swipe, so it shows
-   only when JavaScript runs, and never while the row is pinned. */
+   only when JavaScript runs, and never while the row is pinned. It sits just
+   under the strip's own box, so the strip's focus ring never crosses it. */
 .edu-strip-meter {
   display: none;
-  margin-top: calc(6 * var(--u));
+  margin-top: calc(5.5 * var(--u) + 0.75rem);
 }
 html.js [data-scene]:not([data-pinned]) .edu-strip-meter:not([data-still]) {
   display: flex;
@@ -233,7 +234,7 @@ html.js [data-scene]:not([data-pinned]) .edu-strip-meter:not([data-still]) {
 /* Where the strip shows its scrollbar (from 1024px, with a mouse), the meter sits clear of it. */
 @media (min-width: 1024px) and (pointer: fine) {
   .edu-strip-meter {
-    margin-top: max(calc(6 * var(--u)), 4.5rem);
+    margin-top: calc(5.5 * var(--u) + 1.75rem);
   }
 }
 /* "01": the frame numbers in a column, one showing; it rolls to the frame in place. */
