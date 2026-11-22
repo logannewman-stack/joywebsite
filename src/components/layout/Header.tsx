@@ -189,7 +189,7 @@ export function Header() {
   const printDark = opensDark(pathname);
 
   // The browser's own chrome takes the header's colour. The tag is created by the chrome head
-  // script; the first-visit curtain (html.intro) holds it black and hands back when it lifts.
+  // script; the opening curtain (html.intro) holds it black and hands back when it lifts.
   // The page canvas follows too (html[data-tone]): it shows in a classic scrollbar's gutter
   // and when the page is pulled past its edge, so black sections have no white strip.
   useEffect(() => {

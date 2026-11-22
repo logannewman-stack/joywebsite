@@ -7,14 +7,14 @@ import { SIGNATURE_SCRIPT } from "./signature";
  * (first arrival and reload), a black curtain carries the cream script
  * wordmark, large and centred. It is signed, slowly, the line drawn as a pen
  * would write it (signature.ts); a gold hairline draws beneath it; and after
- * a beat the curtain lifts into the page (about six seconds in all). Any
+ * a beat the curtain lifts into the page (about seven seconds in all). Any
  * click, tap, key or scroll skips it.
  *
  * It is in the server HTML but shown only when the head script has put
  * `intro` on <html>: JavaScript on, reduced motion off, and a full load that
  * is not a Back/Forward return. Moving between pages inside the site never
  * shows it (those are not document loads), nor do reduced motion and
- * no-JavaScript. sessionStorage "dj-intro" = "1" switches it off for tooling
+ * no-JavaScript. sessionStorage "dj-intro-off" = "1" switches it off for tooling
  * and tests. The page underneath renders and loads as usual, so the opening
  * photograph is painted at once behind it.
  *

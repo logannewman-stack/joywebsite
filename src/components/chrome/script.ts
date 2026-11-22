@@ -12,8 +12,8 @@
  *                                     paint. intro-hold keeps the page's
  *                                     on-load entrances on their first frame
  *                                     until the lift begins.
- *   <html class="intro-late">         the page took long to arrive: a
- *                                     shorter signing.
+ *   <html class="intro-late">         the page took long to arrive: the
+ *                                     same signing, shorter pauses.
  *   <html class="intro-lift">         from the moment the lift begins until
  *                                     the header has settled.
  *   html { --intro-wait }             while intro-hold is set: the time left
@@ -55,7 +55,7 @@ import { site } from "@/content/site";
  * The curtain's one off-switch, for tooling and tests: with this key set to "1"
  * in sessionStorage the curtain is skipped. The site itself never writes it.
  */
-const OFF = "dj-intro";
+const OFF = "dj-intro-off";
 
 /**
  * Pages whose first section is black. Keep in step with opensDark() in
@@ -79,7 +79,7 @@ const DARK_PATHS = ["/directions/b", ...(site.homeHero !== "a" && site.homeHero 
  */
 export const CHROME_HEAD_SCRIPT = `(function(d){var i=false,k=false,o=false,b=false;try{o=sessionStorage.getItem('${OFF}')==='1'}catch(e){}try{b=performance.getEntriesByType('navigation')[0].type==='back_forward'}catch(e){}if(d.classList.contains('motion')&&!o&&!b){d.classList.add('intro','intro-hold');i=true}try{k=${JSON.stringify(DARK_PATHS)}.indexOf(location.pathname.replace(/\\/+$/,'')||'/')>-1}catch(e){}if(i||k)d.setAttribute('data-tone','dark');var m=document.createElement('meta');m.name='theme-color';m.content=i||k?'#0b0b0b':'#ffffff';document.head.appendChild(m)})(document.documentElement)`;
 
-/** A page that needed longer than this to arrive (ms since navigation) gets the shorter signing. */
+/** A page that needed longer than this to arrive (ms since navigation) gets shorter pauses around the signing. */
 const LATE = 2500;
 
 /**
@@ -90,7 +90,8 @@ const LATE = 2500;
  * paint and move only transform and opacity, so they run on the compositor
  * and a busy main thread (hydration on a slow phone) cannot stretch them.
  * This script only
- *   - shortens the signing when the page arrived late (intro-late),
+ *   - shortens the pauses around the signing when the page arrived late
+ *     (intro-late),
  *   - lets the visitor skip, from the first frame: a click, tap, key, wheel
  *     or touch-move moves the running animations to the start of the lift and
  *     plays it at twice the speed (the entrances waiting under the curtain
@@ -141,7 +142,7 @@ if(!c){rest();return}
 if(performance.now()>${LATE})L.add('intro-late');
 E.forEach(function(k){document.addEventListener(k,on)});
 K.forEach(function(k){window.addEventListener(k,skip,o)});
-requestAnimationFrame(function(){t=setTimeout(rest,9000)});
+requestAnimationFrame(function(){t=setTimeout(rest,11000)});
 })();`;
 
 /** Inline script for the end of <body>: the footer finale's measurements, focus and "Back to top". */

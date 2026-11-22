@@ -87,7 +87,7 @@ On every full page load, including a refresh, a black curtain carries the script
 
 - How long the writing takes is one value, `--intro-wd` in `src/app/styles/chrome.css` (with `--intro-w0`, the pause before the pen starts, and `--intro-beat`, the hold before the curtain lifts).
 - The pen's path lives in `src/components/chrome/signature-data.ts` and is generated from the wordmark file by `scripts/signature/` (two steps, described at the top of `trace.py`; it needs scikit-image, SciPy and NetworkX, which are not project dependencies). Only rerun it if the wordmark artwork changes; the same artwork is also held as a data URI in `chrome.css`.
-- For tests and screenshots, `sessionStorage.setItem("dj-intro", "1")` before the page loads switches the curtain off.
+- For tests and screenshots, `sessionStorage.setItem("dj-intro-off", "1")` before the page loads switches the curtain off.
 
 The share image (`src/app/opengraph-image.jpg`, also `twitter-image.jpg`, 1200×630) follows the Home opening screen: JVH-111 in color on black, the cream wordmark and the approved Home headline. Rebuild it if the opening screen changes, and check it in the LinkedIn Post Inspector and the Facebook Sharing Debugger after the first deploy.
 

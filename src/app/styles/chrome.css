@@ -486,20 +486,20 @@ html.motion .foot-sign[data-foot-in] .foot-rule {
    with the first paint, and each moves only transform and opacity, so it runs
    on the compositor and keeps time while the page hydrates. Three variables
    set it, and everything after the writing is derived from them:
-     --intro-w0    0.45s   when the writing begins
-     --intro-wd    3.4s    how long the writing takes
-     --intro-beat  0.65s   the hold once the last stroke has landed
-     --intro-at    4.5s    = w0 + wd + beat: the lift begins
+     --intro-w0    0.5s    when the writing begins
+     --intro-wd    4.6s    how long the writing takes
+     --intro-beat  0.8s    the hold once the last stroke has landed
+     --intro-at    5.9s    = w0 + wd + beat: the lift begins
    On that clock:
      0s       the signature eases from a slight push-in (scale 1.04) to rest
-     0.45s    it is written (3.4s): the line is drawn stroke by stroke, the way
+     0.5s     it is written (4.6s): the line is drawn stroke by stroke, the way
               a pen writes it (see .intro-ink below)
-     3.65s    the gold hairline draws beneath it (as the last stroke lands)
-     4.5s     the curtain lifts (1.2s); the signature rises a little slower
+     4.9s     the gold hairline draws beneath it (as the last stroke lands)
+     5.9s     the curtain lifts (1.2s); the signature rises a little slower
               than the curtain and fades
-     4.95s    the header settles into place (0.9s)
-   html.intro-late (the page took long to arrive): the writing takes 1.6s and
-   the lift begins at 2.2s. Any click, tap, key or scroll skips to the lift
+     6.35s    the header settles into place (0.9s)
+   html.intro-late (the page took long to arrive): the signing is the same,
+   with shorter pauses around it. Any click, tap, key or scroll skips to the lift
    (the script moves these animations forward; it never times anything).
    -------------------------------------------------------------------------- */
 .intro-curtain {
@@ -507,15 +507,15 @@ html.motion .foot-sign[data-foot-in] .foot-rule {
 }
 html.intro,
 html.intro-lift {
-  --intro-w0: 0.45s;
-  --intro-wd: 3.4s;
-  --intro-beat: 0.65s;
+  --intro-w0: 0.5s;
+  --intro-wd: 4.6s;
+  --intro-beat: 0.8s;
   --intro-at: calc(var(--intro-w0) + var(--intro-wd) + var(--intro-beat));
 }
+/* A page that arrived late keeps the whole signing; only the pauses around it are shorter. */
 html.intro-late {
   --intro-w0: 0.2s;
-  --intro-wd: 1.6s;
-  --intro-beat: 0.4s;
+  --intro-beat: 0.5s;
 }
 html.intro .intro-curtain {
   position: fixed;
@@ -584,10 +584,10 @@ html.intro .intro-ink i {
   animation: intro-ink 0.07s linear calc(var(--intro-w0) + var(--intro-wd) * var(--f)) both;
 }
 html.intro .intro-ink i.dot {
-  animation: intro-dab 0.28s cubic-bezier(0.2, 0.9, 0.3, 1.2) calc(var(--intro-w0) + var(--intro-wd) * var(--f)) both;
+  animation: intro-dab 0.36s cubic-bezier(0.2, 0.9, 0.3, 1.2) calc(var(--intro-w0) + var(--intro-wd) * var(--f)) both;
 }
 html.intro .intro-ink i.cap {
-  animation: intro-cap 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) calc(var(--intro-w0) + var(--intro-wd) * var(--f)) both;
+  animation: intro-cap 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) calc(var(--intro-w0) + var(--intro-wd) * var(--f)) both;
 }
 html.intro .intro-ink i.all {
   animation: intro-ink 0.3s linear calc(var(--intro-w0) + var(--intro-wd) + 0.05s) both;
@@ -610,7 +610,7 @@ html.intro .intro-rule {
   margin-top: 1.5rem;
   background: var(--color-gold);
   transform-origin: left center;
-  animation: intro-rule 0.8s var(--ease-expo) calc(var(--intro-w0) + var(--intro-wd) - 0.2s) both;
+  animation: intro-rule 1s var(--ease-expo) calc(var(--intro-w0) + var(--intro-wd) - 0.2s) both;
 }
 /* As the curtain clears the top of the screen, the header settles into place. */
 html.intro .site-header > div,

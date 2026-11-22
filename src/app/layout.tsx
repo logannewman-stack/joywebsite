@@ -50,7 +50,7 @@ export const metadata: Metadata = {
 };
 
 // No themeColor in the viewport export: the theme-color tag is created and kept up to date by the
-// chrome scripts (black under the first-visit curtain, then ink or white with the header).
+// chrome scripts (black under the opening curtain, then ink or white with the header).
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
