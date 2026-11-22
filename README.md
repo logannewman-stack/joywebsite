@@ -75,6 +75,14 @@ Set it to `false` for launch. Then:
 
 Brand colors come from the logo files: cream `#F5F1E9`, blush `#E7D3CB`, charcoal `#393839`. Gold appears only in the logo files and is not used for type on the site.
 
+### The opening signature
+
+On every full page load, including a refresh, a black curtain carries the script wordmark and signs it: the line is drawn stroke by stroke in handwriting order (the entry flourish, d, r, the full stop, j, o, y, the closing flourish), the capitals rise under the last stroke, a gold hairline draws beneath, and the curtain lifts into the page. Any click, tap, key or scroll skips it. It does not play when moving between pages inside the site, on Back or Forward, with reduced motion, or without JavaScript.
+
+- How long the writing takes is one value, `--intro-wd` in `src/app/styles/chrome.css` (with `--intro-w0`, the pause before the pen starts, and `--intro-beat`, the hold before the curtain lifts).
+- The pen's path lives in `src/components/chrome/signature-data.ts` and is generated from the wordmark file by `scripts/signature/` (two steps, described at the top of `trace.py`; it needs scikit-image, SciPy and NetworkX, which are not project dependencies). Only rerun it if the wordmark artwork changes; the same artwork is also held as a data URI in `chrome.css`.
+- For tests and screenshots, `sessionStorage.setItem("dj-intro", "1")` before the page loads switches the curtain off.
+
 The share image (`src/app/opengraph-image.jpg`, also `twitter-image.jpg`, 1200×630) follows the Home opening screen: JVH-111 in color on black, the cream wordmark and the approved Home headline. Rebuild it if the opening screen changes, and check it in the LinkedIn Post Inspector and the Facebook Sharing Debugger after the first deploy.
 
 ## Photos
