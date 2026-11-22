@@ -37,19 +37,24 @@ html.motion .edu-float > * {
     max-height: max(22rem, calc(100svh - 13.5rem));
   }
 }
-/* Wide, short windows (a large monitor, or a laptop with toolbars): the words
-   close up a little so the headline, both paragraphs and the button all sit
-   above the fold. */
-@media (min-width: 1024px) and (min-aspect-ratio: 19 / 10) {
+/* Wide, short windows (a large monitor, or a laptop with toolbars), and any
+   window up to 760px tall: the words close up a little so the headline, both
+   paragraphs and the button all sit above the fold.
+   Under about 700px of height the opening gives with the window: the headline
+   and the gaps above and below it shrink with the height (a screen-height
+   term less a fixed rem term), down to the floors at about 600px. On large
+   screens the root size grows with the screen, so the same terms stay at
+   their upper values and nothing changes there. */
+@media (min-width: 1024px) and (min-aspect-ratio: 19 / 10), (min-width: 1024px) and (max-height: 760px) {
   .edu-open-grid {
-    padding-top: 2.25rem;
+    padding-top: clamp(1.5rem, calc(12.5svh - 3.2rem), 2.25rem);
   }
   .edu-open h1 {
     margin-top: 1.5rem;
-    font-size: clamp(3.6rem, min(7vw, 12.6vh), 6.3rem);
+    font-size: clamp(3.6rem, min(7vw, 12.6vh, calc(27.75vh - 6.6rem)), 6.3rem);
   }
   .edu-open-words {
-    margin-top: 1.5rem;
+    margin-top: clamp(1rem, calc(10svh - 2.875rem), 1.5rem);
   }
   .edu-open-room {
     max-height: max(22rem, calc(100svh - 12.25rem));
@@ -208,24 +213,75 @@ html.motion .edu-arrive {
   right: var(--u);
 }
 
-/* Swiped (below lg, with motion): the row drifts a little as the page scrolls
-   past, which shows that it moves sideways. */
+/* Swiped (with motion): the row drifts a little as the page scrolls past,
+   which shows that it moves sideways. */
 html.motion [data-scene]:not([data-pinned]) .edu-strip-track {
   transform: translate3d(calc((0.5 - var(--v, 0.5)) * 14vw), 0, 0);
   will-change: transform;
 }
 
-/* Pinned: the stage clips, the row slides (motion.css), and each print keeps
-   its own depth: nearer prints travel a little faster than the row. The
-   stage's own spacing is in the strip's unit, so it fits short windows. */
-[data-pinned] > .edu-strip-stage {
+/* Swiped: the frame in place and how far the strip has travelled
+   (StripMeter.tsx). Its script writes --i and --p from the swipe, so it shows
+   only when JavaScript runs, and never while the row is pinned. */
+.edu-strip-meter {
+  display: none;
+  margin-top: calc(6 * var(--u));
+}
+html.js [data-scene]:not([data-pinned]) .edu-strip-meter:not([data-still]) {
+  display: flex;
+}
+/* Where the strip shows its scrollbar (from 1024px, with a mouse), the meter sits clear of it. */
+@media (min-width: 1024px) and (pointer: fine) {
+  .edu-strip-meter {
+    margin-top: max(calc(6 * var(--u)), 4.5rem);
+  }
+}
+/* "01": the frame numbers in a column, one showing; it rolls to the frame in place. */
+.edu-strip-roll {
+  display: inline-block;
+  height: 1em;
+  overflow: hidden;
+  line-height: 1;
+}
+.edu-strip-roll > span {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  padding-block: calc(var(--header-height) + 0.75rem) calc(3 * var(--u));
+  transform: translate3d(0, calc(var(--i, 0) * -1em), 0);
 }
-[data-pinned] .edu-strip-bar {
-  margin-top: calc(4.5 * var(--u));
+html.motion .edu-strip-roll > span {
+  transition: transform var(--duration-scene) var(--ease-expo);
+}
+.edu-strip-roll > span > span {
+  height: 1em;
+  line-height: 1;
+}
+
+/* The progress line of the meter and of the pinned bar: the dot rides its head
+   (a transform, so no layout; cqw is the line's own width). */
+.edu-strip-rule {
+  container-type: inline-size;
+}
+.edu-strip-dot {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 0.4375rem;
+  height: 0.4375rem;
+  margin: -0.21875rem 0 0 -0.21875rem;
+  border-radius: 9999px;
+  background: currentColor;
+  transform: translate3d(calc(var(--p, 0) * 100cqw), 0, 0);
+}
+/* Browsers without container units place it the old way. */
+@supports not (width: 1cqw) {
+  .edu-strip-dot {
+    left: calc(var(--p, 0) * 100%);
+  }
+}
+
+/* The bar under the pinned row: the frame in view and the progress line. */
+.edu-strip-bar {
+  display: none;
 }
 /* The frame counter: the engine sets data-step on the scene, CSS prints it. */
 .edu-strip-now::before {
@@ -264,43 +320,74 @@ html.motion [data-scene]:not([data-pinned]) .edu-strip-track {
 [data-step="11"] .edu-strip-now::before {
   content: "12";
 }
-/* The dot at the head of the progress line. */
-.edu-strip-dot {
-  position: absolute;
-  top: 50%;
-  left: calc(var(--p, 0) * 100%);
-  width: 0.4375rem;
-  height: 0.4375rem;
-  margin: -0.21875rem 0 0 -0.21875rem;
-  border-radius: 9999px;
-  background: currentColor;
+
+/* Pinned (screens wider than they are tall; see "Upright" below): the stage
+   clips, the row slides (motion.css), and each print keeps its own depth:
+   nearer prints travel a little faster than the row. The stage's own spacing
+   is in the strip's unit, so it fits short windows. */
+@media not all and (max-aspect-ratio: 1 / 1) {
+  [data-pinned] > .edu-strip-stage {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-block: calc(var(--header-height) + 0.75rem) calc(3 * var(--u));
+  }
+  [data-pinned] .edu-strip-bar {
+    display: flex;
+    margin-top: calc(4.5 * var(--u));
+  }
+  [data-pinned] .edu-strip-scroll {
+    position: relative;
+    overflow: visible;
+    scrollbar-width: none;
+    padding-block: 0;
+    margin-block: 0;
+  }
+  /* Keyboard focus while pinned: a frame around the row, inside the screen's
+     edges (an outline would run off both sides). */
+  [data-pinned] .edu-strip-scroll:focus-visible {
+    outline: none;
+  }
+  [data-pinned] .edu-strip-scroll:focus-visible::after {
+    content: "";
+    position: absolute;
+    inset: calc(-1.5 * var(--u)) 1rem;
+    border: 2px solid var(--color-ink);
+    pointer-events: none;
+    z-index: 10;
+  }
+  [data-pinned] .edu-strip-track {
+    padding-inline: max(2.5rem, calc((100vw - 90rem) / 2 + 2.5rem));
+  }
+  [data-pinned] .edu-print-body {
+    transform: translate3d(calc((var(--p, 0) - 0.5) * var(--drift, 0) * var(--u)), 0, 0);
+    will-change: transform;
+  }
 }
-[data-pinned] .edu-strip-scroll {
-  position: relative;
-  overflow: visible;
-  scrollbar-width: none;
-  padding-block: 0;
-  margin-block: 0;
-}
-/* Keyboard focus while pinned: a frame around the row, inside the screen's
-   edges (an outline would run off both sides). */
-[data-pinned] .edu-strip-scroll:focus-visible {
-  outline: none;
-}
-[data-pinned] .edu-strip-scroll:focus-visible::after {
-  content: "";
-  position: absolute;
-  inset: calc(-1.5 * var(--u)) 1rem;
-  border: 2px solid var(--color-ink);
-  pointer-events: none;
-  z-index: 10;
-}
-[data-pinned] .edu-strip-track {
-  padding-inline: max(2.5rem, calc((100vw - 90rem) / 2 + 2.5rem));
-}
-[data-pinned] .edu-print-body {
-  transform: translate3d(calc((var(--p, 0) - 0.5) * var(--drift, 0) * var(--u)), 0, 0);
-  will-change: transform;
+
+/* Upright large screens (a 12.9-inch tablet held upright, a rotated monitor).
+   The scroll engine pins every "lg" scene from 1024px whatever the shape of
+   the screen, but this row is shallow: on a screen taller than it is wide the
+   pinned stage would be mostly empty ivory above and below the prints. So the
+   pinned styles above stop at square, and here the engine's own pin
+   (motion.css) is released: the strip is swiped, with its meter, exactly as
+   on smaller tablets. The section is then shorter than the screen, so the
+   engine's --p stays at 0. */
+@media (max-aspect-ratio: 1 / 1) {
+  .edu-strip[data-scene][data-pinned] {
+    height: auto;
+  }
+  .edu-strip[data-scene][data-pinned] > [data-scene-pin] {
+    position: static;
+    height: auto;
+    overflow: visible;
+  }
+  html.motion .edu-strip[data-scene][data-pinned] .edu-strip-track {
+    transform: translate3d(calc((0.5 - var(--v, 0.5)) * 14vw), 0, 0);
+  }
+  html.js .edu-strip[data-pinned] .edu-strip-meter:not([data-still]) {
+    display: flex;
+  }
 }
 
 /* --------------------------------------------------------------------------
@@ -386,5 +473,8 @@ html.motion [data-scene]:not([data-pinned]) .edu-strip-track {
   .edu-strip-track {
     flex-wrap: wrap;
     width: auto;
+  }
+  .edu-strip-meter {
+    display: none !important;
   }
 }
