@@ -347,16 +347,17 @@ html.motion .site-footer:has(:focus-visible) .foot-inner {
     );
   }
   /* Without the newsletter (Insights) the link lists sit in two columns and take
-     less height. There the footer is as tall as its content, not a full screen,
-     so no empty band opens between the lists and the signature. */
+     less height. The footer still fills the screen, so the page above never
+     shows as a cropped strip over it; the height that is left is shared evenly
+     above and below the lists, so no one empty band opens. */
   .site-footer:not(:has(#footer-newsletter)) .foot-mark {
     --foot-cols: 14.75rem;
   }
-  .site-footer:not(:has(#footer-newsletter)) .foot-inner {
-    min-height: 0;
+  .site-footer:not(:has(#footer-newsletter)) .foot-inner > :first-child {
+    margin-block: auto;
   }
   .site-footer:not(:has(#footer-newsletter)) .foot-sign {
-    margin-top: 0.875rem;
+    margin-top: 0;
   }
 }
 /* It writes itself in, left to right, once it is in the open ([data-foot-in]
