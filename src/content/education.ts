@@ -172,9 +172,10 @@ export const education = {
         focus: "50% 40%",
         original: "54708309770",
       },
+      // A tight detail of a wide frame: the file is 480 px wide, all the original holds, so this print stays small.
       ratio: 4 / 5,
-      height: 46,
-      drop: 22,
+      height: 38,
+      drop: 30,
       gap: -5,
       layer: 4,
       drift: -6,

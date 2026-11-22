@@ -391,6 +391,63 @@ html.motion .edu-strip-roll > span {
 }
 
 /* --------------------------------------------------------------------------
+   From a P3 participant (AttendeeVoice.tsx): the quote's opening sentence as
+   a statement, the rest of it at reading size.
+   From lg they sit side by side on the page's twelve columns: the statement
+   from the second column (its quote mark hangs in the first); from the eighth
+   the rest of the quote and, under it, who said it. The name is the figure's
+   caption while the words belong to the blockquote, so the statement floats
+   and both run beside it. Below lg the three stack.
+   -------------------------------------------------------------------------- */
+.edu-voice-lead {
+  line-height: 0.96;
+}
+/* The opening mark sits over the statement, so every line keeps one left edge. */
+.edu-voice-mark {
+  display: block;
+  height: 0.5em;
+  line-height: 1;
+}
+@media (min-width: 1024px) {
+  .edu-voice-mark {
+    position: absolute;
+    top: 0;
+    left: -0.4em;
+    height: auto;
+    line-height: inherit;
+  }
+  .edu-voice-quote {
+    /* One of the twelve columns (the eleven gaps between them are 1.5rem). */
+    --col: calc((100% - 16.5rem) / 12);
+    display: flow-root;
+  }
+  .edu-voice-lead {
+    float: left;
+    width: calc(var(--col) * 6 + 7.5rem);
+    margin-left: calc(var(--col) + 1.5rem);
+  }
+  .edu-voice-rest,
+  .edu-voice-by {
+    margin-left: calc(var(--col) * 7 + 10.5rem);
+  }
+  /* The first line of the reading text starts level with the statement's capitals. */
+  .edu-voice-rest {
+    padding-top: 0.55vw;
+  }
+}
+@media print {
+  .edu-voice-lead {
+    float: none;
+    width: auto;
+    margin-left: 0;
+  }
+  .edu-voice-rest,
+  .edu-voice-by {
+    margin-left: 0;
+  }
+}
+
+/* --------------------------------------------------------------------------
    Routes: each row is one object. The link covers the whole row; hover and
    keyboard focus ink over its gold rule and lean the heading.
    -------------------------------------------------------------------------- */
