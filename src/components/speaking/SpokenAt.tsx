@@ -125,7 +125,8 @@ export function SpokenAt({ className = "" }: { className?: string }) {
         <>
           {/* The real list: a flowing run of names. The last word of a name holds its gold mark, so a line never starts with one. */}
           <InView className="sp-venues mx-auto mt-10 max-w-[90rem] px-5 md:mt-12 md:px-10">
-            <ul className="sp-venues-list rise">
+            {/* role: an unstyled list set inline still reads as a list of 23 in every screen reader. */}
+            <ul role="list" className="sp-venues-list rise">
               {venues.map((v, i) => {
                 const last = v.lastIndexOf(" ") + 1;
                 return (
