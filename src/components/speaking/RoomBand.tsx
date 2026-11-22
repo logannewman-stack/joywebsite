@@ -18,7 +18,8 @@ export function RoomBand() {
     <div data-header="dark" data-view className="sp-room relative overflow-clip bg-ink">
       <div className="relative aspect-[4/5] w-full sm:aspect-[3/2] md:aspect-[2/1] lg:aspect-auto lg:h-[min(86svh,54rem)] lg:min-h-[30rem]">
         <div className="sp-room-photo absolute inset-0">
-          <Photo slot={photo} className="h-full w-full" sizes="100vw" />
+          {/* Phones show a 4:5 crop of the 3:2 photo, so it is drawn about twice as wide as the screen; the slight zoom as it drifts takes the rest. */}
+          <Photo slot={photo} className="h-full w-full" sizes="(max-width: 639px) 210vw, (max-width: 767px) 110vw, 100vw" />
         </div>
       </div>
       {reel ? (
