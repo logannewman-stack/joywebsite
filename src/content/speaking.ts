@@ -122,7 +122,8 @@ export const speaking = {
     logos: [] as { name: string; src: string }[],
     /**
      * Until logos are cleared, venues are set as type. Source: "Presentations
-     * (partial listing)" in Testimonials.pdf. Review mode shows the list with a
+     * (partial listing)" in Testimonials.pdf ("Thrive Live – Henry Schein" there
+     * is written without a dash as the event's own name, Henry Schein Thrive Live). Review mode shows the list with a
      * "confirm before launch" tag; at launch it appears only once Dr. Joy has
      * confirmed it: set verified: true (or remove venues she wants left out).
      */
@@ -138,6 +139,7 @@ export const speaking = {
       "Connecticut State Dental Association",
       "Dentsply Sirona World",
       "Greater New York Dental Meeting",
+      "Henry Schein Thrive Live",
       "Mid Continent Dental Congress",
       "National Dental Hygienists’ Association",
       "Ontario Dental Association",
@@ -145,7 +147,6 @@ export const speaking = {
       "RDH Under One Roof",
       "Rocky Mountain Dental Convention",
       "Star of the North",
-      "Thrive Live – Henry Schein",
       "Victoria and District Dental Society",
       "Virginia Dental Hygienists’ Association",
       "Viva Learning",

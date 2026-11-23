@@ -54,8 +54,7 @@ export function Article({ article, section }: { article: OriginalArticle; sectio
                     <WordRise>{block.heading}</WordRise>
                   </h2>
                 ) : (
-                  <InView key={i} as="blockquote" className="relative my-16 pt-8 lg:-ml-[16%] lg:w-[125%]">
-                    <span aria-hidden className="rule-draw absolute top-0 left-0 block h-px w-16 bg-gold-deep" />
+                  <InView key={i} as="blockquote" className="relative my-16 lg:-ml-[16%] lg:w-[125%]">
                     <p className="display relative text-[clamp(1.9rem,3.4vw,3.2rem)] leading-[1.08] italic">
                       <span aria-hidden className="text-gold-deep md:absolute md:top-0 md:-left-[0.5em]">
                         “

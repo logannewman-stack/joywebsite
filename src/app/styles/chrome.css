@@ -32,17 +32,12 @@ summary {
 }
 
 /* --------------------------------------------------------------------------
-   Accents in the frame: gold for structure (the progress line, short rules,
+   Accents in the frame: gold for structure (the progress line, dividers,
    rings on arrow circles over black, the footer's rules), pale pink for
    emphasis in type (the marker behind the current page in the menu).
-   The short rule in a Label is gold-deep on light surfaces and gold on black.
+   No short dash-like strokes beside or above words: lines run the width of
+   what they divide.
    -------------------------------------------------------------------------- */
-.label-rule {
-  background: var(--color-gold-deep);
-}
-:is([data-header="dark"], [data-tone="dark"], .bg-ink, .text-white, .text-ash) .label-rule {
-  background: var(--color-gold);
-}
 
 /* --------------------------------------------------------------------------
    Buttons and links

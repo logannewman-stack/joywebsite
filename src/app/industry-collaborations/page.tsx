@@ -28,12 +28,11 @@ function lastTwo(heading: string): [string, string] {
   return [words.slice(0, -2).join(" "), words.slice(-2).join(" ")];
 }
 
-/** The section's place in the opening index ("01", "02"), with a short gold rule (gold is for lines, never for the small numeral). */
+/** The section's place in the opening index ("01", "02"). */
 function Index({ n, tone = "light" }: { n: string; tone?: "light" | "dark" }) {
   return (
-    <p aria-hidden className={`label flex items-center gap-3 tabular-nums ${tone === "dark" ? "text-ash" : "text-stone"}`}>
+    <p aria-hidden className={`label tabular-nums ${tone === "dark" ? "text-ash" : "text-stone"}`}>
       {n}
-      <span className={`h-px w-8 ${tone === "dark" ? "bg-gold" : "bg-gold-deep"}`} />
     </p>
   );
 }

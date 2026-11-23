@@ -49,7 +49,6 @@ export function Footer() {
             <section aria-labelledby="footer-newsletter" className="@container xl:w-[44%] xl:shrink-0">
               <div className="grid grid-cols-1 gap-8 @2xl:grid-cols-2 @2xl:gap-x-12">
                 <div>
-                  <span aria-hidden className="mb-6 block h-px w-12 bg-gold" />
                   <p className="label text-ash">{insights.newsletter.heading}</p>
                   <h2 id="footer-newsletter" className="display mt-5 text-[clamp(2.75rem,4.6vw,4.25rem)]">
                     {insights.newsletter.name}

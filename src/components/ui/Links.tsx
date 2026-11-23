@@ -219,10 +219,8 @@ export function Label({
   as?: "p" | "h2" | "h3";
 }) {
   return (
-    <Tag className={`label flex items-center gap-3 ${className}`}>
+    <Tag className={`label flex items-center gap-4 ${className}`}>
       {index && <span className="tabular-nums">{index}</span>}
-      {/* The short rule is gold: gold-deep on light surfaces, gold on black (.label-rule in styles/chrome.css). */}
-      {index && <span className="label-rule h-px w-8" aria-hidden />}
       <span>{children}</span>
     </Tag>
   );

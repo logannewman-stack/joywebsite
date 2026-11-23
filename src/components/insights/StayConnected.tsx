@@ -7,13 +7,13 @@ type Vars = CSSProperties & Record<`--${string}`, string>;
 
 /**
  * The page's one signup and its black moment. It wears the footer's From
- * Dr. Joy treatment (a gold rule above the label, the roman nameplate, the
+ * Dr. Joy treatment (the label, the roman nameplate, the
  * ash note), so the newsletter has one design across the site. The visible
  * label and the nameplate form a single heading ("Stay Connected, From Dr.
  * Joy"), so it reads differently from the "From Dr. Joy" articles heading,
  * and its nameplate stays smaller than the page's H1.
  *
- * The chapter arrives with intent: the gold rule draws, the nameplate rises
+ * The chapter arrives with intent: the label and the nameplate rise
  * word by word, and the note and the form settle in after it. Beside them the
  * JD monogram is pressed into the black, as on her card, and drifts a little
  * with the page (decorative; styles: .stay-seal in insights.css).
@@ -24,7 +24,6 @@ export function StayConnected({ heading, name, text, cta }: { heading: string; n
       <div className="relative mx-auto grid max-w-[90rem] grid-cols-1 px-5 py-24 md:px-10 md:py-32 lg:grid-cols-12 lg:gap-x-6 lg:py-40">
         <div className="lg:col-span-6">
           <InView>
-            <span aria-hidden className="rule-draw mb-6 block h-px w-12 bg-gold" />
             <h2>
               <span className="rise label block text-ash" style={{ "--d": "0.1s" } as Vars}>
                 {heading}

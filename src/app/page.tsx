@@ -69,7 +69,6 @@ export default function Home() {
         <Scene as="div" from="lg" length={4.25} steps={14} className="work" pinClassName="work-stage pt-20 pb-20 sm:pt-24 sm:pb-24 md:pt-32 md:pb-32 lg:pb-40">
           <div className="work-head mx-auto max-w-[90rem] px-5 md:px-10">
             <InView>
-              <span aria-hidden className="work-rule rule-draw mb-6 block h-px w-16 bg-gold-deep md:mb-8" />
               <h2 id="work-heading" className="work-title display text-[clamp(2.75rem,6.4vw,6.5rem)] leading-[0.92]">
                 <WordRise>{work.heading}</WordRise>
               </h2>

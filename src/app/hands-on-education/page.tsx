@@ -110,8 +110,7 @@ export default function EducationPage() {
       <section className="bg-ivory">
         <div className="mx-auto grid max-w-[90rem] gap-12 px-5 pt-24 pb-20 md:px-10 md:pt-32 md:pb-24 lg:grid-cols-12 lg:grid-rows-[auto_1fr] lg:gap-x-6 lg:gap-y-16 lg:pt-0 lg:pb-28">
           <InView className="lg:col-span-5 lg:col-start-8 lg:row-start-1 lg:pt-32">
-            <span aria-hidden className="rule-draw block h-px w-12 bg-gold-deep" />
-            <h2 className="display mt-8 text-[clamp(3.6rem,19vw,6.4rem)] leading-[0.88] lg:text-[clamp(5.2rem,10.4vw,9.36rem)]">
+            <h2 className="display text-[clamp(3.6rem,19vw,6.4rem)] leading-[0.88] lg:text-[clamp(5.2rem,10.4vw,9.36rem)]">
               <Masthead text={family.heading} />
             </h2>
           </InView>

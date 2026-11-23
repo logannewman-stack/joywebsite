@@ -139,14 +139,9 @@ export function Quote({
               </blockquote>
             </Reveal>
             <Reveal delay={0.1}>
-              <figcaption className="mt-10 flex flex-col gap-1 md:mt-12 md:flex-row md:items-center md:gap-4">
+              <figcaption className="mt-10 flex flex-col gap-1 md:mt-12">
                 <span className="text-[1rem] font-medium">{name}</span>
-                {role && (
-                  <>
-                    <span className={`hidden h-px w-6 md:block ${dark ? "bg-white/40" : "bg-ink/30"}`} aria-hidden />
-                    <span className={`text-[0.9375rem] ${dark ? "text-ash" : "text-stone"}`}>{role}</span>
-                  </>
-                )}
+                {role && <span className={`text-[0.9375rem] ${dark ? "text-ash" : "text-stone"}`}>{role}</span>}
               </figcaption>
             </Reveal>
           </figure>

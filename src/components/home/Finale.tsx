@@ -25,9 +25,6 @@ export function Finale() {
         </InView>
       </div>
       <div className="mx-auto flex max-w-[90rem] flex-col items-center px-5 py-28 text-center md:px-10 md:py-40 lg:min-h-[100svh] lg:justify-center lg:py-20">
-        <InView as="span" className="block">
-          <span aria-hidden className="rule-draw block h-px w-16 bg-gold-deep" />
-        </InView>
         <h2 id="closing-heading" className="finale-heading display mt-8 text-[clamp(2.9rem,min(15.5vw,21svh),11.75rem)] leading-[0.86] md:mt-10">
           <span className="block">
             <WordRise>{lead}</WordRise>

@@ -39,20 +39,8 @@ html.motion .hero-settle {
     transform: none;
   }
 }
-@keyframes hero-cue-draw {
-  from {
-    transform: scaleX(0);
-  }
-  to {
-    transform: none;
-  }
-}
 html.motion .hero-cue > .label {
   animation: hero-cue-in var(--duration-text) var(--ease-soft) 1.2s both;
-}
-html.motion .hero-cue-line {
-  transform-origin: left center;
-  animation: hero-cue-draw 1.2s var(--ease-expo) 1.35s both;
 }
 
 /* The wrapper is a scene only so the engine reports its progress: it keeps its
@@ -658,9 +646,6 @@ html.restoring .work .work-photo-in > img {
   }
   .work[data-pinned] .work-title {
     font-size: clamp(2.75rem, min(6.4vw, 9.5svh), 6.5rem);
-  }
-  .work[data-pinned] .work-rule {
-    margin-bottom: clamp(0.75rem, 2.2svh, 1.5rem);
   }
   .work[data-pinned] .work-count {
     display: flex;

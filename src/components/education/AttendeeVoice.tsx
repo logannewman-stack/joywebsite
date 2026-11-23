@@ -117,14 +117,9 @@ export function AttendeeVoice() {
                 {typeset(parts.rest)}
               </InView>
             </blockquote>
-            <InView as="figcaption" className="edu-voice-by rise mt-9 flex flex-col gap-1 md:flex-row md:items-center md:gap-4">
+            <InView as="figcaption" className="edu-voice-by rise mt-9 flex flex-col gap-1">
               <span className="text-[1rem] font-medium">{a.name}</span>
-              {a.role && (
-                <>
-                  <span className="hidden h-px w-6 bg-ink/30 md:block" aria-hidden />
-                  <span className="text-[0.9375rem] text-stone">{a.role}</span>
-                </>
-              )}
+              {a.role && <span className="text-[0.9375rem] text-stone">{a.role}</span>}
             </InView>
           </figure>
           {video && (
