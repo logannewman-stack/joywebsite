@@ -104,44 +104,6 @@ html.motion .sp-hero-settle {
   }
 }
 
-/* The chapter list: fine gold hairlines at the row edges (five on phones,
-   where the list is one column; three from sm, where it is two), drawn one
-   after another on load. */
-.sp-toc-rule {
-  position: absolute;
-  inset-inline: 0;
-  top: calc(var(--i) * 25%);
-  height: 1px;
-  background: color-mix(in srgb, var(--color-gold-deep) 55%, transparent);
-  transform-origin: left center;
-}
-.sp-toc-rule:nth-child(5) {
-  top: auto;
-  bottom: 0;
-}
-@media (min-width: 640px) {
-  .sp-toc-rule {
-    top: calc(var(--i) * 50%);
-  }
-  .sp-toc-rule:nth-child(3) {
-    top: auto;
-    bottom: 0;
-  }
-  .sp-toc-rule:nth-child(n + 4) {
-    display: none;
-  }
-}
-html.motion .sp-toc-rule {
-  animation: sp-draw 1.2s var(--ease-expo) calc(0.55s + var(--i) * 0.09s) both;
-}
-@keyframes sp-draw {
-  from {
-    transform: scaleX(0);
-  }
-  to {
-    transform: none;
-  }
-}
 /* The arrow travels: it leaves through the bottom as its twin arrives from the top. */
 .sp-toc-arrow > svg {
   transition: transform var(--duration-ui) var(--ease-expo);
@@ -198,31 +160,30 @@ a:focus-visible > .sp-toc-arrow > svg + svg {
     display: block;
     height: 1.875rem;
   }
+  /* Each chapter is a small dot, not a tick (no lines): faint ahead, solid
+     once read, gold and a little larger for the chapter on screen. */
   .sp-rail-tick {
     position: relative;
     display: block;
-    width: 1px;
-    height: calc(100% - 0.375rem);
-    margin: 0.1875rem auto;
+    width: 0.375rem;
+    height: 0.375rem;
+    margin: calc((1.875rem - 0.375rem) / 2) auto;
+    border-radius: 9999px;
     background: color-mix(in srgb, currentColor 24%, transparent);
     transition:
       background-color var(--duration-ui) ease-out,
-      width var(--duration-ui) var(--ease-expo);
+      transform var(--duration-ui) var(--ease-expo);
   }
   .sp-rail-item[data-state="past"] .sp-rail-tick {
     background: currentColor;
   }
   .sp-rail-item[data-state="current"] .sp-rail-tick {
-    width: 2px;
     background: var(--rail-gold);
+    transform: scale(1.5);
   }
   .sp-rail-item:not([data-state="current"]):hover .sp-rail-tick {
-    width: 2px;
     background: currentColor;
-  }
-  /* The travelling dot (only where the mark can fill, below). */
-  .sp-rail-run {
-    display: none;
+    transform: scale(1.25);
   }
   /* The chapter's name, set along the margin below the marks. Hovering another mark previews its name. */
   .sp-rail-name {
@@ -273,44 +234,6 @@ a:focus-visible > .sp-toc-arrow > svg + svg {
     display: none;
   }
 }
-/* Where the browser can tie an animation to a section's own scroll range, the
-   current mark fills with gold as the chapter is read, behind a small dot. */
-@supports (animation-timeline: view()) {
-  @media screen and (min-width: 1024px) and (min-height: 480px) {
-    html.motion .sp-rail-item[data-state="current"] .sp-rail-tick {
-      background: color-mix(in srgb, currentColor 24%, transparent);
-    }
-    html.motion .sp-rail-item[data-state="current"] .sp-rail-tick::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: var(--rail-gold);
-      transform-origin: center top;
-      animation: sp-fill linear both;
-      animation-timeline: --sp-chapter;
-      animation-range: cover 0% cover 100%;
-    }
-    html.motion .sp-rail-item[data-state="current"] .sp-rail-run {
-      position: absolute;
-      inset: 0;
-      display: block;
-      animation: sp-run linear both;
-      animation-timeline: --sp-chapter;
-      animation-range: cover 0% cover 100%;
-    }
-    html.motion .sp-rail-item[data-state="current"] .sp-rail-run::before {
-      content: "";
-      position: absolute;
-      top: -0.15625rem;
-      left: 50%;
-      width: 0.3125rem;
-      height: 0.3125rem;
-      margin-left: -0.15625rem;
-      border-radius: 9999px;
-      background: var(--rail-gold);
-    }
-  }
-}
 /* With them, the name fades instead: in once the chapter's top edge has
    passed above it (4rem after that edge crosses the middle of the screen), and
    out before the chapter's end reaches its foot (11rem before the end crosses
@@ -343,22 +266,6 @@ a:focus-visible > .sp-toc-arrow > svg + svg {
   }
   to {
     opacity: 0;
-  }
-}
-@keyframes sp-fill {
-  from {
-    transform: scaleY(0);
-  }
-  to {
-    transform: none;
-  }
-}
-@keyframes sp-run {
-  from {
-    transform: translateY(0);
-  }
-  to {
-    transform: translateY(100%);
   }
 }
 
@@ -397,7 +304,8 @@ a:focus-visible > .sp-toc-arrow > svg + svg {
     height: 2.25rem;
     /* 2px at the top for the page's progress line. */
     padding: 2px 1.25rem 0;
-    border-bottom: 1px solid var(--color-line);
+    /* A soft fade below the bar, not a line. */
+    box-shadow: 0 0.75rem 1.25rem -1rem rgb(11 11 11 / 0.22);
     background: var(--color-paper);
     color: var(--color-ink);
   }
@@ -444,25 +352,12 @@ a:focus-visible > .sp-toc-arrow > svg + svg {
 /* --------------------------------------------------------------------------
    Course index (CourseIndex.tsx)
    -------------------------------------------------------------------------- */
-.sp-course-rule,
-.sp-course-fill {
-  position: absolute;
-  inset-inline: 0;
-  bottom: 0;
-  height: 1px;
-  /* A fine gold hairline; the row's answer fills it to full gold. */
-  background: color-mix(in srgb, var(--color-gold-deep) 50%, transparent);
-}
-.sp-course-fill {
-  background: var(--color-gold-deep);
-  transform: scaleX(0);
-  transform-origin: right center;
-  transition: transform 0.6s var(--ease-expo);
-}
+/* No lines between the courses: spacing sets them apart, and the row's
+   answer is an ivory band that fades out at both ends. */
 .sp-course-band {
   position: absolute;
   inset: 0 -0.75rem;
-  background: var(--color-ivory);
+  background: linear-gradient(90deg, transparent, var(--color-ivory) 12%, var(--color-ivory) 88%, transparent);
   transform: scaleX(0);
   transform-origin: right center;
   transition: transform 0.6s var(--ease-expo);
@@ -502,8 +397,7 @@ a:focus-visible > .sp-toc-arrow > svg + svg {
   .sp-course-actions {
     color: var(--color-stone);
   }
-  .sp-course:is(:hover, :has(:focus-visible)) .sp-course-band,
-  .sp-course:is(:hover, :has(:focus-visible)) .sp-course-fill {
+  .sp-course:is(:hover, :has(:focus-visible)) .sp-course-band {
     transform: none;
     transform-origin: left center;
   }
@@ -722,8 +616,7 @@ html.motion .sp-page [data-inview] .rise:focus-within {
   .sp-hero-settle,
   .sp-room-photo,
   .sp-keynote-zoom,
-  .sp-finale-line,
-  .sp-toc-rule {
+  .sp-finale-line{
     transform: none !important;
     animation: none !important;
   }

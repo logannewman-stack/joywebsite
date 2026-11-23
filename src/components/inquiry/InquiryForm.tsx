@@ -247,7 +247,7 @@ export function InquiryForm({
       )}
 
       {isInterest && (
-        <div className="flex flex-col gap-4 border-t border-line pt-6">
+        <div className="flex flex-col gap-4 pt-6">
           <Consent name="sponsor_opt_in" label="Sponsor communications" defaultChecked={draft.sponsor_opt_in === "on"}>
             {optIns.sponsor}
           </Consent>

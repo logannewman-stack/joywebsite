@@ -1,6 +1,6 @@
 import type { CSSProperties } from "react";
 import type { Publication } from "@/content/insights";
-import { site } from "@/content/site";
+import { notes } from "@/content/site";
 import { InView } from "@/components/motion/InView";
 import { WordRise } from "@/components/motion/Text";
 import { ArrowCircle } from "@/components/industry/ArrowCircle";
@@ -9,18 +9,14 @@ import { ConfirmTag } from "./records";
 type Vars = CSSProperties & Record<`--${string}`, string>;
 
 /** A hairline under a row that draws in, each a little after the one above. */
-function RowRule({ index }: { index: number }) {
-  return <span aria-hidden className="rule-draw absolute inset-x-0 bottom-0 h-px bg-line" style={{ "--d": `${0.12 + index * 0.08}s` } as Vars} />;
-}
 
 /**
  * Published Articles: an editorial index of work in dental publications, each
  * linking to the original. Book contributions sit apart under Published Work.
  *
- * The index draws itself: the gold top rule, then each row with its hairline,
- * one after another. A row with a link answers as one on hover and focus: an ink
- * rule draws over its hairline, the title leans in, the number darkens and
- * the arrow travels.
+ * The rows rise one after another, set apart by space alone (no lines). A row
+ * with a link answers as one on hover and focus: a soft wash rises behind it,
+ * the title leans in, the number darkens and the arrow travels.
  */
 export function PublishedList({
   heading,
@@ -29,7 +25,6 @@ export function PublishedList({
   cta,
   articles,
   books,
-  rule = false,
 }: {
   heading: string;
   intro: string;
@@ -37,17 +32,10 @@ export function PublishedList({
   cta: string;
   articles: Publication[];
   books: Publication[];
-  /** A hairline above, when the section follows another white section. */
-  rule?: boolean;
 }) {
   const toConfirm = [...articles, ...books].filter((a) => !a.verified).length;
   return (
     <section className="bg-paper">
-      {rule && (
-        <InView className="mx-auto max-w-[90rem] px-5 md:px-10">
-          <span aria-hidden className="rule-draw block h-px bg-line" />
-        </InView>
-      )}
       <div className="mx-auto grid max-w-[90rem] grid-cols-1 gap-y-12 px-5 py-24 md:px-10 md:py-28 lg:grid-cols-12 lg:gap-x-6 lg:pt-32 lg:pb-36">
         <div className="lg:sticky lg:top-28 lg:col-span-5 lg:self-start">
           <h2 className="display text-[clamp(2.6rem,4.6vw,4.4rem)]">
@@ -57,7 +45,7 @@ export function PublishedList({
             <p className="rise mt-5 max-w-sm text-[1.0625rem] leading-relaxed text-stone" style={{ "--d": "0.12s" } as Vars}>
               {intro}
             </p>
-            {site.showPlaceholders && toConfirm > 0 && (
+            {notes && toConfirm > 0 && (
               <p className="rise label mt-6 inline-block rounded-full border border-ink/25 px-2.5 py-1 !text-[0.59375rem] text-stone" style={{ "--d": "0.2s" } as Vars}>
                 Review: {toConfirm} {toConfirm === 1 ? "record" : "records"} to confirm
               </p>
@@ -68,7 +56,6 @@ export function PublishedList({
         <div className="lg:col-span-6 lg:col-start-7">
           {articles.length > 0 && (
             <InView>
-              <span aria-hidden className="rule-draw block h-px bg-gold-deep" />
               <ol className="stagger">
                 {articles.map((a, i) => (
                   <li key={a.title} className="relative">
@@ -82,12 +69,10 @@ export function PublishedList({
           {books.length > 0 && (
             <InView className={articles.length > 0 ? "mt-16 md:mt-20" : ""}>
               <h3 className="rise label text-stone">{booksHeading}</h3>
-              <span aria-hidden className="rule-draw mt-5 block h-px bg-gold-deep" style={{ "--d": "0.08s" } as Vars} />
               <ul className="stagger">
-                {books.map((b, i) => (
+                {books.map((b) => (
                   <li key={b.title} className="relative">
                     <BookRow item={b} />
-                    <RowRule index={i} />
                   </li>
                 ))}
               </ul>
@@ -129,14 +114,12 @@ function Row({ item, index, cta }: { item: Publication; index: number; cta: stri
     return (
       <>
         {inner}
-        <RowRule index={index} />
       </>
     );
   return (
     <a href={item.url} target="_blank" rel="noopener noreferrer" className="group relative block">
       {inner}
       <span className="sr-only"> (opens in a new tab)</span>
-      <RowRule index={index} />
       <span aria-hidden className="rule-over" />
     </a>
   );

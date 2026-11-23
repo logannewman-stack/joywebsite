@@ -80,10 +80,9 @@ html.motion .hero-cue > .label {
   line-height: 1.08;
   letter-spacing: -0.01em;
 }
-/* Static: a numbered list, a hairline above each statement. */
+/* Static: a numbered list, the statements set apart by space alone. */
 .persp .persp-step {
   padding-top: 1.75rem;
-  border-top: 1px solid var(--color-line-dark);
 }
 /* The marker sits behind the lower half of the words, not under them. */
 .persp .persp-heading .hl-light {
@@ -218,7 +217,6 @@ html.motion .hero-cue > .label {
   .persp[data-pinned] .persp-step {
     display: block;
     padding-top: 0;
-    border-top: 0;
   }
   .persp[data-pinned] .persp-num {
     display: none;
@@ -476,10 +474,7 @@ html.motion .hero-cue > .label {
   .work .work-words {
     display: contents;
   }
-  .work .work-line {
-    grid-area: 1 / 1 / 2 / -1;
-    margin: 0 0 1.25rem;
-  }
+
   .work .work-photo {
     grid-area: 2 / 1 / 5 / 2;
     align-self: start;
@@ -542,9 +537,6 @@ html.motion .hero-cue > .label {
    list is first seen: it rises, its photograph settles, and its hairline
    draws. (Elsewhere the list's own entrance applies: .stagger in motion.css.) */
 @media screen and (max-width: 1023px), screen and (max-aspect-ratio: 1/1) {
-  .work .work-line {
-    background: var(--color-gold-deep);
-  }
   html.motion .work .work-track.stagger > .work-panel[data-inview] {
     opacity: 0;
     transform: translate3d(0, 1.5rem, 0);
@@ -562,15 +554,7 @@ html.motion .hero-cue > .label {
     transform: none;
     transition: none;
   }
-  html.motion .work .work-panel[data-inview] .work-line {
-    transform: scaleX(0);
-    transform-origin: left center;
-    transition: transform 1.2s var(--ease-expo) calc(var(--d, 0s) + 0.12s);
-  }
-  html.motion .work .work-panel[data-inview][data-in] .work-line,
-  html.motion .work .work-panel[data-inview]:focus-within .work-line {
-    transform: none;
-  }
+
   html.motion .work .work-panel[data-inview] .work-photo-in > img {
     transform: scale(1.08);
     transition: transform 1.6s var(--ease-expo) var(--d, 0s);
@@ -582,7 +566,6 @@ html.motion .hero-cue > .label {
 }
 /* Back and Forward: the returning page is simply there (as the shared entrances are, in motion.css). */
 html.restoring .work .work-panel[data-inview],
-html.restoring .work .work-line,
 html.restoring .work .work-photo-in > img {
   transition: none !important;
 }
@@ -762,9 +745,7 @@ html.restoring .work .work-photo-in > img {
   .work[data-pinned] .work-words {
     background: var(--color-paper);
   }
-  .work[data-pinned] .work-line {
-    margin-top: 0;
-  }
+
   .work[data-pinned] .work-index {
     display: none;
   }
@@ -894,9 +875,7 @@ html.restoring .work .work-photo-in > img {
   .work[data-pinned] .work-photo-in > img {
     transform: none;
   }
-  .work[data-pinned] .work-line {
-    margin-top: 1.5rem;
-  }
+
   .work[data-pinned] .work-index {
     display: inline;
   }
@@ -918,9 +897,7 @@ html.restoring .work .work-photo-in > img {
     margin-top: 0 !important;
     break-inside: avoid;
   }
-  .work .work-line {
-    margin-top: 1.5rem;
-  }
+
   .work .work-kicker {
     padding-top: 1rem;
   }

@@ -1,4 +1,4 @@
-import { site, type PhotoSlot } from "@/content/site";
+import { notes, site, type PhotoSlot } from "@/content/site";
 import { Parallax } from "@/components/motion/Parallax";
 import { WordLight } from "@/components/motion/Text";
 import { Photo } from "./Photo";
@@ -103,12 +103,10 @@ export function Quote({
       <div className="relative mx-auto max-w-[90rem] px-5 py-24 md:px-10 md:py-32">
         <div className="grid md:grid-cols-12 md:gap-x-6">
           <div
-            className={`flex flex-wrap items-center gap-x-4 gap-y-2 border-t pt-5 md:col-span-10 md:col-start-2 lg:col-span-9 lg:col-start-3 ${
-              dark ? "border-line-dark" : "border-line"
-            }`}
+            className="flex flex-wrap items-center gap-x-4 gap-y-2 md:col-span-10 md:col-start-2 lg:col-span-9 lg:col-start-3"
           >
             <h2 className={`label ${dark ? "text-ash" : "text-stone"}`}>{heading}</h2>
-            {permission !== "granted" && (
+            {permission !== "granted" && notes && (
               <p
                 className={`label rounded-full border px-2 py-0.5 !text-[0.5625rem] whitespace-nowrap ${dark ? "border-white/25 text-white/60" : "border-ink/25 text-stone"}`}
               >

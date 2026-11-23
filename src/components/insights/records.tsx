@@ -1,4 +1,4 @@
-import { site } from "@/content/site";
+import { notes, site } from "@/content/site";
 import type { OriginalArticle, Publication } from "@/content/insights";
 
 /**
@@ -18,7 +18,7 @@ export function articleHref(a: OriginalArticle) {
 
 /** Review-mode marker for a record Dr. Joy has not confirmed yet. Renders nothing at launch. */
 export function ConfirmTag({ tone = "light", className = "" }: { tone?: "light" | "dark"; className?: string }) {
-  if (!site.showPlaceholders) return null;
+  if (!notes) return null;
   return (
     <span
       className={`label inline-block rounded-full border px-2 py-0.5 !text-[0.59375rem] whitespace-nowrap ${

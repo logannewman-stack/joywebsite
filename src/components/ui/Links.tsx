@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { ArrowLeft, ArrowRight, ArrowUp, ArrowUpRight } from "lucide-react";
-import { links, site } from "@/content/site";
+import { links, notes } from "@/content/site";
 
 /**
  * The companion consulting site. Use this everywhere Instrumental is linked
@@ -26,7 +26,7 @@ export function resolveHref(href: string): { href: string; external: boolean; pe
 
 /** Review-mode tag for links whose destination has not been supplied yet. */
 export function PendingTag({ className = "" }: { className?: string }) {
-  if (!site.showPlaceholders) return null;
+  if (!notes) return null;
   return (
     <span className={`label ml-2 rounded-full border border-current/30 px-1.5 py-0.5 !text-[0.53125rem] whitespace-nowrap opacity-70 ${className}`}>
       URL pending
@@ -226,9 +226,9 @@ export function Label({
   );
 }
 
-/** A labelled empty slot, visible only in review mode. */
+/** A labelled empty slot, visible only with review notes on (site.reviewNotes). */
 export function ReviewSlot({ children, tone = "light", className = "" }: { children: ReactNode; tone?: "light" | "dark"; className?: string }) {
-  if (!site.showPlaceholders) return null;
+  if (!notes) return null;
   return (
     <div
       className={`flex min-h-28 items-center justify-center rounded-sm border border-dashed px-6 py-8 text-center ${

@@ -76,7 +76,6 @@ export function Pathways() {
             </span>
             <div className="work-words">
               {/* The hairline over the words: gold, and it draws, below 1024px; ink in the wide layouts. */}
-              <span aria-hidden className="work-line block h-px bg-gold-deep sm:mt-6 lg:bg-ink" />
               <div className="work-kicker flex items-baseline gap-3 sm:pt-4">
                 <span aria-hidden className="work-index label text-stone tabular-nums">
                   {pad(i + 1)}

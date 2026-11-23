@@ -11,9 +11,8 @@ import { chapters } from "./chapters";
  * takes the section's own colour (white on the black chapter), and is simply
  * absent outside the chapters. No JavaScript is involved.
  *
- * The rail's current mark is gold: where the browser supports scroll-driven
- * animations it fills, behind a travelling dot, as the chapter is read;
- * elsewhere it is simply solid. The marks change sharply at a chapter's edge
+ * Each chapter is a small dot (no lines): faint ahead, solid once read, gold
+ * and a little larger for the chapter on screen. The marks change sharply at a chapter's edge
  * (the clip), but the chapter's name, set down the margin, is as tall as a
  * paragraph: clipped the same way it would show the halves of two names at
  * once. So the name has a layer of its own and is on screen only while the
@@ -54,9 +53,7 @@ export function ChapterRail({
               data-state={i === current ? "current" : i < current ? "past" : "next"}
               className="sp-rail-item"
             >
-              <span className="sp-rail-tick">
-                <span className="sp-rail-run" />
-              </span>
+              <span className="sp-rail-tick" />
               {/* Another chapter's name, previewed while its mark is hovered. */}
               {i !== current && <span className="sp-rail-name label">{c.label}</span>}
             </a>

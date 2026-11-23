@@ -157,14 +157,7 @@ html:not(.motion) .page-progress {
 .menu-item {
   position: relative;
 }
-.menu-item::after {
-  content: "";
-  position: absolute;
-  inset-inline: 0;
-  bottom: 0;
-  height: 1px;
-  background: var(--color-line);
-}
+
 html.motion .menu-sheet {
   transition:
     opacity 0.24s ease-out,
@@ -212,15 +205,6 @@ html.motion .menu-sheet .hl-light {
 html.motion .menu-sheet[data-open="true"] .hl-light {
   background-size: 100% 0.34em;
   transition: background-size var(--duration-image) var(--ease-expo) calc(0.5s + var(--i, 0) * 0.055s);
-}
-html.motion .menu-sheet .menu-item::after {
-  transform: scaleX(0);
-  transform-origin: left center;
-  transition: transform 0s 0.24s;
-}
-html.motion .menu-sheet[data-open="true"] .menu-item::after {
-  transform: none;
-  transition: transform 1.1s var(--ease-expo) calc(0.1s + var(--i, 0) * 0.055s);
 }
 
 /* --------------------------------------------------------------------------
@@ -369,14 +353,6 @@ html.motion .foot-sign .foot-mark {
 html.motion .foot-sign[data-foot-in] .foot-mark {
   --ink-wipe: 115%;
   transition: --ink-wipe 1.7s var(--ease-soft) 0.1s;
-}
-html.motion .foot-sign .foot-rule {
-  transform: scaleX(0);
-  transform-origin: left center;
-}
-html.motion .foot-sign[data-foot-in] .foot-rule {
-  transform: none;
-  transition: transform 1.3s var(--ease-expo);
 }
 
 /* --------------------------------------------------------------------------
@@ -895,8 +871,5 @@ html.cursor-live [data-cursor] :is(input, textarea, select, [contenteditable="tr
   }
   .foot-mark {
     mask-image: none !important;
-  }
-  .foot-rule {
-    transform: none !important;
   }
 }

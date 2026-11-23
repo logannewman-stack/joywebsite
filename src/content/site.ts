@@ -42,13 +42,21 @@ export const site = {
   },
 
   /**
-   * Review mode. While true, empty slots (logos, articles, event details,
-   * testimonials awaiting files) show labelled placeholders so the layout can
-   * be reviewed, and search engines are asked not to index the site. Set to
-   * false for launch: anything still empty is hidden, /directions is removed,
-   * and the launch checks below must pass.
+   * Review mode. While true, content still awaiting Dr. Joy's approval
+   * (testimonials pending permission, the venue list, unconfirmed articles)
+   * is shown so she can approve it, and search engines are asked not to index
+   * the site. Set to false for launch: anything unapproved or empty is
+   * hidden, /directions is removed, and the launch checks below must pass.
    */
   showPlaceholders: true,
+
+  /**
+   * Review notes (review mode only). True adds the working notes: "URL
+   * pending" and "to confirm" tags, labelled empty slots ("Photo to come",
+   * logo boxes, article slots, the speaker reel) and "confirm before launch"
+   * notes. False (the default) keeps the preview as visitors will see it.
+   */
+  reviewNotes: false,
 
   /**
    * Which opening-screen direction Home uses: "a" | "b" | "c".
@@ -63,6 +71,9 @@ export const site = {
    */
   photoStyle: "color" as "color" | "bw",
 };
+
+/** True when the preview shows its working notes (see site.reviewNotes). Never at launch. */
+export const notes = site.showPlaceholders && site.reviewNotes;
 
 /** Every outbound destination in one place. Empty string = not yet supplied. */
 export const links = {

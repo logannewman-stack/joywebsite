@@ -23,9 +23,6 @@ const Comma = () => <span className="sr-only">, </span>;
 function GroupBlock({ title, children }: { title: string; children: ReactNode }) {
   return (
     <div className="relative pt-5 lg:grid lg:grid-cols-12 lg:gap-x-6 lg:pt-7">
-      <InView className="absolute inset-x-0 top-0">
-        <span aria-hidden className="rule-draw block h-px bg-gold" />
-      </InView>
       <div className="lg:col-span-4">
         <InView className="lg:sticky lg:top-[calc(var(--header-height)+2rem)]">
           <h3 className="label rise text-white/70">{title}</h3>
@@ -45,7 +42,6 @@ function Row({ index, children }: { index: number; children: ReactNode }) {
   return (
     <InView as="li" className="relative" delay={Math.min(index, 4) * 0.05}>
       <div className="rise">{children}</div>
-      <span aria-hidden className="rule-draw absolute inset-x-0 bottom-0 block h-px bg-gold/30" />
     </InView>
   );
 }

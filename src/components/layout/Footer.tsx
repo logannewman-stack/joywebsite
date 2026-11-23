@@ -134,7 +134,6 @@ export function Footer() {
 
         {/* Signed off with the script wordmark, as large as the screen allows. */}
         <div className="foot-sign relative mt-20 pt-10 md:mt-24 md:pt-12 xl:mt-auto xl:pt-[min(3rem,5svh)]" suppressHydrationWarning>
-          <span aria-hidden className="foot-rule absolute inset-x-0 top-0 block h-px bg-gold/70" />
           <div className="flex flex-col gap-10 md:flex-row md:items-end md:justify-between md:gap-12">
             <Link href="/" aria-label={`${site.name}, home`} className={`foot-mark-link block min-w-0 self-start md:self-end ${ring}`}>
               <Wordmark tone="dark" loading="lazy" className="foot-mark !h-auto w-full max-w-none" />

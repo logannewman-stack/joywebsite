@@ -1,6 +1,6 @@
 import { Fragment } from "react";
 import Image from "next/image";
-import { site } from "@/content/site";
+import { notes, site } from "@/content/site";
 import { speaking } from "@/content/speaking";
 import { InView } from "@/components/motion/InView";
 
@@ -102,13 +102,12 @@ export function SpokenAt({ className = "" }: { className?: string }) {
       <InView className="mx-auto max-w-[90rem] px-5 md:px-10">
         <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
           <h2 className="label text-stone">{heading}</h2>
-          {!verified && site.showPlaceholders && (
+          {!verified && notes && (
             <p className="label inline-block border border-ink/25 px-2 py-1 !text-[0.5625rem] leading-relaxed text-stone">
               From Testimonials.pdf (partial listing): confirm before launch
             </p>
           )}
         </div>
-        <span aria-hidden className="rule-draw mt-5 block h-px bg-gold-deep/70" />
       </InView>
 
       {logos.length > 0 ? (

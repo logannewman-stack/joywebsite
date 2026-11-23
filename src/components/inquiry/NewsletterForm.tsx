@@ -63,10 +63,11 @@ export function NewsletterForm({ tone = "light", cta = "Subscribe" }: { tone?: "
       <div
         data-field="email"
         data-label="Email"
-        className={`mt-1 flex items-center gap-3 border-b transition-[border-color,box-shadow] duration-[var(--duration-hover,180ms)] ${
+        // A soft filled pill holding the field and its button (no underline). Focus rings it.
+        className={`mt-2 flex items-center gap-3 rounded-full pl-5 pr-1 transition-[background-color,box-shadow] duration-[var(--duration-hover,180ms)] ${
           dark
-            ? "border-white/40 focus-within:border-white focus-within:shadow-[0_1px_0_0_#fff]"
-            : "border-ink/45 focus-within:border-ink focus-within:shadow-[0_1px_0_0_var(--color-ink)]"
+            ? "bg-white/[0.08] hover:bg-white/[0.11] focus-within:bg-white/[0.11] focus-within:shadow-[inset_0_0_0_1.5px_#fff]"
+            : "bg-ink/[0.05] hover:bg-ink/[0.07] focus-within:bg-ink/[0.07] focus-within:shadow-[inset_0_0_0_1.5px_var(--color-ink)]"
         }`}
       >
         <input
@@ -82,7 +83,7 @@ export function NewsletterForm({ tone = "light", cta = "Subscribe" }: { tone?: "
         <button
           type="submit"
           aria-disabled={sending || undefined}
-          className={`press group my-1.5 inline-flex min-h-11 shrink-0 items-center gap-2 rounded-full px-5 text-[0.90625rem] font-medium whitespace-nowrap focus-visible:outline-2 focus-visible:outline-offset-[3px] aria-disabled:cursor-progress ${
+          className={`press group my-1 inline-flex min-h-11 shrink-0 items-center gap-2 rounded-full px-5 text-[0.90625rem] font-medium whitespace-nowrap focus-visible:outline-2 focus-visible:outline-offset-[3px] aria-disabled:cursor-progress ${
             dark
               ? "bg-white text-ink hover:bg-gold-soft focus-visible:outline-white"
               : "bg-ink text-white hover:bg-charcoal focus-visible:outline-ink"

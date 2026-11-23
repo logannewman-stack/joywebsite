@@ -2,7 +2,7 @@ import type { CSSProperties } from "react";
 import type { Metadata } from "next";
 import Image from "next/image";
 import { meet } from "@/content/meet";
-import { site } from "@/content/site";
+import { notes, site } from "@/content/site";
 import { Photo } from "@/components/ui/Photo";
 import { Label } from "@/components/ui/Links";
 import { ImageReveal, LineReveal, Reveal } from "@/components/ui/Reveal";
@@ -27,7 +27,7 @@ type Vars = CSSProperties & Record<`--${string}`, string | number>;
 export default function MeetPage() {
   const { hero, operatory, interlude, credentials, guides } = meet;
   // At launch an empty slot renders nothing, so the story column takes its place.
-  const hasLifePhoto = Boolean(guides.photo.src) || site.showPlaceholders;
+  const hasLifePhoto = Boolean(guides.photo.src) || notes;
 
   return (
     <>
@@ -166,7 +166,6 @@ export default function MeetPage() {
                 style={{ "--d": "0.5s" } as Vars}
               />
             )}
-            <span aria-hidden className="rule-draw mt-14 block h-px bg-gold-deep" style={{ "--d": "0.55s" } as Vars} />
             <div className="rise pt-8" style={{ "--d": "0.7s" } as Vars}>
               <Magnetic strength={0.2}>
                 <InquiryButton>Start a Conversation</InquiryButton>

@@ -55,18 +55,25 @@ Copy in the content files is the approved working copy from the creative brief. 
 `showPlaceholders` in `src/content/site.ts` is `true` while the site is in review. In that mode:
 
 - the whole site asks search engines not to index it (`noindex`)
-- empty photo slots show their art direction
-- logo walls, articles and the attendee testimonial show labelled slots
-- unconfirmed published articles show "To confirm"
-- testimonials awaiting permission carry a "Permission to republish pending" tag
-- links whose address is still missing (Instrumental) carry a "URL pending" tag and go nowhere
+- content still awaiting Dr. Joy's approval is shown so she can approve it: testimonials awaiting permission, the venue list, unconfirmed articles
+- links whose address is still missing (Instrumental) go nowhere
 - `/directions` is available
+
+The preview carries no working notes, so it looks as visitors will see it. To see what is still pending, set `reviewNotes` to `true` as well. That adds:
+
+- "URL pending", "To confirm" and "Permission to republish pending" tags
+- labelled empty slots: photo art direction, logo boxes, article slots, the speaker reel
+- notes such as "confirm before launch"
 
 Set it to `false` for launch. Then:
 
 - anything still empty is hidden, including empty photo slots, so the site never shows a dead link, a placeholder or an empty section
 - review tags disappear, `/directions` returns 404 and the `noindex` is lifted
 - the launch checks run: the build **fails** with a list if `links.instrumental` is missing, if `links.privacy` is missing while a form offers the text-message opt-in, or if `site.url` is not the production address (`launchBlockers()` in `site.ts`)
+
+### No lines
+
+The site draws no divider lines and no dash-like strokes beside words. Sections are set apart by space and colour; where a white section meets an ivory one the colours blend (`--flow` in `globals.css`). A list row answers hover and focus with a soft wash behind it (`.rule-over` in `industry.css`), and form fields are soft filled shapes. The only lines left are ones that move: the reading progress at the top of the page, progress meters inside the scroll scenes, and the gold underline on the current page in the menu.
 
 ### Opening screen
 

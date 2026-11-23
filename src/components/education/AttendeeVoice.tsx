@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { site } from "@/content/site";
+import { notes, site } from "@/content/site";
 import { education } from "@/content/education";
 import { Quote } from "@/components/ui/Quote";
 import { Label, ReviewSlot } from "@/components/ui/Links";
@@ -24,7 +24,7 @@ function plan() {
 /** Whether AttendeeVoice renders a section: a quote, a video, or (in review mode) their labelled slots. */
 export function attendeeVoiceShown(): boolean {
   const { hasQuote, videoUrl } = plan();
-  return hasQuote || !!videoUrl || site.showPlaceholders;
+  return hasQuote || !!videoUrl || notes;
 }
 
 /**
@@ -48,6 +48,7 @@ function opening(quote: string): { lead: string; rest: string } | null {
 }
 
 function PendingTag() {
+  if (!notes) return null;
   return <p className="label rounded-full border border-ink/25 px-2 py-0.5 !text-[0.5625rem] whitespace-nowrap text-stone">Permission to republish pending</p>;
 }
 
@@ -67,7 +68,7 @@ export function AttendeeVoice() {
   const { a, hasQuote, videoUrl } = plan();
 
   if (!a) {
-    return site.showPlaceholders ? (
+    return notes ? (
       <section className="bg-ivory">
         <div className="mx-auto max-w-[90rem] px-5 py-24 md:px-10">
           <ReviewSlot>Featured attendee testimonial or approved short video (permission required)</ReviewSlot>
@@ -84,7 +85,7 @@ export function AttendeeVoice() {
       shape={a.videoShape}
       poster={a.videoPoster && <Photo slot={a.videoPoster} tone="dark" className="size-full" sizes="(min-width: 1024px) 60vw, 100vw" />}
     />
-  ) : site.showPlaceholders ? (
+  ) : notes ? (
     <ReviewSlot className="max-w-xl">Approved short attendee video, if one is supplied (permission required)</ReviewSlot>
   ) : null;
 
@@ -95,7 +96,6 @@ export function AttendeeVoice() {
         <div className="mx-auto max-w-[90rem] px-5 pt-10 pb-24 md:px-10 md:pt-12 md:pb-32 lg:pt-24 lg:pb-40">
           <div className="lg:grid lg:grid-cols-12 lg:gap-x-6">
             <InView className="lg:col-span-11 lg:col-start-2">
-              <span aria-hidden className="rule-draw block h-px bg-gold-deep/70" />
               <div className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-5">
                 <h2 className="label text-stone">{heading}</h2>
                 {pending && <PendingTag />}
@@ -150,7 +150,7 @@ export function AttendeeVoice() {
                 <Label as="h2" className="text-stone">
                   {heading}
                 </Label>
-                {pending && <p className="label mt-3 inline-block border border-ink/25 px-2 py-1 !text-[0.5625rem] whitespace-nowrap text-stone">Permission to republish pending</p>}
+                {pending && notes && <p className="label mt-3 inline-block border border-ink/25 px-2 py-1 !text-[0.5625rem] whitespace-nowrap text-stone">Permission to republish pending</p>}
               </div>
             )}
             {/* Under a quote, the video keeps the quote's own columns. */}

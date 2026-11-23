@@ -1,6 +1,6 @@
 import Image from "next/image";
 import type { CSSProperties } from "react";
-import { site } from "@/content/site";
+import { notes } from "@/content/site";
 import { InView } from "@/components/motion/InView";
 import { WordRise } from "@/components/motion/Text";
 
@@ -13,10 +13,9 @@ const MAX = 5;
 function cell(i: number, n: number) {
   const lastOdd = n % 2 === 1 && i === n - 1;
   return [
-    "relative flex h-28 items-center justify-center border-b border-line md:h-36",
-    lastOdd ? "col-span-2" : i % 2 === 0 ? "border-r" : "",
-    "sm:col-span-1 sm:flex-1 sm:border-r-0 sm:border-b-0",
-    i > 0 ? "sm:border-l" : "",
+    "relative flex h-28 items-center justify-center md:h-36",
+    lastOdd ? "col-span-2" : "",
+    "sm:col-span-1 sm:flex-1",
   ].join(" ");
 }
 
@@ -28,7 +27,7 @@ function cell(i: number, n: number) {
  * finished composition can be judged before any logo arrives.
  */
 export function Collaborations({ heading, logos }: { heading: string; logos: { name: string; src: string }[] }) {
-  if (logos.length === 0 && !site.showPlaceholders) return null;
+  if (logos.length === 0 && !notes) return null;
   const shown = logos.slice(0, MAX);
   const empty = shown.length === 0;
   const count = empty ? MAX : shown.length;
@@ -39,7 +38,6 @@ export function Collaborations({ heading, logos }: { heading: string; logos: { n
           <WordRise>{heading}</WordRise>
         </h2>
         <InView className="lg:col-span-8 lg:self-end">
-          <span aria-hidden className="rule-draw block h-px bg-gold-deep" />
           <ul className="stagger grid grid-cols-2 sm:flex">
             {empty
               ? Array.from({ length: MAX }, (_, i) => (
@@ -54,7 +52,6 @@ export function Collaborations({ heading, logos }: { heading: string; logos: { n
                   </li>
                 ))}
           </ul>
-          <span aria-hidden className="rule-draw hidden h-px bg-line sm:block" style={{ "--d": "0.25s" } as Vars} />
           {empty && (
             <p className="rise label mt-5 !text-[0.625rem] leading-relaxed text-balance text-stone" style={{ "--d": "0.35s" } as Vars}>
               Review: approved manufacturer logos only, up to five in one row, after clearance

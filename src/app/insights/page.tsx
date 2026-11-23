@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { insights } from "@/content/insights";
-import { site } from "@/content/site";
+import { notes } from "@/content/site";
 import { Photo } from "@/components/ui/Photo";
 import { Label } from "@/components/ui/Links";
 import { Reveal } from "@/components/ui/Reveal";
@@ -52,7 +52,7 @@ export default function InsightsPage() {
   const listedOriginals = originals.filter((a) => a !== featuredOriginal);
   const articles = records.filter((a) => a.kind !== "book" && a !== featuredRecord);
   const books = records.filter((a) => a.kind === "book");
-  const showOriginals = listedOriginals.length > 0 || (site.showPlaceholders && originals.length === 0);
+  const showOriginals = listedOriginals.length > 0 || (notes && originals.length === 0);
   const showPublished = articles.length > 0 || books.length > 0;
   // When the feature is the only piece of its kind, its section's list is not on the page.
   // The cover story then stands under that section's approved heading (and line), so the
@@ -120,7 +120,6 @@ export default function InsightsPage() {
           cta={published.cta}
           articles={articles}
           books={books}
-          rule={showOriginals}
         />
       )}
 

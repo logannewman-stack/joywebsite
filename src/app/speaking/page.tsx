@@ -15,9 +15,9 @@ import { CourseIndex } from "@/components/speaking/CourseIndex";
 import { DetailsLink } from "@/components/speaking/DetailsLink";
 import { PlannerResources } from "@/components/speaking/PlannerResources";
 import { RoomBand } from "@/components/speaking/RoomBand";
-import { SpokenAt, showSpokenAt } from "@/components/speaking/SpokenAt";
+import { SpokenAt } from "@/components/speaking/SpokenAt";
 import { chapters } from "@/components/speaking/chapters";
-import { site } from "@/content/site";
+
 
 export const metadata: Metadata = {
   title: "Speaking",
@@ -37,9 +37,6 @@ function ProgramTitle({ title }: { title: string }) {
 
 export default function SpeakingPage() {
   const { hero, clinical, teams, keynotes, p3, testimonial, planning } = speaking;
-  // Quote renders in review mode, or at launch once permission is granted.
-  const quoteShown = testimonial.permission === "granted" || site.showPlaceholders;
-  const proof = showSpokenAt() || quoteShown;
   // "Planning an Event?": the last word is set in italic, as the opening headline's last line is.
   const planningWords = planning.heading.split(" ");
   const planningLead = planningWords.slice(0, -1).join(" ");
@@ -93,7 +90,7 @@ export default function SpeakingPage() {
               </InquiryButton>
             </div>
 
-            {/* The chapter list: the page's four chapters, on hairlines that draw on load. */}
+            {/* The chapter list: the page's four chapters. */}
             <nav aria-label="On this page" className="sp-toc relative isolate mt-12">
               <ul className="grid auto-rows-fr grid-cols-1 sm:grid-cols-2">
                 {chapters.map((c, i) => (
@@ -110,12 +107,6 @@ export default function SpeakingPage() {
                   </li>
                 ))}
               </ul>
-              {/* Hairlines: five on phones (one list), three from sm (two columns). */}
-              <span aria-hidden className="pointer-events-none absolute inset-0 -z-10">
-                {[0, 1, 2, 3, 4].map((n) => (
-                  <span key={n} className="sp-toc-rule" style={{ "--i": n } as CSSProperties} />
-                ))}
-              </span>
             </nav>
           </Reveal>
         </div>
@@ -159,7 +150,6 @@ export default function SpeakingPage() {
           <ol className="mt-16 grid gap-16 md:mt-24 lg:grid-cols-12 lg:gap-x-6">
             {teams.programs.map((p, i) => (
               <InView as="li" key={p.title} className={i === 0 ? "lg:col-span-5" : "lg:col-span-6 lg:col-start-7 lg:mt-40"}>
-                <span aria-hidden className="rule-draw block h-px bg-gold-deep" />
                 <span className="label rise mt-7 block text-stone tabular-nums" aria-hidden>
                   {String(i + 1).padStart(2, "0")}
                 </span>
@@ -212,7 +202,6 @@ export default function SpeakingPage() {
           <div className="mt-6 lg:col-span-7 lg:row-start-2 lg:mt-14 lg:pr-10">
             {keynotes.items.map((k, i) => (
               <InView as="article" key={k.title} className="relative py-11 md:py-16">
-                <span aria-hidden className="rule-draw absolute inset-x-0 top-0 block h-px bg-gold" />
                 <span className="label rise block text-ash tabular-nums" aria-hidden>
                   {String(i + 1).padStart(2, "0")}
                 </span>
@@ -247,15 +236,14 @@ export default function SpeakingPage() {
             </h2>
           </div>
           <InView className="relative grid md:grid-cols-2 lg:col-span-8">
-            <span aria-hidden className="rule-draw absolute inset-x-0 top-0 block h-px bg-gold-deep" />
-            <div className="rise border-b border-line py-9 md:border-r md:pr-10" style={d(0.1)}>
+            <div className="rise py-9 md:pr-10" style={d(0.1)}>
               <h3 className="font-serif text-[clamp(1.85rem,2.8vw,2.5rem)] leading-tight">{p3.bring.title}</h3>
               <p className="mt-3 max-w-md text-[1.03125rem] leading-relaxed text-stone">{p3.bring.text}</p>
               <InquiryButton type="p3_conference" variant="text" className="mt-4">
                 {p3.bring.cta}
               </InquiryButton>
             </div>
-            <div className="rise border-b border-line py-9 md:pl-10" style={d(0.18)}>
+            <div className="rise py-9 md:pl-10" style={d(0.18)}>
               <h3 className="font-serif text-[clamp(1.85rem,2.8vw,2.5rem)] leading-tight">{p3.attend.title}</h3>
               <p className="mt-3 max-w-md text-[1.03125rem] leading-relaxed text-stone">{p3.attend.text}</p>
               <ArrowLink href={p3.attend.cta.href} className="mt-4">
@@ -270,7 +258,7 @@ export default function SpeakingPage() {
       <SpokenAt />
       <Quote {...testimonial} tone="dark" />
 
-      <PlannerResources ruled={!proof} />
+      <PlannerResources />
 
       {/* Planning an Event?: the finale */}
       <section data-header="dark" className="grain grain-light overflow-clip bg-ink text-white">
@@ -284,7 +272,6 @@ export default function SpeakingPage() {
             </h2>
           </div>
           <InView className="mt-12 grid gap-8 md:mt-16 lg:grid-cols-12 lg:items-center lg:gap-x-6">
-            <span aria-hidden className="rule-draw block h-px bg-gold lg:col-span-12" />
             <p className="rise max-w-[34ch] text-[1.125rem] leading-relaxed text-ash lg:col-span-5" style={d(0.15)}>
               {planning.text}
             </p>

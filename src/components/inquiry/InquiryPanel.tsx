@@ -111,7 +111,7 @@ export default function InquiryPanel({ request, closing, close }: PanelProps) {
           : "translate-x-0 duration-[420ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
       }`}
     >
-      <div className="flex h-[4.5rem] shrink-0 items-center justify-between border-b border-line px-6 md:px-10">
+      <div className="flex h-[4.5rem] shrink-0 items-center justify-between px-6 md:px-10">
         {(choice !== null || limited) && !sent ? (
           <button
             type="button"
@@ -185,9 +185,9 @@ function Picker({ choices, onPick }: { choices: Choice[]; onPick: (c: Choice) =>
   return (
     <fieldset>
       <legend className="label mb-4 text-stone">What can I help with?</legend>
-      <ul className="panel-settle-list border-t border-line">
+      <ul className="panel-settle-list">
         {choices.map((c, i) => (
-          <li key={c} className="border-b border-line">
+          <li key={c}>
             <button
               type="button"
               data-choice={c}
@@ -236,7 +236,7 @@ function ConsultingRoute() {
 
 function EventRoute({ event }: { event: NonNullable<ReturnType<typeof liveEvent>> }) {
   return (
-    <div className="border-t border-line pt-6">
+    <div className="pt-6">
       <p className="font-serif text-3xl leading-tight">{event.name}</p>
       <p className="mt-2 text-[1rem] text-stone">
         {event.date} · {event.location}

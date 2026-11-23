@@ -12,8 +12,9 @@ export { Honeypot } from "./feedback";
  * fallback uses to label what the visitor typed.
  */
 
+/* A soft filled field, not an underline: the site draws no lines. Focus rings it in ink. */
 const control =
-  "block w-full rounded-none border-0 border-b border-ink/45 bg-transparent px-0 pt-1.5 pb-2 text-[1rem] leading-normal text-ink outline-none transition-[border-color,box-shadow] duration-[var(--duration-hover,180ms)] placeholder:text-stone hover:border-ink/70 focus:border-ink focus:shadow-[0_1px_0_0_var(--color-ink)]";
+  "block w-full rounded-[0.5rem] border-0 bg-ink/[0.045] px-4 py-3 text-[1rem] leading-normal text-ink outline-none transition-[background-color,box-shadow] duration-[var(--duration-hover,180ms)] placeholder:text-stone hover:bg-ink/[0.065] focus:bg-ink/[0.06] focus:shadow-[inset_0_0_0_1.5px_var(--color-ink)]";
 
 function FieldLabel({ label, required, hint }: { label: string; required?: boolean; hint?: string }) {
   const note = hint ?? (required ? null : "Optional");
@@ -119,7 +120,7 @@ export function Select({
           name={name}
           required={required}
           defaultValue={defaultValue}
-          className={`${control} cursor-pointer appearance-none pr-8 has-[option[value='']:checked]:text-stone [&_option]:text-ink`}
+          className={`${control} cursor-pointer appearance-none pr-10 has-[option[value='']:checked]:text-stone [&_option]:text-ink`}
         >
           <option value="" disabled>
             Choose one
@@ -140,7 +141,7 @@ export function Select({
             ),
           )}
         </select>
-        <ChevronDown className="pointer-events-none absolute top-1/2 right-0 size-4 -translate-y-1/2 text-ink" aria-hidden />
+        <ChevronDown className="pointer-events-none absolute top-1/2 right-4 size-4 -translate-y-1/2 text-ink" aria-hidden />
       </span>
     </label>
   );

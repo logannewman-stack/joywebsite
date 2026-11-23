@@ -127,7 +127,6 @@ export default function EducationPage() {
           <InView className="grid gap-12 md:grid-cols-2 md:gap-x-6 lg:col-span-5 lg:col-start-8 lg:row-start-2 lg:grid-cols-1 lg:gap-10 lg:self-end">
             {family.items.map((item, i) => (
               <article key={item.title} style={{ "--d": `${i * 0.14}s` } as Vars}>
-                <span aria-hidden className="rule-draw block h-px bg-gold-deep/70" />
                 <h3 className={`display mt-7 text-[clamp(2.2rem,3.4vw,3.06rem)] ${i === 0 ? "lg:text-[clamp(2.6rem,4.4vw,3.96rem)]" : ""}`}>
                   <WordRise delay={0.1 + i * 0.14}>{item.title}</WordRise>
                 </h3>
@@ -152,7 +151,6 @@ export default function EducationPage() {
         <ul className="mx-auto max-w-[90rem] px-5 py-16 md:px-10 md:py-24">
           {routes.map((r, i) => (
             <InView as="li" key={r.heading} delay={i * 0.1} className="edu-route">
-              <span aria-hidden className="rule-draw block h-px bg-gold-deep/70" />
               <span aria-hidden className="edu-route-ink" />
               <div className="grid gap-3 py-9 md:grid-cols-12 md:items-baseline md:gap-x-6 md:py-11">
                 <h2 className="display text-[clamp(2rem,3vw,2.7rem)] md:col-span-6 xl:col-span-5">

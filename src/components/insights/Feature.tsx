@@ -82,7 +82,6 @@ export function Feature({ item, cta, heading, intro }: { item: FeatureItem; cta:
               {item.date && <p className="label text-stone tabular-nums">{item.date}</p>}
               {!item.verified && <ConfirmTag />}
             </div>
-            <span aria-hidden className="rule-draw absolute inset-x-0 bottom-0 h-px bg-gold-deep" />
             <span aria-hidden className="rule-over" />
           </InView>
 

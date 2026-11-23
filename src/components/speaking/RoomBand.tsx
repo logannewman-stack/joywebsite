@@ -1,4 +1,4 @@
-import { links, site } from "@/content/site";
+import { links, notes, site } from "@/content/site";
 import { speaking } from "@/content/speaking";
 import { Photo } from "@/components/ui/Photo";
 import { ReviewSlot } from "@/components/ui/Links";
@@ -31,7 +31,7 @@ export function RoomBand() {
           </div>
         </>
       ) : (
-        site.showPlaceholders && (
+        notes && (
           <div className="absolute bottom-3 left-3 md:bottom-8 md:left-10">
             <ReviewSlot tone="dark" className="!min-h-0 !px-3 !py-2 bg-ink/55 backdrop-blur-sm md:!px-4 md:!py-3">
               Speaker reel: link pending

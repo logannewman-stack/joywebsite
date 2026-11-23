@@ -1,6 +1,6 @@
 import Image from "next/image";
 import type React from "react";
-import { site, type PhotoSlot } from "@/content/site";
+import { notes, site, type PhotoSlot } from "@/content/site";
 import blur from "@/content/blur.json";
 
 const treatmentLabel: Record<PhotoSlot["treatment"], string> = {
@@ -43,8 +43,8 @@ export function Photo({
   showDirection?: boolean;
 }) {
   const src = slot.src && site.photoStyle === "bw" && slot.srcBw ? slot.srcBw : slot.src;
-  // At launch, a slot that never received its photograph disappears entirely.
-  if (!src && !site.showPlaceholders) return null;
+  // A slot that never received its photograph disappears entirely (its labelled stand-in shows only with review notes on).
+  if (!src && !notes) return null;
   if (src) {
     // A cutout keeps its transparency and stands on the bottom edge of its frame.
     const cutout = slot.treatment === "cutout";
@@ -74,7 +74,7 @@ export function Photo({
           fetchPriority={priority ? "high" : undefined}
           className={cutout ? "object-contain object-bottom" : "object-cover object-[var(--focus-sm)] md:object-[var(--focus)]"}
         />
-        {slot.stock && site.showPlaceholders && (
+        {slot.stock && notes && (
           <span className="label absolute top-3 left-3 bg-paper/90 px-2 py-1 !text-[0.59375rem] !tracking-[0.14em] text-ink">
             Stock placeholder
           </span>
@@ -108,7 +108,7 @@ export function Photo({
           <path d="M30 500 C 34 360, 100 282, 200 282 C 300 282, 366 360, 370 500 Z" />
         </g>
       </svg>
-      {site.showPlaceholders && showDirection && (
+      {notes && showDirection && (
         <div className={`absolute inset-x-0 bottom-0 p-4 md:p-5 ${isCutout ? "" : fg}`}>
           <div className={isCutout ? "max-w-[36ch] bg-paper/95 px-3.5 py-3 text-ink" : ""}>
             <p className="label !text-[0.59375rem]">Photo to come · {treatmentLabel[slot.treatment]}</p>

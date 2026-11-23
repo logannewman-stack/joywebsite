@@ -480,14 +480,17 @@ html.motion .edu-strip-roll > span {
   position: absolute;
   inset: 0;
 }
+/* The row's answer: a soft wash rises behind it (no line). */
+.edu-route {
+  isolation: isolate;
+}
 .edu-route-ink {
   position: absolute;
-  inset: 0 0 auto 0;
-  height: 1px;
-  background: var(--color-ink);
-  transform: scaleX(0);
-  transform-origin: right center;
-  transition: transform var(--duration-text) var(--ease-expo);
+  inset: 0 -1rem;
+  z-index: -1;
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, currentColor 6%, transparent) 14%, color-mix(in srgb, currentColor 6%, transparent) 86%, transparent);
+  opacity: 0;
+  transition: opacity var(--duration-text) var(--ease-expo);
 }
 .edu-route-lean {
   display: inline-block;
@@ -498,8 +501,7 @@ html.motion .edu-strip-roll > span {
 }
 @media (hover: hover) {
   .edu-route:hover .edu-route-ink {
-    transform: none;
-    transform-origin: left center;
+    opacity: 1;
   }
   .edu-route:hover .edu-route-lean {
     transform: translate3d(0.5rem, 0, 0);
@@ -509,8 +511,7 @@ html.motion .edu-strip-roll > span {
   }
 }
 .edu-route:has(:focus-visible) .edu-route-ink {
-  transform: none;
-  transform-origin: left center;
+  opacity: 1;
 }
 .edu-route:has(:focus-visible) .edu-route-lean {
   transform: translate3d(0.5rem, 0, 0);

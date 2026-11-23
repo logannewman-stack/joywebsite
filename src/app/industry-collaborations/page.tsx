@@ -164,7 +164,6 @@ export default function IndustryPage() {
 
           <SceneStep index={2} className="launch-step launch-details mt-12 md:ml-auto md:w-[78%] lg:col-span-5 lg:col-start-7 lg:mt-24 lg:ml-0 lg:w-auto lg:self-end">
             <InView className="launch-details-inner flex flex-col gap-6">
-              <span aria-hidden className="launch-item launch-rule hidden h-px bg-gold/70" style={{ "--k": 0 } as Vars} />
               {launch.paragraphs.map((p, i) => (
                 <p key={i} className="launch-item rise max-w-[34rem] text-[1.09375rem] leading-relaxed text-white/85" style={{ "--k": i + 1, "--d": `${i * 0.06}s` } as Vars}>
                   {p}
@@ -200,7 +199,6 @@ export default function IndustryPage() {
             </em>
           </h2>
           <InView className="mt-12 md:mt-16">
-            <span aria-hidden className="rule-draw block h-px bg-gold-deep" />
             <div className="mt-8 grid grid-cols-1 gap-y-9 md:mt-10 lg:grid-cols-12 lg:gap-x-6">
               <p className="rise max-w-[30rem] text-[1.1875rem] leading-relaxed text-stone lg:col-span-5 lg:col-start-3" style={{ "--d": "0.15s" } as Vars}>
                 {closing.text}

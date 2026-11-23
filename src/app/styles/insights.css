@@ -1,12 +1,6 @@
 /* insights: styles owned by the insights work stream. Loaded from globals.css.
-   The shared row and card responses (.arrow-circle, .lean, .rule-over) are in
+   The shared row and card responses (.arrow-circle, .lean, the .rule-over wash) are in
    industry.css. */
-
-/* An ink rule that draws over the top edge of a piece instead of its foot. */
-.rule-over-top {
-  top: 0;
-  bottom: auto;
-}
 
 /* ==========================================================================
    The cover story (src/components/insights/Feature.tsx)

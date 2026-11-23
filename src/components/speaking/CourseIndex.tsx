@@ -1,6 +1,6 @@
 import type { CSSProperties } from "react";
 import { ArrowRight } from "lucide-react";
-import { site } from "@/content/site";
+import { notes } from "@/content/site";
 import { InView } from "@/components/motion/InView";
 import { typeset } from "@/components/ui/Typeset";
 import { InquiryButton } from "@/components/inquiry/InquiryProvider";
@@ -26,9 +26,6 @@ const d = (seconds: number) => ({ "--d": `${seconds.toFixed(2)}s` }) as CSSPrope
 export function CourseIndex({ courses, className = "" }: { courses: Course[]; className?: string }) {
   return (
     <div className={className}>
-      <InView>
-        <span aria-hidden className="rule-draw block h-px bg-gold-deep" />
-      </InView>
       <ol className="sp-courses">
         {courses.map((c, i) => {
           // Rows that arrive together (an anchor jump shows several at once) still enter in order.
@@ -56,7 +53,7 @@ export function CourseIndex({ courses, className = "" }: { courses: Course[]; cl
                     {c.pdf ? (
                       <DetailsLink pdf={c.pdf} title={c.title} />
                     ) : (
-                      site.showPlaceholders && (
+                      notes && (
                         <p className="label inline-block border border-dashed border-ink/25 px-2.5 py-1 !text-[0.59375rem] leading-relaxed text-stone">
                           Course details: updated PDF pending
                         </p>
@@ -68,8 +65,6 @@ export function CourseIndex({ courses, className = "" }: { courses: Course[]; cl
                   </div>
                 </div>
               </div>
-              <span aria-hidden className="sp-course-rule rule-draw" style={d(base)} />
-              <span aria-hidden className="sp-course-fill" />
             </InView>
           );
         })}

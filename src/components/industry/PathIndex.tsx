@@ -1,8 +1,5 @@
-import type { CSSProperties } from "react";
 import { InView } from "@/components/motion/InView";
 import { ArrowCircle } from "./ArrowCircle";
-
-type Vars = CSSProperties & Record<`--${string}`, string>;
 
 /**
  * The two ways to work together, named with their approved headings and
@@ -18,7 +15,6 @@ export function PathIndex({ items, className = "" }: { items: { label: string; h
   return (
     <nav aria-label="On this page" className={className}>
       <InView delay={0.3}>
-        <span aria-hidden className="rule-draw block h-px bg-gold-deep" />
         <ol className="stagger">
           {items.map((item, i) => (
             <li key={item.href}>
@@ -28,7 +24,6 @@ export function PathIndex({ items, className = "" }: { items: { label: string; h
                 </span>
                 <span className="lean flex-1 font-serif text-[clamp(1.45rem,2vw,1.8rem)] leading-tight">{item.label}</span>
                 <ArrowCircle direction="down" className="size-9 shrink-0" iconClassName="size-4" />
-                <span aria-hidden className="rule-draw absolute inset-x-0 bottom-0 h-px bg-line" style={{ "--d": `${0.42 + i * 0.09}s` } as Vars} />
                 <span aria-hidden className="rule-over" />
               </a>
             </li>

@@ -178,10 +178,10 @@ export function Header() {
     ? "bg-paper"
     : dark
       ? scrolled
-        ? "bg-ink/85 backdrop-blur-md shadow-[0_1px_0_rgba(255,255,255,0.07)]"
+        ? "bg-ink/85 backdrop-blur-md shadow-[0_0.75rem_1.75rem_-1.25rem_rgba(0,0,0,0.6)]"
         : "bg-transparent"
       : scrolled
-        ? "bg-paper/90 backdrop-blur-md shadow-[0_1px_0_rgba(11,11,11,0.08)]"
+        ? "bg-paper/90 backdrop-blur-md shadow-[0_0.75rem_1.75rem_-1.25rem_rgba(11,11,11,0.22)]"
         : "bg-paper";
   const tone = dark ? "dark" : "light";
   // On paper the bar sits once at the top of the first page, so it takes the tone that page opens with,

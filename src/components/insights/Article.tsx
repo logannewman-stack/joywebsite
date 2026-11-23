@@ -40,9 +40,6 @@ export function Article({ article, section }: { article: OriginalArticle; sectio
       <div className="mx-auto max-w-[90rem] px-5 pt-16 pb-24 md:px-10 md:pt-20 md:pb-32 lg:pb-40">
         <div className="grid grid-cols-1 lg:grid-cols-12 lg:gap-x-6">
           <div className="lg:col-span-7 lg:col-start-4">
-            <InView delay={0.35}>
-              <span aria-hidden className="rule-draw block h-px bg-gold-deep" />
-            </InView>
             <div className="article-body pt-10">
               {(article.body ?? []).map((block, i) =>
                 typeof block === "string" ? (

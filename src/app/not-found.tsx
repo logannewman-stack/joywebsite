@@ -51,7 +51,6 @@ export default function NotFound() {
           <Label as="h2" className="rise text-stone">
             {home.work.heading}
           </Label>
-          <span aria-hidden className="rule-draw mt-6 block h-px bg-gold-deep" />
           <ol className="stagger">
             {home.pathways.map((p, i) => {
               const r = resolveHref(p.link.href);
@@ -72,7 +71,7 @@ export default function NotFound() {
                 </>
               );
               return (
-                <li key={p.kicker} className="border-b border-line">
+                <li key={p.kicker}>
                   {r.pending ? (
                     <PendingLink className={row} title="Instrumental website link to come">
                       {inner}
