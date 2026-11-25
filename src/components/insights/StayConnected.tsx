@@ -21,7 +21,7 @@ type Vars = CSSProperties & Record<`--${string}`, string>;
 export function StayConnected({ heading, name, text, cta }: { heading: string; name: string; text: string; cta: string }) {
   return (
     <section data-header="dark" className="grain grain-light relative overflow-clip bg-ink text-white">
-      <div className="relative mx-auto grid max-w-[90rem] grid-cols-1 px-5 py-24 md:px-10 md:py-32 lg:grid-cols-12 lg:gap-x-6 lg:py-40">
+      <div className="relative mx-auto grid max-w-(--wrap) grid-cols-1 px-5 py-24 md:px-10 md:py-32 lg:grid-cols-12 lg:gap-x-6 lg:py-40">
         <div className="lg:col-span-6">
           <InView>
             <h2>

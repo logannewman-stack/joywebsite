@@ -36,7 +36,7 @@ export function PublishedList({
   const toConfirm = [...articles, ...books].filter((a) => !a.verified).length;
   return (
     <section className="bg-paper">
-      <div className="mx-auto grid max-w-[90rem] grid-cols-1 gap-y-12 px-5 py-24 md:px-10 md:py-28 lg:grid-cols-12 lg:gap-x-6 lg:pt-32 lg:pb-36">
+      <div className="mx-auto grid max-w-(--wrap) grid-cols-1 gap-y-12 px-5 py-24 md:px-10 md:py-28 lg:grid-cols-12 lg:gap-x-6 lg:pt-32 lg:pb-36">
         <div className="lg:sticky lg:top-28 lg:col-span-5 lg:self-start">
           <h2 className="display text-[clamp(2.6rem,4.6vw,4.4rem)]">
             <WordRise>{heading}</WordRise>
@@ -94,10 +94,10 @@ function Row({ item, index, cta }: { item: Publication; index: number; cta: stri
         {String(index + 1).padStart(2, "0")}
       </span>
       <span className={`min-w-0 ${linked ? "lean" : ""}`}>
-        <span className="block font-serif text-[1.5rem] leading-[1.12] md:text-[1.875rem]">{item.title}</span>
-        {item.subtitle && <span className="mt-1.5 block font-serif text-[1.0625rem] leading-snug text-stone italic md:text-[1.125rem]">{item.subtitle}</span>}
+        <span className="block font-display text-[1.5rem] leading-[1.12] md:text-[1.875rem]">{item.title}</span>
+        {item.subtitle && <span className="mt-1.5 block font-display text-[1.0625rem] leading-snug text-stone italic md:text-[1.125rem]">{item.subtitle}</span>}
         <span className="mt-2.5 flex flex-wrap items-baseline gap-x-3 gap-y-1">
-          <span className="font-serif text-[1.0625rem] text-ink/80 italic">{item.publication}</span>
+          <span className="font-display text-[1.0625rem] text-ink/80 italic">{item.publication}</span>
           {item.date && <span className="label text-stone tabular-nums">{item.date}</span>}
         </span>
         {!item.verified && <ConfirmTag className="mt-3" />}
@@ -126,7 +126,7 @@ function Row({ item, index, cta }: { item: Publication; index: number; cta: stri
 }
 
 function BookRow({ item }: { item: Publication }) {
-  const title = <span className="block font-serif text-[1.375rem] leading-tight italic md:text-[1.5rem]">{item.title}</span>;
+  const title = <span className="block font-display text-[1.375rem] leading-tight italic md:text-[1.5rem]">{item.title}</span>;
   return (
     <div className="grid grid-cols-[1fr_auto] items-baseline gap-x-6 py-5 md:py-6">
       <span className="min-w-0">

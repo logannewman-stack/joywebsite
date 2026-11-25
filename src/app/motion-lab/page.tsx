@@ -26,14 +26,14 @@ export default function MotionLab() {
     <>
       <section className="bg-paper px-5 pt-[calc(4.75rem+4rem)] pb-24 md:px-10">
         <p className="label text-stone">Internal: motion system reference</p>
-        <h1 className="display mt-6 text-[clamp(3rem,7vw,7rem)]">
+        <h1 className="display t-hero mt-6">
           <WordRise immediate>Words rise on load</WordRise>
         </h1>
         <InView className="mt-24 max-w-3xl">
-          <h2 className="display text-[clamp(2.4rem,5vw,4.6rem)]">
+          <h2 className="display t-h1">
             <WordRise>Words rise when seen,</WordRise>{" "}
             <em>
-              <WordRise start={4}>with italics continuing.</WordRise>
+              <WordRise start={4}>with the stagger continuing.</WordRise>
             </em>
           </h2>
           <span className="rule-draw mt-8 block h-px bg-ink" />
@@ -45,7 +45,7 @@ export default function MotionLab() {
           <p className="rise mt-10 text-[1.1875rem] leading-relaxed" style={{ "--d": "0.2s" } as React.CSSProperties}>
             A paragraph that rises, with a <Hl tone="light">marker highlight</Hl> that draws itself in.
           </p>
-          <p className="mt-10 font-serif text-[clamp(1.6rem,3vw,2.6rem)] leading-tight">
+          <p className="display t-h2 mt-10">
             <LineRise lines={["Hand-set line one", "and hand-set line two"]} />
           </p>
           <p className="mt-10">
@@ -56,9 +56,9 @@ export default function MotionLab() {
         </InView>
       </section>
 
-      <section className="bg-ivory px-5 py-24 md:px-10">
+      <section className="bg-paper px-5 py-24 md:px-10">
         <p className="label text-stone">WordLight (view)</p>
-        <p className="display mt-6 max-w-5xl text-[clamp(2rem,4.4vw,4rem)] leading-[1.05]">
+        <p className="display t-h1 mt-6 max-w-5xl">
           <WordLight dim={0.5}>{sample}</WordLight>
         </p>
         <div className="mt-16 grid gap-6 md:grid-cols-2">
@@ -79,7 +79,7 @@ export default function MotionLab() {
         <SceneSteps className="mt-10 flex flex-col gap-10">
           {["First statement of the scene.", "Second statement, replacing the first.", "Third and final statement."].map((s, i) => (
             <SceneStep key={s} index={i}>
-              <p className="display max-w-4xl text-[clamp(2.4rem,6vw,6rem)]">{highlight(s, ["statement"])}</p>
+              <p className="display t-h1 max-w-4xl">{highlight(s, ["statement"])}</p>
             </SceneStep>
           ))}
         </SceneSteps>
@@ -90,8 +90,8 @@ export default function MotionLab() {
         <SceneTrack className="mt-10 flex flex-col gap-6 px-5 md:px-10 pinned:flex-row pinned:gap-10">
           {[0, 1, 2, 3].map((i) => (
             <ScenePanel key={i} className="pinned:w-[46vw]">
-              <div className="aspect-[4/3] bg-sand" />
-              <p className="display mt-4 text-4xl">Panel {i + 1}</p>
+              <div className="aspect-[4/3] bg-mist" />
+              <p className="display t-h1 mt-4">Panel {i + 1}</p>
               <a href="#top" className="mt-2 inline-block underline">
                 A focusable link
               </a>
@@ -101,16 +101,16 @@ export default function MotionLab() {
         <SceneLine className="mx-5 mt-10 text-ink md:mx-10" />
       </Scene>
 
-      <section className="bg-ivory py-24">
+      <section className="bg-paper py-24">
         <p className="label px-5 text-stone md:px-10">Marquee (moves with scroll), then auto with a Pause control</p>
-        <Marquee className="display mt-8 text-[clamp(2.4rem,6vw,5.6rem)]">
+        <Marquee className="display t-h1 mt-8">
           {["Venue one", "Venue two", "Venue three", "Venue four", "Venue five", "Venue six"].map((v) => (
             <span key={v} className="mr-10 whitespace-nowrap">
-              {v} <span className="ml-10 text-blush-deep">●</span>
+              {v} <span className="ml-10 text-stone">●</span>
             </span>
           ))}
         </Marquee>
-        <Marquee auto reverse className="display mt-8 px-5 text-[clamp(1.6rem,3vw,2.6rem)] md:px-10">
+        <Marquee auto reverse className="display t-h2 mt-8 px-5 md:px-10">
           {["Venue one", "Venue two", "Venue three", "Venue four", "Venue five", "Venue six"].map((v) => (
             <span key={v} className="mr-10 whitespace-nowrap">
               {v}

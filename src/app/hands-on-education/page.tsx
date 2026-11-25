@@ -46,7 +46,7 @@ export default function EducationPage() {
       {/* Opening. Phones: headline, photographs, then the words. Desktop: words left, collage right.
           The two photographs sit at two depths: the room drifts inside its frame, the inset floats over it. */}
       <section className="edu-open bg-paper pt-[4.75rem]">
-        <div className="edu-open-grid mx-auto grid max-w-[90rem] px-5 pt-10 pb-20 md:px-10 md:pt-16 md:pb-28 lg:grid-cols-12 lg:grid-rows-[auto_1fr] lg:gap-x-6 lg:pt-14 lg:pb-48">
+        <div className="edu-open-grid mx-auto grid max-w-(--wrap) px-5 pt-10 pb-20 md:px-10 md:pt-16 md:pb-28 lg:grid-cols-12 lg:grid-rows-[auto_1fr] lg:gap-x-6 lg:pt-14 lg:pb-48">
           <div className="lg:col-span-6">
             <Label index="03">Hands-On Education</Label>
             {/* typeset() keeps "Skill-building" on one line; it always fits, but under a
@@ -107,8 +107,8 @@ export default function EducationPage() {
 
       {/* Dr. Joy's P3: the family name as a masthead beside the room at work, and its two event types.
           From lg the photograph rises over the edge of the white opening, so the two sections interlock. */}
-      <section className="bg-ivory">
-        <div className="mx-auto grid max-w-[90rem] gap-12 px-5 pt-24 pb-20 md:px-10 md:pt-32 md:pb-24 lg:grid-cols-12 lg:grid-rows-[auto_1fr] lg:gap-x-6 lg:gap-y-16 lg:pt-0 lg:pb-28">
+      <section className="bg-paper">
+        <div className="mx-auto grid max-w-(--wrap) gap-12 px-5 pt-24 pb-20 md:px-10 md:pt-32 md:pb-24 lg:grid-cols-12 lg:grid-rows-[auto_1fr] lg:gap-x-6 lg:gap-y-16 lg:pt-0 lg:pb-28">
           <InView className="lg:col-span-5 lg:col-start-8 lg:row-start-1 lg:pt-32">
             <h2 className="display text-[clamp(3.6rem,19vw,6.4rem)] leading-[0.88] lg:text-[clamp(5.2rem,10.4vw,9.36rem)]">
               <Masthead text={family.heading} />
@@ -148,7 +148,7 @@ export default function EducationPage() {
       {/* Other routes: a compact index, so they read as wayfinding, not as the page's offer.
           Each row is one object: its link covers it. Its gold rule draws on entry; hover or focus inks it over. */}
       <section className="bg-paper">
-        <ul className="mx-auto max-w-[90rem] px-5 py-16 md:px-10 md:py-24">
+        <ul className="mx-auto max-w-(--wrap) px-5 py-16 md:px-10 md:py-24">
           {routes.map((r, i) => (
             <InView as="li" key={r.heading} delay={i * 0.1} className="edu-route">
               <span aria-hidden className="edu-route-ink" />

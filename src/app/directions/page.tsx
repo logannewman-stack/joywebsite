@@ -100,9 +100,9 @@ export default function DirectionsPage() {
   return (
     <>
       <section className="border-b border-line bg-paper pt-[4.75rem]">
-        <div className="mx-auto max-w-[90rem] px-5 py-16 md:px-10 md:py-24">
+        <div className="mx-auto max-w-(--wrap) px-5 py-16 md:px-10 md:py-24">
           <p className="label text-stone">For review · Not part of the public site</p>
-          <h1 className="display mt-6 max-w-4xl text-[clamp(2.8rem,6vw,6rem)]">Three directions for the opening screen.</h1>
+          <h1 className="display t-hero mt-6 max-w-4xl">Three directions for the opening screen.</h1>
           <div className="mt-10 grid gap-8 md:grid-cols-3">
             <p className="text-[1rem] leading-relaxed text-stone">
               Each direction uses the approved Home copy unchanged. Photographs are from the supplied shoot and event folders; the original
@@ -125,8 +125,8 @@ export default function DirectionsPage() {
       </section>
 
       {/* The first screen on a phone, side by side. */}
-      <section className="border-b border-line bg-ivory" aria-labelledby="phones-heading">
-        <div className="mx-auto max-w-[90rem] px-5 py-14 md:px-10 md:py-20">
+      <section className="border-b border-line bg-paper" aria-labelledby="phones-heading">
+        <div className="mx-auto max-w-(--wrap) px-5 py-14 md:px-10 md:py-20">
           <h2 id="phones-heading" className="label text-stone">
             On a phone
           </h2>
@@ -161,7 +161,7 @@ export default function DirectionsPage() {
       {directions.map(({ key, name, tag, idea, image, strengths, tradeoffs }) => (
         <section key={key} id={`direction-${key}`} aria-labelledby={`direction-${key}-heading`}>
           <div className="border-b border-ink bg-paper">
-            <div className="mx-auto flex max-w-[90rem] flex-wrap items-center justify-between gap-x-6 gap-y-1 px-5 py-3 md:px-10">
+            <div className="mx-auto flex max-w-(--wrap) flex-wrap items-center justify-between gap-x-6 gap-y-1 px-5 py-3 md:px-10">
               <h2 id={`direction-${key}-heading`} className="label">
                 Direction {key.toUpperCase()} · {name}
               </h2>
@@ -180,14 +180,14 @@ export default function DirectionsPage() {
               src={`/directions/${key}`}
               title={`Direction ${key.toUpperCase()}, ${name}, opening screen`}
               loading="lazy"
-              className="mx-auto block aspect-[16/10] w-full max-w-[90rem] border-0 bg-paper"
+              className="mx-auto block aspect-[16/10] w-full max-w-(--wrap) border-0 bg-paper"
             />
           </div>
-          <div className="border-b border-line bg-ivory">
-            <div className="mx-auto grid max-w-[90rem] gap-10 px-5 py-14 md:grid-cols-12 md:gap-x-6 md:px-10 md:py-20">
+          <div className="border-b border-line bg-paper">
+            <div className="mx-auto grid max-w-(--wrap) gap-10 px-5 py-14 md:grid-cols-12 md:gap-x-6 md:px-10 md:py-20">
               <div className="md:col-span-5">
                 <p className="label text-stone">Rationale</p>
-                <p className="mt-4 font-serif text-[1.5rem] leading-snug">{idea}</p>
+                <p className="t-lead mt-4">{idea}</p>
                 <p className="label mt-8 text-stone">Image selection</p>
                 <p className="mt-3 text-[1rem] leading-relaxed">{image}</p>
               </div>

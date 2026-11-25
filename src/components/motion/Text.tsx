@@ -11,7 +11,7 @@ type Vars = CSSProperties & Record<`--${string}`, string | number>;
  *   <h2 className="display ..."><WordRise>Explore My Work</WordRise></h2>
  *
  * `start` continues the stagger when a heading is built from several parts
- * (for example a roman part and an italic part).
+ * (for example when one part carries the highlight).
  */
 export function WordRise({
   children,
@@ -115,16 +115,17 @@ export function WordLight({
   );
 }
 
-export type HlTone = "dark" | "gold" | "light";
+export type HlTone = "dark" | "light";
 
 /**
- * A highlighted phrase. On black it is pale pink type ("dark") or champagne
- * gold type ("gold", large display type only); on white or ivory it is a pale
- * pink marker behind ink type ("light": pink is never small text on white).
- * Inside an [data-inview] element the marker draws itself in.
+ * A highlighted phrase: the pale pink marker behind its lower half. It is the
+ * site's one accent, for a phrase that matters; a page carries one or two at
+ * most. "light" is for white sections, "dark" for black ones (the same pink
+ * at lower strength, so white letters stay crisp). Inside an [data-inview]
+ * element the marker draws itself in.
  */
 export function Hl({ children, tone = "dark", className = "" }: { children: ReactNode; tone?: HlTone; className?: string }) {
-  return <span className={`${tone === "dark" ? "hl-dark" : tone === "gold" ? "hl-gold" : "hl-light"} ${className}`}>{children}</span>;
+  return <span className={`${tone === "dark" ? "hl-dark" : "hl-light"} ${className}`}>{children}</span>;
 }
 
 /**

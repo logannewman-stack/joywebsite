@@ -19,7 +19,7 @@ export function PlannerResources() {
   const { heading, text, cta } = speaking.resources;
   return (
     <section id="resources" className="bg-paper">
-      <div className="mx-auto grid max-w-[90rem] gap-8 px-5 py-24 md:px-10 md:py-32 lg:grid-cols-12 lg:gap-x-6">
+      <div className="mx-auto grid max-w-(--wrap) gap-8 px-5 py-24 md:px-10 md:py-32 lg:grid-cols-12 lg:gap-x-6">
         <h2 className="display text-[clamp(2.6rem,4.8vw,4.6rem)] lg:col-span-6">
           <WordRise>{heading}</WordRise>
         </h2>
@@ -88,7 +88,7 @@ function Kit() {
       <dl className="mt-8">
         {rows.map((r) => (
           <div key={r.name} className="grid gap-1 py-4 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center sm:gap-6">
-            <dt className="font-serif text-[1.3125rem] leading-tight">{r.name}</dt>
+            <dt className="font-display text-[1.3125rem] leading-tight">{r.name}</dt>
             <dd className="flex flex-wrap items-center">{r.action}</dd>
           </div>
         ))}

@@ -24,20 +24,18 @@ export default function NotFound() {
   const others = nav.filter((n) => n.href === "/meet-dr-joy" || n.href === "/insights");
   return (
     <section className="bg-paper pt-[4.75rem]">
-      <div className="mx-auto grid max-w-[90rem] gap-14 px-5 pt-12 pb-24 md:grid-cols-12 md:gap-x-6 md:px-10 md:pt-20 md:pb-32">
+      <div className="mx-auto grid max-w-(--wrap) gap-14 px-5 pt-12 pb-24 md:grid-cols-12 md:gap-x-6 md:px-10 md:pt-20 md:pb-32">
         <div className="md:col-span-5">
           <Reveal immediate>
             <Label>404</Label>
           </Reveal>
-          <h1 className="display mt-8 text-[clamp(3.4rem,7.4vw,7.6rem)] !leading-[0.92]">
+          <h1 className="display t-hero mt-6">
             <WordRise immediate delay={0.05}>
               Page
             </WordRise>{" "}
-            <em>
-              <WordRise immediate delay={0.05} start={1}>
-                not found.
-              </WordRise>
-            </em>
+            <WordRise immediate delay={0.05} start={1}>
+              not found.
+            </WordRise>
           </h1>
           <Reveal immediate delay={0.3} className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3 md:mt-14">
             <ButtonLink href="/">Home</ButtonLink>
@@ -63,7 +61,7 @@ export default function NotFound() {
                       {p.kicker}
                       {r.pending && <PendingTag />}
                     </span>
-                    <span className="display mt-2.5 block text-[clamp(1.6rem,2.4vw,2.2rem)] transition-transform duration-(--duration-ui) ease-expo group-hover:translate-x-1.5">
+                    <span className="display t-h3 mt-2 block transition-transform duration-(--duration-ui) ease-expo group-hover:translate-x-1.5">
                       {typeset(p.heading)}
                     </span>
                   </span>

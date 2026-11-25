@@ -47,7 +47,7 @@ export default function SpeakingPage() {
     <div className="sp-page">
       {/* Opening: the headline, then Dr. Joy on stage at full height */}
       <section className="sp-open overflow-x-clip bg-paper pt-[4.75rem]">
-        <div className="mx-auto grid max-w-[90rem] px-5 md:px-10 lg:grid-cols-12 lg:gap-x-6">
+        <div className="mx-auto grid max-w-(--wrap) px-5 md:px-10 lg:grid-cols-12 lg:gap-x-6">
           <div className="sp-open-head pt-12 md:pt-16 lg:col-span-6 lg:row-start-1 xl:col-span-7">
             <Label index="02">Speaking</Label>
             <h1 className="sp-open-title display mt-7 text-[clamp(2.6rem,13.2vw,5.25rem)] leading-[0.92] md:text-[clamp(4.5rem,10vw,6.5rem)]">
@@ -96,7 +96,7 @@ export default function SpeakingPage() {
                 {chapters.map((c, i) => (
                   <li key={c.href} className={i % 2 === 0 ? "sm:pr-6" : "sm:pl-6"}>
                     <a href={c.href} className={`group flex h-full min-h-[3.25rem] items-center justify-between gap-4 py-2.5 ${focusRing.light}`}>
-                      <span className="font-serif text-[1.25rem] leading-[1.15] tracking-[-0.005em]">
+                      <span className="font-display text-[1.25rem] leading-[1.15] tracking-[-0.005em]">
                         <span className="link-draw pb-0.5">{c.label}</span>
                       </span>
                       <span className="sp-toc-arrow relative block size-4 shrink-0 overflow-hidden text-stone group-hover:text-ink" aria-hidden>
@@ -115,7 +115,7 @@ export default function SpeakingPage() {
       {/* Featured Clinical Courses: the program */}
       <section className="relative bg-paper">
         <ChapterRail current={0} />
-        <div className="mx-auto max-w-[90rem] px-5 pt-28 pb-24 md:px-10 md:pt-36 md:pb-36">
+        <div className="mx-auto max-w-(--wrap) px-5 pt-28 pb-24 md:px-10 md:pt-36 md:pb-36">
           <div id="topics" className="grid gap-6 lg:grid-cols-12 lg:gap-x-6">
             <h2 className="display text-[clamp(2.75rem,5.6vw,5.04rem)] lg:col-span-7">
               <WordRise>{clinical.heading}</WordRise>
@@ -134,9 +134,9 @@ export default function SpeakingPage() {
       <RoomBand />
 
       {/* For Dental Teams & Organizations: a staggered spread on ivory */}
-      <section className="relative bg-ivory">
+      <section className="relative bg-paper">
         <ChapterRail current={1} ground="ivory" />
-        <div className="mx-auto max-w-[90rem] px-5 pt-28 pb-24 md:px-10 md:pt-36 md:pb-40">
+        <div className="mx-auto max-w-(--wrap) px-5 pt-28 pb-24 md:px-10 md:pt-36 md:pb-40">
           <div id="teams" className="max-w-[60rem]">
             <h2 className="display text-[clamp(2.75rem,5.6vw,5.04rem)]">
               <WordRise>{teams.heading}</WordRise>
@@ -156,7 +156,7 @@ export default function SpeakingPage() {
                 <h3 className="display mt-8 text-[clamp(2.75rem,5vw,4.5rem)] leading-[0.94]">
                   <ProgramTitle title={p.title} />
                 </h3>
-                <p className="rise mt-6 max-w-[30ch] font-serif text-[clamp(1.35rem,1.9vw,1.7rem)] leading-snug italic" style={d(0.2)}>
+                <p className="rise mt-6 max-w-[30ch] font-display text-[clamp(1.35rem,1.9vw,1.7rem)] leading-snug italic" style={d(0.2)}>
                   {p.subtitle}
                 </p>
                 <p className="rise mt-5 max-w-[46ch] text-[1.03125rem] leading-relaxed text-stone" style={d(0.28)}>
@@ -177,7 +177,7 @@ export default function SpeakingPage() {
       {/* Keynote Presentations: the black chapter. Its photo rises across the edge from the ivory above. */}
       <section data-header="dark" className="grain grain-light relative bg-ink text-white">
         <ChapterRail current={2} tone="dark" />
-        <div className="mx-auto grid max-w-[90rem] px-5 pt-28 pb-24 md:px-10 md:pt-36 md:pb-36 lg:grid-cols-12 lg:gap-x-6">
+        <div className="mx-auto grid max-w-(--wrap) px-5 pt-28 pb-24 md:px-10 md:pt-36 md:pb-36 lg:grid-cols-12 lg:gap-x-6">
           <div id="keynotes" className="lg:col-span-7 lg:row-start-1">
             <h2 className="display text-[clamp(2.75rem,5.6vw,5.04rem)] text-gold-soft">
               <WordRise>{keynotes.heading}</WordRise>
@@ -208,7 +208,7 @@ export default function SpeakingPage() {
                 <h3 className="display mt-6 text-[clamp(2.9rem,6vw,5.4rem)] leading-[0.94]">
                   <WordRise>{k.title}</WordRise>
                 </h3>
-                <p className="rise mt-6 max-w-[34ch] font-serif text-[clamp(1.35rem,1.9vw,1.7rem)] leading-snug text-blush italic" style={d(0.25)}>
+                <p className="rise mt-6 max-w-[34ch] font-display text-[clamp(1.35rem,1.9vw,1.7rem)] leading-snug text-blush italic" style={d(0.25)}>
                   {k.subtitle}
                 </p>
                 <p className="rise mt-5 max-w-[48ch] text-[1.03125rem] leading-relaxed text-ash" style={d(0.33)}>
@@ -229,7 +229,7 @@ export default function SpeakingPage() {
       {/* Dr. Joy's P3: kept minimal */}
       <section className="relative bg-paper">
         <ChapterRail current={3} />
-        <div className="mx-auto grid max-w-[90rem] gap-10 px-5 pt-28 pb-24 md:px-10 md:py-36 lg:grid-cols-12 lg:gap-x-6">
+        <div className="mx-auto grid max-w-(--wrap) gap-10 px-5 pt-28 pb-24 md:px-10 md:py-36 lg:grid-cols-12 lg:gap-x-6">
           <div id="p3" className="lg:col-span-4">
             <h2 className="display text-[clamp(2.75rem,5.6vw,5.04rem)]">
               <WordRise>{p3.heading}</WordRise>
@@ -237,14 +237,14 @@ export default function SpeakingPage() {
           </div>
           <InView className="relative grid md:grid-cols-2 lg:col-span-8">
             <div className="rise py-9 md:pr-10" style={d(0.1)}>
-              <h3 className="font-serif text-[clamp(1.85rem,2.8vw,2.5rem)] leading-tight">{p3.bring.title}</h3>
+              <h3 className="font-display text-[clamp(1.85rem,2.8vw,2.5rem)] leading-tight">{p3.bring.title}</h3>
               <p className="mt-3 max-w-md text-[1.03125rem] leading-relaxed text-stone">{p3.bring.text}</p>
               <InquiryButton type="p3_conference" variant="text" className="mt-4">
                 {p3.bring.cta}
               </InquiryButton>
             </div>
             <div className="rise py-9 md:pl-10" style={d(0.18)}>
-              <h3 className="font-serif text-[clamp(1.85rem,2.8vw,2.5rem)] leading-tight">{p3.attend.title}</h3>
+              <h3 className="font-display text-[clamp(1.85rem,2.8vw,2.5rem)] leading-tight">{p3.attend.title}</h3>
               <p className="mt-3 max-w-md text-[1.03125rem] leading-relaxed text-stone">{p3.attend.text}</p>
               <ArrowLink href={p3.attend.cta.href} className="mt-4">
                 {p3.attend.cta.label}
@@ -262,7 +262,7 @@ export default function SpeakingPage() {
 
       {/* Planning an Event?: the finale */}
       <section data-header="dark" className="grain grain-light overflow-clip bg-ink text-white">
-        <div className="mx-auto max-w-[90rem] px-5 pt-28 pb-24 md:px-10 md:pt-40 md:pb-32">
+        <div className="mx-auto max-w-(--wrap) px-5 pt-28 pb-24 md:px-10 md:pt-40 md:pb-32">
           <div data-view className="sp-finale">
             <h2 className="sp-finale-line display text-[clamp(4rem,20vw,7.5rem)] leading-[0.86] md:text-[clamp(6rem,12.9vw,8.25rem)] lg:text-[clamp(8rem,14vw,12.6rem)]">
               <WordRise>{planningLead}</WordRise>{" "}

@@ -137,11 +137,11 @@ export default function InquiryPanel({ request, closing, close }: PanelProps) {
         {/* Keyed by view: a new view mounts fresh, so its blocks settle in again. */}
         <div key={`${sent ? "sent" : (choice ?? "picker")}${allTopics ? "-all" : ""}`} className="panel-settle">
           {sent && (
-            <span className="mb-8 inline-flex size-12 items-center justify-center rounded-full border border-gold-deep text-gold-deep">
+            <span className="mb-8 inline-flex size-12 items-center justify-center rounded-full border border-ink text-ink">
               <Check className="size-5" aria-hidden />
             </span>
           )}
-          <h2 ref={heading} id="inquiry-title" tabIndex={-1} className="display text-[clamp(2.4rem,6vw,3.4rem)] outline-none">
+          <h2 ref={heading} id="inquiry-title" tabIndex={-1} className="display t-h1 outline-none">
             {title}
           </h2>
           {intro && (
@@ -192,10 +192,10 @@ function Picker({ choices, onPick }: { choices: Choice[]; onPick: (c: Choice) =>
               type="button"
               data-choice={c}
               onClick={() => onPick(c)}
-              className="group flex min-h-16 w-full items-center gap-5 py-4 text-left transition-colors duration-[var(--duration-hover,180ms)] hover:bg-ivory focus-visible:bg-ivory focus-visible:outline-2 focus-visible:outline-offset-0 focus-visible:outline-ink active:bg-sand/60"
+              className="group flex min-h-16 w-full items-center gap-5 py-4 text-left transition-colors duration-[var(--duration-hover,180ms)] hover:bg-mist focus-visible:bg-mist focus-visible:outline-2 focus-visible:outline-offset-0 focus-visible:outline-ink active:bg-ink/[0.07]"
             >
               <span className="label w-6 shrink-0 text-stone tabular-nums">{String(i + 1).padStart(2, "0")}</span>
-              <span className="flex-1 font-serif text-[1.375rem] leading-tight">
+              <span className="display t-h3 flex-1">
                 {c === "consulting" ? consultingChoice.label : inquiryTypes[c].label}
               </span>
               <SwapArrow className="mr-1 size-4" />
@@ -237,7 +237,7 @@ function ConsultingRoute() {
 function EventRoute({ event }: { event: NonNullable<ReturnType<typeof liveEvent>> }) {
   return (
     <div className="pt-6">
-      <p className="font-serif text-3xl leading-tight">{event.name}</p>
+      <p className="display t-h2">{event.name}</p>
       <p className="mt-2 text-[1rem] text-stone">
         {event.date} · {event.location}
       </p>

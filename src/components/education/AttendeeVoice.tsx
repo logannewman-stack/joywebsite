@@ -69,8 +69,8 @@ export function AttendeeVoice() {
 
   if (!a) {
     return notes ? (
-      <section className="bg-ivory">
-        <div className="mx-auto max-w-[90rem] px-5 py-24 md:px-10">
+      <section className="bg-paper">
+        <div className="mx-auto max-w-(--wrap) px-5 py-24 md:px-10">
           <ReviewSlot>Featured attendee testimonial or approved short video (permission required)</ReviewSlot>
         </div>
       </section>
@@ -92,8 +92,8 @@ export function AttendeeVoice() {
   const parts = hasQuote ? opening(a.quote) : null;
   if (parts) {
     return (
-      <section className="edu-voice bg-ivory">
-        <div className="mx-auto max-w-[90rem] px-5 pt-10 pb-24 md:px-10 md:pt-12 md:pb-32 lg:pt-24 lg:pb-40">
+      <section className="edu-voice bg-paper">
+        <div className="mx-auto max-w-(--wrap) px-5 pt-10 pb-24 md:px-10 md:pt-12 md:pb-32 lg:pt-24 lg:pb-40">
           <div className="lg:grid lg:grid-cols-12 lg:gap-x-6">
             <InView className="lg:col-span-11 lg:col-start-2">
               <div className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-5">
@@ -113,7 +113,7 @@ export function AttendeeVoice() {
                   {parts.lead}
                 </WordLight>
               </p>
-              <InView as="p" className="edu-voice-rest rise mt-7 max-w-[44ch] font-serif text-[clamp(1.3rem,1.9vw,1.65rem)] leading-[1.32] text-pretty md:mt-9 lg:mt-0 lg:max-w-none">
+              <InView as="p" className="edu-voice-rest rise mt-7 max-w-[44ch] font-display text-[clamp(1.3rem,1.9vw,1.65rem)] leading-[1.32] text-pretty md:mt-9 lg:mt-0 lg:max-w-none">
                 {typeset(parts.rest)}
               </InView>
             </blockquote>
@@ -139,9 +139,9 @@ export function AttendeeVoice() {
       {video && (
         // Sits in the quote's column, pulled up into the quote's bottom space
         // (relative, so it paints above the quote section it overlaps).
-        <section className={`relative bg-ivory ${hasQuote ? "-mt-10 md:-mt-20" : ""}`}>
+        <section className={`relative bg-paper ${hasQuote ? "-mt-10 md:-mt-20" : ""}`}>
           <div
-            className={`mx-auto grid max-w-[90rem] px-5 md:px-10 ${
+            className={`mx-auto grid max-w-(--wrap) px-5 md:px-10 ${
               hasQuote ? "pb-24 md:grid-cols-12 md:gap-x-6 md:pb-32" : "gap-10 py-24 md:py-36 lg:grid-cols-12"
             }`}
           >

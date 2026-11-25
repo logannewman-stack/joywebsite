@@ -51,7 +51,7 @@ export function Pathways() {
       data-scene-track
       data-inview=""
       suppressHydrationWarning
-      className="work-track stagger px-5 sm:grid sm:grid-cols-2 sm:gap-x-6 sm:gap-y-14 md:gap-x-8 md:px-10 lg:mx-auto lg:max-w-[90rem] lg:gap-y-20 xl:grid-cols-4"
+      className="work-track stagger px-5 sm:grid sm:grid-cols-2 sm:gap-x-6 sm:gap-y-14 md:gap-x-8 md:px-10 lg:mx-auto lg:max-w-(--wrap) lg:gap-y-20 xl:grid-cols-4"
     >
       {home.pathways.map((p, i) => (
         <li
@@ -62,7 +62,7 @@ export function Pathways() {
           style={{ "--c": total > 1 ? i / (total - 1) : 0 } as Vars}
           className="work-panel group relative has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-[0.625rem] has-[:focus-visible]:outline-ink sm:even:mt-16 lg:even:mt-24 xl:even:mt-28"
         >
-          <div className="work-photo overflow-hidden bg-sand">
+          <div className="work-photo overflow-hidden bg-mist">
             <Photo
               slot={p.photo}
               sizes={sizes}

@@ -10,36 +10,73 @@
 
 /* ==========================================================================
    Dr. Joy RDH: design tokens
-   Black-and-white foundation. Ivory adds warmth. Two restrained accents:
-   - Pale pink (blush): emphasis in type. Italic display phrases and
-     highlighted phrases on black; a marker behind ink words on light.
-     Never a page color, never small text on white.
-   - Tan gold: structure and jewelry. Hairlines, progress lines, numerals,
-     quote marks, dots, rings, the monogram. On black it may also set large
-     display words; never small type on black. On white and ivory use
-     gold-deep, for marks and large type only.
+   Black and white. The photographs bring the colour and the warmth.
+   - Greys are neutral: text, thin divider lines, soft fills. No cream, no gold.
+   - Pale pink (blush) is the one accent, used rarely: a marker behind a
+     phrase that matters. Never a page colour, never the colour of type.
+   Two type families beside the script logo: Archivo for headings (bold, a
+   little wide), DM Sans for everything else.
    ========================================================================== */
 @theme {
   --color-ink: #0b0b0b;
   --color-ink-soft: #1a1a1a;
   --color-paper: #ffffff;
-  --color-ivory: #f5f1e9; /* brand cream */
-  --color-sand: #e8e1d5;
-  --color-blush: #f0d3ce; /* pale pink */
-  --color-blush-deep: #cfa39b;
-  --color-gold: #c2a36b; /* tan gold: lines, marks and large type on black (8:1) */
-  --color-gold-soft: #d9c39a; /* champagne: large display words on black */
-  --color-gold-deep: #94753f; /* marks and large type on white or ivory (4.2:1) */
+  --color-mist: #f4f4f4; /* soft neutral fill: form fields, photo frames while loading */
+  --color-blush: #f0d3ce; /* pale pink: the marker behind a phrase */
   --color-charcoal: #393839; /* logo charcoal */
-  --color-stone: #625e59; /* secondary text on white, 6.3:1 */
-  --color-ash: #a9a49d; /* secondary text on black, 8:1 */
-  --color-line: rgb(11 11 11 / 0.12);
-  --color-line-dark: rgb(255 255 255 / 0.16);
+  --color-stone: #5e5e5e; /* secondary text on white, 6.6:1 */
+  --color-ash: #a8a8a8; /* secondary text on black, 8.2:1 */
+  --color-line: rgb(11 11 11 / 0.14); /* thin divider on white */
+  --color-line-dark: rgb(255 255 255 / 0.2); /* thin divider on black */
 
-  --font-serif: var(--font-instrument), "Iowan Old Style", "Times New Roman", serif;
-  --font-sans: var(--font-geist), system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: var(--font-archivo), "Helvetica Neue", Arial, sans-serif;
+  --font-sans: var(--font-dm-sans), system-ui, -apple-system, "Segoe UI", sans-serif;
 
   --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* --------------------------------------------------------------------------
+   Proportions. One content width and one type scale for every page, so the
+   pages read as one hand.
+
+   --wrap is the page column: 76rem with its side padding, which leaves about
+   a tenth of a desktop screen clear on each side. Use `max-w-(--wrap)`.
+
+   Type: four heading sizes and two text sizes. A heading takes `display` and
+   one of t-hero / t-h1 / t-h2 / t-h3; running text takes t-lead or t-body.
+   Nothing on the site is set larger than t-hero.
+   -------------------------------------------------------------------------- */
+:root {
+  --wrap: 76rem;
+}
+@utility t-hero {
+  /* A page's opening line: 68px on a desktop, 36px on a phone. */
+  font-size: clamp(2.25rem, 5vw, 4.25rem);
+  line-height: 1.03;
+}
+@utility t-h1 {
+  /* A section heading: 48px on a desktop. */
+  font-size: clamp(1.875rem, 3.5vw, 3rem);
+  line-height: 1.06;
+}
+@utility t-h2 {
+  /* A heading inside a section, a pull line: 34px on a desktop. */
+  font-size: clamp(1.5rem, 2.5vw, 2.125rem);
+  line-height: 1.12;
+}
+@utility t-h3 {
+  /* An item's title in a list or a card: 22px on a desktop. */
+  font-size: clamp(1.1875rem, 1.6vw, 1.375rem);
+  line-height: 1.2;
+}
+@utility t-lead {
+  /* The first paragraph under a heading. */
+  font-size: clamp(1.125rem, 1.5vw, 1.25rem);
+  line-height: 1.5;
+}
+@utility t-body {
+  font-size: 1.0625rem;
+  line-height: 1.6;
 }
 
 /* Motion: one tempo for the whole site. Use these instead of ad-hoc
@@ -86,7 +123,7 @@ body {
   background: var(--color-paper);
   color: var(--color-ink);
   font-family: var(--font-sans);
-  font-feature-settings: "ss01", "cv11";
+  font-optical-sizing: auto;
 }
 
 ::selection {
@@ -140,57 +177,53 @@ body {
 }
 
 /* --------------------------------------------------------------------------
-   Natural flow. The site draws no divider lines. Where a white section meets
-   an ivory one, the two colours blend over a few rem instead of meeting at an
-   edge, so the page reads as one surface. Black sections keep a clean edge
-   (blended, black and ivory go muddy).
+   Divider lines. Where one white section follows another, a thin grey line
+   the width of the page column sets them apart. It is drawn as a background
+   on the second section, so no markup is needed and nothing is laid out for
+   it. A section that should run on from the one above takes `no-rule`.
+   Black sections need no line: the change of colour is the edge.
    -------------------------------------------------------------------------- */
 :root {
-  --flow: clamp(5rem, 14svh, 10rem);
+  --rule-inset: 1.25rem;
 }
-:is(.bg-paper, .next-page) + .bg-ivory {
-  background-image: linear-gradient(var(--color-paper), transparent var(--flow));
+@media (min-width: 768px) {
+  :root {
+    --rule-inset: 2.5rem;
+  }
 }
-.bg-ivory:has(+ :is(.bg-paper, .next-page)) {
-  background-image: linear-gradient(to top, var(--color-paper), transparent var(--flow));
-}
-:is(.bg-paper, .next-page) + .bg-ivory:has(+ :is(.bg-paper, .next-page)) {
-  background-image:
-    linear-gradient(var(--color-paper), transparent var(--flow)),
-    linear-gradient(to top, var(--color-paper), transparent var(--flow));
+:is(.bg-paper, .next-page) + :is(.bg-paper, .next-page):not(.no-rule) {
+  background-image: linear-gradient(var(--color-line), var(--color-line));
+  background-size: calc(min(100%, var(--wrap)) - 2 * var(--rule-inset)) 1px;
+  background-position: top center;
+  background-repeat: no-repeat;
 }
 
-/* Editorial display type */
+/* Headings: Archivo, bold and a little wide. Sizes come from the type scale
+   above (t-hero, t-h1, t-h2, t-h3). */
 .display {
-  font-family: var(--font-serif);
-  font-weight: 400;
-  letter-spacing: -0.015em;
-  line-height: 0.96;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-stretch: 112%;
+  letter-spacing: -0.02em;
+  line-height: 1.06;
   text-wrap: balance;
   /* Long words wrap instead of pushing the page sideways at 20rem or with
      increased text spacing (WCAG 1.4.12). Only applies when a word cannot fit. */
   overflow-wrap: anywhere;
 }
-
-
-/* Typeset helper (src/components/ui/Typeset.tsx): tighter compound hyphens,
-   and a sans numeral 1 so "1" is not read as "l" in Instrument Serif. */
-.typeset-hyphen {
-  margin-inline: -0.07em;
-}
-.typeset-one {
-  font-family: var(--font-sans);
-  font-size: 1em; /* Geist's 1 at 1em matches the serif cap height, so it never reads as an "ı" or "l" */
-  font-weight: 300;
-  letter-spacing: -0.02em;
+/* Emphasis in a heading is never italic and never a second typeface: it is
+   either plain, or the pale pink marker (.hl-light / .hl-dark, motion.css). */
+.display em,
+.display i {
+  font-style: normal;
 }
 
-/* Small uppercase label */
+/* Small capital label. Wide enough apart to read as a label, no wider. */
 .label {
   font-family: var(--font-sans);
-  font-size: 0.71875rem;
-  font-weight: 500;
-  letter-spacing: 0.16em;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
@@ -199,25 +232,18 @@ body {
   margin-top: 1.1em;
 }
 
-/* Fine grain so dark panels don't look flat */
+/* Fine grain so black panels don't look flat. White surfaces stay clean. */
 .grain {
   position: relative;
 }
-/* A light quote (Quote.tsx) right after a grained ivory section carries the
-   same grain, so the two read as one surface with no seam between them. */
-.grain::after,
-.grain.bg-ivory + section[data-tone="light"]::after {
+.grain.grain-light::after {
   content: "";
   position: absolute;
   inset: 0;
   pointer-events: none;
-  opacity: 0.08;
-  mix-blend-mode: multiply;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
-}
-.grain-light::after {
-  mix-blend-mode: screen;
   opacity: 0.06;
+  mix-blend-mode: screen;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
 }
 
 /* Underline that draws in on hover */
@@ -236,12 +262,12 @@ body {
 }
 
 /* Bleed off the right edge: a photo in the right-hand column of a
-   `max-w-[90rem] px-10` container runs to the edge of the screen at every
+   `max-w-(--wrap) px-10` container runs to the edge of the screen at every
    width, wide screens included (use it from md, e.g. `lg:bleed-right`).
    100vw counts a classic scrollbar, so the section clips the few extra
    pixels with `overflow-x-clip`. */
 @utility bleed-right {
-  margin-right: calc(-1 * max(2.5rem, (100vw - 90rem) / 2 + 2.5rem));
+  margin-right: calc(-1 * max(2.5rem, (100vw - var(--wrap)) / 2 + 2.5rem));
 }
 
 /* ==========================================================================

@@ -58,7 +58,7 @@ export function Photo({
         } as React.CSSProperties);
     return (
       <div
-        className={`relative overflow-hidden ${cutout ? "" : "bg-sand"} ${
+        className={`relative overflow-hidden ${cutout ? "" : "bg-mist"} ${
           preview ? "bg-cover bg-no-repeat bg-[position:var(--focus-sm)] md:bg-[position:var(--focus)]" : ""
         } ${className}`}
         style={style}
@@ -75,7 +75,7 @@ export function Photo({
           className={cutout ? "object-contain object-bottom" : "object-cover object-[var(--focus-sm)] md:object-[var(--focus)]"}
         />
         {slot.stock && notes && (
-          <span className="label absolute top-3 left-3 bg-paper/90 px-2 py-1 !text-[0.59375rem] !tracking-[0.14em] text-ink">
+          <span className="label absolute top-3 left-3 bg-paper/90 px-2 py-1 !text-[0.625rem] text-ink">
             Stock placeholder
           </span>
         )}
@@ -87,7 +87,7 @@ export function Photo({
   const bg = isCutout
     ? "bg-transparent"
     : slot.treatment === "color"
-      ? "bg-[radial-gradient(120%_90%_at_70%_20%,#efe3d6_0%,#ddd0c0_45%,#c9b9a6_100%)]"
+      ? "bg-[radial-gradient(120%_90%_at_70%_20%,#ededed_0%,#dcdcdc_45%,#c8c8c8_100%)]"
       : tone === "dark"
         ? "bg-[radial-gradient(110%_90%_at_60%_15%,#3a3a3a_0%,#232323_50%,#161616_100%)]"
         : "bg-[radial-gradient(110%_90%_at_60%_15%,#e9e9e7_0%,#d4d4d1_50%,#bdbdb9_100%)]";
@@ -96,7 +96,7 @@ export function Photo({
   const silhouette = isCutout ? (tone === "dark" ? "#f2f2f0" : "#1a1a1a") : tone === "dark" ? "#ffffff" : "#000000";
 
   return (
-    <div className={`${isCutout ? "" : "grain"} relative overflow-hidden ${bg} ${className}`} role="img" aria-label={`${slot.alt} (photo to come)`}>
+    <div className={`relative overflow-hidden ${bg} ${className}`} role="img" aria-label={`${slot.alt} (photo to come)`}>
       <svg
         viewBox="0 0 400 500"
         preserveAspectRatio="xMidYMax meet"
@@ -112,7 +112,7 @@ export function Photo({
         <div className={`absolute inset-x-0 bottom-0 p-4 md:p-5 ${isCutout ? "" : fg}`}>
           <div className={isCutout ? "max-w-[36ch] bg-paper/95 px-3.5 py-3 text-ink" : ""}>
             <p className="label !text-[0.59375rem]">Photo to come · {treatmentLabel[slot.treatment]}</p>
-            <p className="mt-1.5 max-w-[34ch] font-serif text-[0.9375rem] leading-snug italic">{slot.direction}</p>
+            <p className="mt-1.5 max-w-[34ch] text-[0.9375rem] leading-snug">{slot.direction}</p>
           </div>
         </div>
       )}

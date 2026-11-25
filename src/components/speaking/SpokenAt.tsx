@@ -98,8 +98,8 @@ export function SpokenAt({ className = "" }: { className?: string }) {
   const { heading, logos, verified, venues } = speaking.spokenAt;
   const wall = wallRows(venues);
   return (
-    <section className={`grain overflow-x-clip bg-ivory pt-24 pb-24 md:pt-36 md:pb-36 ${className}`}>
-      <InView className="mx-auto max-w-[90rem] px-5 md:px-10">
+    <section className={`grain overflow-x-clip bg-paper pt-24 pb-24 md:pt-36 md:pb-36 ${className}`}>
+      <InView className="mx-auto max-w-(--wrap) px-5 md:px-10">
         <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
           <h2 className="label text-stone">{heading}</h2>
           {!verified && notes && (
@@ -111,7 +111,7 @@ export function SpokenAt({ className = "" }: { className?: string }) {
       </InView>
 
       {logos.length > 0 ? (
-        <div className="mx-auto mt-12 max-w-[90rem] px-5 md:px-10">
+        <div className="mx-auto mt-12 max-w-(--wrap) px-5 md:px-10">
           <ul className="flex flex-wrap items-center gap-x-12 gap-y-10">
             {logos.map((l) => (
               <li key={l.name} className="relative h-10 w-32">
@@ -123,7 +123,7 @@ export function SpokenAt({ className = "" }: { className?: string }) {
       ) : (
         <>
           {/* The real list: a flowing run of names. The last word of a name holds its gold mark, so a line never starts with one. */}
-          <InView className="sp-venues mx-auto mt-10 max-w-[90rem] px-5 md:mt-12 md:px-10">
+          <InView className="sp-venues mx-auto mt-10 max-w-(--wrap) px-5 md:mt-12 md:px-10">
             {/* role: an unstyled list set inline still reads as a list of 23 in every screen reader. */}
             <ul role="list" className="sp-venues-list rise">
               {venues.map((v, i) => {

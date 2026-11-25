@@ -146,7 +146,7 @@ function Heading() {
  * editorial section: the heading, the full-bleed photograph, then the five
  * statements, numbered, on black.
  */
-export function Perspective({ tone = "bg-ivory" }: { tone?: string }) {
+export function Perspective({ tone = "bg-paper" }: { tone?: string }) {
   return (
     <section
       aria-labelledby="perspective-heading"
@@ -163,13 +163,13 @@ export function Perspective({ tone = "bg-ivory" }: { tone?: string }) {
           {/* While pinned, the header turns dark once the photograph fills the screen. */}
           <div aria-hidden data-header="dark" data-scene-vars="" suppressHydrationWarning className="persp-mark-pinned pointer-events-none" />
 
-          <InView className="persp-title mx-auto max-w-[90rem] px-5 pt-24 pb-12 md:px-10 md:pt-32 md:pb-16 lg:pt-36">
+          <InView className="persp-title mx-auto max-w-(--wrap) px-5 pt-24 pb-12 md:px-10 md:pt-32 md:pb-16 lg:pt-36">
             <h2 id="perspective-heading" className="persp-heading display max-w-[18ch] text-[clamp(2.75rem,6.4vw,6.5rem)] leading-[0.94]">
               <Heading />
             </h2>
           </InView>
 
-          <div data-scene-vars="" suppressHydrationWarning className="persp-photo relative aspect-[4/5] w-full overflow-hidden bg-sand md:aspect-[16/9] lg:aspect-auto lg:h-[min(84svh,55rem)]">
+          <div data-scene-vars="" suppressHydrationWarning className="persp-photo relative aspect-[4/5] w-full overflow-hidden bg-mist md:aspect-[16/9] lg:aspect-auto lg:h-[min(84svh,55rem)]">
             {/* Pinned, the photograph covers the screen's height: on upright screens that is wider than the screen. */}
             <ArtDirected
               wide={perspective.photo}
@@ -185,7 +185,7 @@ export function Perspective({ tone = "bg-ivory" }: { tone?: string }) {
           <div className="persp-copy relative bg-ink text-white">
             {/* Static layout only: the statements sit on black, so the header goes dark over them. */}
             <div aria-hidden data-header="dark" className="persp-mark-static pointer-events-none absolute inset-0" />
-            <div className="persp-copy-inner relative mx-auto max-w-[90rem] px-5 py-20 md:px-10 md:py-28">
+            <div className="persp-copy-inner relative mx-auto max-w-(--wrap) px-5 py-20 md:px-10 md:py-28">
               <SceneSteps className="persp-steps flex flex-col gap-10 md:gap-12">
                 {statements.map((text, i) => (
                   <SceneStep

@@ -310,7 +310,7 @@ a:focus-visible > .sp-toc-arrow > svg + svg {
     color: var(--color-ink);
   }
   .sp-bar-ivory {
-    background: var(--color-ivory);
+    background: var(--color-paper);
   }
   .sp-bar-dark {
     border-color: var(--color-line-dark);
@@ -357,7 +357,7 @@ a:focus-visible > .sp-toc-arrow > svg + svg {
 .sp-course-band {
   position: absolute;
   inset: 0 -0.75rem;
-  background: linear-gradient(90deg, transparent, var(--color-ivory) 12%, var(--color-ivory) 88%, transparent);
+  background: linear-gradient(90deg, transparent, var(--color-paper) 12%, var(--color-paper) 88%, transparent);
   transform: scaleX(0);
   transform-origin: right center;
   transition: transform 0.6s var(--ease-expo);
@@ -478,7 +478,7 @@ html.motion .sp-keynote-zoom {
    are not.)
    -------------------------------------------------------------------------- */
 .sp-venues-list {
-  font-family: var(--font-serif);
+  font-family: var(--font-display);
   font-size: clamp(1.125rem, 5.4vw, 1.3125rem);
   line-height: 1.36;
   letter-spacing: -0.008em;
@@ -533,7 +533,7 @@ html.motion .sp-keynote-zoom {
 .sp-wall {
   overflow-x: clip;
   container-type: inline-size;
-  font-family: var(--font-serif);
+  font-family: var(--font-display);
   font-size: 3vw;
   line-height: 1.16;
   letter-spacing: -0.015em;

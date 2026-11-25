@@ -1,10 +1,9 @@
-import type { CSSProperties, ReactNode } from "react";
+import type { ReactNode } from "react";
 import { InView } from "@/components/motion/InView";
-import { Hl, WordRise } from "@/components/motion/Text";
+import { WordRise } from "@/components/motion/Text";
 import { typeset } from "@/components/ui/Typeset";
 
 type Group = { title: string; items: string[] };
-type Vars = CSSProperties & Record<`--${string}`, string | number>;
 
 /** "Role, Organization" → ["Role", "Organization"] at the first comma, or the last one. */
 function split(item: string, at: "first" | "last"): [string, string] {
@@ -16,131 +15,101 @@ function split(item: string, at: "first" | "last"): [string, string] {
 const Comma = () => <span className="sr-only">, </span>;
 
 /**
- * One group of the chapter. On desktop its title holds its place in the left
- * margin (plain position: sticky) while the list scrolls past on the right.
- * The gold rule above it draws itself when the group is first seen.
+ * One group of the chapter, under a thin line. On desktop its title holds its
+ * place in the left margin (plain position: sticky) while the list scrolls
+ * past on the right.
  */
-function GroupBlock({ title, children }: { title: string; children: ReactNode }) {
+function GroupBlock({ title, children, gap = "gap-6 lg:gap-7" }: { title: string; children: ReactNode; gap?: string }) {
   return (
-    <div className="relative pt-5 lg:grid lg:grid-cols-12 lg:gap-x-6 lg:pt-7">
+    <div className="border-t border-line-dark pt-6 lg:grid lg:grid-cols-12 lg:gap-x-6 lg:pt-8">
       <div className="lg:col-span-4">
         <InView className="lg:sticky lg:top-[calc(var(--header-height)+2rem)]">
-          <h3 className="label rise text-white/70">{title}</h3>
+          <h3 className="label rise text-ash">{title}</h3>
         </InView>
       </div>
-      <ul className="mt-3 lg:col-span-8 lg:-mt-7">{children}</ul>
+      <ul className={`mt-5 flex flex-col lg:col-span-8 lg:mt-0 ${gap}`}>{children}</ul>
     </div>
   );
 }
 
-/**
- * A list row that enters when it is seen: its words lift in and the faint gold
- * hairline under it draws from the left. Rows that arrive together (a jump down the
- * page) follow one another by a few hundredths of a second.
- */
+/** A list row that lifts in when it is seen. Rows that arrive together follow one another by a few hundredths of a second. */
 function Row({ index, children }: { index: number; children: ReactNode }) {
   return (
-    <InView as="li" className="relative" delay={Math.min(index, 4) * 0.05}>
-      <div className="rise">{children}</div>
+    <InView as="li" delay={Math.min(index, 4) * 0.05}>
+      <div className="rise text-pretty">{children}</div>
     </InView>
+  );
+}
+
+/** A name in the heading face with a quieter line under it: a degree and its school, a venture and her part in it. */
+function Titled({ title, detail }: { title: string; detail: string }) {
+  return (
+    <>
+      <span className="display t-h3 block text-white">{typeset(title)}</span>
+      <Comma />
+      {/* The approved text is lower case where it follows a comma ("Jell-Ed, co-founder"); on its own line it takes a capital, in style only. */}
+      <span className="mt-1.5 block text-[0.9375rem] leading-snug text-ash first-letter:uppercase">{detail}</span>
+    </>
   );
 }
 
 /**
  * Education, Leadership, and Service: the page's black chapter. Approved
- * wording and order are unchanged; only emphasis changes. The heading's last
- * phrase is the chapter's one pale pink italic; the rules are gold. Degrees
- * are set in the display serif; leadership roles read as a ledger with the
- * organization carrying the weight; "What I've Built" closes the chapter as
- * an ivory band.
- *
- * The section's background starts as a veil (clear to black) that lies over
- * the foot of the staircase photograph above it, so the photograph carries
- * the page into black. See "Staircase and credentials" in meet.css.
+ * wording and order are unchanged. Three groups, each under a thin line with
+ * its label in the left margin: degrees and what she has built are set as a
+ * name with a quieter line under it; leadership roles read as a ledger, the
+ * role in grey and the organization in white.
  */
 export function Credentials({ heading, groups }: { heading: string; groups: Group[] }) {
   const [education, leadership, built] = groups;
-  // "Education, Leadership," + "and Service": the phrase after the last comma takes the emphasis.
-  const cut = heading.lastIndexOf(", ");
-  const lead = cut > 0 ? heading.slice(0, cut + 1) : heading;
-  const turn = cut > 0 ? heading.slice(cut + 2) : "";
   return (
-    <section data-header="dark" className="meet-creds grain grain-light text-white">
-      <div className="mx-auto max-w-[90rem] px-5 pt-6 md:px-10 md:pt-10">
-        <h2 className="display max-w-[11em] text-[clamp(2.75rem,6vw,6rem)] leading-[0.95]">
-          <WordRise>{lead}</WordRise>
-          {turn && (
-            <>
-              {" "}
-              <em>
-                <Hl tone="dark">
-                  <WordRise start={lead.split(" ").length}>{turn}</WordRise>
-                </Hl>
-              </em>
-            </>
-          )}
+    <section data-header="dark" className="meet-creds grain grain-light bg-ink text-white">
+      <div className="mx-auto max-w-(--wrap) px-5 py-20 md:px-10 md:py-28">
+        <h2 className="display t-h1 max-w-[14em]">
+          <WordRise>{heading}</WordRise>
         </h2>
 
-        <div className="mt-14 flex flex-col gap-16 md:mt-20 lg:mt-24 lg:gap-24">
+        <div className="mt-12 flex flex-col gap-12 md:mt-16 md:gap-16">
           <GroupBlock title={education.title}>
             {education.items.map((item, i) => {
               const [degree, school] = split(item, "last");
               return (
                 <Row key={item} index={i}>
-                  <div className="py-5 text-pretty md:py-6 lg:py-7">
-                    <span className="display block text-[clamp(1.75rem,3.1vw,3.1rem)] leading-[1.05] text-white">{degree}</span>
-                    <Comma />
-                    <span className="mt-2 block text-[0.875rem] leading-snug text-ash lg:mt-3 lg:text-[0.9375rem]">{school}</span>
+                  <Titled title={degree} detail={school} />
+                </Row>
+              );
+            })}
+          </GroupBlock>
+
+          <GroupBlock title={leadership.title} gap="gap-4 lg:gap-[1.125rem]">
+            {leadership.items.map((item, i) => {
+              const [role, organization] = split(item, "first");
+              return (
+                <Row key={item} index={i}>
+                  <div className="t-body sm:grid sm:grid-cols-8 sm:items-baseline sm:gap-x-6">
+                    <span className="text-ash sm:col-span-3">
+                      {role}
+                      <span className="sm:sr-only">,</span>
+                    </span>{" "}
+                    <span className="font-medium text-white sm:col-span-5">{organization}</span>
                   </div>
                 </Row>
               );
             })}
           </GroupBlock>
 
-          <GroupBlock title={leadership.title}>
-            {leadership.items.map((item, i) => {
-              const [role, organization] = split(item, "first");
+          <GroupBlock title={built.title}>
+            {built.items.map((item, i) => {
+              const [name, role] = split(item, "last");
               return (
                 <Row key={item} index={i}>
-                  <div className="py-3.5 text-[1rem] leading-snug text-pretty md:py-[1.05rem] md:text-[1.0625rem] lg:grid lg:grid-cols-8 lg:items-baseline lg:gap-x-6 lg:py-5">
-                    <span className="text-ash lg:col-span-3 lg:text-[1rem]">
-                      {role}
-                      <span className="lg:sr-only">,</span>
-                    </span>{" "}
-                    <span className="text-white lg:col-span-5 lg:font-serif lg:text-[1.875rem] lg:leading-[1.1] lg:tracking-[-0.01em]">{organization}</span>
-                  </div>
+                  <Titled title={name} detail={role} />
                 </Row>
               );
             })}
           </GroupBlock>
         </div>
       </div>
-
-      {/* What I've Built: the chapter closes on an ivory band that draws across the black. */}
-      <InView data-header="light" className="meet-built relative mt-20 md:mt-28 lg:mt-32">
-        <span aria-hidden className="rule-draw absolute inset-0 block bg-ivory" />
-        <div className="relative mx-auto max-w-[90rem] px-5 py-14 text-ink md:px-10 md:py-20 lg:grid lg:grid-cols-12 lg:gap-x-6 lg:py-24">
-          <h3 className="label rise text-stone lg:col-span-4" style={{ "--d": "0.3s" } as Vars}>
-            {built.title}
-          </h3>
-          <ul
-            className="stagger mt-8 grid gap-y-8 sm:grid-cols-2 sm:gap-x-10 lg:col-span-8 lg:mt-0 lg:gap-x-6 lg:gap-y-14"
-            style={{ "--d": "0.38s" } as Vars}
-          >
-            {built.items.map((item) => {
-              const [name, role] = split(item, "last");
-              return (
-                <li key={item} className="text-pretty">
-                  <span className="display block text-[clamp(2rem,3.4vw,3.4rem)] leading-[1.02]">{typeset(name)}</span>
-                  <Comma />
-                  <span className="label mt-3 block text-stone">{role}</span>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-      </InView>
-      <div className="h-16 md:h-24" aria-hidden />
     </section>
   );
 }

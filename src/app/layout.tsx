@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Instrument_Serif } from "next/font/google";
+import { Archivo, DM_Sans } from "next/font/google";
 import { launchBlockers, site } from "@/content/site";
 import { optIns } from "@/content/integrations";
 import { InquiryProvider } from "@/components/inquiry/InquiryProvider";
@@ -24,16 +24,20 @@ if (blockers.length) {
   throw new Error(`Not ready to launch (site.showPlaceholders is false):\n- ${blockers.join("\n- ")}`);
 }
 
-const instrument = Instrument_Serif({
-  variable: "--font-instrument",
+// Two families for the whole site, beside the script logo.
+// Headings: Archivo, bold and a little wide (the width axis is loaded for that).
+const archivo = Archivo({
+  variable: "--font-archivo",
   subsets: ["latin"],
-  weight: "400",
-  style: ["normal", "italic"],
+  axes: ["wdth"],
 });
 
-const geist = Geist({
-  variable: "--font-geist",
+// Body text, navigation, labels and buttons: DM Sans.
+const dmSans = DM_Sans({
+  variable: "--font-dm-sans",
   subsets: ["latin"],
+  style: ["normal", "italic"],
+  axes: ["opsz"],
 });
 
 export const metadata: Metadata = {
@@ -54,7 +58,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${instrument.variable} ${geist.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`${archivo.variable} ${dmSans.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: MOTION_HEAD_SCRIPT }} />
         <script dangerouslySetInnerHTML={{ __html: CHROME_HEAD_SCRIPT }} />

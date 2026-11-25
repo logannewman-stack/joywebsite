@@ -13,7 +13,6 @@ import { Couplet } from "@/components/meet/Couplet";
 import { Credentials } from "@/components/meet/Credentials";
 import { Question } from "@/components/meet/Question";
 import { StoryLight } from "@/components/meet/StoryLight";
-import { bindI } from "@/components/meet/text";
 import { InquiryButton } from "@/components/inquiry/InquiryProvider";
 import { NextPage } from "@/components/layout/NextPage";
 
@@ -32,127 +31,104 @@ export default function MeetPage() {
   return (
     <>
       {/*
-        Opening: the portrait owns the right half of the first screen, bleeds to
-        the edge and hangs over the ivory section below. It is in place from the
-        first paint (it is the largest paint), settles from slightly large and
-        drifts as the page moves. The story takes ink as it is read.
+        Opening: the story on the left, her portrait on the right with its
+        background removed, straight on the white page. The portrait is about a
+        third of the screen wide and stands on the bottom edge of the section,
+        so the line under the section is its floor. The story takes ink as it
+        is read.
       */}
-      <section className="overflow-x-clip bg-paper pt-[4.75rem]">
-        <div className="mx-auto max-w-[90rem] px-5 pb-24 md:px-10 md:pb-32 lg:grid lg:grid-cols-12 lg:gap-x-6 lg:pb-0">
-          <div className="pt-10 md:pt-16 lg:col-span-6 lg:pt-14">
+      <section className="bg-paper pt-(--header-height)">
+        <div className="mx-auto max-w-(--wrap) px-5 md:px-10 lg:grid lg:grid-cols-12 lg:items-end lg:gap-x-6">
+          <div className="pt-12 md:pt-16 lg:col-span-7 lg:pt-20 lg:pb-24">
             <Reveal immediate>
               <Label index="01">Meet Dr. Joy</Label>
             </Reveal>
-            <h1 className="display mt-7 text-[clamp(3.5rem,min(8vw,13.8svh),7.3rem)] leading-[0.9] md:mt-9">
+            <h1 className="display t-hero mt-6 md:mt-7">
               {/* Trailing spaces keep the text "My career has never followed a single lane." for search and copy-paste; they do not render. */}
-              <LineReveal lines={["My career has ", "never followed ", <em key="lane">a single lane.</em>]} />
+              <LineReveal lines={["My career has ", "never followed ", "a single lane."]} />
             </h1>
+            <StoryLight
+              paragraphs={hero.paragraphs}
+              className="mt-8 flex max-w-[33rem] flex-col gap-5 md:mt-10"
+              paragraphClassName={(i) => (i === 0 ? "t-lead text-ink" : "t-body text-ink")}
+              wrap={(p, i) =>
+                i === 0 ? (
+                  <Reveal immediate delay={0.25}>
+                    {p}
+                  </Reveal>
+                ) : (
+                  <Reveal delay={(i - 1) * 0.06}>{p}</Reveal>
+                )
+              }
+            />
           </div>
 
-          <div className="relative z-10 mt-10 md:mt-14 md:ml-auto md:w-2/3 lg:col-span-6 lg:col-start-7 lg:row-span-2 lg:mt-0 lg:-mb-16 lg:bleed-right lg:ml-0 lg:min-h-[min(calc(100svh-4.75rem),67.5rem)] lg:w-auto">
-            <Parallax amount={3} className="aspect-[4/5] w-full lg:aspect-auto lg:h-full">
-              {/* On desktop the frame is as tall as the story beside it, so the photo is fitted by height: about 900px wide up to 1440, then in proportion. */}
-              <Photo
-                slot={hero.portrait}
-                priority
-                className="meet-settle h-full w-full"
-                sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1023px) calc(66vw - 53px), (max-width: 1440px) 900px, 62vw"
-              />
-            </Parallax>
+          <div className="mx-auto mt-12 w-[min(100%,24rem)] md:mt-16 lg:col-span-5 lg:col-start-8 lg:mx-0 lg:mt-0 lg:w-auto">
+            {/* 1122 x 1402: the frame has the cut-out's own proportions, so nothing is cropped and its foot meets the section edge. */}
+            <Photo
+              slot={hero.portrait}
+              priority
+              className="meet-settle aspect-[1122/1402] w-full"
+              sizes="(max-width: 1023px) min(100vw - 40px, 384px), (max-width: 1440px) 36vw, 30vw"
+            />
           </div>
-
-          <StoryLight
-            paragraphs={hero.paragraphs}
-            className="mt-12 flex max-w-[36rem] flex-col gap-6 md:mt-16 md:ml-[8%] lg:col-span-6 lg:col-start-1 lg:mt-10 lg:ml-0 lg:max-w-none lg:pr-6 lg:pb-20 xl:col-span-5 xl:col-start-2 xl:pr-0"
-            paragraphClassName={(i) =>
-              i === 0
-                ? "text-[1.25rem] leading-[1.55] text-ink md:text-[1.375rem] lg:text-[1.25rem] xl:text-[1.375rem]"
-                : "text-[1.125rem] leading-relaxed text-ink"
-            }
-            wrap={(p, i) =>
-              i === 0 ? (
-                <Reveal immediate delay={0.25}>
-                  {p}
-                </Reveal>
-              ) : (
-                <Reveal delay={(i - 1) * 0.06}>{p}</Reveal>
-              )
-            }
-          />
         </div>
       </section>
 
-      {/* The couplet: two lines glide in from opposite sides, the operatory between them */}
+      {/* The couplet: the operatory close-up beside the two lines */}
       <Couplet lines={hero.couplet} photo={operatory} />
 
       {/*
-        Staircase interlude. On desktop the photograph opens to the full screen
-        and holds (a plain sticky stage) while the black chapter slides over it;
-        on smaller screens it drifts in its frame. Either way its foot fades into
-        the black of Education, Leadership, and Service.
+        A wide pause before the credentials: the staircase, the width of the
+        page column, drifting a little in its frame. It runs on from the
+        couplet (no line between them).
       */}
-      <section data-scene="lg" data-view="" data-header="dark" className="meet-stairs bg-ivory">
-        <div data-scene-pin className="relative">
-          <Parallax amount={4} className="aspect-[4/5] w-full md:aspect-[4/3] lg:aspect-[2/1] pinned:aspect-auto pinned:h-full">
-            {/* Phone and tablet frames are taller than the photo, so it is fitted by height (hence the wide sizes). */}
-            <Photo slot={interlude} tone="dark" className="meet-stairs-photo h-full w-full" sizes="(max-width: 767px) 200vw, (max-width: 1023px) 120vw, 106vw" />
-          </Parallax>
-          <div aria-hidden className="meet-stairs-dim pointer-events-none absolute inset-0 bg-ink opacity-0" />
+      <section className="no-rule bg-paper">
+        <div className="mx-auto max-w-(--wrap) px-5 pb-20 md:px-10 md:pb-28">
+          <ImageReveal>
+            <Parallax amount={4} className="aspect-[4/5] w-full sm:aspect-[16/9] lg:aspect-[12/5]">
+              <Photo slot={interlude} className="h-full w-full" sizes="(max-width: 1440px) calc(100vw - 40px), 79vw" />
+            </Parallax>
+          </ImageReveal>
         </div>
       </section>
+
       <Credentials heading={credentials.heading} groups={credentials.groups} />
 
-      {/* What Guides My Work: the lead-in, on the same margin-and-column grid as the chapter above */}
+      {/* What Guides My Work: the lead-in, the question and its answer, in one column beside the label */}
       <section className="bg-paper">
-        <div className="mx-auto max-w-[90rem] px-5 pt-24 md:px-10 md:pt-36 lg:grid lg:grid-cols-12 lg:gap-x-6">
+        <div className="mx-auto max-w-(--wrap) px-5 pt-20 pb-20 md:px-10 md:pt-28 md:pb-28 lg:grid lg:grid-cols-12 lg:gap-x-6">
           <InView className="lg:col-span-4">
-            <Label as="h2" className="rise">
+            <Label as="h2" className="rise text-stone">
               {guides.heading}
             </Label>
           </InView>
-          <InView className="stagger mt-8 flex max-w-[46rem] flex-col gap-6 md:mt-10 lg:col-span-7 lg:col-start-5 lg:mt-0 lg:max-w-none">
-            {guides.before.map((p, i) =>
-              // The last line before the stage is set as its cue, in the display italic.
-              i === guides.before.length - 1 ? (
-                <p key={i} className="display mt-2 text-[clamp(1.75rem,2.9vw,2.75rem)] leading-[1.08] md:mt-4">
-                  <em>{bindI(p)}</em>
-                </p>
-              ) : (
-                <p key={i} className="text-[1.3125rem] leading-[1.5] text-ink md:text-[1.5rem]">
+          <div className="mt-8 lg:col-span-8 lg:col-start-5 lg:mt-0">
+            <InView className="stagger flex max-w-[40rem] flex-col gap-5">
+              {guides.before.map((p, i) => (
+                <p key={i} className="t-lead text-ink">
                   {p}
                 </p>
-              ),
-            )}
-          </InView>
+              ))}
+            </InView>
+            <Question question={guides.question} answer={guides.answer} />
+          </div>
         </div>
       </section>
 
-      {/* The question, held on a pinned stage, and its answer */}
-      <Question question={guides.question} answer={guides.answer} />
-
       {/* The sign-off: the story's last lines, her signature, and the way to reach her */}
       <section className="meet-signoff bg-paper">
-        <div className="mx-auto max-w-[90rem] px-5 pt-4 pb-28 md:px-10 md:pt-8 md:pb-40 lg:grid lg:grid-cols-12 lg:gap-x-6">
+        <div className="mx-auto max-w-(--wrap) px-5 pt-20 pb-24 md:px-10 md:pt-28 md:pb-32 lg:grid lg:grid-cols-12 lg:items-center lg:gap-x-6">
           {hasLifePhoto && (
-            <ImageReveal className="md:w-2/3 lg:col-span-5 lg:w-auto">
-              <Parallax amount={7} className="aspect-[4/5] w-full">
-                <Photo
-                  slot={guides.photo}
-                  className="h-full w-full"
-                  sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1023px) calc(66vw - 53px), 44vw"
-                />
+            <ImageReveal className="w-[min(100%,22rem)] lg:col-span-4 lg:w-auto">
+              <Parallax amount={5} className="aspect-[4/5] w-full">
+                <Photo slot={guides.photo} className="h-full w-full" sizes="(max-width: 1023px) min(100vw - 40px, 352px), (max-width: 1440px) 30vw, 25vw" />
               </Parallax>
             </ImageReveal>
           )}
-          <InView
-            className={
-              hasLifePhoto
-                ? "mt-12 max-w-[36rem] md:mt-16 md:ml-[8%] lg:col-span-6 lg:col-start-7 lg:mt-0 lg:ml-0 lg:max-w-none lg:self-end"
-                : "max-w-[36rem] lg:col-span-6 lg:col-start-7 lg:max-w-none"
-            }
-          >
-            <p className="rise text-[1.1875rem] leading-relaxed text-ink md:text-[1.25rem]">{guides.after[0]}</p>
-            <p className="rise display mt-10 text-[clamp(2rem,3.3vw,3.1rem)] leading-[1.08]" style={{ "--d": "0.08s" } as Vars}>
+          <InView className={hasLifePhoto ? "mt-10 max-w-[38rem] lg:col-span-7 lg:col-start-6 lg:mt-0" : "max-w-[38rem] lg:col-span-7 lg:col-start-6"}>
+            <p className="rise t-lead text-ink">{guides.after[0]}</p>
+            <p className="rise display t-h2 mt-8" style={{ "--d": "0.08s" } as Vars}>
               {highlight(guides.after[1], ["more than 20 years later."], "light")}
             </p>
             {site.wordmark.onLight && (
@@ -162,11 +138,11 @@ export default function MeetPage() {
                 width={site.wordmark.width}
                 height={site.wordmark.height}
                 unoptimized
-                className="wipe mt-10 h-16 w-auto md:mt-12 md:h-[5.25rem]"
+                className="wipe mt-8 h-14 w-auto md:mt-10 md:h-[4.5rem]"
                 style={{ "--d": "0.5s" } as Vars}
               />
             )}
-            <div className="rise pt-8" style={{ "--d": "0.7s" } as Vars}>
+            <div className="rise pt-7" style={{ "--d": "0.7s" } as Vars}>
               <Magnetic strength={0.2}>
                 <InquiryButton>Start a Conversation</InquiryButton>
               </Magnetic>

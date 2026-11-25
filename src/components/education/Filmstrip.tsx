@@ -40,7 +40,7 @@ export function Filmstrip() {
       from="lg"
       length={length}
       steps={prints.length}
-      className="edu-strip bg-ivory"
+      className="edu-strip bg-paper"
       pinClassName="edu-strip-stage py-16 md:py-24"
     >
       <div
@@ -85,7 +85,7 @@ export function Filmstrip() {
       {/* Only while swiped: the frame in place, and how far the strip has travelled. */}
       {prints.length > 1 && <StripMeter total={prints.length} />}
       {/* Only while pinned: the frame in view, and how far the row has travelled. */}
-      <div className="edu-strip-bar mx-auto w-full max-w-[90rem] items-center gap-6 px-10">
+      <div className="edu-strip-bar mx-auto w-full max-w-(--wrap) items-center gap-6 px-10">
         {/* The current frame comes from CSS (the scene's data-step), not from text the engine rewrites:
             that text would differ from the server's on a reload mid-scene and break hydration. */}
         <span aria-hidden className="label tabular-nums text-stone">

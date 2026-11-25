@@ -57,8 +57,8 @@ export function Feature({ item, cta, heading, intro }: { item: FeatureItem; cta:
     </>
   );
   return (
-    <section className="bg-ivory">
-      <div className="mx-auto max-w-[90rem] px-5 py-20 md:px-10 md:py-28 lg:py-32">
+    <section className="bg-paper">
+      <div className="mx-auto max-w-(--wrap) px-5 py-20 md:px-10 md:py-28 lg:py-32">
         {heading && (
           <div className="mb-12 md:mb-16 lg:mb-20">
             <h2 className="display text-[clamp(2.6rem,4.6vw,4.4rem)]">
@@ -77,7 +77,7 @@ export function Feature({ item, cta, heading, intro }: { item: FeatureItem; cta:
           {/* Masthead: the publication, the issue date, and in review the confirm tag */}
           <InView as="header" className="relative flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2 pb-6 md:pb-8">
             {/* One of her own pieces has no publication: its date leads the masthead instead. */}
-            {item.publication && <p className="rise font-serif text-[clamp(1.6rem,2.3vw,2.25rem)] leading-tight italic">{item.publication}</p>}
+            {item.publication && <p className="rise font-display text-[clamp(1.6rem,2.3vw,2.25rem)] leading-tight italic">{item.publication}</p>}
             <div className="rise flex flex-wrap items-center gap-3" style={{ "--d": "0.08s" } as Vars}>
               {item.date && <p className="label text-stone tabular-nums">{item.date}</p>}
               {!item.verified && <ConfirmTag />}
@@ -94,7 +94,7 @@ export function Feature({ item, cta, heading, intro }: { item: FeatureItem; cta:
             <InView className="mt-6 md:mt-10 md:flex md:items-end md:justify-between md:gap-10 lg:col-span-4 lg:mt-0 lg:flex-col lg:items-stretch lg:pt-3">
               <div>
                 {item.subtitle && (
-                  <p className="rise max-w-[34ch] font-serif text-[clamp(1.35rem,1.9vw,1.8rem)] leading-snug text-stone italic">{item.subtitle}</p>
+                  <p className="rise max-w-[34ch] font-display text-[clamp(1.35rem,1.9vw,1.8rem)] leading-snug text-stone italic">{item.subtitle}</p>
                 )}
                 {item.excerpt && (
                   <p className="rise mt-5 max-w-[56ch] text-[1.0625rem] leading-relaxed text-stone" style={{ "--d": "0.08s" } as Vars}>

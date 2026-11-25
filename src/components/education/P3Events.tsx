@@ -53,7 +53,7 @@ export async function P3Events({ lift = false }: { lift?: boolean }) {
 
   return (
     <section id="events" data-header="dark" className="grain grain-light bg-ink text-white">
-      <div className="mx-auto max-w-[90rem] px-5 py-24 md:px-10 md:py-32">{body}</div>
+      <div className="mx-auto max-w-(--wrap) px-5 py-24 md:px-10 md:py-32">{body}</div>
     </section>
   );
 }
@@ -131,7 +131,7 @@ function InterestList() {
   const { fallback } = education.events;
   return (
     <>
-      <h3 className="max-w-[26ch] font-serif text-[clamp(1.5rem,2.2vw,2rem)] leading-snug text-balance">{fallback.heading}</h3>
+      <h3 className="max-w-[26ch] font-display text-[clamp(1.5rem,2.2vw,2rem)] leading-snug text-balance">{fallback.heading}</h3>
       <p className="mt-5 max-w-[44ch] text-[1.0625rem] leading-relaxed text-ash">{fallback.text}</p>
       <Action>
         <InquiryButton type="p3_interest" tone="dark">

@@ -38,7 +38,7 @@ export default function Home() {
   // The black stage (Direction B) holds while the story slides up over it.
   const hold = site.homeHero === "b";
   // Ivory brings warmth after a black or white opening; after C's ivory opening it switches to white.
-  const perspectiveTone = site.homeHero === "c" ? "bg-paper" : "bg-ivory";
+  const perspectiveTone = site.homeHero === "c" ? "bg-paper" : "bg-paper";
   const opening = (
     <>
       <Hero hold={hold} />
@@ -67,7 +67,7 @@ export default function Home() {
             stage settles for one, the row travels for eleven, and the last panel holds, whole, for two (just under
             half a screen) before the stage lets go. home.css ("Explore My Work") sets the timing. */}
         <Scene as="div" from="lg" length={4.25} steps={14} className="work" pinClassName="work-stage pt-20 pb-20 sm:pt-24 sm:pb-24 md:pt-32 md:pb-32 lg:pb-40">
-          <div className="work-head mx-auto max-w-[90rem] px-5 md:px-10">
+          <div className="work-head mx-auto max-w-(--wrap) px-5 md:px-10">
             <InView>
               <h2 id="work-heading" className="work-title display text-[clamp(2.75rem,6.4vw,6.5rem)] leading-[0.92]">
                 <WordRise>{work.heading}</WordRise>

@@ -23,7 +23,7 @@ const geometry = [
 export function OriginalArticles({ heading, cta, articles }: { heading: string; cta: string; articles: OriginalArticle[] }) {
   return (
     <section className="bg-paper">
-      <div className="mx-auto max-w-[90rem] px-5 py-24 md:px-10 md:py-28 lg:pt-36 lg:pb-32">
+      <div className="mx-auto max-w-(--wrap) px-5 py-24 md:px-10 md:py-28 lg:pt-36 lg:pb-32">
         <h2 className="display text-[clamp(2.6rem,5vw,4.8rem)]">
           <WordRise>{heading}</WordRise>
         </h2>

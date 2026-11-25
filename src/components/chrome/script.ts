@@ -85,7 +85,7 @@ const LATE = 2500;
 /**
  * Inline script placed right after the curtain's markup, so it runs before
  * the first paint. The curtain keeps its own time in CSS (chrome.css): the
- * signature is written, a gold hairline draws under it, the curtain
+ * signature is written, a thin line draws under it, the curtain
  * lifts and the header settles, all as animations that start with the first
  * paint and move only transform and opacity, so they run on the compositor
  * and a busy main thread (hydration on a slow phone) cannot stretch them.

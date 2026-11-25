@@ -22,7 +22,7 @@ export function PathIndex({ items, className = "" }: { items: { label: string; h
                 <span className="label w-6 shrink-0 text-stone tabular-nums transition-colors duration-(--duration-ui) group-hover:text-ink group-focus-visible:text-ink">
                   {String(i + 1).padStart(2, "0")}
                 </span>
-                <span className="lean flex-1 font-serif text-[clamp(1.45rem,2vw,1.8rem)] leading-tight">{item.label}</span>
+                <span className="lean flex-1 font-display text-[clamp(1.45rem,2vw,1.8rem)] leading-tight">{item.label}</span>
                 <ArrowCircle direction="down" className="size-9 shrink-0" iconClassName="size-4" />
                 <span aria-hidden className="rule-over" />
               </a>

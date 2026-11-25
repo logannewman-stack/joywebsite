@@ -10,7 +10,7 @@ import { Photo } from "@/components/ui/Photo";
  */
 export function Band({ slot }: { slot: PhotoSlot }) {
   return (
-    <div className="bg-ivory">
+    <div className="bg-paper">
       <div data-view className="insights-band relative aspect-[4/5] w-full overflow-clip sm:aspect-[4/3] md:aspect-[16/9] lg:aspect-auto lg:h-[min(56.25vw,88svh)]">
         <div className="insights-band-inner absolute inset-0">
           <Photo

@@ -2,7 +2,7 @@
 
 A six-page, photo-led personal website for Dr. Joy RDH. It has separate pathways for speaking, hands-on education, industry collaborations and consulting (which links out to Instrumental).
 
-Built with Next.js 16 and Tailwind CSS 4. The look is an editorial foundation of black, white and ivory, photographs in color under one shared grade, and two accents: pale pink for emphasis in type and tan gold for structure. Type is Instrument Serif for display and Geist for text.
+Built with Next.js 16 and Tailwind CSS 4. The look is black and white: white pages, black sections, neutral greys for secondary text and thin divider lines. The photographs, in full color under one shared grade, bring the warmth. The one accent is a pale pink marker behind a phrase that matters, used once or twice a page. Type is two families beside the script logo: Archivo (bold, a little wide) for headings and DM Sans for everything else.
 
 ## Run it
 
@@ -71,26 +71,29 @@ Set it to `false` for launch. Then:
 - review tags disappear, `/directions` returns 404 and the `noindex` is lifted
 - the launch checks run: the build **fails** with a list if `links.instrumental` is missing, if `links.privacy` is missing while a form offers the text-message opt-in, or if `site.url` is not the production address (`launchBlockers()` in `site.ts`)
 
-### No lines
+### Proportions, type scale and lines
 
-The site draws no divider lines and no dash-like strokes beside words. Sections are set apart by space and colour; where a white section meets an ivory one the colours blend (`--flow` in `globals.css`). A list row answers hover and focus with a soft wash behind it (`.rule-over` in `industry.css`), and form fields are soft filled shapes. The only lines left are ones that move: the reading progress at the top of the page, progress meters inside the scroll scenes, and the gold underline on the current page in the menu.
+One page column and one type scale serve every page (`src/app/globals.css`):
+
+- **Column.** `--wrap` is 76rem, used as `max-w-(--wrap)`. On a desktop it leaves about a tenth of the screen clear on each side. Sections are padded about 5rem top and bottom on phones and 7rem on desktop.
+- **Headings.** A heading takes `display` and one size: `t-hero` (a page's opening line, 68px on a desktop and 36px on a phone), `t-h1` (a section heading, 48px), `t-h2` (34px) or `t-h3` (22px). Nothing is set larger than `t-hero`. Running text takes `t-lead` or `t-body`; small capital labels take `label`.
+- **Emphasis.** Never italic and never a second typeface. A heading is plain, or one phrase carries the pale pink marker: `<Hl tone="light">` on white, `tone="dark"` on black (`src/components/motion/Text.tsx`).
+- **Photographs.** Beside text a photograph takes four or five of the twelve columns, about a third of the screen. A wide photograph may run the width of the column as a band; none bleeds to the edge of the screen or fills it. A portrait with its background removed (`treatment: "cutout"`) stands on the bottom edge of its section, straight on white or black.
+- **Lines.** Where one white section follows another, a thin grey line the width of the column is drawn between them automatically; a section that should run on from the one above takes the class `no-rule`. Lists and ledgers use thin lines between groups (`border-line` on white, `border-line-dark` on black). Black sections need no line: the change of color is the edge.
 
 ### Opening screen
 
-`homeHero` in `src/content/site.ts` picks the Home opening screen: `"b"` Black Stage (current: a photograph of Dr. Joy, JVH-111, on a black stage), `"a"` Editorial White, or `"c"` Ivory & the Room. Compare them at `/directions`. Direction B can switch to the layered cutout with `home.hero.bStyle` once a retoucher has refined the matte; the current cutout is an automated test.
+`homeHero` in `src/content/site.ts` picks the Home opening screen: `"b"` Black Stage (current: a photograph of Dr. Joy, JVH-111, on a black stage), `"a"` Editorial White, or `"c"` Ivory & the Room. Compare them at `/directions`; that page's notes were written for the first round of review, before the site moved to black and white, so A and C are shown there in the current palette and type. Direction B can switch to the layered cutout with `home.hero.bStyle` once a retoucher has refined the matte; the current cutout is an automated test.
 
 ## Brand assets
 
 `public/brand/` holds the Dr. Joy script wordmark and the JD monogram, taken from "New Dr Joy RDH Logos" (variants -04 charcoal and -01 cream). The supplied SVGs include a solid background panel; it has been removed and each frame cropped to the mark. The favicon (`src/app/icon.svg`) is the primary monogram on charcoal; `apple-icon.png` (180 px) and `favicon.ico` (16, 32, 48 px) are rendered from it.
 
-The cream `#F5F1E9` and charcoal `#393839` come from the logo files. The two accents are tokens in `src/app/globals.css`:
-
-- Pale pink (`--color-blush` `#F0D3CE`) is for emphasis in type: italic display phrases and highlights on black, and a marker behind ink-colored words on white or ivory. It is never used for small text on white.
-- Tan gold (`--color-gold` `#C2A36B`, with a softer champagne and a deeper tone for light backgrounds) is for structure: hairlines, progress lines, numerals, quote marks, and a few large display words on black. It is never used for small type.
+The cream `#F5F1E9` and charcoal `#393839` are the logo's own colors and appear only in the logo artwork. The page colors are tokens in `src/app/globals.css`: ink, paper, a soft grey fill (`mist`), two text greys (`stone` on white, `ash` on black) and the divider lines. Pale pink (`--color-blush` `#F0D3CE`) is the marker behind a phrase and nothing else: never a page color and never the color of type.
 
 ### The opening signature
 
-On every full page load, including a refresh, a black curtain carries the script wordmark and signs it: the line is drawn stroke by stroke in handwriting order (the entry flourish, d, r, the full stop, j, o, y, the closing flourish), the capitals rise under the last stroke, a gold hairline draws beneath, and the curtain lifts into the page. Any click, tap, key or scroll skips it. It does not play when moving between pages inside the site, on Back or Forward, with reduced motion, or without JavaScript.
+On every full page load, including a refresh, a black curtain carries the script wordmark and signs it: the line is drawn stroke by stroke in handwriting order (the entry flourish, d, r, the full stop, j, o, y, the closing flourish), the capitals rise under the last stroke, a thin line draws beneath, and the curtain lifts into the page. Any click, tap, key or scroll skips it. It does not play when moving between pages inside the site, on Back or Forward, with reduced motion, or without JavaScript.
 
 - How long the writing takes is one value, `--intro-wd` in `src/app/styles/chrome.css` (with `--intro-w0`, the pause before the pen starts, and `--intro-beat`, the hold before the curtain lifts).
 - The pen's path lives in `src/components/chrome/signature-data.ts` and is generated from the wordmark file by `scripts/signature/` (two steps, described at the top of `trace.py`; it needs scikit-image, SciPy and NetworkX, which are not project dependencies). Only rerun it if the wordmark artwork changes; the same artwork is also held as a data URI in `chrome.css`.
@@ -114,13 +117,14 @@ The share image (`src/app/opengraph-image.jpg`, also `twitter-image.jpg`, 1200×
   - In use: the Meet hero, the Meet operatory close-up and the Insights hero take `--foliage 0.45 --ceiling 0.30`, the Industry launch frame `--foliage 0.45 --ceiling 0.26`, and the Speaking keynote `--stage 0.6`.
   - Grade from the ungraded crop rebuilt from the Drive original, never from a `-g` file: `python3 -I scripts/grade_photos.py crop.png public/photos/<name>-v2-g.jpg --foliage 0.45 --ceiling 0.30`.
 - Black-and-white twins: `npm run photos:bw -- public/photos/<name>-g.jpg public/photos/<name>-bw.jpg` (`scripts/bw_twin.py`).
+- Meet Dr. Joy opens on a portrait with its background removed (`meet-hero-cutout.webp`, supplied by Dr. Joy at 1122 × 1402). Replace it with the full-resolution file when it arrives: a transparent PNG or WebP at least 1800 px wide, under a new filename.
 - Meet Dr. Joy uses a candid frame from the portrait shoot (JVH-167) as its life photo. When Dr. Joy supplies a Bowie Boys and Girls Club photo, set it as `meet.guides.photo` (color, no B&W twin needed) and grade it with `npm run photos:grade`. An empty slot is hidden at launch and the story column takes its place.
 
 ## Motion
 
 Motion uses one tempo, set as tokens in `src/app/globals.css`: hover 180 ms, interface 320 ms, text reveals 600 ms, photo uncovers and headline lines 800 ms.
 
-Scroll effects (pinned stories, the sideways rows, words that light as they are read, photographs that drift) use no animation library. One small inline script (`src/components/motion/engine.ts`) turns scroll position into CSS variables and attributes, and the styles in `src/app/styles/motion.css` and each page's stylesheet read them. The building blocks are in `src/components/motion/`; `/motion-lab` shows each one (review mode only).
+Scroll effects (words that light as they are read, photographs that drift, the few pinned sequences) use no animation library. One small inline script (`src/components/motion/engine.ts`) turns scroll position into CSS variables and attributes, and the styles in `src/app/styles/motion.css` and each page's stylesheet read them. The building blocks are in `src/components/motion/`; `/motion-lab` shows each one (review mode only).
 
 Everything is scoped to `<html class="motion">`, which is set only when JavaScript runs and the visitor has not asked for reduced motion. Without it every page is its plain, complete layout: all words and photographs are in the server HTML, nothing waits on a script, and nothing moves.
 

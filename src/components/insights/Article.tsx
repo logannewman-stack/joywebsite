@@ -18,7 +18,7 @@ import { WordLight, WordRise } from "@/components/motion/Text";
 export function Article({ article, section }: { article: OriginalArticle; section: string }) {
   return (
     <article className="bg-paper pt-[4.75rem]">
-      <header className="mx-auto max-w-[90rem] px-5 pt-12 md:px-10 md:pt-20">
+      <header className="mx-auto max-w-(--wrap) px-5 pt-12 md:px-10 md:pt-20">
         <Link href="/insights" className="group label inline-flex min-h-11 items-center gap-2 text-stone transition-colors duration-(--duration-hover) hover:text-ink">
           <ArrowLeft className="size-3.5 transition-transform duration-(--duration-ui) ease-expo group-hover:-translate-x-1" aria-hidden />
           <span className="link-draw pb-0.5">Insights</span>
@@ -32,12 +32,12 @@ export function Article({ article, section }: { article: OriginalArticle; sectio
           </div>
           <Reveal immediate delay={0.3} className="lg:col-span-7 lg:col-start-4">
             {article.date && <p className="label text-stone tabular-nums">{article.date}</p>}
-            <p className="mt-6 font-serif text-[clamp(1.45rem,2.1vw,1.9rem)] leading-snug text-ink/80 italic">{article.excerpt}</p>
+            <p className="mt-6 font-display text-[clamp(1.45rem,2.1vw,1.9rem)] leading-snug text-ink/80 italic">{article.excerpt}</p>
           </Reveal>
         </div>
       </header>
 
-      <div className="mx-auto max-w-[90rem] px-5 pt-16 pb-24 md:px-10 md:pt-20 md:pb-32 lg:pb-40">
+      <div className="mx-auto max-w-(--wrap) px-5 pt-16 pb-24 md:px-10 md:pt-20 md:pb-32 lg:pb-40">
         <div className="grid grid-cols-1 lg:grid-cols-12 lg:gap-x-6">
           <div className="lg:col-span-7 lg:col-start-4">
             <div className="article-body pt-10">

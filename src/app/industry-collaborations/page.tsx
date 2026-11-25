@@ -47,7 +47,7 @@ export default function IndustryPage() {
           capped by height and so is the portrait's frame (.open-portrait in industry.css), so the
           portrait and both ways in stay on the first screen. */}
       <section className="bg-paper pt-[4.75rem]">
-        <div className="mx-auto grid max-w-[90rem] grid-cols-1 gap-y-12 px-5 pt-12 pb-20 md:px-10 md:pt-20 md:pb-28 lg:grid-cols-12 lg:grid-rows-[auto_1fr] lg:gap-x-6 lg:gap-y-8 lg:pt-[min(5rem,6.5svh)] lg:pb-32">
+        <div className="mx-auto grid max-w-(--wrap) grid-cols-1 gap-y-12 px-5 pt-12 pb-20 md:px-10 md:pt-20 md:pb-28 lg:grid-cols-12 lg:grid-rows-[auto_1fr] lg:gap-x-6 lg:gap-y-8 lg:pt-[min(5rem,6.5svh)] lg:pb-32">
           <div className="lg:col-span-7 lg:col-start-6 lg:row-start-1">
             <Label index="04">Industry Collaborations</Label>
             {/* Four hand-set lines; from lg the two italic lines share one (.open-title), so the
@@ -97,8 +97,8 @@ export default function IndustryPage() {
       </section>
 
       {/* Sponsorships and KOL Partnerships: the stage photograph hangs past the ivory edge into the black chapter */}
-      <section id="partnerships" className="relative z-10 overflow-x-clip bg-ivory">
-        <div className="mx-auto grid max-w-[90rem] grid-cols-1 gap-y-14 px-5 py-24 md:px-10 md:py-28 lg:grid-cols-12 lg:gap-x-6 lg:py-36">
+      <section id="partnerships" className="relative z-10 overflow-x-clip bg-paper">
+        <div className="mx-auto grid max-w-(--wrap) grid-cols-1 gap-y-14 px-5 py-24 md:px-10 md:py-28 lg:grid-cols-12 lg:gap-x-6 lg:py-36">
           {/* Heading at the top of the column, the offer and its button at the foot */}
           <div className="flex flex-col lg:col-span-5 lg:justify-between lg:pb-2">
             <div>
@@ -137,7 +137,7 @@ export default function IndustryPage() {
         motion it is the plain section, in order.
       */}
       <Scene id="clinical-launch" from="lg" steps={3} length={2.6} dark className="launch grain grain-light bg-ink text-white">
-        <div className="launch-stage mx-auto max-w-[90rem] px-5 pt-36 pb-24 md:px-10 md:pt-48 md:pb-28 lg:grid lg:grid-cols-12 lg:gap-x-6 lg:pt-56 lg:pb-36">
+        <div className="launch-stage mx-auto max-w-(--wrap) px-5 pt-36 pb-24 md:px-10 md:pt-48 md:pb-28 lg:grid lg:grid-cols-12 lg:gap-x-6 lg:pt-56 lg:pb-36">
           <header className="launch-head lg:col-span-12">
             <Index n="02" tone="dark" />
             <h2 className="launch-title display mt-7 max-w-[12ch] text-[clamp(2.6rem,4.6vw,4.14rem)] leading-[0.95]">
@@ -188,8 +188,8 @@ export default function IndustryPage() {
       <Collaborations heading={collaborations.heading} logos={collaborations.logos} />
 
       {/* Let's Discuss Your Project: the picker offers only the manufacturer topics */}
-      <section className="bg-ivory">
-        <div className="mx-auto max-w-[90rem] px-5 py-24 md:px-10 md:py-32 lg:py-40">
+      <section className="bg-paper">
+        <div className="mx-auto max-w-(--wrap) px-5 py-24 md:px-10 md:py-32 lg:py-40">
           <h2 className="display text-[clamp(2.75rem,13.4vw,9.5rem)] leading-[0.9] lg:text-[clamp(2.75rem,12.4vw,11.25rem)]">
             <span className="block">
               <WordRise>{closingA}</WordRise>{" "}

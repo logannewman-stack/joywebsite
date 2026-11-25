@@ -33,7 +33,7 @@ export function Collaborations({ heading, logos }: { heading: string; logos: { n
   const count = empty ? MAX : shown.length;
   return (
     <section className="bg-paper">
-      <div className="mx-auto grid max-w-[90rem] grid-cols-1 gap-y-12 px-5 py-24 md:px-10 md:py-28 lg:grid-cols-12 lg:gap-x-6 lg:py-36">
+      <div className="mx-auto grid max-w-(--wrap) grid-cols-1 gap-y-12 px-5 py-24 md:px-10 md:py-28 lg:grid-cols-12 lg:gap-x-6 lg:py-36">
         <h2 className="display max-w-[14ch] text-[clamp(2.2rem,3.4vw,3.2rem)] leading-[1] lg:col-span-4">
           <WordRise>{heading}</WordRise>
         </h2>

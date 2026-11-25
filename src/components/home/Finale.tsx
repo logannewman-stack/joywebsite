@@ -16,7 +16,7 @@ export function Finale() {
   const last = words.pop() ?? "";
   const lead = words.join(" ");
   return (
-    <section className="finale relative isolate overflow-clip bg-ivory" aria-labelledby="closing-heading">
+    <section className="finale relative isolate overflow-clip bg-paper" aria-labelledby="closing-heading">
       <div aria-hidden data-view className="finale-mark-frame pointer-events-none absolute inset-0 -z-10 flex items-center justify-center">
         <InView className="finale-mark">
           {/* The still, embossed copy, and over it the copy the sheen crosses (home.css, "Finale"). */}
@@ -24,7 +24,7 @@ export function Finale() {
           <div className="finale-mark-shape" />
         </InView>
       </div>
-      <div className="mx-auto flex max-w-[90rem] flex-col items-center px-5 py-28 text-center md:px-10 md:py-40 lg:min-h-[100svh] lg:justify-center lg:py-20">
+      <div className="mx-auto flex max-w-(--wrap) flex-col items-center px-5 py-28 text-center md:px-10 md:py-40 lg:min-h-[100svh] lg:justify-center lg:py-20">
         <h2 id="closing-heading" className="finale-heading display mt-8 text-[clamp(2.9rem,min(15.5vw,21svh),11.75rem)] leading-[0.86] md:mt-10">
           <span className="block">
             <WordRise>{lead}</WordRise>

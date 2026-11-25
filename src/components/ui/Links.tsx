@@ -82,7 +82,7 @@ export const focusRing = {
  * Shared interaction states (styles in src/app/styles/chrome.css).
  *
  * Pills: a soft fill change on hover (ink to the logo charcoal; white to
- * champagne gold on black), the arrow swap below, and one press state
+ * light grey on black), the arrow swap below, and one press state
  * everywhere: `press` (a small, quick scale). Text links: the underline draws
  * (`link-draw`) and the same arrow swap; pressed, they dim.
  */
@@ -92,7 +92,7 @@ export const textLink = "group inline-flex min-h-11 items-center gap-2 text-[0.9
 /** Fill for a solid pill, by the surface it sits on. */
 export const solidFill = {
   light: "bg-ink text-white hover:bg-charcoal",
-  dark: "bg-white text-ink hover:bg-gold-soft",
+  dark: "bg-white text-ink hover:bg-mist",
 };
 
 const solid = {

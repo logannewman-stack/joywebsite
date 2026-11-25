@@ -20,7 +20,7 @@ const openings: Record<string, PhotoSlot | undefined> = {
 };
 
 /**
- * Editorial wayfinding at the foot of each page: the next page, set large.
+ * Wayfinding at the foot of each page: the next page, set as a heading.
  * The order never leads back to Home as a "next" step: after the last page
  * (Insights) it continues with the first page after Home, Meet Dr. Joy.
  * `current` may be any page in the order (an article under /insights passes
@@ -41,7 +41,7 @@ export function NextPage({ current }: { current: string }) {
   const src = slot?.src && site.photoStyle === "bw" && slot.srcBw ? slot.srcBw : slot?.src;
   return (
     <Link href={next.href} transitionTypes={["next-page"]} data-inview="" data-magnetic="0.04" suppressHydrationWarning className="next-page group">
-      <div className="mx-auto flex max-w-[90rem] items-end justify-between gap-6 px-5 pt-14 pb-12 md:gap-10 md:px-10 md:pt-24 md:pb-20">
+      <div className="mx-auto flex max-w-(--wrap) items-center justify-between gap-6 px-5 py-14 md:gap-10 md:px-10 md:py-20">
         <div className="min-w-0 flex-1">
           <p className="label flex items-center gap-4 text-stone">
             Next
@@ -49,30 +49,31 @@ export function NextPage({ current }: { current: string }) {
               {number}
             </span>
             {/* On phones the arrow sits with the label, so long page names keep the full width. */}
-            <span aria-hidden className="next-circle ml-auto inline-flex size-12 items-center justify-center rounded-full border border-gold-deep/80 text-ink md:hidden">
+            <span aria-hidden className="next-circle ml-auto inline-flex size-12 items-center justify-center rounded-full border border-ink/25 text-ink md:hidden">
               <SwapArrow className="size-4.5" />
             </span>
           </p>
-          <p className="next-title display mt-6 text-[clamp(2.75rem,14.5vw,5rem)] md:mt-8 md:text-[clamp(5rem,10.5vw,10.5rem)]">
+          <p className="next-title display t-hero mt-4 md:mt-5">
             <WordRise>{next.label}</WordRise>
           </p>
         </div>
         {src && slot && (
-          <span aria-hidden className="next-preview relative aspect-[4/5] w-[clamp(12rem,19vw,17rem)] shrink-0 overflow-hidden bg-sand">
+          <span aria-hidden className="next-preview relative aspect-[4/5] w-[clamp(8rem,11vw,10rem)] shrink-0 overflow-hidden bg-mist">
             <Image
               src={src}
               alt=""
               fill
-              sizes="(min-width: 1441px) 19vw, 272px"
-              className="object-cover"
-              style={{ objectPosition: slot.focus ?? "50% 35%" }}
+              sizes="(min-width: 1441px) 11vw, 160px"
+              // A cut-out keeps its whole outline and stands on the foot of the frame.
+              className={slot.treatment === "cutout" ? "object-contain object-bottom" : "object-cover"}
+              style={slot.treatment === "cutout" ? undefined : { objectPosition: slot.focus ?? "50% 35%" }}
             />
           </span>
         )}
         <span aria-hidden className="hidden shrink-0 md:block">
           <Magnetic strength={0.3}>
-            <span className="next-circle inline-flex size-20 items-center justify-center rounded-full border border-gold-deep/80 lg:size-24">
-              <SwapArrow className="size-6" />
+            <span className="next-circle inline-flex size-16 items-center justify-center rounded-full border border-ink/25">
+              <SwapArrow className="size-5" />
             </span>
           </Magnetic>
         </span>

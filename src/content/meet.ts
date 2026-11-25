@@ -21,22 +21,16 @@ export const meet = {
     ],
     couplet: ["In lecture halls, I studied.", "In the operatory, I tested and refined."],
     /**
-     * The white blazer in the garden, so Meet opens on a different look, set and
-     * moment from Home's black suit on the steps. Full-height 4:5 crop of the
-     * landscape frame (Drive 1l_8UVQCQnQ1HR0259KGmr8s4Tvf7OQfX), graded with
-     * --foliage 0.45 --ceiling 0.30 so the hedge reads as calm sage.
+     * The black suit, seated, with the background removed, set straight on the
+     * white page (supplied by Dr. Joy as a cut-out). It stands on the bottom
+     * edge of the opening, so the line under the section reads as its floor.
      */
     portrait: {
-      src: "/photos/meet-hero-133-g.jpg",
-      srcBw: "/photos/meet-hero-133-bw.jpg",
-      alt: "Dr. Joy in a white blazer with black trim, smiling, in front of a garden hedge",
-      treatment: "bw",
-      direction: "Portrait in the white blazer, natural expression, on a different set from Home’s opening portrait. Preserve skin texture.",
-      // Phone and tablet frames are 4:5 like the photo and show all of it; wider desktop
-      // frames crop from the bottom, so her bun keeps its headroom.
-      focus: "50% 8%",
-      focusMobile: "50% 30%",
-      original: "JVH-133 (landscape frame, Headshots folder)",
+      src: "/photos/meet-hero-cutout.webp",
+      alt: "Dr. Joy in a black suit, seated and smiling, her chin resting on her hand",
+      treatment: "cutout",
+      direction: "Background-removed portrait in the black suit, seated, on white. Preserve skin texture and the edge of the hair.",
+      original: "Cut-out supplied by Dr. Joy (1122 x 1402); replace with the full-resolution file when it arrives",
     } satisfies PhotoSlot,
   },
 
@@ -55,16 +49,16 @@ export const meet = {
     original: "3Z4A3971",
   } satisfies PhotoSlot,
 
-  /** Full-bleed pause between the opening story and the credentials. */
+  /** A wide pause, the width of the page column, between the opening story and the credentials. */
   interlude: {
     src: "/photos/meet-interlude-g.jpg",
     srcBw: "/photos/meet-interlude-bw.jpg",
     alt: "Dr. Joy sitting on a long stone staircase in a black suit, smiling",
-    treatment: "bw",
+    treatment: "color",
     direction: "Wide portrait on location, room around her. Same shoot as the opening portrait.",
-    // Wide frames show the full width; the horizontal focus only matters when the pinned
-    // stage is taller than the photo (an upright tablet), where it keeps her whole figure in.
-    focus: "58% 74%",
+    // The band is wider than the photo, so it is cropped top and bottom: the vertical focus keeps
+    // her whole figure in. Phones get a taller frame, cropped at the sides around her.
+    focus: "58% 80%",
     focusMobile: "64% 50%",
     original: "JVH-113",
   } satisfies PhotoSlot,

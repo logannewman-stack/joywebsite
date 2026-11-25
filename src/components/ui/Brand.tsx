@@ -39,7 +39,7 @@ export function Wordmark({
       data-wordmark-placeholder
       title="Wordmark placeholder: replace with the Dr. Joy script wordmark"
     >
-      <span className="font-serif text-[1.6875rem] leading-none italic">Dr. Joy</span>
+      <span className="display text-[1.5rem] leading-none">Dr. Joy</span>
       <span className="label !text-[0.625rem] !tracking-[0.22em]">RDH</span>
     </span>
   );

@@ -377,7 +377,7 @@ html.motion .edu-strip-roll > span {
     z-index: 10;
   }
   [data-pinned] .edu-strip-track {
-    padding-inline: max(2.5rem, calc((100vw - 90rem) / 2 + 2.5rem));
+    padding-inline: max(2.5rem, calc((100vw - var(--wrap)) / 2 + 2.5rem));
   }
   [data-pinned] .edu-print-body {
     transform: translate3d(calc((var(--p, 0) - 0.5) * var(--drift, 0) * var(--u)), 0, 0);

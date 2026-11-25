@@ -32,9 +32,9 @@ summary {
 }
 
 /* --------------------------------------------------------------------------
-   Accents in the frame: gold for structure (the progress line, dividers,
-   rings on arrow circles over black, the footer's rules), pale pink for
-   emphasis in type (the marker behind the current page in the menu).
+   The frame is black and white: the progress line, rings and dividers are
+   ink on white and white on black. The one accent is the pale pink marker
+   behind the current page in the menu.
    No short dash-like strokes beside or above words: lines run the width of
    what they divide.
    -------------------------------------------------------------------------- */
@@ -118,7 +118,7 @@ summary {
 /* --------------------------------------------------------------------------
    Scroll progress: a hairline under the header that fills with the page
    (--page-p from the scroll engine). When the header slides away it rides at
-   the top edge of the screen. Gold over black sections, gold-deep over light.
+   the top edge of the screen. White over black sections, ink over light.
    -------------------------------------------------------------------------- */
 .page-progress {
   position: fixed;
@@ -199,11 +199,11 @@ html.motion .menu-sheet[data-open="true"] .menu-fade {
 }
 /* The pale pink marker behind the current page draws once its name has risen. */
 html.motion .menu-sheet .hl-light {
-  background-size: 0% 0.34em;
+  background-size: 0% var(--hl-h);
   transition: background-size 0s 0.24s;
 }
 html.motion .menu-sheet[data-open="true"] .hl-light {
-  background-size: 100% 0.34em;
+  background-size: 100% var(--hl-h);
   transition: background-size var(--duration-image) var(--ease-expo) calc(0.5s + var(--i, 0) * 0.055s);
 }
 
@@ -319,7 +319,7 @@ html.motion .site-footer:has(:focus-visible) .foot-inner {
      a height) and the footer runs a little past one screen instead. */
   .foot-mark {
     --foot-cols: 24.25rem;
-    --foot-min: calc((min(100vw, 90rem) - 5rem) * 0.58 / 3.07);
+    --foot-min: calc((min(100vw, var(--wrap)) - 5rem) * 0.58 / 3.07);
     width: min(
       100%,
       calc(clamp(var(--foot-min), 100svh - min(7rem, 11svh) - min(3rem, 5svh) - min(2.5rem, 4svh) - var(--foot-cols), 21rem) * 3.07)
@@ -446,9 +446,9 @@ html.motion .foot-sign[data-foot-in] .foot-mark {
 /* --------------------------------------------------------------------------
    The signature curtain (Curtain in components/chrome): the opening titles.
    On every full page load (first arrival or reload) a black curtain carries
-   the script wordmark, large and centred. It is signed, slowly; a gold
-   hairline draws beneath it as the last stroke lands; and after a beat the
-   curtain lifts into the page, its gold hem leading. The page underneath
+   the script wordmark, large and centred. It is signed, slowly; a thin
+   line draws beneath it as the last stroke lands; and after a beat the
+   curtain lifts into the page, a pale hem leading. The page underneath
    renders at once; its on-load entrances wait for the lift (html.intro-hold).
    html.intro is only ever set by the head script (JavaScript on, motion on,
    a full load that is not Back/Forward), so without it there is no curtain.
@@ -465,7 +465,7 @@ html.motion .foot-sign[data-foot-in] .foot-mark {
      0s       the signature eases from a slight push-in (scale 1.04) to rest
      0.25s    it is written (1.5s): the line is drawn stroke by stroke, the way
               a pen writes it (see .intro-ink below)
-     1.55s    the gold hairline draws beneath it (as the last stroke lands)
+     1.55s    the thin line draws beneath it (as the last stroke lands)
      2.1s     the curtain lifts (1s); the signature rises a little slower
               than the curtain and fades
      2.55s    the header settles into place (0.9s)
@@ -495,8 +495,8 @@ html.intro .intro-curtain {
   display: block;
   overflow: hidden;
   background: var(--color-ink);
-  /* A gold hem along the curtain's lower edge, seen as it lifts. */
-  box-shadow: 0 0.125rem 0 var(--color-gold);
+  /* A pale hem along the curtain's lower edge, seen as it lifts. */
+  box-shadow: 0 0.0625rem 0 rgb(255 255 255 / 0.45);
   will-change: transform;
   animation: intro-lift 1s cubic-bezier(0.4, 0, 0.1, 1) var(--intro-at) both;
 }
@@ -579,7 +579,7 @@ html.intro .intro-rule {
   display: block;
   height: 1px;
   margin-top: 1.5rem;
-  background: var(--color-gold);
+  background: rgb(255 255 255 / 0.4);
   transform-origin: left center;
   animation: intro-rule 0.5s var(--ease-expo) calc(var(--intro-w0) + var(--intro-wd) - 0.2s) both;
 }
@@ -671,7 +671,7 @@ html.intro-hold main [data-reveal=""] {
 /* --------------------------------------------------------------------------
    Cursor label. Any element can ask for it with data-cursor="View" (or
    "Play", "Drag": one short word). Over that element, on a fine pointer with
-   motion on, a gold-ringed disc grows from a dot at the pointer and carries
+   motion on, a ringed disc grows from a dot at the pointer and carries
    the word; the native cursor steps aside on that element only while the
    disc is showing. Everywhere else, on touch, with reduced motion and
    without JavaScript there is only the native cursor. Do not put it on form
@@ -699,7 +699,7 @@ html.has-cursor .site-cursor {
   width: 5.75rem;
   height: 5.75rem;
   place-items: center;
-  border: 1px solid var(--color-gold);
+  border: 1px solid rgb(255 255 255 / 0.55);
   border-radius: 50%;
   background: rgb(11 11 11 / 0.62);
   backdrop-filter: blur(0.375rem);

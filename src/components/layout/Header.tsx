@@ -215,7 +215,7 @@ export function Header() {
           hidden && !open ? "-translate-y-full" : "translate-y-0"
         } ${dark ? "text-white" : "text-ink"} ${printDark ? "print:bg-transparent print:text-white" : "print:bg-paper print:text-ink"}`}
       >
-        <div className="mx-auto flex h-[4.75rem] max-w-[90rem] items-center justify-between gap-6 px-5 md:px-10">
+        <div className="mx-auto flex h-[4.75rem] max-w-(--wrap) items-center justify-between gap-6 px-5 md:px-10">
           <Link
             href="/"
             aria-label={`${site.name}, home`}
@@ -244,7 +244,7 @@ export function Header() {
                     aria-hidden
                     // Windows contrast themes repaint backgrounds: the line is given the theme's link colour there.
                     className={`absolute inset-x-0 -bottom-0.5 h-px origin-left transition-transform duration-[var(--duration-ui,320ms)] forced-colors:bg-[LinkText] ${ease} ${
-                      active ? `scale-x-100 ${dark ? "bg-gold" : "bg-gold-deep"}` : "scale-x-0 bg-current group-hover:scale-x-100"
+                      active ? "scale-x-100 bg-current" : "scale-x-0 bg-current group-hover:scale-x-100"
                     }`}
                   />
                 </Link>
@@ -292,13 +292,13 @@ export function Header() {
 
       {/*
         Scroll progress: a hairline under the bar that fills with the page (--page-p, written by
-        the scroll engine), in gold. It rides at the top edge while the bar is away, and is off under the open menu.
+        the scroll engine). It rides at the top edge while the bar is away, and is off under the open menu.
       */}
       <div
         aria-hidden
         className={`page-progress mr-[var(--scroll-lock-gap,0px)] ${hidden && !open ? "translate-y-0" : "translate-y-[4.75rem]"} ${
           open ? "opacity-0" : "opacity-100"
-        } ${dark ? "text-gold" : "text-gold-deep"}`}
+        } ${dark ? "text-white" : "text-ink"}`}
       >
         <span className="progress-page" />
       </div>
@@ -335,11 +335,11 @@ export function Header() {
                       {item.index}
                     </span>
                     <span
-                      className={`display text-[clamp(2.15rem,5.4vw,3.5rem)] max-md:[@media(max-height:660px)]:text-[1.9rem] md:[@media(min-height:900px)]:text-[clamp(2.5rem,6.6vw,4.25rem)] [@media(max-height:500px)]:text-[1.6rem]! transition-transform duration-[var(--duration-ui,320ms)] ${ease} group-hover:translate-x-1.5 group-aria-[current=page]:italic`}
+                      className={`display text-[clamp(1.375rem,5.6vw,2.25rem)] max-md:[@media(max-height:660px)]:text-[1.25rem] [@media(max-height:500px)]:text-[1.125rem]! transition-transform duration-[var(--duration-ui,320ms)] ${ease} group-hover:translate-x-1.5`}
                     >
                       {/* The label rises from behind its own baseline (the .wr frame clips only the bottom edge). */}
                       <span className="wr">
-                        {/* The current page is italic, with the pale pink marker behind it. */}
+                        {/* The current page has the pale pink marker behind it. */}
                         <span className="menu-rise inline-block">
                           <span className={current ? "hl-light" : undefined}>{typeset(item.label)}</span>
                         </span>

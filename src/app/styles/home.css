@@ -84,10 +84,6 @@ html.motion .hero-cue > .label {
 .persp .persp-step {
   padding-top: 1.75rem;
 }
-/* The marker sits behind the lower half of the words, not under them. */
-.persp .persp-heading .hl-light {
-  background-position: 0 66%;
-}
 
 /* The story's length in screens (both set in Perspective.tsx): the longer one
    where a thumb scrolls it, the shorter on wide landscape screens, where a
@@ -610,9 +606,9 @@ html.restoring .work .work-photo-in > img {
     --words: 23.5rem; /* the words' column */
     --split: 3rem; /* between a photograph and its words */
     --gap: 7rem; /* between panels */
-    /* The page's side margin: 2.5rem, or the edge of the centred 90rem column on very wide screens,
+    /* The page's side margin: 2.5rem, or the edge of the centred var(--wrap) column on very wide screens,
        so the heading, the first and last panel at rest and the progress line stand where the header does. */
-    --edge: max(2.5rem, calc((100cqw - 90rem) / 2 + 2.5rem));
+    --edge: max(2.5rem, calc((100cqw - var(--wrap)) / 2 + 2.5rem));
     --row: calc(var(--panels) * (var(--pw) + var(--split) + var(--words)) + (var(--panels) - 1) * var(--gap) + 2 * var(--edge));
     display: flex;
     flex-direction: column;
@@ -818,7 +814,7 @@ html.restoring .work .work-photo-in > img {
   }
   .work[data-pinned] .work-head {
     display: block;
-    max-width: 90rem;
+    max-width: var(--wrap);
     margin-inline: auto;
     padding-inline: 2.5rem;
   }
@@ -838,7 +834,7 @@ html.restoring .work .work-photo-in > img {
     gap: 5rem 2rem;
     width: auto;
     height: auto;
-    max-width: 90rem;
+    max-width: var(--wrap);
     margin-inline: auto;
     padding: 0 2.5rem;
     transform: none;

@@ -120,7 +120,7 @@ export function FormAlert({
       className={`flex gap-3 rounded-[2px] border p-4 text-[0.9375rem] leading-relaxed md:p-5 ${
         dark
           ? "border-white/25 bg-white/[0.06] text-white focus-visible:outline-white"
-          : "border-ink/15 bg-ivory text-ink focus-visible:outline-ink"
+          : "border-ink/15 bg-paper text-ink focus-visible:outline-ink"
       } focus-visible:outline-2 focus-visible:outline-offset-2`}
     >
       <CircleAlert className="mt-[3px] size-[1.125rem] shrink-0" aria-hidden />

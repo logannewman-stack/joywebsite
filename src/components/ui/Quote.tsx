@@ -7,11 +7,10 @@ import { typeset } from "./Typeset";
 
 type Tone = "dark" | "light" | "paper";
 
-// Grain only on black: plain ivory and white match the sections around them,
-// so a light quote next to an ivory section never shows a seam.
+// Grain only on black; white stays clean.
 const surfaces: Record<Tone, string> = {
   dark: "grain grain-light bg-ink text-white",
-  light: "bg-ivory text-ink",
+  light: "bg-paper text-ink",
   paper: "bg-paper text-ink",
 };
 
@@ -51,7 +50,7 @@ function shape(quote: string): { lead: string; rest: string } {
 }
 
 /**
- * Testimonial set large, with a hanging opening quote mark. Its words
+ * Testimonial set as a heading, with a hanging opening quote mark. Its words
  * brighten one after another as it scrolls into view. Testimonials awaiting
  * republishing permission are shown in review mode only, with a note, and
  * hidden at launch.
@@ -89,7 +88,7 @@ export function Quote({
   const dark = tone === "dark";
   const { lead, rest } = shape(quote);
   const scale = size ?? (lead.length > 120 ? "md" : "lg");
-  const mark = dark ? "text-gold" : "text-gold-deep";
+  const mark = dark ? "text-ash" : "text-stone";
   return (
     <section id={id} className={`relative overflow-hidden ${surfaces[tone]} ${className}`} data-tone={tone} data-header={dark ? "dark" : undefined}>
       {dark && backdrop?.src && (
@@ -100,7 +99,7 @@ export function Quote({
           <div className="absolute inset-0 bg-ink/80" />
         </div>
       )}
-      <div className="relative mx-auto max-w-[90rem] px-5 py-24 md:px-10 md:py-32">
+      <div className="relative mx-auto max-w-(--wrap) px-5 py-20 md:px-10 md:py-28">
         <div className="grid md:grid-cols-12 md:gap-x-6">
           <div
             className="flex flex-wrap items-center gap-x-4 gap-y-2 md:col-span-10 md:col-start-2 lg:col-span-9 lg:col-start-3"
@@ -120,8 +119,8 @@ export function Quote({
                 <p
                   className={`display ${
                     scale === "lg"
-                      ? "max-w-[24ch] text-[clamp(2.15rem,4.6vw,4.5rem)] !leading-[1.04]"
-                      : "max-w-[34ch] text-[clamp(1.8rem,3.2vw,3.1rem)] !leading-[1.1] !text-pretty"
+                      ? "t-h1 max-w-[22ch]"
+                      : "t-h2 max-w-[30ch] !text-pretty"
                   }`}
                 >
                   <span aria-hidden className={`mr-[0.06em] md:absolute md:top-0 md:-left-[0.5em] md:mr-0 ${mark}`}>
@@ -132,7 +131,7 @@ export function Quote({
                   </WordLight>
                 </p>
                 {rest && (
-                  <p className="mt-6 max-w-[44ch] font-serif text-[clamp(1.3rem,1.9vw,1.65rem)] leading-[1.32] md:mt-8">{typeset(bindShort(rest))}</p>
+                  <p className="t-lead mt-6 max-w-[38rem] md:mt-8">{typeset(bindShort(rest))}</p>
                 )}
               </blockquote>
             </Reveal>

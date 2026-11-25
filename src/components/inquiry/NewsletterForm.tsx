@@ -46,7 +46,7 @@ export function NewsletterForm({ tone = "light", cta = "Subscribe" }: { tone?: "
         role="status"
         className={`flex items-start gap-3 text-[1rem] leading-relaxed outline-none ${dark ? "text-white" : "text-ink"}`}
       >
-        <span className={`mt-0.5 inline-flex size-6 shrink-0 items-center justify-center rounded-full ${dark ? "bg-gold text-ink" : "bg-ink text-white"}`}>
+        <span className={`mt-0.5 inline-flex size-6 shrink-0 items-center justify-center rounded-full ${dark ? "bg-white text-ink" : "bg-ink text-white"}`}>
           <Check className="size-3.5" aria-hidden />
         </span>
         You’re subscribed. Watch your inbox for a welcome note.
@@ -85,7 +85,7 @@ export function NewsletterForm({ tone = "light", cta = "Subscribe" }: { tone?: "
           aria-disabled={sending || undefined}
           className={`press group my-1 inline-flex min-h-11 shrink-0 items-center gap-2 rounded-full px-5 text-[0.90625rem] font-medium whitespace-nowrap focus-visible:outline-2 focus-visible:outline-offset-[3px] aria-disabled:cursor-progress ${
             dark
-              ? "bg-white text-ink hover:bg-gold-soft focus-visible:outline-white"
+              ? "bg-white text-ink hover:bg-mist focus-visible:outline-white"
               : "bg-ink text-white hover:bg-charcoal focus-visible:outline-ink"
           }`}
         >

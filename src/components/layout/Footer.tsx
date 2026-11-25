@@ -42,7 +42,7 @@ export function Footer() {
   const consulting = instrumentalLink();
   return (
     <footer className="site-footer grain grain-light bg-ink text-white" suppressHydrationWarning>
-      <div className="foot-inner mx-auto flex max-w-[90rem] flex-col px-5 pt-20 pb-8 md:px-10 md:pt-24 xl:min-h-svh xl:pt-[min(7rem,11svh)] xl:pb-[min(2.5rem,4svh)]">
+      <div className="foot-inner mx-auto flex max-w-(--wrap) flex-col px-5 pt-20 pb-8 md:px-10 md:pt-24 xl:min-h-svh xl:pt-[min(7rem,11svh)] xl:pb-[min(2.5rem,4svh)]">
         {/* From 1280px the bottom padding is the least space above the signature's rule (part of --foot-cols in chrome.css). */}
         <div className="flex flex-col gap-16 xl:flex-row xl:gap-24 xl:pb-[2.125rem]">
           <FooterNewsletter>
@@ -50,7 +50,7 @@ export function Footer() {
               <div className="grid grid-cols-1 gap-8 @2xl:grid-cols-2 @2xl:gap-x-12">
                 <div>
                   <p className="label text-ash">{insights.newsletter.heading}</p>
-                  <h2 id="footer-newsletter" className="display mt-5 text-[clamp(2.75rem,4.6vw,4.25rem)]">
+                  <h2 id="footer-newsletter" className="display t-h1 mt-4">
                     {insights.newsletter.name}
                   </h2>
                 </div>
@@ -145,7 +145,7 @@ export function Footer() {
                 <span className="label hidden text-ash transition-colors duration-(--duration-hover) group-hover:text-white sm:inline">Back to top</span>
                 <span className="sr-only sm:hidden">Back to top</span>
                 <Magnetic strength={0.35}>
-                  <span className="press inline-flex size-14 items-center justify-center rounded-full border border-gold/80 group-hover:border-gold group-hover:bg-gold group-hover:text-ink group-focus-visible:border-gold group-focus-visible:bg-gold group-focus-visible:text-ink md:size-16">
+                  <span className="press inline-flex size-14 items-center justify-center rounded-full border border-white/35 group-hover:border-white group-hover:bg-white group-hover:text-ink group-focus-visible:border-white group-focus-visible:bg-white group-focus-visible:text-ink md:size-16">
                     <SwapArrow direction="up" className="size-5" />
                   </span>
                 </Magnetic>

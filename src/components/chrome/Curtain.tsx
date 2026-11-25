@@ -6,7 +6,7 @@ import { SIGNATURE_SCRIPT } from "./signature";
  * The signature curtain: the site's opening titles. On every full page load
  * (first arrival and reload), a black curtain carries the cream script
  * wordmark, large and centred. It is signed, slowly, the line drawn as a pen
- * would write it (signature.ts); a gold hairline draws beneath it; and after
+ * would write it (signature.ts); a thin line draws beneath it; and after
  * a beat the curtain lifts into the page (about three seconds in all). Any
  * click, tap, key or scroll skips it.
  *

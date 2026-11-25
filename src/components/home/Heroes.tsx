@@ -52,7 +52,7 @@ function Actions({ dark = false }: { dark?: boolean }) {
 export function HeroA({ id = "hero-heading", as: H = "h1" }: HeroProps) {
   return (
     <section className="relative overflow-hidden bg-paper pt-[4.75rem]" aria-labelledby={id}>
-      <div className="mx-auto grid max-w-[90rem] grid-cols-1 px-5 pt-6 pb-14 md:px-10 md:pt-10 lg:min-h-[calc(100svh-4.75rem)] lg:grid-cols-[minmax(0,1fr)_minmax(0,0.74fr)] lg:grid-rows-[auto_1fr] lg:gap-x-12 lg:pt-8 lg:pb-10">
+      <div className="mx-auto grid max-w-(--wrap) grid-cols-1 px-5 pt-6 pb-14 md:px-10 md:pt-10 lg:min-h-[calc(100svh-4.75rem)] lg:grid-cols-[minmax(0,1fr)_minmax(0,0.74fr)] lg:grid-rows-[auto_1fr] lg:gap-x-12 lg:pt-8 lg:pb-10">
         <H id={id} className="display relative z-10 text-[clamp(3.4rem,min(9vw,15.5svh),10.4rem)] leading-[0.88] lg:col-start-1 lg:row-start-1">
           <LineReveal lines={lines} delay={0.05} />
         </H>
@@ -130,7 +130,7 @@ export function HeroB({ id = "hero-heading", as: H = "h1", hold = false }: HeroP
           </>
         )}
 
-        <div className="mx-auto max-w-[90rem] px-5 pt-24 md:px-10 lg:landscape:pt-[6.25rem]">
+        <div className="mx-auto max-w-(--wrap) px-5 pt-24 md:px-10 lg:landscape:pt-[6.25rem]">
           <H id={id} className="display relative z-20 text-[clamp(3rem,14vw,3.4rem)] leading-[0.88] sm:text-[clamp(3.4rem,min(10vw,15svh,calc(26svh_-_5.625rem)),11rem)]">
             <LineReveal
               lines={[
@@ -155,7 +155,7 @@ export function HeroB({ id = "hero-heading", as: H = "h1", hold = false }: HeroP
       <Reveal
         immediate
         delay={0.25}
-        className="relative z-20 mx-auto grid max-w-[90rem] gap-7 px-5 pt-4 pb-16 md:px-10 lg:landscape:absolute lg:landscape:inset-x-0 lg:landscape:bottom-0 lg:landscape:pt-0 lg:landscape:pb-12"
+        className="relative z-20 mx-auto grid max-w-(--wrap) gap-7 px-5 pt-4 pb-16 md:px-10 lg:landscape:absolute lg:landscape:inset-x-0 lg:landscape:bottom-0 lg:landscape:pt-0 lg:landscape:pb-12"
       >
         <p className="max-w-[30rem] text-[1.125rem] leading-relaxed text-white/80 md:text-[1.1875rem]">{hero.sub}</p>
         <Actions dark />
@@ -179,8 +179,8 @@ export function HeroB({ id = "hero-heading", as: H = "h1", hold = false }: HeroP
 /** C: ivory, a color photograph of a real room, blush used once behind it. */
 export function HeroC({ id = "hero-heading", as: H = "h1" }: HeroProps) {
   return (
-    <section className="relative overflow-hidden bg-ivory pt-[4.75rem]" aria-labelledby={id}>
-      <div className="mx-auto grid max-w-[90rem] grid-cols-1 px-5 pt-6 pb-14 md:px-10 md:pt-10 lg:min-h-[calc(100svh-4.75rem)] lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:gap-x-16 lg:pt-12 lg:pb-16">
+    <section className="relative overflow-hidden bg-paper pt-[4.75rem]" aria-labelledby={id}>
+      <div className="mx-auto grid max-w-(--wrap) grid-cols-1 px-5 pt-6 pb-14 md:px-10 md:pt-10 lg:min-h-[calc(100svh-4.75rem)] lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:gap-x-16 lg:pt-12 lg:pb-16">
         {/* Phones: headline, photo, then the sub-line (order). lg: headline and sub-line centered beside the photo. */}
         <div className="contents lg:col-start-1 lg:row-start-1 lg:flex lg:flex-col lg:justify-center">
           <H id={id} className="display order-1 text-[clamp(3.4rem,min(7.4vw,13svh),8.4rem)] leading-[0.9]">
