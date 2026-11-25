@@ -47,7 +47,7 @@ export function PublishedList({
             <p className="rise t-body mt-5 max-w-[22rem] text-stone" style={{ "--d": "0.12s" } as Vars}>
               {intro}
             </p>
-            {!notes && toConfirm > 0 && (
+            {notes && toConfirm > 0 && (
               <p className="rise label mt-6 inline-block rounded-full border border-ink/25 px-2.5 py-1 !text-[0.59375rem] text-stone" style={{ "--d": "0.2s" } as Vars}>
                 Review: {toConfirm} {toConfirm === 1 ? "record" : "records"} to confirm
               </p>

@@ -126,15 +126,15 @@ html.motion .sp-hero-settle {
   }
 }
 /* The name runs from 3.875rem above the middle of the screen to (the longest)
-   about 10.5rem below it. It must never be cut by a chapter's edge, or two
-   names would show at once, half each. Without scroll-driven animations its
-   layer ends 14.5rem before the chapter does: the name has left through the
+   12.25rem below it. It must never be cut by a chapter's edge, or two names
+   would show at once, half each. Without scroll-driven animations its layer
+   ends 16.25rem before the chapter does: the name has left through the
    layer's end by the time the next chapter's edge, and with it the next name,
    arrives. */
 @supports not (animation-timeline: view()) {
   @media screen and (min-width: 1280px) and (min-height: 480px) {
     .sp-rail-clip-name {
-      bottom: 14.5rem;
+      bottom: 16.25rem;
     }
   }
 }
@@ -148,8 +148,8 @@ html.motion .sp-hero-settle {
 }
 /* With them, the name fades instead: in once the chapter's top edge has
    passed above it (4rem after that edge crosses the middle of the screen), and
-   out before the chapter's end reaches its foot (12rem before the end crosses
-   the middle). Not tied to html.motion: this is a correction, not an effect. */
+   out before the chapter's end reaches its foot (13.75rem before the end
+   crosses the middle). Not tied to html.motion: this is a correction, not an effect. */
 @supports (animation-timeline: view()) {
   @media screen and (min-width: 1280px) and (min-height: 480px) {
     .sp-rail-name-in {
@@ -160,7 +160,7 @@ html.motion .sp-hero-settle {
     .sp-rail-name-out {
       animation: sp-name-out linear both;
       animation-timeline: --sp-chapter;
-      animation-range: cover calc(100% - 14rem) cover calc(100% - 12rem);
+      animation-range: cover calc(100% - 15.75rem) cover calc(100% - 13.75rem);
     }
   }
 }

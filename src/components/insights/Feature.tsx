@@ -36,6 +36,10 @@ export type FeatureItem = {
  * section. The page passes them when the feature is the only piece of its kind
  * (so that section's list is not on the page): the feature then stands under
  * its section heading, and its headline steps down to an h3, one size smaller.
+ *
+ * The frame has no side padding of its own: its parts carry it, so from lg the
+ * block is laid on the page's twelve columns and its right-hand part starts on
+ * the same column as the opening portrait above it.
  */
 export function Feature({ item, cta, heading, intro }: { item: FeatureItem; cta: string; heading?: string; intro?: string }) {
   const id = useId();
@@ -65,9 +69,9 @@ export function Feature({ item, cta, heading, intro }: { item: FeatureItem; cta:
           </div>
         )}
         <InView className="rise">
-          <article className="group relative border border-line px-6 py-8 transition-colors duration-(--duration-ui) hover:border-ink has-[a:focus-visible]:border-ink has-[a:focus-visible]:outline-2 has-[a:focus-visible]:outline-offset-4 has-[a:focus-visible]:outline-ink md:px-10 md:py-10 lg:px-12 lg:py-12">
+          <article className="group relative border border-line py-8 transition-colors duration-(--duration-ui) hover:border-ink has-[a:focus-visible]:border-ink has-[a:focus-visible]:outline-2 has-[a:focus-visible]:outline-offset-4 has-[a:focus-visible]:outline-ink md:py-10 lg:py-12">
             {/* The publication, the issue date, and in review the confirm tag */}
-            <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-2 px-6 md:px-10 lg:px-12">
               {/* One of her own pieces has no publication: its date stands alone. */}
               {item.publication && <p className="text-[0.9375rem] font-medium">{item.publication}</p>}
               {item.date && <p className="label text-stone tabular-nums">{item.date}</p>}
@@ -76,11 +80,11 @@ export function Feature({ item, cta, heading, intro }: { item: FeatureItem; cta:
 
             {/* The headline; from lg the rest of the headline and the way in stand beside it */}
             <div className="mt-6 md:mt-8 lg:grid lg:grid-cols-12 lg:gap-x-6">
-              <Title id={`${id}-title`} className={`lean display lg:col-span-7 ${heading ? "t-h2" : "t-h1"}`}>
+              <Title id={`${id}-title`} className={`lean display px-6 md:px-10 lg:col-span-8 lg:pr-0 lg:pl-12 ${heading ? "t-h2" : "t-h1"}`}>
                 <WordRise>{item.title}</WordRise>
               </Title>
 
-              <div className="mt-5 lg:col-span-4 lg:col-start-9 lg:mt-1">
+              <div className="mt-5 px-6 md:px-10 lg:col-span-4 lg:col-start-9 lg:mt-1 lg:pr-12 lg:pl-0">
                 <div className="flex flex-col gap-3 text-stone">
                   {item.subtitle && <p className="t-lead max-w-[24rem]">{item.subtitle}</p>}
                   {item.excerpt && <p className="t-body max-w-[32rem]">{item.excerpt}</p>}

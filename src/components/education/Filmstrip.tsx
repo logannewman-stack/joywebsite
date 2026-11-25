@@ -30,7 +30,7 @@ export function Filmstrip() {
   const prints = [...strip.slice(0, 2), education.hero.detail, ...strip.slice(2)].filter((p) => p.src);
   if (!prints.length) return null;
   return (
-    <section className="bg-paper py-20 md:py-28">
+    <section className="no-rule bg-paper pb-20 md:pb-28">
       <div
         data-filmstrip=""
         tabIndex={0}

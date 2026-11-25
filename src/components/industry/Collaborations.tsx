@@ -28,7 +28,7 @@ function cell(i: number, n: number) {
  * before any logo arrives.
  */
 export function Collaborations({ heading, logos }: { heading: string; logos: { name: string; src: string }[] }) {
-  if (logos.length === 0 && !notes && false) return null; // TEMP-PREVIEW
+  if (logos.length === 0 && !notes) return null;
   const shown = logos.slice(0, MAX);
   const empty = shown.length === 0;
   const count = empty ? MAX : shown.length;

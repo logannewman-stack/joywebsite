@@ -108,7 +108,7 @@ export default function EducationPage() {
                 </h2>
                 <p className="edu-route-text rise t-body text-stone md:col-span-6 lg:col-span-4">{r.text}</p>
                 <div className="rise md:col-span-6 md:col-start-7 lg:col-span-2 lg:col-start-auto lg:justify-self-end">
-                  <ArrowLink href={r.cta.href} className="edu-route-link">
+                  <ArrowLink href={r.cta.href} className="edu-route-link whitespace-nowrap">
                     {r.cta.label}
                   </ArrowLink>
                 </div>

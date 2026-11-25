@@ -38,6 +38,9 @@ html.motion .edu-settle {
   scroll-snap-type: x proximity;
   scroll-padding-inline: 1.25rem;
   scrollbar-width: none;
+  /* Room inside the scroller for its focus ring, clear of the prints. */
+  padding-block: 0.5rem;
+  margin-block: -0.5rem;
 }
 .edu-strip::-webkit-scrollbar {
   display: none;
@@ -69,6 +72,8 @@ html.motion .edu-settle {
 @media (min-width: 1024px) {
   .edu-strip {
     overflow: visible;
+    padding-block: 0;
+    margin-block: 0;
   }
   .edu-strip-row {
     display: grid;
@@ -82,15 +87,17 @@ html.motion .edu-settle {
   }
 }
 
-/* The line under a swiped row (StripMeter.tsx): thin and grey, the width of
-   the page column, with the part of the row in view marked on it in ink. Its
-   script sets data-live once it has measured a row that scrolls, and writes
-   --w (how much of the row is in view) and --p (how far it has travelled). */
+/* The line under a swiped row (StripMeter.tsx): short, thin and grey, at the
+   start of the page column, with the part of the row in view marked on it in
+   ink. Its script sets data-live once it has measured a row that scrolls, and
+   writes --w (how much of the row is in view) and --p (how far it has
+   travelled). */
 .edu-strip-meter {
   display: none;
   position: relative;
-  height: 1px;
-  margin: 1.75rem 1.25rem 0;
+  width: 5rem;
+  height: 2px;
+  margin: 1.5rem 0 0 1.25rem;
   background: var(--color-line);
 }
 .edu-strip-meter[data-live] {
@@ -106,7 +113,7 @@ html.motion .edu-settle {
 }
 @media (min-width: 768px) {
   .edu-strip-meter {
-    margin-inline: 2.5rem;
+    margin-left: 2.5rem;
   }
 }
 

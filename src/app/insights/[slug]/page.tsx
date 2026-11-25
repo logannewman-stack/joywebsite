@@ -3,7 +3,6 @@ import { notFound } from "next/navigation";
 import { insights } from "@/content/insights";
 import { site } from "@/content/site";
 import { Article } from "@/components/insights/Article";
-import { MOCK } from "@/components/insights/__mock";
 import { StayConnected } from "@/components/insights/StayConnected";
 import { NextPage } from "@/components/layout/NextPage";
 
@@ -17,7 +16,7 @@ export const ensureStatic = "navigation";
 
 /** Original articles published on this site (those with a slug and a body). */
 function onSite() {
-  return MOCK.filter((a) => a.slug && a.body && a.body.length > 0);
+  return insights.original.articles.filter((a) => a.slug && a.body && a.body.length > 0);
 }
 
 /** Placeholder param: Cache Components needs one at build time; it renders a 404. */

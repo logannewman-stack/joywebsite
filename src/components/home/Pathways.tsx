@@ -45,10 +45,10 @@ export function Pathways() {
             </div>
             <h3 className="display t-h2 col-span-2 row-start-1 mb-5 sm:col-span-8 sm:col-start-5 sm:mb-0 lg:col-span-4 lg:col-start-5">{typeset(p.kicker)}</h3>
             <p className="t-lead row-start-2 self-center text-ink sm:col-span-8 sm:col-start-5 sm:mt-3 sm:self-start lg:col-span-4 lg:col-start-5 lg:mt-4">{typeset(p.heading)}</p>
-            <div className="col-span-2 row-start-3 mt-5 sm:col-span-8 sm:col-start-5 sm:mt-4 lg:col-span-4 lg:col-start-9 lg:row-span-2 lg:row-start-1 lg:mt-0">
+            <div className="col-span-2 row-start-3 mt-5 flex flex-col items-start sm:col-span-8 sm:col-start-5 sm:mt-4 lg:col-span-4 lg:col-start-9 lg:row-span-2 lg:row-start-1 lg:mt-0">
               <p className="t-body text-stone">{p.body}</p>
               {/* The link's ::after covers the row, so the photo and words are part of one target. */}
-              <ArrowLink href={p.link.href} className="mt-2 focus-visible:outline-none after:absolute after:inset-0 after:content-[''] lg:mt-3">
+              <ArrowLink href={p.link.href} className="mt-2 focus-visible:outline-none after:absolute after:inset-0 after:content-[''] lg:mt-auto lg:-mb-2.5">
                 {p.link.label}
               </ArrowLink>
             </div>

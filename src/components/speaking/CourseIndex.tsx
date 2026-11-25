@@ -32,7 +32,7 @@ export function CourseIndex({ courses, className = "" }: { courses: Course[]; cl
             <InView as="li" key={c.title} className="sp-course border-t border-line">
               <div className="grid grid-cols-[2.25rem_minmax(0,1fr)] gap-x-3 py-6 md:grid-cols-[3rem_minmax(0,1fr)] md:py-7 lg:grid-cols-12 lg:gap-x-6">
                 {/* The number sits on the title's baseline. */}
-                <span className="rise label pt-[0.4375rem] text-stone tabular-nums lg:col-span-1" style={d(base)} aria-hidden>
+                <span className="rise label pt-[0.3125rem] text-stone tabular-nums lg:col-span-1" style={d(base)} aria-hidden>
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <div className="rise lg:col-span-7" style={d(base + 0.05)}>

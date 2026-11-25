@@ -143,10 +143,11 @@ export default function SpeakingPage() {
           <ol className="mt-12 grid gap-y-12 md:mt-16 lg:grid-cols-12 lg:gap-x-6">
             {teams.programs.map((p) => (
               <InView as="li" key={p.title} className="border-t border-line pt-7 lg:col-span-6 lg:pt-8">
-                <h3 className="display t-h2 max-w-[13em]">
+                {/* Narrow enough that both titles set on two lines, so the two programs stay level line for line. */}
+                <h3 className="display t-h2 max-w-[11em]">
                   <WordRise>{p.title}</WordRise>
                 </h3>
-                <p className="rise t-lead mt-4 max-w-[30rem] font-medium" style={d(0.2)}>
+                <p className="rise t-lead mt-4 max-w-[30rem] font-medium text-balance" style={d(0.2)}>
                   {p.subtitle}
                 </p>
                 <p className="rise t-body mt-3 max-w-[30rem] text-stone" style={d(0.28)}>
@@ -192,7 +193,7 @@ export default function SpeakingPage() {
                   <h3 className="display t-h2">
                     <WordRise>{k.title}</WordRise>
                   </h3>
-                  <p className="rise t-lead mt-4 max-w-[30rem] font-medium" style={d(0.2)}>
+                  <p className="rise t-lead mt-4 max-w-[30rem] font-medium text-balance" style={d(0.2)}>
                     {k.subtitle}
                   </p>
                   <p className="rise t-body mt-3 max-w-[30rem] text-ash" style={d(0.28)}>

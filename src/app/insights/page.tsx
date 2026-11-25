@@ -69,13 +69,13 @@ export default function InsightsPage() {
     <>
       {/*
         Opening: the label, the headline in four hand-set lines and the intro on the left; the portrait
-        on the right, four columns wide, inside the page column. The lines rise on load, the pale pink
+        on the right, four of the twelve columns, inside the page column (under the text on phones). The lines rise on load, the pale pink
         marker draws behind the closing phrase (the page's one accent), and the portrait is there from
         the first paint, settles and drifts a little.
       */}
       <section className="bg-paper pt-(--header-height)">
-        <div className="mx-auto max-w-(--wrap) px-5 pt-12 pb-20 md:px-10 md:pt-16 md:pb-28 lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-6 lg:pt-20">
-          <div className="lg:col-span-8">
+        <div className="mx-auto max-w-(--wrap) px-5 pt-12 pb-20 md:grid md:grid-cols-12 md:items-start md:gap-x-6 md:px-10 md:pt-16 md:pb-28 lg:pt-20">
+          <div className="md:col-span-8">
             <Reveal immediate>
               <Label index="05">Insights</Label>
             </Reveal>
@@ -96,13 +96,13 @@ export default function InsightsPage() {
               <p className="t-lead text-stone">{hero.text}</p>
             </Reveal>
           </div>
-          <InView className="mt-12 w-[min(100%,24rem)] md:mt-16 lg:col-span-4 lg:col-start-9 lg:mt-0 lg:w-auto">
+          <InView className="mt-12 w-[min(100%,24rem)] md:col-span-4 md:col-start-9 md:mt-0 md:w-auto">
             <Parallax className="aspect-[4/5] w-full" amount={5}>
               <Photo
                 slot={hero.photo}
                 priority
                 className="settle h-full w-full"
-                sizes="(max-width: 1023px) min(100vw - 40px, 384px), (max-width: 1440px) 30vw, 26vw"
+                sizes="(max-width: 767px) min(100vw - 40px, 384px), (max-width: 1440px) 30vw, 26vw"
               />
             </Parallax>
           </InView>

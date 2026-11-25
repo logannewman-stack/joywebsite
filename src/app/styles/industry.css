@@ -146,9 +146,11 @@ html.motion .group:has(:focus-visible) .lean {
    it does not), because any crop in between would cut through her feet.
    ========================================================================== */
 @media screen and (min-width: 1024px) {
-  /* The section's top padding gives way on short screens; the cap below counts it. */
+  /* The section's top padding gives way on short screens (5rem on a screen
+     56rem tall or more, down to 3rem at 46rem), so the headline, the offer
+     and the two ways in still fit the first screen. The cap below counts it. */
   .open {
-    --open-top: min(5rem, 9svh);
+    --open-top: clamp(3rem, 20svh - 6.25rem, 5rem);
     padding-top: var(--open-top);
   }
   /* The five columns: 100cqw is their width, so 125cqw is the height of a 4:5 frame. */
