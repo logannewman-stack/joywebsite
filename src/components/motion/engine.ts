@@ -127,7 +127,7 @@ function update(){
 }
 function req(){if(!ticking){ticking=true;requestAnimationFrame(update)}}
 var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)near.add(e.target);else near.delete(e.target)});req()},{rootMargin:'30% 0px 30% 0px'});
-var once=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.setAttribute('data-in','');once.unobserve(e.target)}})},{rootMargin:'0px 0px -8% 0px'});
+var once=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){if(d.__wait)d.__wait(e.target);e.target.setAttribute('data-in','');once.unobserve(e.target)}})},{rootMargin:'0px 0px -8% 0px'});
 var fine=window.matchMedia&&matchMedia('(pointer: fine)').matches;
 function magnet(el){
   var k=parseFloat(el.getAttribute('data-magnetic'))||0.3;

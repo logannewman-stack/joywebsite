@@ -16,16 +16,23 @@
  *                                     same signing, shorter pauses.
  *   <html class="intro-lift">         from the moment the lift begins until
  *                                     the header has settled.
- *   html { --intro-wait }             while intro-hold is set: the time left
+ *   [data-in] { --intro-wait }        while intro-hold is set: the time left
  *                                     until the lift, added to the delay of
- *                                     the entrances that start under it.
+ *                                     an entrance that starts under the
+ *                                     curtain. Written on the entering
+ *                                     element itself at the moment it is
+ *                                     marked (documentElement.__wait, below):
+ *                                     a variable on <html> would restyle the
+ *                                     whole document.
  *   <html data-tone="dark">           set before first paint when the page
  *                                     opens on black (the curtain, or a page
  *                                     listed in DARK_PATHS), for the page
  *                                     canvas and scrollbar (globals.css). The
  *                                     Header keeps it in step afterwards.
- *   html { --foot-h }                 the footer's height, for its sticky
- *                                     offset and the header's stand-in.
+ *   .site-footer, .foot-ghost         the footer's height, for its sticky
+ *     { --foot-h }                    offset and the header's stand-in. On
+ *                                     those two elements only, for the same
+ *                                     reason.
  *   .site-footer[data-near]           within three screens of the end of the
  *                                     page: the footer is held under the page
  *                                     (sticky). Before that it is an ordinary
@@ -95,6 +102,9 @@ const LATE = 2500;
  *     or touch-move moves the running animations to the start of the lift and
  *     plays it at twice the speed (the entrances waiting under the curtain
  *     move up with it),
+ *   - tells an entrance that starts under the curtain how long is left until
+ *     the lift (documentElement.__wait, called by the scripts that mark
+ *     elements as seen), so it plays as the curtain rises,
  *   - releases the page's held entrances when the lift begins,
  *   - clears up when the animations end: the curtain goes, and the browser
  *     chrome and page canvas take the header's tone.
@@ -114,7 +124,7 @@ function done(){
   document.querySelectorAll('meta[name="theme-color"]').forEach(function(m){m.setAttribute('content',k?'#0b0b0b':'#ffffff')});
 }
 function rest(){
-  done();clearTimeout(t);L.remove('intro-lift','intro-late');d.style.removeProperty('--intro-wait');
+  done();clearTimeout(t);L.remove('intro-lift','intro-late');
   E.forEach(function(k){document.removeEventListener(k,on)});K.forEach(function(k){window.removeEventListener(k,skip,o)});
 }
 function on(e){
@@ -138,6 +148,14 @@ function skip(){
   }catch(x){rest()}
 }
 if(!c){rest();return}
+var A=null,D=0;
+d.__wait=function(el){
+  if(!L.contains('intro-hold'))return;
+  try{
+    if(!A){var all=c.getAnimations();for(var i=0;i<all.length;i++)if(all[i].animationName==='intro-lift')A=all[i];D=A.effect.getComputedTiming().delay}
+    el.style.setProperty('--intro-wait',(Math.max(0,D-(A.currentTime||0))/1000).toFixed(2)+'s');
+  }catch(x){}
+};
 if(performance.now()>${LATE})L.add('intro-late');
 E.forEach(function(k){document.addEventListener(k,on)});
 K.forEach(function(k){window.addEventListener(k,skip,o)});
@@ -146,20 +164,21 @@ requestAnimationFrame(function(){t=setTimeout(rest,11000)});
 
 /** Inline script for the end of <body>: the footer finale's measurements, focus and "Back to top". */
 export const CHROME_BODY_SCRIPT = `(function(){
-var d=document.documentElement,w=window,foot=null,sign=null,H=0,max=0,vh=w.innerHeight;
+var d=document.documentElement,w=window,foot=null,ghost=null,sign=null,H=0,set=-1,max=0,vh=w.innerHeight;
 var ro='ResizeObserver' in w?new ResizeObserver(function(){measure()}):null;
 function find(){
   var f=document.querySelector('.site-footer');
   if(f===foot)return;
   if(ro&&foot)ro.unobserve(foot);
-  foot=f;sign=f&&f.querySelector('.foot-sign');
+  foot=f;sign=f&&f.querySelector('.foot-sign');ghost=document.querySelector('.foot-ghost');set=-1;
   if(ro&&f)ro.observe(f);
 }
 function measure(){
   find();vh=w.innerHeight;
   var h=foot?foot.offsetHeight:H;
   max=d.scrollHeight-vh;
-  if(foot&&h!==H){H=h;d.style.setProperty('--foot-h',h+'px')}
+  H=h;
+  if(foot&&h!==set){set=h;foot.style.setProperty('--foot-h',h+'px');if(ghost)ghost.style.setProperty('--foot-h',h+'px')}
   update();
 }
 function update(){
@@ -179,7 +198,6 @@ function update(){
 }
 measure();
 if(ro)ro.observe(document.body);
-if(d.classList.contains('intro-hold'))try{document.querySelector('.intro-curtain').getAnimations().forEach(function(a){if(a.animationName==='intro-lift')d.style.setProperty('--intro-wait',(Math.max(0,a.effect.getComputedTiming().delay-(a.currentTime||0))/1000).toFixed(2)+'s')})}catch(e){}
 var hd=document.querySelector('header[data-tone]');
 if(hd&&!d.classList.contains('intro'))document.querySelectorAll('meta[name="theme-color"]').forEach(function(m){m.setAttribute('content',hd.getAttribute('data-tone')==='dark'?'#0b0b0b':'#ffffff')});
 w.addEventListener('scroll',update,{passive:true});

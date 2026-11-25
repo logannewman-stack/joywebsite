@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { Archivo, DM_Sans } from "next/font/google";
+import { DM_Sans } from "next/font/google";
+import localFont from "next/font/local";
 import { launchBlockers, site } from "@/content/site";
 import { optIns } from "@/content/integrations";
 import { InquiryProvider } from "@/components/inquiry/InquiryProvider";
@@ -25,18 +26,21 @@ if (blockers.length) {
 }
 
 // Two families for the whole site, beside the script logo.
-// Headings: Archivo, bold and a little wide (the width axis is loaded for that).
-const archivo = Archivo({
+// Headings: Archivo, bold and a little wide. Headings use exactly one cut of it (weight 700, width
+// 112%), so the site carries that one cut as its own small file (22 KB, Latin and extended Latin)
+// instead of the full variable font (90 KB). How the file was made: src/app/fonts/README.md.
+const archivo = localFont({
+  src: "./fonts/archivo-bold-wide.woff2",
   variable: "--font-archivo",
-  subsets: ["latin"],
-  axes: ["wdth"],
+  weight: "700",
+  display: "swap",
+  declarations: [{ prop: "font-stretch", value: "112%" }],
 });
 
-// Body text, navigation, labels and buttons: DM Sans.
+// Body text, navigation, labels and buttons: DM Sans. Upright only: the site sets nothing in italic.
 const dmSans = DM_Sans({
   variable: "--font-dm-sans",
   subsets: ["latin"],
-  style: ["normal", "italic"],
   axes: ["opsz"],
 });
 
