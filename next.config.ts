@@ -82,8 +82,6 @@ const nextConfig: NextConfig = {
   },
   async headers() {
     return [
-      // Review-only pages: never indexed (a backup for their own noindex tag).
-      { source: "/directions/:path*", headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }] },
       // The course PDFs still carry the old logo and the speaker packet's page counters ("01 of 15").
       // Keep them out of search results until the final versions are in, then remove this rule.
       { source: "/pdfs/:path*", headers: [{ key: "X-Robots-Tag", value: "noindex" }] },

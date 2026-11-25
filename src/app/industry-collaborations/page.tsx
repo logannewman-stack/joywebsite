@@ -35,22 +35,20 @@ export default function IndustryPage() {
   return (
     <>
       {/*
-        Opening: her portrait on the left, five columns wide; the headline, the
-        offer and the two ways in on the right, all on the first screen. On
-        phones the headline comes first, then the portrait, then the offer.
-        From lg the portrait's frame is as tall as the text beside it, and on
-        short, wide screens the top padding gives way and the frame is capped
-        by the height (.open and .open-portrait in industry.css), so the
-        portrait stays on the first screen.
+        Opening: the headline, the offer and the two ways in on the right; her
+        portrait on the left with its background removed, straight on the white
+        page. The portrait is five columns wide and stands on the bottom edge of
+        the section, so the line under the section is its floor. On phones the
+        words come first and the portrait follows, centred.
       */}
       <section className="bg-paper pt-(--header-height)">
-        <div className="open mx-auto grid max-w-(--wrap) grid-cols-1 gap-y-10 px-5 pt-12 pb-20 md:px-10 md:pt-16 md:pb-28 lg:grid-cols-12 lg:grid-rows-[auto_1fr] lg:gap-x-6 lg:gap-y-8">
-          <div className="lg:col-span-6 lg:col-start-7 lg:row-start-1">
+        <div className="mx-auto max-w-(--wrap) px-5 md:px-10 lg:grid lg:grid-cols-12 lg:items-end lg:gap-x-6">
+          <div className="pt-12 md:pt-16 lg:col-span-6 lg:col-start-7 lg:row-start-1 lg:pt-20 lg:pb-24">
             <Reveal immediate>
               <Label index="04">Industry Collaborations</Label>
             </Reveal>
-            {/* Four hand-set lines. The longest nearly fills the six columns, so from lg the headline may run into the page margin rather than wrap a line. */}
-            <h1 className="display t-hero mt-6 md:mt-7 lg:-mr-10">
+            {/* Four hand-set lines. */}
+            <h1 className="display t-hero mt-6 md:mt-7">
               <LineRise
                 immediate
                 lines={[
@@ -64,21 +62,7 @@ export default function IndustryPage() {
                 ]}
               />
             </h1>
-          </div>
-          {/* The portrait is there from the first paint (it is the largest thing on the screen): it only settles and drifts. */}
-          <InView className="open-figure w-[min(100%,24rem)] lg:col-span-5 lg:col-start-1 lg:row-span-2 lg:row-start-1 lg:w-auto">
-            <Parallax className="open-portrait aspect-[4/5] w-full" amount={5}>
-              <Photo
-                slot={hero.photo}
-                priority
-                className="settle h-full w-full"
-                // From lg the photograph can be set larger than its frame (the three-quarter crop on short screens).
-                sizes="(max-width: 1023px) min(100vw - 40px, 384px), 40vw"
-              />
-            </Parallax>
-          </InView>
-          <div className="lg:col-span-6 lg:col-start-7 lg:row-start-2">
-            <Reveal immediate delay={0.25}>
+            <Reveal immediate delay={0.25} className="mt-8 md:mt-10">
               <p className="t-lead max-w-[33rem]">{keepCompounds(hero.text)}</p>
             </Reveal>
             <PathIndex
@@ -87,6 +71,15 @@ export default function IndustryPage() {
                 { label: partnerships.heading, href: "#partnerships" },
                 { label: launch.heading, href: "#clinical-launch" },
               ]}
+            />
+          </div>
+          <div className="mx-auto mt-12 w-[min(100%,22rem)] md:mt-16 lg:col-span-5 lg:col-start-1 lg:row-start-1 lg:mx-0 lg:mt-0 lg:w-auto">
+            {/* 1303 x 1809: the frame has the cut-out's own proportions, so nothing is cropped and its foot meets the section edge. */}
+            <Photo
+              slot={hero.photo}
+              priority
+              className="open-settle aspect-[1303/1809] w-full"
+              sizes="(max-width: 1023px) min(100vw - 40px, 352px), (max-width: 1440px) 36vw, 30vw"
             />
           </div>
         </div>

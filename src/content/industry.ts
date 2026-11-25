@@ -5,15 +5,18 @@ export const industry = {
   hero: {
     heading: "Education and clinical strategy for dental manufacturers.",
     text: "I work with dental manufacturers to connect their products with clinical practice through education, advisory work, and long-term partnerships.",
+    /**
+     * The black suit, arms crossed, with the background removed, set straight
+     * on the white page in full colour. It stands on the bottom edge of the
+     * opening. The matte was made from the graded frame (home-hero-g.jpg)
+     * with scripts/cutout.py and ends above the belt.
+     */
     photo: {
-      // 4:5 crop: she reads larger and the ceiling pendants no longer compete with the headline.
-      src: "/photos/industry-hero-4x5-g.jpg",
-      srcBw: "/photos/industry-hero-4x5-bw.jpg",
-      alt: "Dr. Joy seated in a black suit",
-      treatment: "bw",
-      direction: "Black-and-white editorial image. Professional and composed, black jacket; product or lab context optional.",
-      focus: "50% 50%",
-      original: "JVH-129",
+      src: "/photos/industry-hero-cutout-155.webp",
+      alt: "Dr. Joy in a black suit, arms crossed, smiling",
+      treatment: "cutout",
+      direction: "Background-removed portrait in the black suit, arms crossed, on white. Professional and composed. Clean hair and jacket edges.",
+      original: "JVH-155 (cut-out, 1303 x 1809)",
     } satisfies PhotoSlot,
   },
 

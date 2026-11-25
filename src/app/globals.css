@@ -50,9 +50,9 @@
   --wrap: 76rem;
 }
 @utility t-hero {
-  /* A page's opening line: 68px on a desktop, 36px on a phone. */
-  font-size: clamp(2.25rem, 5vw, 4.25rem);
-  line-height: 1.03;
+  /* A page's opening line: 64px on a desktop, 36px on a phone. */
+  font-size: clamp(2.25rem, 4.7vw, 4rem);
+  line-height: 1.04;
 }
 @utility t-h1 {
   /* A section heading: 48px on a desktop. */

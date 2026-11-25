@@ -4,8 +4,7 @@ import { insights } from "@/content/insights";
 
 /**
  * The six public pages, plus an /insights/<slug> page for each original
- * article that has its own text (`slug` and `body`). /directions (review
- * only) is deliberately left out.
+ * article that has its own text (`slug` and `body`).
  */
 export default function sitemap(): MetadataRoute.Sitemap {
   const pages = pageOrder.map((page) => ({ url: page.href === "/" ? site.url : `${site.url}${page.href}` }));

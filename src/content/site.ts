@@ -46,7 +46,7 @@ export const site = {
    * (testimonials pending permission, the venue list, unconfirmed articles)
    * is shown so she can approve it, and search engines are asked not to index
    * the site. Set to false for launch: anything unapproved or empty is
-   * hidden, /directions is removed, and the launch checks below must pass.
+   * hidden, and the launch checks below must pass.
    */
   showPlaceholders: true,
 
@@ -57,12 +57,6 @@ export const site = {
    * notes. False (the default) keeps the preview as visitors will see it.
    */
   reviewNotes: false,
-
-  /**
-   * Which opening-screen direction Home uses: "a" | "b" | "c".
-   * Compare all three at /directions.
-   */
-  homeHero: "b" as "a" | "b" | "c",
 
   /**
    * Portrait style: "color" (current) or "bw". Every portrait also has a

@@ -93,7 +93,7 @@ export default function InsightsPage() {
               />
             </h1>
             <Reveal immediate delay={0.3} className="mt-8 max-w-[30rem] md:mt-10">
-              <p className="t-lead text-stone">{hero.text}</p>
+              <p className="t-lead text-ink">{hero.text}</p>
             </Reveal>
           </div>
           <InView className="mt-12 w-[min(100%,24rem)] md:col-span-4 md:col-start-9 md:mt-0 md:w-auto">

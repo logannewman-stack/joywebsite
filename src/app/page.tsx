@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { home } from "@/content/home";
 import { site } from "@/content/site";
-import { heroes } from "@/components/home/Heroes";
+import { Hero } from "@/components/home/Hero";
 import { Perspective } from "@/components/home/Perspective";
 import { Pathways } from "@/components/home/Pathways";
 import { Finale } from "@/components/home/Finale";
@@ -20,13 +20,12 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image", title, description },
 };
 
-/** Mobile browser chrome matches the opening screen (black for Direction B). */
+/** Mobile browser chrome matches the opening screen, which is black. */
 export const viewport: Viewport = {
-  themeColor: { a: "#ffffff", b: "#0b0b0b", c: "#ffffff" }[site.homeHero],
+  themeColor: "#0b0b0b",
 };
 
 export default function Home() {
-  const Hero = heroes[site.homeHero];
   const { work, testimonial } = home;
 
   return (
@@ -34,10 +33,10 @@ export default function Home() {
       {/* The opening: the headline and her photograph, one screen on a desktop. */}
       <Hero />
 
-      {/* A perspective shaped by every side of dentistry: the story, sentence by sentence, beside one photograph. */}
+      {/* A perspective shaped by every side of dentistry: the story beside one photograph. */}
       <Perspective />
 
-      {/* Explore My Work: the four pathways, one row each. */}
+      {/* Explore My Work: the four pathways, side by side. */}
       <section id="work" className="bg-paper" aria-labelledby="work-heading">
         <div className="mx-auto max-w-(--wrap) px-5 py-20 md:px-10 md:py-28">
           <h2 id="work-heading" className="display t-h1">

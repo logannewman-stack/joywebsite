@@ -7,12 +7,10 @@
    say. Everything that moves is scoped to <html class="motion"> (JavaScript
    on, reduced motion off) or to hover and focus, so without it the page is
    its plain, complete layout. Nothing here animates in JavaScript, and
-   nothing on the page is pinned. One refinement, the fade of the chapter
-   rail's name, uses a CSS scroll timeline where the browser has one.
+   nothing on the page is pinned.
 
      Opening        the stage photo settling
-     Chapter rail   the fixed indicator in the left margin (wide screens)
-     Chapter bar    its counterpart at the top of the screen (everything narrower)
+     Chapter bar    the fixed indicator at the top of the screen
      Course index   the row pointed at
      Room band      the reel control
    ========================================================================== */
@@ -32,219 +30,63 @@ html.motion .sp-hero-settle {
 }
 
 /* --------------------------------------------------------------------------
-   Chapter rail (ChapterRail.tsx): four marks and the current chapter's name,
-   fixed at the left edge of the screen, in ink and grey (white and grey on
-   the black chapter). It shows from 1360px wide, where the page column leaves
-   it a clear margin of 7rem or more; narrower screens get the chapter bar
-   below. Each chapter section holds its own copy inside a layer clipped to
-   the section, so the rail stays still while the section edges pass over it.
-   -------------------------------------------------------------------------- */
-.sp-rail-clip {
-  display: none;
-}
-@media screen and (min-width: 1360px) and (min-height: 480px) {
-  .sp-rail-clip {
-    display: block;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    width: 2.5rem;
-    z-index: 10;
-    clip-path: inset(0);
-    pointer-events: none;
-    /* Progress through the chapter, for the name's fade: 0 when the middle of the screen meets the top of the section, 1 at its end. */
-    view-timeline: --sp-chapter block;
-    view-timeline-inset: 50%;
-  }
-  .sp-rail {
-    --rail-grey: var(--color-stone);
-    position: fixed;
-    top: calc(50% - 12.25rem);
-    left: 0;
-    width: 2.5rem;
-    color: var(--color-ink);
-    pointer-events: auto;
-  }
-  .sp-rail-dark {
-    --rail-grey: var(--color-ash);
-    color: #fff;
-  }
-  .sp-rail-item {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 1.875rem;
-  }
-  /* Each chapter is a small dot: faint ahead, stronger once read, solid and a
-     little larger for the chapter on screen. */
-  .sp-rail-tick {
-    width: 0.375rem;
-    height: 0.375rem;
-    border-radius: 9999px;
-    background: color-mix(in srgb, currentColor 22%, transparent);
-    transition:
-      background-color var(--duration-ui) ease-out,
-      transform var(--duration-ui) var(--ease-expo);
-  }
-  .sp-rail-item[data-state="past"] .sp-rail-tick {
-    background: color-mix(in srgb, currentColor 50%, transparent);
-  }
-  .sp-rail-item[data-state="current"] .sp-rail-tick {
-    background: currentColor;
-    transform: scale(1.5);
-  }
-  .sp-rail-item:not([data-state="current"]):hover .sp-rail-tick {
-    background: currentColor;
-    transform: scale(1.25);
-  }
-  /* The chapter's name, a small grey label set along the margin below the marks. Hovering another mark previews its name. */
-  .sp-rail-name {
-    position: absolute;
-    top: calc(4 * 1.875rem + 0.875rem);
-    left: 50%;
-    writing-mode: vertical-rl;
-    /* Every character turned the same way (an upright apostrophe would read as a dash). */
-    text-orientation: sideways;
-    transform: translateX(-50%);
-    color: var(--rail-grey);
-    white-space: nowrap;
-    opacity: 0;
-    transition: opacity var(--duration-ui) var(--ease-soft);
-  }
-  .sp-rail-item:hover .sp-rail-name {
-    opacity: 1;
-  }
-  /* The chapter's own name: a second layer over the marks, with the name in the same place. It steps aside while another mark's name is previewed. */
-  .sp-rail-clip-name .sp-rail {
-    pointer-events: none;
-  }
-  .sp-rail-clip-name .sp-rail-name {
-    opacity: 1;
-  }
-  .sp-rail-clip:has(.sp-rail-item:not([data-state="current"]):hover) + .sp-rail-clip-name .sp-rail-name {
-    opacity: 0;
-  }
-}
-/* The name runs from 3.875rem above the middle of the screen to (the longest)
-   12.25rem below it. It must never be cut by a chapter's edge, or two names
-   would show at once, half each. Without scroll-driven animations its layer
-   ends 16.25rem before the chapter does: the name has left through the
-   layer's end by the time the next chapter's edge, and with it the next name,
-   arrives. */
-@supports not (animation-timeline: view()) {
-  @media screen and (min-width: 1360px) and (min-height: 480px) {
-    .sp-rail-clip-name {
-      bottom: 16.25rem;
-    }
-  }
-}
-@media screen and (min-width: 1360px) and (min-height: 480px) and (max-height: 620px) {
-  .sp-rail {
-    top: calc(50% - 3.75rem);
-  }
-  .sp-rail-name {
-    display: none;
-  }
-}
-/* With them, the name fades instead: in once the chapter's top edge has
-   passed above it (4rem after that edge crosses the middle of the screen), and
-   out before the chapter's end reaches its foot (13.75rem before the end
-   crosses the middle). Not tied to html.motion: this is a correction, not an effect. */
-@supports (animation-timeline: view()) {
-  @media screen and (min-width: 1360px) and (min-height: 480px) {
-    .sp-rail-name-in {
-      animation: sp-name-in linear both;
-      animation-timeline: --sp-chapter;
-      animation-range: cover 4rem cover 5.75rem;
-    }
-    .sp-rail-name-out {
-      animation: sp-name-out linear both;
-      animation-timeline: --sp-chapter;
-      animation-range: cover calc(100% - 15.75rem) cover calc(100% - 13.75rem);
-    }
-  }
-}
-@keyframes sp-name-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-@keyframes sp-name-out {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-  }
-}
-
-/* --------------------------------------------------------------------------
-   Chapter bar (ChapterRail.tsx): the rail's counterpart on phones, tablets
-   and small laptops. A slim bar at the top of the screen that names the
-   chapter being read, built like the rail: each chapter holds its own copy, fixed to the
-   viewport inside a layer clipped to the chapter. The layer starts a little
-   way down, so the bar arrives once the chapter's heading has left the top of
-   the screen, and it ends with the chapter.
+   Chapter bar (ChapterBar.tsx): a slim bar at the top of the screen that
+   names the chapter being read and counts it (02 / 04). Each chapter section
+   holds its own copy, fixed to the viewport inside a layer clipped to the
+   section, so the bar stays still while the section edges pass over it and
+   changes exactly where one chapter ends. The layer starts a little way
+   down, so the bar arrives once the chapter's heading has left the top of
+   the screen, and it ends with the chapter. No JavaScript is involved.
 
    The bar lies under the site header (a lower layer, the same place): it
    shows while the header is away, and the header covers it on its return.
    The page's progress line rides along its top edge, so the bar carries no
-   second meter of its own: it counts the chapter instead (02 / 04). It is
-   white with a thin line under it; black, with a line to match, over the
-   black chapter.
+   second meter of its own. It is white with a thin line under it; black,
+   with a line to match, over the black chapter. Its words line up with the
+   page column.
    -------------------------------------------------------------------------- */
 .sp-bar-clip {
-  display: none;
+  position: absolute;
+  inset: 13rem 0 0;
+  z-index: 10;
+  clip-path: inset(0);
+  pointer-events: none;
 }
-@media screen and (max-width: 1359px), screen and (max-height: 479px) {
-  .sp-bar-clip {
-    display: block;
-    position: absolute;
-    inset: 13rem 0 0;
-    z-index: 10;
-    clip-path: inset(0);
-    pointer-events: none;
-  }
-  .sp-bar {
-    position: fixed;
-    inset: 0 0 auto;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.75rem;
-    height: 2.25rem;
-    /* 2px at the top for the page's progress line. */
-    padding: 2px 1.25rem 0;
-    border-bottom: 1px solid var(--color-line);
-    background: var(--color-paper);
-    color: var(--color-ink);
-  }
-  .sp-bar-dark {
-    border-color: var(--color-line-dark);
-    background: var(--color-ink);
-    color: #fff;
-  }
-  .sp-bar-name,
-  .sp-bar-count {
-    white-space: nowrap;
-  }
-  .sp-bar-name {
-    min-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .sp-bar-count {
-    flex: none;
-    color: var(--color-stone);
-    font-variant-numeric: tabular-nums;
-  }
-  .sp-bar-dark .sp-bar-count {
-    color: var(--color-ash);
-  }
+.sp-bar {
+  position: fixed;
+  inset: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  height: 2.25rem;
+  /* 2px at the top for the page's progress line. */
+  padding: 2px 1.25rem 0;
+  border-bottom: 1px solid var(--color-line);
+  background: var(--color-paper);
+  color: var(--color-ink);
+}
+.sp-bar-dark {
+  border-color: var(--color-line-dark);
+  background: var(--color-ink);
+  color: #fff;
+}
+.sp-bar-name,
+.sp-bar-count {
+  white-space: nowrap;
+}
+.sp-bar-name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.sp-bar-count {
+  flex: none;
+  color: var(--color-stone);
+  font-variant-numeric: tabular-nums;
+}
+.sp-bar-dark .sp-bar-count {
+  color: var(--color-ash);
 }
 /* The narrowest phones: the longest heading takes the whole bar, so the count steps aside. */
 @media screen and (max-width: 389px) {
@@ -252,9 +94,9 @@ html.motion .sp-hero-settle {
     display: none;
   }
 }
-@media screen and (min-width: 768px) and (max-width: 1359px), screen and (min-width: 768px) and (max-height: 479px) {
+@media screen and (min-width: 768px) {
   .sp-bar {
-    padding-inline: 2.5rem;
+    padding-inline: max(2.5rem, calc((100vw - var(--wrap)) / 2 + 2.5rem));
   }
 }
 

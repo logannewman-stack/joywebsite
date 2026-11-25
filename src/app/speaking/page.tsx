@@ -11,7 +11,7 @@ import { Parallax } from "@/components/motion/Parallax";
 import { Hl, WordRise } from "@/components/motion/Text";
 import { InquiryButton } from "@/components/inquiry/InquiryProvider";
 import { NextPage } from "@/components/layout/NextPage";
-import { ChapterRail } from "@/components/speaking/ChapterRail";
+import { ChapterBar } from "@/components/speaking/ChapterBar";
 import { CourseIndex } from "@/components/speaking/CourseIndex";
 import { DetailsLink } from "@/components/speaking/DetailsLink";
 import { PlannerResources } from "@/components/speaking/PlannerResources";
@@ -88,7 +88,7 @@ export default function SpeakingPage() {
           <Reveal immediate delay={0.25} className="mt-10 md:mt-12 lg:col-span-7 lg:row-start-2 lg:mt-10">
             <div className="flex max-w-[33rem] flex-col gap-5">
               {hero.paragraphs.map((p, i) => (
-                <p key={p} className={i === 0 ? "t-lead text-ink" : "t-body text-stone"}>
+                <p key={p} className={i === 0 ? "t-lead text-ink" : "t-body text-ink"}>
                   {p}
                 </p>
               ))}
@@ -125,7 +125,7 @@ export default function SpeakingPage() {
 
       {/* Featured Clinical Courses: the program, one ruled row per course */}
       <section className="relative bg-paper">
-        <ChapterRail current={0} />
+        <ChapterBar current={0} />
         <div className="mx-auto max-w-(--wrap) px-5 py-20 md:px-10 md:py-28">
           <ChapterHead id="topics" heading={clinical.heading} intro={clinical.intro} />
           <CourseIndex courses={clinical.courses} className="mt-12 md:mt-16" />
@@ -137,7 +137,7 @@ export default function SpeakingPage() {
 
       {/* For Dental Teams & Organizations: the two programs side by side, each under a thin line */}
       <section className="relative bg-paper">
-        <ChapterRail current={1} />
+        <ChapterBar current={1} />
         <div className="mx-auto max-w-(--wrap) px-5 py-20 md:px-10 md:py-28">
           <ChapterHead id="teams" heading={teams.heading} intro={teams.intro} />
           <ol className="mt-12 grid gap-y-12 md:mt-16 lg:grid-cols-12 lg:gap-x-6">
@@ -167,7 +167,7 @@ export default function SpeakingPage() {
 
       {/* Keynote Presentations: the black chapter. The two keynotes on the left, the stage photo beside them. */}
       <section data-header="dark" className="grain grain-light relative bg-ink text-white">
-        <ChapterRail current={2} tone="dark" />
+        <ChapterBar current={2} tone="dark" />
         <div className="mx-auto max-w-(--wrap) px-5 py-20 md:px-10 md:py-28">
           <div id="keynotes">
             <h2 className="display t-h1">
@@ -214,7 +214,7 @@ export default function SpeakingPage() {
 
       {/* Dr. Joy's P3: the heading on the left, the two ways in on the right */}
       <section className="relative bg-paper">
-        <ChapterRail current={3} />
+        <ChapterBar current={3} />
         <div className="mx-auto max-w-(--wrap) px-5 py-20 md:px-10 md:py-28 lg:grid lg:grid-cols-12 lg:gap-x-6">
           <div id="p3" className="lg:col-span-4">
             <h2 className="display t-h1">

@@ -38,7 +38,7 @@ export default function EducationPage() {
               {/* The marker behind "instruments and products in hand" draws once the words have arrived. */}
               <InView className="flex flex-col gap-5">
                 {hero.paragraphs.map((p, i) => (
-                  <p key={p} className={i === 0 ? "t-lead text-ink" : "t-body text-stone [&_.hl-light]:text-ink"} style={{ "--rise-delay": "0.7s" } as Vars}>
+                  <p key={p} className={i === 0 ? "t-lead text-ink" : "t-body text-ink"} style={{ "--rise-delay": "0.7s" } as Vars}>
                     {i === 1 ? highlight(p, ["instruments and products in hand"], "light") : p}
                   </p>
                 ))}

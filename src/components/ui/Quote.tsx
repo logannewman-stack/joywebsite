@@ -1,7 +1,5 @@
-import { notes, site, type PhotoSlot } from "@/content/site";
-import { Parallax } from "@/components/motion/Parallax";
+import { notes, site } from "@/content/site";
 import { WordLight } from "@/components/motion/Text";
-import { Photo } from "./Photo";
 import { Reveal } from "./Reveal";
 import { typeset } from "./Typeset";
 
@@ -53,10 +51,7 @@ function shape(quote: string): { lead: string; rest: string } {
  * Testimonial set as a heading, with a hanging opening quote mark. Its words
  * brighten one after another as it scrolls into view. Testimonials awaiting
  * republishing permission are shown in review mode only, with a note, and
- * hidden at launch.
- *
- * `backdrop` (dark tone only) sets the quote over a dimmed, slowly drifting
- * photograph, e.g. a room or an audience.
+ * hidden at launch. A dark quote is set on plain black.
  */
 export function Quote({
   heading,
@@ -68,7 +63,6 @@ export function Quote({
   size,
   className = "",
   id,
-  backdrop,
 }: {
   heading: string;
   quote: string;
@@ -81,8 +75,6 @@ export function Quote({
   /** Extra classes for the section, e.g. to tighten its padding next to a same-colored section. */
   className?: string;
   id?: string;
-  /** A photograph behind a dark quote, dimmed so the words stay first. */
-  backdrop?: PhotoSlot;
 }) {
   if (permission !== "granted" && !site.showPlaceholders) return null;
   const dark = tone === "dark";
@@ -91,14 +83,6 @@ export function Quote({
   const mark = dark ? "text-ash" : "text-stone";
   return (
     <section id={id} className={`relative overflow-hidden ${surfaces[tone]} ${className}`} data-tone={tone} data-header={dark ? "dark" : undefined}>
-      {dark && backdrop?.src && (
-        <div aria-hidden className="absolute inset-0">
-          <Parallax className="h-full w-full" amount={6}>
-            <Photo slot={{ ...backdrop, alt: "" }} tone="dark" className="h-full w-full grayscale" sizes="100vw" />
-          </Parallax>
-          <div className="absolute inset-0 bg-ink/80" />
-        </div>
-      )}
       <div className="relative mx-auto max-w-(--wrap) px-5 py-20 md:px-10 md:py-28">
         <div className="grid md:grid-cols-12 md:gap-x-6">
           <div

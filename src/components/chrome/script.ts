@@ -49,7 +49,6 @@
  * chrome colour (theme-color) for a page that opens on black.
  */
 
-import { site } from "@/content/site";
 
 /**
  * The curtain's one off-switch, for tooling and tests: with this key set to "1"
@@ -62,7 +61,7 @@ const OFF = "dj-intro-off";
  * components/layout/Header.tsx: the server HTML already has the dark header
  * there, and the head script marks <html> to match before first paint.
  */
-const DARK_PATHS = ["/directions/b", ...(site.homeHero !== "a" && site.homeHero !== "c" ? ["/"] : [])];
+const DARK_PATHS = ["/"];
 
 /**
  * Inline script for <head>, after the motion head script. It decides, before

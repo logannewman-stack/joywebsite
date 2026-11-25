@@ -128,52 +128,19 @@ html.motion .group:has(:focus-visible) .lean {
 }
 
 /* ==========================================================================
-   Opening (lg and up)
+   Opening
 
-   The portrait is a 4:5 photograph, five columns wide. Its frame takes the
-   height of the text column beside it (a little taller than 4:5), so the
-   photograph and the list of ways in end on the same line.
-
-   On a short, wide screen that frame is taller than the first screen (a
-   maximised 16:9 laptop window leaves the page about 40rem of height), and
-   the fold would cut it through her shoes. So the frame is capped by the
-   height left under the header (--cap: the screen less the header, the
-   section's top padding and 2.5rem of air), and when even the plain 4:5
-   frame does not fit, the photograph is set as a three-quarter portrait
-   instead: enlarged from its top edge so the frame ends at her shin, with
-   her face and hands in it. The switch is all or nothing (--short is zero or
-   less while the whole photograph fits, and a very large length as soon as
-   it does not), because any crop in between would cut through her feet.
+   The portrait is in place from the first paint and settles from slightly
+   large, growing from its foot so it never leaves the edge it stands on.
    ========================================================================== */
-@media screen and (min-width: 1024px) {
-  /* The section's top padding gives way on short screens (5rem on a screen
-     56rem tall or more, down to 3rem at 46rem), so the headline, the offer
-     and the two ways in still fit the first screen. The cap below counts it. */
-  .open {
-    --open-top: clamp(3rem, 20svh - 6.25rem, 5rem);
-    padding-top: var(--open-top);
+@keyframes open-settle {
+  from {
+    transform: scale(1.04);
   }
-  /* The five columns: 100cqw is their width, so 125cqw is the height of a 4:5 frame. */
-  .open-figure {
-    container-type: inline-size;
-  }
-  .open-portrait {
-    --cap: max(20rem, calc(100svh - var(--header-height) - var(--open-top) - 2.5rem));
-    --short: calc((125cqw - var(--cap)) * 9999);
-    /* The photograph's height in its frame: all of it, or 145% (the frame then shows its top two thirds). */
-    --photo-h: max(100%, min(145%, var(--short)));
-    height: min(100%, var(--cap));
-  }
-  .open-portrait img {
-    /* next/image sets the height inline. */
-    height: var(--photo-h) !important;
-    object-position: 50% 0;
-  }
-  /* The soft preview behind the photograph follows the same crop. */
-  .open-portrait [data-blur] {
-    background-position: 50% 0;
-    background-size: auto var(--photo-h);
-  }
+}
+html.motion .open-settle {
+  transform-origin: 50% 100%;
+  animation: open-settle 1.8s var(--ease-expo) both;
 }
 
 /* ==========================================================================

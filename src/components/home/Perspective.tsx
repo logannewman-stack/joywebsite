@@ -4,17 +4,8 @@ import { Parallax } from "@/components/motion/Parallax";
 import { WordRise } from "@/components/motion/Text";
 import { Photo } from "@/components/ui/Photo";
 import { ImageReveal } from "@/components/ui/Reveal";
-import { typeset } from "@/components/ui/Typeset";
 
 const { perspective } = home;
-
-/**
- * The approved paragraphs, one sentence at a time. Wording, order and
- * punctuation are untouched: the text is only cut at its sentence ends.
- */
-const statements = perspective.paragraphs.flatMap((p) => p.split(/(?<=[.!?])\s+(?=[A-Z“‘])/));
-
-const pad = (n: number) => String(n).padStart(2, "0");
 
 /** The heading, with its marked phrase over the pale pink marker; the words rise as one sentence. */
 function Heading() {
@@ -43,40 +34,35 @@ function Heading() {
  * "A perspective shaped by every side of dentistry.": the story, beside one
  * photograph.
  *
- * The heading runs across the top of the section. Under it the photograph
- * takes five of the twelve columns and the story stands beside it as a short
- * list: its five sentences, each under a thin line with a small number. The
- * rows rise one after another when the list is seen. On phones the
- * photograph sits between the heading and the list, no wider than the column.
+ * The photograph takes five of the twelve columns; the heading and the three
+ * paragraphs stand beside it as plain reading text, centred on its height.
+ * The paragraphs rise one after another when they are seen. On phones the
+ * order is heading, photograph, paragraphs, the photograph no wider than the
+ * column.
  */
 export function Perspective() {
   return (
     <section aria-labelledby="perspective-heading" className="bg-paper">
-      <div className="mx-auto max-w-(--wrap) px-5 py-20 md:px-10 md:py-28">
-        <InView>
-          <h2 id="perspective-heading" className="display t-h1 max-w-[17em]">
+      <div className="mx-auto max-w-(--wrap) px-5 py-20 md:px-10 md:py-28 lg:grid lg:grid-cols-12 lg:grid-rows-[1fr_auto_auto_1fr] lg:gap-x-6">
+        <InView className="lg:col-span-6 lg:col-start-7 lg:row-start-2">
+          <h2 id="perspective-heading" className="display t-h1">
             <Heading />
           </h2>
         </InView>
 
-        <div className="mt-10 md:mt-14 lg:grid lg:grid-cols-12 lg:gap-x-6">
-          <ImageReveal className="w-[min(100%,24rem)] lg:col-span-5 lg:w-auto">
-            <Parallax amount={4} className="aspect-[4/5] w-full">
-              <Photo slot={perspective.photoTall} className="h-full w-full" sizes="(max-width: 1023px) min(100vw - 40px, 384px), 33vw" />
-            </Parallax>
-          </ImageReveal>
+        <ImageReveal className="mt-10 w-[min(100%,24rem)] lg:col-span-5 lg:col-start-1 lg:row-span-4 lg:row-start-1 lg:mt-0 lg:w-auto">
+          <Parallax amount={4} className="aspect-[4/5] w-full">
+            <Photo slot={perspective.photo} className="h-full w-full" sizes="(max-width: 1023px) min(100vw - 40px, 384px), 33vw" />
+          </Parallax>
+        </ImageReveal>
 
-          <InView className="stagger mt-10 lg:col-span-6 lg:col-start-7 lg:mt-0">
-            {statements.map((text, i) => (
-              <div key={i} className="grid grid-cols-[2rem_minmax(0,1fr)] items-baseline gap-x-4 border-t border-line py-6 md:py-7">
-                <span aria-hidden className="label text-stone tabular-nums">
-                  {pad(i + 1)}
-                </span>
-                <p className="display t-h3">{typeset(text)}</p>
-              </div>
-            ))}
-          </InView>
-        </div>
+        <InView className="stagger mt-10 flex max-w-[34rem] flex-col gap-5 lg:col-span-6 lg:col-start-7 lg:row-start-3 lg:mt-8">
+          {perspective.paragraphs.map((text, i) => (
+            <p key={i} className={i === 0 ? "t-lead text-ink" : "t-body text-ink"}>
+              {text}
+            </p>
+          ))}
+        </InView>
       </div>
     </section>
   );

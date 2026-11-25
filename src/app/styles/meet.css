@@ -25,39 +25,24 @@ html.motion .meet-settle {
   animation: meet-settle 1.8s var(--ease-expo) both;
 }
 
-/* The story takes ink as it is read (StoryLight.tsx). --v runs 0 to 1 as the
-   block crosses the screen; --from and --to are the values where the first
-   word starts and the last word finishes, set so the edge of the ink sits
-   about three quarters of the way down the screen. Words not yet reached keep
-   58% ink: 4.8:1 on white, so they pass body-text contrast.
-   On desktop the first paragraph is above the fold and always in full ink
-   (--skip takes its words out of the count); the sweep starts with the second. */
+/* On phones and tablets the story takes ink as it is read (StoryLight.tsx).
+   --v runs 0 to 1 as the block crosses the screen; --from and --to are the
+   values where the first word starts and the last word finishes, set so the
+   edge of the ink sits about three quarters of the way down the screen. Words
+   not yet reached keep 58% ink: 4.8:1 on white, so they pass body-text
+   contrast. From 1024px the whole story is on the first screen beside the
+   portrait, so it is simply in full ink. */
 .meet-story {
   --from: 0.14;
   --to: 0.52;
   --dim: 0.58;
   --lead: 9;
-  --skip: 0;
   --t: calc((var(--v, 1) - var(--from)) / (var(--to) - var(--from)));
 }
-@media (min-width: 1024px) {
-  .meet-story {
-    --from: 0.34;
-    --to: 0.5;
-    --skip: var(--n1);
-  }
-}
-html.motion .meet-story .sl {
-  opacity: clamp(
-    var(--dim),
-    calc((var(--t) * (var(--n) - var(--skip) + var(--lead)) - (var(--i) - var(--skip))) / var(--lead)),
-    1
-  );
-  transition: opacity 240ms linear;
-}
-@media (min-width: 1024px) {
-  html.motion .meet-story > :first-child .sl {
-    opacity: 1;
+@media (max-width: 1023px) {
+  html.motion .meet-story .sl {
+    opacity: clamp(var(--dim), calc((var(--t) * (var(--n) + var(--lead)) - var(--i)) / var(--lead)), 1);
+    transition: opacity 240ms linear;
   }
 }
 

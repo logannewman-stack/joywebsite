@@ -31,10 +31,8 @@ type Vars = CSSProperties & Record<`--${string}`, string | number>;
  * flashes: add a path when a page's first section carries data-header="dark".
  */
 function opensDark(pathname: string) {
-  // Home opens on the black stage unless one of the light directions is chosen;
-  // the /directions/b preview always does.
-  if (pathname === "/directions/b") return true;
-  return pathname === "/" && site.homeHero !== "a" && site.homeHero !== "c";
+  // Home opens on the black stage.
+  return pathname === "/";
 }
 
 /** Home is the cover; the five pages carry their page numbers, as on their own openings (Meet 01 … Insights 05). */

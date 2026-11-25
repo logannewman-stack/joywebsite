@@ -26,8 +26,6 @@ Open http://localhost:3000. To test forms locally, copy `.env.example` to `.env.
 | `/hands-on-education` | Hands-On Education |
 | `/industry-collaborations` | Industry Collaborations |
 | `/insights` | Insights |
-| `/directions` | **Review only** (never indexed, not in the nav or sitemap, gone at launch): the three opening-screen directions with rationale, image selection and tradeoffs, previewed on desktop and phone |
-| `/directions/a`, `/b`, `/c` | **Review only**: one opening screen on its own (used by the previews on `/directions`) |
 
 Unknown addresses show a branded 404 that leads back into the four journeys.
 
@@ -57,7 +55,6 @@ Copy in the content files is the approved working copy from the creative brief. 
 - the whole site asks search engines not to index it (`noindex`)
 - content still awaiting Dr. Joy's approval is shown so she can approve it: testimonials awaiting permission, the venue list, unconfirmed articles
 - links whose address is still missing (Instrumental) go nowhere
-- `/directions` is available
 
 The preview carries no working notes, so it looks as visitors will see it. To see what is still pending, set `reviewNotes` to `true` as well. That adds:
 
@@ -68,7 +65,7 @@ The preview carries no working notes, so it looks as visitors will see it. To se
 Set it to `false` for launch. Then:
 
 - anything still empty is hidden, including empty photo slots, so the site never shows a dead link, a placeholder or an empty section
-- review tags disappear, `/directions` returns 404 and the `noindex` is lifted
+- review tags disappear and the `noindex` is lifted
 - the launch checks run: the build **fails** with a list if `links.instrumental` is missing, if `links.privacy` is missing while a form offers the text-message opt-in, or if `site.url` is not the production address (`launchBlockers()` in `site.ts`)
 
 ### Proportions, type scale and lines
@@ -76,14 +73,14 @@ Set it to `false` for launch. Then:
 One page column and one type scale serve every page (`src/app/globals.css`):
 
 - **Column.** `--wrap` is 76rem, used as `max-w-(--wrap)`. On a desktop it leaves about a tenth of the screen clear on each side. Sections are padded about 5rem top and bottom on phones and 7rem on desktop.
-- **Headings.** A heading takes `display` and one size: `t-hero` (a page's opening line, 68px on a desktop and 36px on a phone), `t-h1` (a section heading, 48px), `t-h2` (34px) or `t-h3` (22px). Nothing is set larger than `t-hero`. Running text takes `t-lead` or `t-body`; small capital labels take `label`.
+- **Headings.** A heading takes `display` and one size: `t-hero` (a page's opening line, 64px on a desktop and 36px on a phone), `t-h1` (a section heading, 48px), `t-h2` (34px) or `t-h3` (22px). Nothing is set larger than `t-hero`. Running text takes `t-lead` or `t-body`; small capital labels take `label`.
 - **Emphasis.** Never italic and never a second typeface. A heading is plain, or one phrase carries the pale pink marker: `<Hl tone="light">` on white, `tone="dark"` on black (`src/components/motion/Text.tsx`).
 - **Photographs.** Beside text a photograph takes four or five of the twelve columns, about a third of the screen. A wide photograph may run the width of the column as a band; none bleeds to the edge of the screen or fills it. A portrait with its background removed (`treatment: "cutout"`) stands on the bottom edge of its section, straight on white or black.
 - **Lines.** Where one white section follows another, a thin grey line the width of the column is drawn between them automatically; a section that should run on from the one above takes the class `no-rule`. Lists and ledgers use thin lines between groups (`border-line` on white, `border-line-dark` on black). Black sections need no line: the change of color is the edge.
 
 ### Opening screen
 
-`homeHero` in `src/content/site.ts` picks the Home opening screen: `"b"` Black Stage (current: a photograph of Dr. Joy, JVH-111, on a black stage), `"a"` Editorial White, or `"c"` Ivory & the Room. Compare them at `/directions`; that page's notes were written for the first round of review, before the site moved to black and white, so A and C are shown there in the current palette and type. Direction B can switch to the layered cutout with `home.hero.bStyle` once a retoucher has refined the matte; the current cutout is an automated test.
+Home opens on a black stage: the headline on the left and Dr. Joy's portrait in the white blazer on the right, in color with its background removed, standing on the bottom edge of the section. It is one screen tall on a desktop. The component is `src/components/home/Hero.tsx` and the portrait is `home.hero.photo`.
 
 ## Brand assets
 
@@ -99,7 +96,7 @@ On every full page load, including a refresh, a black curtain carries the script
 - The pen's path lives in `src/components/chrome/signature-data.ts` and is generated from the wordmark file by `scripts/signature/` (two steps, described at the top of `trace.py`; it needs scikit-image, SciPy and NetworkX, which are not project dependencies). Only rerun it if the wordmark artwork changes; the same artwork is also held as a data URI in `chrome.css`.
 - For tests and screenshots, `sessionStorage.setItem("dj-intro-off", "1")` before the page loads switches the curtain off.
 
-The share image (`src/app/opengraph-image.jpg`, also `twitter-image.jpg`, 1200×630) follows the Home opening screen: JVH-111 in color on black, the cream wordmark and the approved Home headline. Rebuild it if the opening screen changes, and check it in the LinkedIn Post Inspector and the Facebook Sharing Debugger after the first deploy.
+The share image (`src/app/opengraph-image.jpg`, also `twitter-image.jpg`, 1200×630) follows the Home opening screen: the white-blazer portrait in color on black, the cream wordmark and the approved Home headline. Rebuild it if the opening screen changes, and check it in the LinkedIn Post Inspector and the Facebook Sharing Debugger after the first deploy.
 
 ## Photos
 
@@ -117,7 +114,10 @@ The share image (`src/app/opengraph-image.jpg`, also `twitter-image.jpg`, 1200×
   - In use: the Meet hero, the Meet operatory close-up and the Insights hero take `--foliage 0.45 --ceiling 0.30`, the Industry launch frame `--foliage 0.45 --ceiling 0.26`, and the Speaking keynote `--stage 0.6`.
   - Grade from the ungraded crop rebuilt from the Drive original, never from a `-g` file: `python3 -I scripts/grade_photos.py crop.png public/photos/<name>-v2-g.jpg --foliage 0.45 --ceiling 0.30`.
 - Black-and-white twins: `npm run photos:bw -- public/photos/<name>-g.jpg public/photos/<name>-bw.jpg` (`scripts/bw_twin.py`).
-- Meet Dr. Joy opens on a portrait with its background removed (`meet-hero-cutout.webp`, supplied by Dr. Joy at 1122 × 1402). Replace it with the full-resolution file when it arrives: a transparent PNG or WebP at least 1800 px wide, under a new filename.
+- Three pages open on a portrait with its background removed, in full color, straight on the page: Home on black (`home-hero-cutout-133.webp`), Meet Dr. Joy on white (`meet-hero-cutout.webp`, supplied by Dr. Joy at 1122 × 1402) and Industry Collaborations on white (`industry-hero-cutout-155.webp`). Speaking, Hands-On Education and Insights keep photographs with their settings: the room is part of the story there.
+  - The Home and Industry cut-outs were made here from the graded frames `meet-hero-133-g.jpg` and `home-hero-g.jpg` with `scripts/cutout.py` (requirements and steps are at the top of that file). Both source frames stay in `public/photos` for that reason.
+  - The photographs they replaced are still in `public/photos`: `home-hero-stage-tall-g.jpg` (JVH-111 on the steps) and `industry-hero-4x5-g.jpg` (JVH-129, seated). To go back, point the slot's `src` at the file and set `treatment: "color"`.
+  - Replace Dr. Joy's own cut-out with the full-resolution file when it arrives: a transparent PNG or WebP at least 1800 px wide, under a new filename.
 - Meet Dr. Joy uses a candid frame from the portrait shoot (JVH-167) as its life photo. When Dr. Joy supplies a Bowie Boys and Girls Club photo, set it as `meet.guides.photo` (color, no B&W twin needed) and grade it with `npm run photos:grade`. An empty slot is hidden at launch and the story column takes its place.
 
 ## Motion
@@ -162,7 +162,7 @@ Set `education.events.featured` (in `src/content/education.ts`) to the next even
 ## Search and sharing
 
 - Titles use the page name plus "| Dr. Joy RDH". Descriptions come from approved copy. Every page has its own canonical URL and share URL, built from `site.url`.
-- `sitemap.xml` lists the six pages; `robots.txt` points to it. `/directions` is never listed.
+- `sitemap.xml` lists the six pages; `robots.txt` points to it.
 - Structured data (schema.org Person and WebSite) is rendered once, in the root layout, plus an Event on Hands-On while a featured event is live. It uses approved copy only; `site.fullName` stays empty until Dr. Joy confirms her full name may be used, and `links.profiles` can list her public profiles.
 - `next.config.ts` redirects every address of the old WordPress site (46 URLs from its sitemap) to the closest new page. Consulting addresses go to Instrumental once `links.instrumental` is set; the old privacy and terms pages go to `links.privacy` and `links.terms` once set. The files the old meeting-planner page linked (bios, logistics, headshots, speaker kit) land on the Speaking resources (`/speaking#resources`); the speaker kit goes to `links.speakerResources` once it is set.
 
@@ -171,9 +171,8 @@ Set `education.events.featured` (in `src/content/education.ts`) to the next even
 ### The brief's "Items to confirm before launch"
 
 1. Image shortlist and treatments
-   - [x] Shortlist identified by original filename; color, monochrome and cutout treatments tested for the opening screen (`/directions`)
+   - [x] Shortlist identified by original filename; color, monochrome and cutout treatments tested for the opening screen
    - [ ] Optional: Boys and Girls Club photo for Meet Dr. Joy (a candid portrait stands in)
-   - [ ] If Direction B uses the cutout: matte refined by a retoucher (`home.hero.bStyle`)
    - [ ] Dr. Joy approves the final photo set, including JVH-111 (the opening), JVH-123, 54708288935, 54707956836 and 3Z4A3971 (clinical close-up, brand name cropped out)
 2. Logos
    - [ ] Approved manufacturer logos with written clearance, five at most (`industry.collaborations.logos`)

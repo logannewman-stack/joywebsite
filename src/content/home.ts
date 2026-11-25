@@ -9,62 +9,17 @@ export const home = {
     secondary: { label: "Meet Dr. Joy", href: "/meet-dr-joy" },
 
     /**
-     * Direction B (the Home default): "photo" is the photographic black stage
-     * (JVH-111). "cutout" is the layered cutout, kept for when a retouched
-     * matte of JVH-130 exists; the current file is an automated test.
+     * The opening portrait: the white blazer with its background removed, set
+     * straight on the black stage in full colour. It stands on the bottom edge
+     * of the opening. The matte was made from the graded 4:5 frame
+     * (meet-hero-133-g.jpg) with scripts/cutout.py.
      */
-    bStyle: "photo" as "photo" | "cutout",
-    /** Direction B: the full landscape frame. The opening shows the taller crop below; this file is the share image in the structured data. */
-    stage: {
-      src: "/photos/home-hero-stage-g.jpg",
-      srcBw: "/photos/home-hero-stage-bw.jpg",
-      alt: "Dr. Joy in a black suit, smiling, seated on steps",
-      treatment: "bw",
-      direction: "Black jacket on dark steps, direct and warm. Head and shoulders, the full landscape frame.",
-      focus: "25% 30%",
-      original: "JVH-111",
-    } satisfies PhotoSlot,
-    /** Direction B, the photograph on the black stage at every width: a taller crop of the same frame, so the face stays sharp and centered. */
-    stageTall: {
-      src: "/photos/home-hero-stage-tall-g.jpg",
-      srcBw: "/photos/home-hero-stage-tall-bw.jpg",
-      alt: "Dr. Joy in a black suit, smiling, seated on steps",
-      treatment: "bw",
-      direction: "Head and shoulders, centered, in a 4:5 frame on the black stage beside the headline.",
-      focus: "50% 0%",
-      original: "JVH-111 (crop)",
-    } satisfies PhotoSlot,
-
-    /** Direction A portrait. */
-    portrait: {
-      src: "/photos/home-hero-g.jpg",
-      srcBw: "/photos/home-hero-bw.jpg",
-      alt: "Dr. Joy in a black suit, arms crossed, smiling",
-      treatment: "bw",
-      direction: "One strong monochrome portrait. Black jacket or white blazer, three-quarter length, direct and warm. Leave headline space on the left.",
-      focus: "50% 22%",
-      focusMobile: "50% 18%",
-      original: "JVH-155",
-    } satisfies PhotoSlot,
-    /** Direction B, cutout variant (automated test matte: do not launch). */
-    cutout: {
-      src: "/photos/home-hero-cutout.png",
-      srcBw: "/photos/home-hero-cutout-bw.png",
-      alt: "Dr. Joy in a white blazer",
+    photo: {
+      src: "/photos/home-hero-cutout-133.webp",
+      alt: "Dr. Joy in a white blazer with black trim, smiling",
       treatment: "cutout",
-      direction: "Background-removed portrait in a white blazer (separates on black). Clean hair and jacket edges. Waist up, room above the head.",
-      focus: "50% 0%",
-      original: "JVH-130 (cutout)",
-    } satisfies PhotoSlot,
-    /** Direction C photograph: a warm workshop room. */
-    color: {
-      src: "/photos/home-hero-room-g.jpg",
-      alt: "Dr. Joy teaching a room of dental professionals",
-      treatment: "color",
-      direction: "Color photograph from a real room, mid-presentation. Warm, natural light.",
-      focus: "40% 38%",
-      focusMobile: "38% 30%",
-      original: "54707956836",
+      direction: "Background-removed portrait in the white blazer (it separates on black). Clean hair and jacket edges, earrings kept. Waist up, room above the head.",
+      original: "JVH-133 (cut-out, 1155 x 1647)",
     } satisfies PhotoSlot,
   },
 
@@ -80,23 +35,13 @@ export const home = {
      * pink marker. It must appear in the heading exactly as written.
      */
     headingMark: "every side",
-    /** The full landscape frame. The section shows the 4:5 crop below. */
+    /** The photograph beside the story: a 4:5 crop of JVH-123. */
     photo: {
-      src: "/photos/home-perspective-band-g.jpg",
-      srcBw: "/photos/home-perspective-band-bw.jpg",
-      alt: "Dr. Joy in a white blazer, looking away and smiling",
-      treatment: "bw",
-      direction: "Candid: white blazer against a warm wall, looking out of the frame. A pause in the story, not another headshot.",
-      focus: "50% 32%",
-      original: "JVH-123",
-    } satisfies PhotoSlot,
-    /** The photograph beside the story at every width: a 4:5 crop of the same frame. */
-    photoTall: {
       src: "/photos/home-perspective-band-tall-g.jpg",
       srcBw: "/photos/home-perspective-band-tall-bw.jpg",
       alt: "Dr. Joy in a white blazer, looking away and smiling",
-      treatment: "bw",
-      direction: "4:5 crop of the frame above, beside the story.",
+      treatment: "color",
+      direction: "Candid: white blazer against a warm wall, looking out of the frame. A pause in the story, not another headshot.",
       focus: "50% 40%",
       original: "JVH-123 (crop)",
     } satisfies PhotoSlot,
@@ -173,16 +118,6 @@ export const home = {
     name: "Claire Jeong, MS, RDH",
     role: "Founder, StudentRDH & DentalToaster",
     permission: "pending" as "pending" | "granted",
-    /** The room behind the quote: dimmed and in monochrome, so the words stay first. */
-    backdrop: {
-      src: "/photos/home-quote-room-g.jpg",
-      alt: "A conference audience standing and applauding",
-      treatment: "color",
-      direction: "A full room on its feet, seen from the side. No stage, no signage: a backdrop for the quote.",
-      focus: "50% 82%",
-      focusMobile: "42% 82%",
-      original: "54708276125",
-    } satisfies PhotoSlot,
   },
 
   closing: {
