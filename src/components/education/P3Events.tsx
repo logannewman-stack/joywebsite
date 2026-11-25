@@ -66,8 +66,8 @@ export async function P3Events() {
  */
 function Panel({ photo, children }: { photo: PhotoSlot; children: ReactNode }) {
   return (
-    <div className="lg:grid lg:grid-cols-12 lg:items-center lg:gap-x-6">
-      <div className="lg:col-span-6">
+    <div className="md:grid md:grid-cols-12 md:items-center md:gap-x-6">
+      <div className="md:col-span-6">
         <InView>
           <h2 className="display t-h1">
             <WordRise>{education.events.heading}</WordRise>
@@ -77,9 +77,9 @@ function Panel({ photo, children }: { photo: PhotoSlot; children: ReactNode }) {
           {children}
         </InView>
       </div>
-      <ImageReveal className="mt-12 w-[min(100%,24rem)] md:mt-16 lg:col-span-5 lg:col-start-8 lg:mt-0 lg:w-auto">
+      <ImageReveal className="mt-12 w-[min(100%,24rem)] md:col-span-5 md:col-start-8 md:mt-0 md:w-auto">
         <Parallax amount={5} className="aspect-[5/4] w-full">
-          <Photo slot={photo} tone="dark" className="h-full w-full" sizes="(max-width: 1023px) min(100vw - 40px, 384px), (max-width: 1440px) 37vw, 32vw" />
+          <Photo slot={photo} tone="dark" className="h-full w-full" sizes="(max-width: 767px) min(100vw - 40px, 384px), (max-width: 1440px) 37vw, 32vw" />
         </Parallax>
       </ImageReveal>
     </div>

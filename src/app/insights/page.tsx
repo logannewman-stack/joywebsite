@@ -69,9 +69,9 @@ export default function InsightsPage() {
     <>
       {/*
         Opening: the label, the headline in four hand-set lines and the intro on the left; the portrait
-        on the right, four of the twelve columns, inside the page column (under the text on phones). The lines rise on load, the pale pink
-        marker draws behind the closing phrase (the page's one accent), and the portrait is there from
-        the first paint, settles and drifts a little.
+        on the right, four of the twelve columns, inside the page column (under the text on phones).
+        The lines rise on load, the pale pink marker draws behind the closing phrase (the page's one
+        accent), and the portrait is there from the first paint, settles and drifts a little.
       */}
       <section className="bg-paper pt-(--header-height)">
         <div className="mx-auto max-w-(--wrap) px-5 pt-12 pb-20 md:grid md:grid-cols-12 md:items-start md:gap-x-6 md:px-10 md:pt-16 md:pb-28 lg:pt-20">

@@ -24,10 +24,10 @@ export default function EducationPage() {
   return (
     <>
       {/* Opening: the words on the left, the room on the right, about a third of the screen wide.
-          The whole opening fits in one desktop screen. On phones the words come first. */}
+          The whole opening fits in one desktop screen. On phones it is one column, the words first. */}
       <section className="bg-paper pt-(--header-height)">
-        <div className="mx-auto max-w-(--wrap) px-5 pt-12 pb-20 md:px-10 md:pt-16 md:pb-24 lg:grid lg:grid-cols-12 lg:items-center lg:gap-x-6 lg:pt-20 lg:pb-28">
-          <div className="lg:col-span-7">
+        <div className="mx-auto max-w-(--wrap) px-5 pt-12 pb-20 md:grid md:grid-cols-12 md:items-center md:gap-x-6 md:px-10 md:pt-16 md:pb-24 lg:pt-20 lg:pb-28">
+          <div className="md:col-span-7">
             <Reveal immediate>
               <Label index="03">Hands-On Education</Label>
             </Reveal>
@@ -49,13 +49,13 @@ export default function EducationPage() {
             </Reveal>
           </div>
 
-          <div className="mt-12 w-[min(100%,24rem)] md:mt-16 lg:col-span-5 lg:col-start-8 lg:mt-0 lg:w-auto">
-            <Parallax amount={5} className="aspect-square w-full lg:aspect-[4/5]">
+          <div className="mt-12 w-[min(100%,24rem)] md:col-span-5 md:col-start-8 md:mt-0 md:w-auto">
+            <Parallax amount={5} className="aspect-square w-full md:aspect-[4/5]">
               <Photo
                 slot={hero.photo}
                 priority
                 className="edu-settle h-full w-full"
-                sizes="(max-width: 1023px) min(100vw - 40px, 384px), (max-width: 1440px) 37vw, 32vw"
+                sizes="(max-width: 767px) min(100vw - 40px, 384px), (max-width: 1440px) 37vw, 32vw"
               />
             </Parallax>
           </div>
@@ -65,18 +65,18 @@ export default function EducationPage() {
       {/* Dr. Joy's P3: the family name and its two event types, each under a thin line, beside the room at work.
           On phones the photograph sits between the name and the two entries. */}
       <section className="bg-paper">
-        <div className="mx-auto max-w-(--wrap) px-5 py-20 md:px-10 md:py-28 lg:grid lg:grid-cols-12 lg:grid-rows-[1fr_auto_auto_1fr] lg:gap-x-6">
-          <InView className="lg:col-span-6 lg:col-start-7 lg:row-start-2">
+        <div className="mx-auto max-w-(--wrap) px-5 py-20 md:grid md:grid-cols-12 md:grid-rows-[1fr_auto_auto_1fr] md:gap-x-6 md:px-10 md:py-28">
+          <InView className="md:col-span-6 md:col-start-7 md:row-start-2">
             <h2 className="display t-h1">
               <WordRise>{family.heading}</WordRise>
             </h2>
           </InView>
-          <ImageReveal className="mt-8 w-[min(100%,24rem)] lg:col-span-5 lg:col-start-1 lg:row-span-4 lg:row-start-1 lg:mt-0 lg:w-auto lg:self-center">
+          <ImageReveal className="mt-8 w-[min(100%,24rem)] md:col-span-5 md:col-start-1 md:row-span-4 md:row-start-1 md:mt-0 md:w-auto md:self-center">
             <Parallax amount={5} className="aspect-square w-full">
-              <Photo slot={family.photo} className="h-full w-full" sizes="(max-width: 1023px) min(100vw - 40px, 384px), (max-width: 1440px) 37vw, 32vw" />
+              <Photo slot={family.photo} className="h-full w-full" sizes="(max-width: 767px) min(100vw - 40px, 384px), (max-width: 1440px) 37vw, 32vw" />
             </Parallax>
           </ImageReveal>
-          <InView className="stagger mt-10 lg:col-span-6 lg:col-start-7 lg:row-start-3">
+          <InView className="stagger mt-10 md:col-span-6 md:col-start-7 md:row-start-3">
             {family.items.map((item) => (
               <article key={item.title} className="border-t border-line py-6 last:pb-0">
                 <h3 className="display t-h3">{item.title}</h3>

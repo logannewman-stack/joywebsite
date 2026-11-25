@@ -106,7 +106,7 @@ export function HeroB({ id = "hero-heading", as: H = "h1" }: HeroProps) {
 
         {cutout ? (
           // The cut-out keeps its own outline and stands on the foot of the stage.
-          <div className="mx-auto mt-12 w-[min(100%,18rem)] md:col-span-5 md:mt-0 md:w-auto md:self-end md:pt-10 lg:col-span-6 lg:col-start-7 lg:px-[14%]">
+          <div className="mx-auto mt-12 w-[min(100%,18rem)] md:col-span-5 md:mx-0 md:mt-0 md:w-auto md:self-end md:pt-10 lg:col-span-6 lg:col-start-7 lg:px-[14%]">
             <Photo slot={hero.cutout} tone="dark" priority className="aspect-[1248/2003] w-full" sizes="(max-width: 767px) 288px, 28vw" />
           </div>
         ) : (

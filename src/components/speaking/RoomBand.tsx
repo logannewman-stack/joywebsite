@@ -22,8 +22,8 @@ export function RoomBand() {
         <div className="relative">
           <ImageReveal>
             <Parallax amount={4} className="aspect-[4/5] w-full sm:aspect-[16/9] lg:aspect-[12/5]">
-              {/* Phones show a 4:5 crop of the 3:2 photo, so it is drawn about twice as wide as the screen. */}
-              <Photo slot={photo} className="h-full w-full" sizes="(max-width: 639px) 210vw, (max-width: 1440px) calc(100vw - 40px), 79vw" />
+              {/* Phones show a 4:5 crop of the 3:2 photo, so it is drawn wider than the screen. */}
+              <Photo slot={photo} className="h-full w-full" sizes="(max-width: 639px) 170vw, (max-width: 1440px) calc(100vw - 40px), 79vw" />
             </Parallax>
           </ImageReveal>
           {reel ? (
