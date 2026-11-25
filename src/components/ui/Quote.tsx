@@ -96,7 +96,7 @@ export function Quote({
           <Parallax className="h-full w-full" amount={6}>
             <Photo slot={{ ...backdrop, alt: "" }} tone="dark" className="h-full w-full" sizes="100vw" />
           </Parallax>
-          <div className="absolute inset-0 bg-ink/80" />
+          <div className="absolute inset-0 bg-ink/88" />
         </div>
       )}
       <div className="relative mx-auto max-w-(--wrap) px-5 py-20 md:px-10 md:py-28">

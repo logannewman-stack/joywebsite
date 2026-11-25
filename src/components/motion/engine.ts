@@ -37,6 +37,14 @@
  * scene further down). The body script then keeps it right on resize and for
  * content added later. Both use PIN_RULE below.
  *
+ * Content added later (hydration, a page change inside the site) is picked up
+ * by one rescan per animation frame, however many changes the page made in
+ * that frame: a rescan reads the whole document, and a page makes dozens of
+ * small changes to itself while it loads. A new scene is still pinned at
+ * once, before the frame, so the page has its full length before anything
+ * reads it. Changes that add nothing the engine drives (a counter's text, a
+ * script tag, the opening signature's strokes) cause no rescan.
+ *
  * Fit. A pinned stage is one screen, so its words must fit one screen. When
  * they cannot (the visitor's own text spacing or font size, a very small
  * window), the engine un-pins that scene and it is its plain layout, with --p
@@ -162,7 +170,14 @@ function scan(){
   if(fine)document.querySelectorAll('[data-magnetic]').forEach(function(el){if(!el.__g){el.__g=1;magnet(el)}});
 }
 scan();
-new MutationObserver(scan).observe(document.body,{childList:true,subtree:true});
+var scanQ=false,MINE='[data-scene],[data-view],[data-inview],[data-magnetic],.page-progress,.progress-page,[data-page-progress]';
+function changed(recs){
+  var el=false,sc=false;
+  for(var i=0;i<recs.length&&!sc;i++){var a=recs[i].addedNodes;for(var j=0;j<a.length;j++){var n=a[j];if(n.nodeType!==1)continue;if(n.hasAttribute('data-scene')||n.querySelector('[data-scene]')){el=sc=true;break}if(!el&&(n.matches(MINE)||n.querySelector(MINE)))el=true}}
+  if(sc)pin();
+  if(el&&!scanQ){scanQ=true;requestAnimationFrame(function(){scanQ=false;scan()})}
+}
+new MutationObserver(changed).observe(document.body,{childList:true,subtree:true});
 if(!fonts)document.fonts.ready.then(function(){fonts=true;fit()});
 window.addEventListener('scroll',req,{passive:true});
 window.addEventListener('resize',function(){pin();fit();req()});

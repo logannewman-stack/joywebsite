@@ -157,8 +157,9 @@ function find(){
 }
 function measure(){
   find();vh=w.innerHeight;
-  if(foot){var h=foot.offsetHeight;if(h!==H){H=h;d.style.setProperty('--foot-h',h+'px')}}
+  var h=foot?foot.offsetHeight:H;
   max=d.scrollHeight-vh;
+  if(foot&&h!==H){H=h;d.style.setProperty('--foot-h',h+'px')}
   update();
 }
 function update(){
