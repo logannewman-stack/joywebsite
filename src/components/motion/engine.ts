@@ -204,8 +204,6 @@ if(mp.addEventListener)mp.addEventListener('change',onmp);else if(mp.addListener
  * and keyboard focus follows to the section.
  *
  * Keyboard focus is always brought into the open:
- *   - on a stage that is held under the next section (.hero-stage while it is
- *     sticky: Home's opening), the page goes back to where that stage shows;
  *   - inside a pinned scene, the page scrolls to the focused step or panel,
  *     unless that step is the current one and whole on screen, or that panel
  *     is whole on screen (focus coming back from a closed dialog moves
@@ -235,12 +233,6 @@ document.addEventListener('click',function(e){
 document.addEventListener('focusin',function(e){
   var t=e.target;if(!t||!t.closest||!t.matches(':focus-visible'))return;
   var vw=window.innerWidth,vh=window.innerHeight,r;
-  var held=t.closest('.hero-stage');
-  if(held&&getComputedStyle(held).position==='sticky'){
-    r=held.parentNode.getBoundingClientRect();
-    if(r.top<-1)window.scrollTo({top:window.scrollY+r.top,behavior:'instant'});
-    return;
-  }
   var item=t.closest('[data-scene-step],[data-scene-panel]'),sc=item&&item.closest('[data-scene]');
   if(sc&&sc.hasAttribute('data-pinned')){
     r=sc.getBoundingClientRect();

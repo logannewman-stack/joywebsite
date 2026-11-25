@@ -20,7 +20,8 @@ export function Parallax({
 }) {
   const style: Vars = { "--parallax": `${amount}%`, "--parallax-scale": 1 + (amount * 1.5) / 100 };
   return (
-    <div data-view className={`parallax ${className}`} style={style}>
+    // The scroll engine writes --v on this element before React hydrates.
+    <div data-view className={`parallax ${className}`} style={style} suppressHydrationWarning>
       <div className="parallax-inner">{children}</div>
     </div>
   );

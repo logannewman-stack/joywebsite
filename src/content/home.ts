@@ -77,19 +77,9 @@ export const home = {
     ],
     /**
      * Styling only, never wording: the phrase of the heading that carries the pale
-     * pink marker, and the phrases set in champagne gold when the paragraphs above
-     * are shown one sentence at a time over the photograph (one list per sentence,
-     * in order).
-     * Each phrase must appear in its sentence exactly as written.
+     * pink marker. It must appear in the heading exactly as written.
      */
     headingMark: "every side",
-    marks: [
-      ["at 16", "the front desk"],
-      ["three decades later"],
-      ["the front office", "industry leadership"],
-      ["extraordinary potential"],
-      ["that perspective"],
-    ],
     /** The full landscape frame. The section shows the 4:5 crop below. */
     photo: {
       src: "/photos/home-perspective-band-g.jpg",

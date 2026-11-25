@@ -110,7 +110,7 @@ html.motion .parallax-inner {
   vertical-align: bottom;
   padding-bottom: 0.14em;
   margin-bottom: -0.14em;
-  /* Clip only the bottom edge, so italic overhangs are never cut. */
+  /* Clip only the bottom edge, so nothing that overhangs the sides or the top is cut. */
   clip-path: inset(-0.3em -0.3em 0 -0.3em);
 }
 .wr-block {

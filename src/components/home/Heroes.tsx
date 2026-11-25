@@ -28,7 +28,7 @@ type HeroProps = {
  */
 const lines = ["The work has", "always been", "bigger than", "the chair."];
 
-/** The page's key phrase, over the pale pink marker. On black the marker draws once the lines have risen (home.css, "Opening"). */
+/** One line of the page's key phrase, with the pale pink marker (.hl-dark). The marker draws from the left once the lines have risen (home.css, "Opening"). */
 const mark = (text: string, delay: number): ReactNode => (
   <span className="hero-mark hl-dark" style={{ "--d": `${delay}s` } as Vars}>
     {text}

@@ -25,7 +25,7 @@ export const speaking = {
     } satisfies PhotoSlot,
   },
 
-  /** Full-bleed proof of a real room, between the courses and the team programs. */
+  /** Proof of a real room, as a band the width of the page column, between the courses and the team programs. */
   room: {
     // The conference's sign on the podium is retouched to a plain panel
     // (third-party branding needs clearance).

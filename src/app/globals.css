@@ -198,24 +198,28 @@ body {
   background-repeat: no-repeat;
 }
 
-/* Headings: Archivo, bold and a little wide. Sizes come from the type scale
-   above (t-hero, t-h1, t-h2, t-h3). */
-.display {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-stretch: 112%;
-  letter-spacing: -0.02em;
-  line-height: 1.06;
-  text-wrap: balance;
-  /* Long words wrap instead of pushing the page sideways at 20rem or with
-     increased text spacing (WCAG 1.4.12). Only applies when a word cannot fit. */
-  overflow-wrap: anywhere;
-}
-/* Emphasis in a heading is never italic and never a second typeface: it is
-   either plain, or the pale pink marker (.hl-light / .hl-dark, motion.css). */
-.display em,
-.display i {
-  font-style: normal;
+/* Headings: Archivo, bold and a little wide. Sizes and line heights come from
+   the type scale above (t-hero, t-h1, t-h2, t-h3). These rules sit in the
+   components layer so that the scale's utilities, which set a line height of
+   their own, take precedence over the default here. */
+@layer components {
+  .display {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-stretch: 112%;
+    letter-spacing: -0.02em;
+    line-height: 1.06;
+    text-wrap: balance;
+    /* Long words wrap instead of pushing the page sideways at 20rem or with
+       increased text spacing (WCAG 1.4.12). Only applies when a word cannot fit. */
+    overflow-wrap: anywhere;
+  }
+  /* Emphasis in a heading is never italic and never a second typeface: it is
+     either plain, or the pale pink marker (.hl-light / .hl-dark, motion.css). */
+  .display em,
+  .display i {
+    font-style: normal;
+  }
 }
 
 /* Small capital label. Wide enough apart to read as a label, no wider. */
@@ -259,15 +263,6 @@ body {
 .group:hover .link-draw,
 .group:focus-visible .link-draw {
   background-size: 100% 1px;
-}
-
-/* Bleed off the right edge: a photo in the right-hand column of a
-   `max-w-(--wrap) px-10` container runs to the edge of the screen at every
-   width, wide screens included (use it from md, e.g. `lg:bleed-right`).
-   100vw counts a classic scrollbar, so the section clips the few extra
-   pixels with `overflow-x-clip`. */
-@utility bleed-right {
-  margin-right: calc(-1 * max(2.5rem, (100vw - var(--wrap)) / 2 + 2.5rem));
 }
 
 /* ==========================================================================

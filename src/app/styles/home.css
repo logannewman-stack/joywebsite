@@ -22,9 +22,9 @@ html.motion .hero-settle {
   animation: hero-settle 2.8s cubic-bezier(0.25, 0.6, 0.3, 1) both;
 }
 
-/* The marker behind "bigger than the chair." draws from the left once the
-   headline's lines have risen, one line after the other (--d, set in
-   Heroes.tsx). */
+/* The marker on "bigger than the chair." (.hl-dark, motion.css) draws from
+   the left once the headline's lines have risen, one line after the other
+   (--d, set in Heroes.tsx). */
 @keyframes hero-mark {
   from {
     background-size: 0% var(--hl-h);
