@@ -14,24 +14,23 @@ export const home = {
      * matte of JVH-130 exists; the current file is an automated test.
      */
     bStyle: "photo" as "photo" | "cutout",
-    /** Direction B stage, 768px and up: the full landscape frame, bleeding off the right edge. */
+    /** Direction B: the full landscape frame. The opening shows the taller crop below; this file is the share image in the structured data. */
     stage: {
       src: "/photos/home-hero-stage-g.jpg",
       srcBw: "/photos/home-hero-stage-bw.jpg",
       alt: "Dr. Joy in a black suit, smiling, seated on steps",
       treatment: "bw",
-      direction: "Black jacket on dark steps, direct and warm. Head and shoulders on the right; the left side fades into the black stage.",
-      // Left of center, so she sits in the solid part of the pane and clear of the headline at every width.
+      direction: "Black jacket on dark steps, direct and warm. Head and shoulders, the full landscape frame.",
       focus: "25% 30%",
       original: "JVH-111",
     } satisfies PhotoSlot,
-    /** Direction B stage on phones: a taller crop of the same frame, so the face stays sharp and centered. */
+    /** Direction B, the photograph on the black stage at every width: a taller crop of the same frame, so the face stays sharp and centered. */
     stageTall: {
       src: "/photos/home-hero-stage-tall-g.jpg",
       srcBw: "/photos/home-hero-stage-tall-bw.jpg",
       alt: "Dr. Joy in a black suit, smiling, seated on steps",
       treatment: "bw",
-      direction: "Head and shoulders, centered, rising out of the black stage under the headline.",
+      direction: "Head and shoulders, centered, in a 4:5 frame on the black stage beside the headline.",
       focus: "50% 0%",
       original: "JVH-111 (crop)",
     } satisfies PhotoSlot,
@@ -91,23 +90,23 @@ export const home = {
       ["extraordinary potential"],
       ["that perspective"],
     ],
-    /** Full-bleed band inside the section, 768px and up. */
+    /** The full landscape frame. The section shows the 4:5 crop below. */
     photo: {
       src: "/photos/home-perspective-band-g.jpg",
       srcBw: "/photos/home-perspective-band-bw.jpg",
       alt: "Dr. Joy in a white blazer, looking away and smiling",
       treatment: "bw",
-      direction: "Candid, full-bleed: white blazer against a warm wall, looking out of the frame. A pause in the story, not another headshot.",
+      direction: "Candid: white blazer against a warm wall, looking out of the frame. A pause in the story, not another headshot.",
       focus: "50% 32%",
       original: "JVH-123",
     } satisfies PhotoSlot,
-    /** The same band on phones: a 4:5 crop. */
+    /** The photograph beside the story at every width: a 4:5 crop of the same frame. */
     photoTall: {
       src: "/photos/home-perspective-band-tall-g.jpg",
       srcBw: "/photos/home-perspective-band-tall-bw.jpg",
       alt: "Dr. Joy in a white blazer, looking away and smiling",
       treatment: "bw",
-      direction: "4:5 crop of the band for phones.",
+      direction: "4:5 crop of the frame above, beside the story.",
       focus: "50% 40%",
       original: "JVH-123 (crop)",
     } satisfies PhotoSlot,

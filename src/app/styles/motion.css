@@ -148,13 +148,13 @@ html.motion .word-light > span {
   opacity: clamp(var(--dim, 0.3), calc((var(--t) * (var(--n) + var(--lead, 5)) - var(--i)) / var(--lead, 5)), 1);
 }
 
-/* The highlight: a pale pink marker behind the lower half of a phrase. It is
-   the site's one accent, used for a phrase that matters and nowhere else.
-   On white it is the pink itself behind ink letters (.hl-light); on black it
-   is the same pink at lower strength, so white letters stay crisp over it
-   (.hl-dark). --hl-h is the marker's height and --hl-y where it sits in the
-   line: together they put it from the middle of the lower-case letters to
-   just under the baseline. */
+/* The highlight: the pale pink marker. It is the site's one accent, used for
+   a phrase that matters and nowhere else.
+   On white (.hl-light) it sits behind the lower half of the letters, from the
+   middle of the lower-case letters to just under the baseline. On black
+   (.hl-dark) pink behind white letters would wash them out, so the same pink
+   is drawn as a thin line under the phrase instead.
+   --hl-h is the marker's height and --hl-y where it sits in the line. */
 :root {
   --hl-h: 0.4em;
   --hl-y: 76%;
@@ -172,7 +172,10 @@ html.motion .word-light > span {
   --hl-color: var(--color-blush);
 }
 .hl-dark {
-  --hl-color: color-mix(in srgb, var(--color-blush) 42%, transparent);
+  --hl-color: var(--color-blush);
+  --hl-h: 0.09em;
+  --hl-y: 98%;
+  padding-bottom: 0.08em;
 }
 html.motion [data-inview] :is(.hl-light, .hl-dark) {
   background-size: 0% var(--hl-h);
@@ -408,7 +411,8 @@ html.printing.restoring *::after {
   .wipe {
     clip-path: none !important;
   }
-  .hl-light {
+  .hl-light,
+  .hl-dark {
     background-size: 100% var(--hl-h) !important;
   }
   /* A marquee prints as a wrapped line, once. */

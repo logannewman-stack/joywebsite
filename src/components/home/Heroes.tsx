@@ -18,9 +18,9 @@ type HeroProps = {
  * Three directions for the opening screen. All use the same approved copy,
  * broken into the same four lines, and the same arrangement: the headline,
  * the sub-line and the two actions on the left, one photograph on the right.
- * A: Editorial White   (white page, the portrait)
- * B: Black Stage       (black, her photograph in full colour; the Home default)
- * C: White & the Room  (white page, a photograph from a real room)
+ * A: Editorial White    (white page, the portrait)
+ * B: Black Stage        (black, her photograph in full colour; the Home default)
+ * C: Ivory & the Room   (the review page's name for it: a white page, a colour photograph from a real room)
  * A and C are shown on the review page /directions only.
  *
  * Opening motion, one move each and in sequence: photo first, then the
@@ -82,8 +82,9 @@ export function HeroA({ id = "hero-heading", as = "h1" }: HeroProps) {
  * half of the page column (six of its twelve columns, about two fifths of
  * the screen); the headline, the sub-line and the two actions sit beside it,
  * centred on its height. From 1024px the opening is one screen tall and the
- * photograph never taller than the room under the header. On phones the words
- * come first and the photograph follows, no wider than the column.
+ * photograph never taller than the room under the header. From 768px to
+ * 1023px the two still stand side by side (seven columns and five). On phones
+ * the words come first and the photograph follows, no wider than the column.
  * The section is marked data-header="dark", so the header keeps its dark
  * style while over it.
  */

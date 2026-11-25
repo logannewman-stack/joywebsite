@@ -11,8 +11,8 @@
    rail's name, uses a CSS scroll timeline where the browser has one.
 
      Opening        the stage photo settling
-     Chapter rail   the fixed indicator in the left margin (desktop)
-     Chapter bar    its counterpart at the top of the screen (phones, tablets)
+     Chapter rail   the fixed indicator in the left margin (wide screens)
+     Chapter bar    its counterpart at the top of the screen (everything narrower)
      Course index   the row pointed at
      Room band      the reel control
    ========================================================================== */
@@ -33,15 +33,16 @@ html.motion .sp-hero-settle {
 
 /* --------------------------------------------------------------------------
    Chapter rail (ChapterRail.tsx): four marks and the current chapter's name,
-   fixed in the left margin on desktop, in ink and grey (white and grey on the
-   black chapter). Each chapter section holds its own copy inside a layer
-   clipped to the section, so the rail stays still while the section edges
-   pass over it.
+   fixed at the left edge of the screen, in ink and grey (white and grey on
+   the black chapter). It shows from 1360px wide, where the page column leaves
+   it a clear margin of 7rem or more; narrower screens get the chapter bar
+   below. Each chapter section holds its own copy inside a layer clipped to
+   the section, so the rail stays still while the section edges pass over it.
    -------------------------------------------------------------------------- */
 .sp-rail-clip {
   display: none;
 }
-@media screen and (min-width: 1280px) and (min-height: 480px) {
+@media screen and (min-width: 1360px) and (min-height: 480px) {
   .sp-rail-clip {
     display: block;
     position: absolute;
@@ -132,13 +133,13 @@ html.motion .sp-hero-settle {
    layer's end by the time the next chapter's edge, and with it the next name,
    arrives. */
 @supports not (animation-timeline: view()) {
-  @media screen and (min-width: 1280px) and (min-height: 480px) {
+  @media screen and (min-width: 1360px) and (min-height: 480px) {
     .sp-rail-clip-name {
       bottom: 16.25rem;
     }
   }
 }
-@media screen and (min-width: 1280px) and (min-height: 480px) and (max-height: 620px) {
+@media screen and (min-width: 1360px) and (min-height: 480px) and (max-height: 620px) {
   .sp-rail {
     top: calc(50% - 3.75rem);
   }
@@ -151,7 +152,7 @@ html.motion .sp-hero-settle {
    out before the chapter's end reaches its foot (13.75rem before the end
    crosses the middle). Not tied to html.motion: this is a correction, not an effect. */
 @supports (animation-timeline: view()) {
-  @media screen and (min-width: 1280px) and (min-height: 480px) {
+  @media screen and (min-width: 1360px) and (min-height: 480px) {
     .sp-rail-name-in {
       animation: sp-name-in linear both;
       animation-timeline: --sp-chapter;
@@ -182,9 +183,9 @@ html.motion .sp-hero-settle {
 }
 
 /* --------------------------------------------------------------------------
-   Chapter bar (ChapterRail.tsx): the rail's counterpart on phones and
-   tablets. A slim bar at the top of the screen that names the chapter being
-   read, built like the rail: each chapter holds its own copy, fixed to the
+   Chapter bar (ChapterRail.tsx): the rail's counterpart on phones, tablets
+   and small laptops. A slim bar at the top of the screen that names the
+   chapter being read, built like the rail: each chapter holds its own copy, fixed to the
    viewport inside a layer clipped to the chapter. The layer starts a little
    way down, so the bar arrives once the chapter's heading has left the top of
    the screen, and it ends with the chapter.
@@ -199,7 +200,7 @@ html.motion .sp-hero-settle {
 .sp-bar-clip {
   display: none;
 }
-@media screen and (max-width: 1279px), screen and (max-height: 479px) {
+@media screen and (max-width: 1359px), screen and (max-height: 479px) {
   .sp-bar-clip {
     display: block;
     position: absolute;
@@ -251,7 +252,7 @@ html.motion .sp-hero-settle {
     display: none;
   }
 }
-@media screen and (min-width: 768px) and (max-width: 1279px), screen and (min-width: 768px) and (max-height: 479px) {
+@media screen and (min-width: 768px) and (max-width: 1359px), screen and (min-width: 768px) and (max-height: 479px) {
   .sp-bar {
     padding-inline: 2.5rem;
   }

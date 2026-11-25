@@ -2,9 +2,10 @@ import { chapters } from "./chapters";
 
 /**
  * The chapter indicator: which of the page's four chapters the visitor is in.
- * On desktop it is a slim rail in the left margin; on phones and tablets, a
- * slim bar at the top of the screen. Both are ink and grey on white, white
- * and grey on the black chapter.
+ * On a wide screen it is a slim rail at the left edge, clear of the page
+ * column; on anything narrower (phones, tablets, small laptops), a slim bar
+ * at the top of the screen. Both are ink and grey on white, white and grey
+ * on the black chapter.
  *
  * Each chapter section renders its own copy of both, fixed to the viewport
  * and clipped to that section (styles in speaking.css). So the indicator
