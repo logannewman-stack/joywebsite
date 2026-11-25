@@ -118,7 +118,7 @@ export default function SpeakingPage() {
             <InView className="relative">
               <Rule />
               <nav aria-label="On this page" className="py-3">
-                <ul className="grid sm:grid-cols-2 sm:gap-x-6 xl:grid-cols-4">
+                <ul className="grid sm:grid-cols-2 sm:gap-x-6 xl:flex xl:justify-between xl:gap-x-8">
                   {chapters.map((c) => (
                     <li key={c.href}>
                       <a href={c.href} className={`group inline-flex min-h-11 items-center gap-2 text-[0.9375rem] font-medium ${focusRing.light}`}>

@@ -70,6 +70,9 @@ export function Photo({
           alt={slot.alt}
           fill
           sizes={sizes}
+          // Photographs are served at quality 90 (next.config.ts allows 75 and 90): at the default 75,
+          // skin goes smooth and lashes and hair lose their edge, and most of these are portraits.
+          quality={90}
           loading={priority ? "eager" : undefined}
           fetchPriority={priority ? "high" : undefined}
           className={cutout ? "object-contain object-bottom" : "object-cover object-[var(--focus-sm)] md:object-[var(--focus)]"}

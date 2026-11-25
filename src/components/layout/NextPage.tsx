@@ -64,6 +64,7 @@ export function NextPage({ current }: { current: string }) {
               alt=""
               fill
               sizes="(min-width: 1441px) 11vw, 160px"
+              quality={90}
               // A cut-out keeps its whole outline and stands on the foot of the frame.
               className={slot.treatment === "cutout" ? "object-contain object-bottom" : "object-cover"}
               style={slot.treatment === "cutout" ? undefined : { objectPosition: slot.focus ?? "50% 35%" }}

@@ -74,6 +74,9 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   images: {
     formats: ["image/avif", "image/webp"],
+    // Photographs are served at 90 (Photo.tsx): at 75 skin goes smooth and lashes and hair lose their
+    // edge. Logos and anything else stay at the default 75.
+    qualities: [75, 90],
     // 31 days. Replaced photos always get a new filename, so a long cache is safe.
     minimumCacheTTL: 2678400,
   },
