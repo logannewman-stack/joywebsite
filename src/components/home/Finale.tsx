@@ -1,45 +1,34 @@
+import type { CSSProperties } from "react";
 import { home } from "@/content/home";
 import { InView, Magnetic } from "@/components/motion/InView";
 import { WordRise } from "@/components/motion/Text";
 import { InquiryButton } from "@/components/inquiry/InquiryProvider";
 
+type Vars = CSSProperties & Record<`--${string}`, string | number>;
+
 /**
- * "Let's start a conversation.": the page's last word, set as large as the
- * screen allows. The words rise one after another over the JD monogram,
- * pressed into the ivory in pale gold like the embossed mark on the brand
- * board; the one action leans toward the pointer. Styles: home.css ("Finale").
+ * "Let's start a conversation.": the page's closing, a plain white section.
+ * The heading takes the left half of the page column; the paragraph and the
+ * one action stand beside it. The heading's words rise when it is seen, the
+ * paragraph and the button follow, and the button leans toward the pointer.
  */
 export function Finale() {
   const { closing } = home;
-  // Two hand-set lines: the last word takes the second line, in italic.
-  const words = closing.heading.split(" ");
-  const last = words.pop() ?? "";
-  const lead = words.join(" ");
   return (
-    <section className="finale relative isolate overflow-clip bg-paper" aria-labelledby="closing-heading">
-      <div aria-hidden data-view className="finale-mark-frame pointer-events-none absolute inset-0 -z-10 flex items-center justify-center">
-        <InView className="finale-mark">
-          {/* The still, embossed copy, and over it the copy the sheen crosses (home.css, "Finale"). */}
-          <div className="finale-mark-emboss" />
-          <div className="finale-mark-shape" />
-        </InView>
-      </div>
-      <div className="mx-auto flex max-w-(--wrap) flex-col items-center px-5 py-28 text-center md:px-10 md:py-40 lg:min-h-[100svh] lg:justify-center lg:py-20">
-        <h2 id="closing-heading" className="finale-heading display mt-8 text-[clamp(2.9rem,min(15.5vw,21svh),11.75rem)] leading-[0.86] md:mt-10">
-          <span className="block">
-            <WordRise>{lead}</WordRise>
-          </span>{" "}
-          <em className="block">
-            <WordRise start={words.length}>{last}</WordRise>
-          </em>
+    <section className="bg-paper" aria-labelledby="closing-heading">
+      <div className="mx-auto max-w-(--wrap) px-5 py-20 md:px-10 md:py-28 lg:grid lg:grid-cols-12 lg:gap-x-6">
+        <h2 id="closing-heading" className="display t-h1 lg:col-span-6">
+          <WordRise>{closing.heading}</WordRise>
         </h2>
-        <InView className="rise" delay={0.25}>
-          <p className="mx-auto mt-10 max-w-[34rem] text-[1.0625rem] leading-relaxed text-charcoal md:mt-12 md:text-[1.125rem]">{closing.body}</p>
-        </InView>
-        <InView className="rise mt-10" delay={0.35}>
-          <Magnetic strength={0.25}>
-            <InquiryButton className="!min-h-14 !px-8 !text-[1rem]">{closing.cta}</InquiryButton>
-          </Magnetic>
+        <InView className="mt-6 max-w-[34rem] md:mt-8 lg:col-span-6 lg:col-start-7 lg:mt-0">
+          <p className="rise t-lead text-ink" style={{ "--d": "0.15s" } as Vars}>
+            {closing.body}
+          </p>
+          <div className="rise mt-8" style={{ "--d": "0.25s" } as Vars}>
+            <Magnetic strength={0.2}>
+              <InquiryButton>{closing.cta}</InquiryButton>
+            </Magnetic>
+          </div>
         </InView>
       </div>
     </section>

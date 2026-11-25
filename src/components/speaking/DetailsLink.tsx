@@ -13,6 +13,7 @@ export function DetailsLink({
   label = "Course Details",
   tone = "light",
   className = "",
+  metaClassName = "max-sm:hidden",
 }: {
   pdf: string | null;
   /** The program the PDF describes, read out after the label. */
@@ -20,6 +21,8 @@ export function DetailsLink({
   label?: string;
   tone?: "light" | "dark";
   className?: string;
+  /** Where the visible format and size note shows (it is left out where the row has no room for it). */
+  metaClassName?: string;
 }) {
   if (!pdf) return null;
   const size = pdfSize(pdf);
@@ -33,7 +36,7 @@ export function DetailsLink({
     >
       <FileText className="size-4 shrink-0" aria-hidden />
       <span className="link-draw pb-0.5">{label}</span>
-      <span aria-hidden className={`label ml-1 !text-[0.625rem] !tracking-[0.14em] whitespace-nowrap max-sm:hidden ${tone === "dark" ? "text-ash" : "text-stone"}`}>
+      <span aria-hidden className={`label ml-1 whitespace-nowrap ${tone === "dark" ? "text-ash" : "text-stone"} ${metaClassName}`}>
         {meta}
       </span>
       <span className="sr-only">

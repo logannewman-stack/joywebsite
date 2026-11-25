@@ -74,7 +74,7 @@ export function VideoFacade({
     );
   }
 
-  const frame = shape === "portrait" ? "aspect-[9/16] w-full max-w-[22rem]" : "aspect-video w-full";
+  const frame = shape === "portrait" ? "aspect-[9/16] w-full max-w-[18rem]" : "aspect-video w-full";
   return (
     <div className={`relative overflow-hidden bg-ink ${poster || playing ? "" : "grain grain-light"} ${frame}`}>
       {playing ? (
@@ -93,10 +93,10 @@ export function VideoFacade({
           aria-label={`Play video: ${label}`}
           className="group absolute inset-0 flex size-full items-center justify-center focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-ink"
         >
-          {poster && <span className="absolute inset-0 opacity-75 transition-opacity duration-300 group-hover:opacity-60">{poster}</span>}
+          {poster && <span className="absolute inset-0 opacity-75 transition-opacity duration-(--duration-ui) group-hover:opacity-60">{poster}</span>}
           <span className="relative flex flex-col items-center gap-4 text-white">
-            <span className="inline-flex size-20 items-center justify-center rounded-full border border-gold transition-colors duration-(--duration-ui) group-hover:border-gold-soft group-hover:bg-gold-soft group-hover:text-ink">
-              <Play className="ml-1 size-7" aria-hidden />
+            <span className="inline-flex size-16 items-center justify-center rounded-full border border-white/50 transition-colors duration-(--duration-ui) group-hover:border-white group-hover:bg-white group-hover:text-ink">
+              <Play className="ml-0.5 size-5" aria-hidden />
             </span>
             <span className="label text-white/80">Play video</span>
           </span>

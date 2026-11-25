@@ -18,8 +18,8 @@
   display: block;
   flex-shrink: 0;
   overflow: hidden;
-  /* A gold ring at rest (gold-deep on white and ivory, gold on black). */
-  border: 1px solid var(--color-gold-deep);
+  /* A thin grey ring at rest: ink at a quarter strength on white, white at a third on black. */
+  border: 1px solid color-mix(in srgb, var(--color-ink) 25%, transparent);
   border-radius: 9999px;
   transition:
     background-color var(--duration-hover) ease-out,
@@ -35,7 +35,7 @@
   --ay: -1;
 }
 .arrow-circle-dark {
-  border-color: var(--color-gold);
+  border-color: rgb(255 255 255 / 0.35);
 }
 .arrow-circle > svg {
   position: absolute;
@@ -130,39 +130,37 @@ html.motion .group:has(:focus-visible) .lean {
 /* ==========================================================================
    Opening (lg and up)
 
-   The headline's two italic lines ("for dental", "manufacturers.") share one
-   line, so it is set in three lines across the right column. They stay two
-   pieces and still rise one after the other; if the column is ever too narrow
-   they simply wrap back to four lines.
+   The portrait is a 4:5 photograph, five columns wide. Its frame takes the
+   height of the text column beside it (a little taller than 4:5), so the
+   photograph and the list of ways in end on the same line.
 
-   The portrait is a 4:5 photograph in a 4:5 frame, five columns wide. On a
-   short, wide screen that frame is taller than the first screen (a maximised
-   16:9 window gives the page about 46rem of height, however large the
-   monitor), and the fold used to cut it through her shoes. So the frame is
-   capped by the height left under the header (--cap: the screen less the
-   header, the grid's top padding and 2.5rem of air), and when it is capped
-   the photograph is set as a three-quarter portrait instead: enlarged from
-   its top edge so the frame ends at her shin, with her face and hands in
-   it. The switch is all or nothing (--short is zero or less while the whole
-   photograph fits, and a very large length as soon as it does not), because
-   any crop in between would cut through her feet.
+   On a short, wide screen that frame is taller than the first screen (a
+   maximised 16:9 laptop window leaves the page about 40rem of height), and
+   the fold would cut it through her shoes. So the frame is capped by the
+   height left under the header (--cap: the screen less the header, the
+   section's top padding and 2.5rem of air), and when even the plain 4:5
+   frame does not fit, the photograph is set as a three-quarter portrait
+   instead: enlarged from its top edge so the frame ends at her shin, with
+   her face and hands in it. The switch is all or nothing (--short is zero or
+   less while the whole photograph fits, and a very large length as soon as
+   it does not), because any crop in between would cut through her feet.
    ========================================================================== */
 @media screen and (min-width: 1024px) {
-  .open-title .wr-block:nth-of-type(n + 3),
-  .open-title .wr-block:nth-of-type(n + 3) > .wr-in {
-    display: inline-block;
+  /* The section's top padding gives way on short screens; the cap below counts it. */
+  .open {
+    --open-top: min(5rem, 9svh);
+    padding-top: var(--open-top);
   }
-
-  /* The five columns: 100cqw is their width, so 125cqw is the 4:5 frame's full height. */
+  /* The five columns: 100cqw is their width, so 125cqw is the height of a 4:5 frame. */
   .open-figure {
     container-type: inline-size;
   }
   .open-portrait {
-    --cap: max(20rem, calc(100svh - var(--header-height) - min(5rem, 6.5svh) - 2.5rem));
+    --cap: max(20rem, calc(100svh - var(--header-height) - var(--open-top) - 2.5rem));
     --short: calc((125cqw - var(--cap)) * 9999);
-    /* The photograph's height in its frame: all of it, or 145% (the frame then shows its top 69%). */
+    /* The photograph's height in its frame: all of it, or 145% (the frame then shows its top two thirds). */
     --photo-h: max(100%, min(145%, var(--short)));
-    height: min(125cqw, var(--cap));
+    height: min(100%, var(--cap));
   }
   .open-portrait img {
     /* next/image sets the height inline. */
@@ -177,245 +175,43 @@ html.motion .group:has(:focus-visible) .lean {
 }
 
 /* ==========================================================================
-   Sponsorships and KOL Partnerships: the stage photograph hangs past the
-   ivory section's bottom edge into the black chapter below (--hang), so the
-   eye is carried across the change of colour. The section's bottom padding
-   is 6rem, 7rem and 9rem at the three widths; the black chapter's top
-   padding leaves room for the overhang.
-   ========================================================================== */
-/* Scaled from its top edge, the frame crops the foreground clutter at the foot
-   of the photograph (the lectern's water bottle, whose cap starts 82% of the
-   way down) and holds on the speaker. At 1.3x with at most 5% of drift the
-   frame never shows more than the top 81%. */
-.partner-photo .parallax-inner {
-  transform: translate3d(0, -2.5%, 0) scale(1.3);
-  transform-origin: 50% 0;
-}
-html.motion .partner-photo .parallax-inner {
-  transform: translate3d(0, calc(var(--v, 0.5) * -5%), 0) scale(1.3);
-}
-@media screen {
-  .partner-photo {
-    --hang: 3.5rem;
-    margin-bottom: calc(-6rem - var(--hang));
-  }
-  @media (min-width: 768px) {
-    .partner-photo {
-      --hang: 5rem;
-      margin-bottom: calc(-7rem - var(--hang));
-    }
-  }
-  @media (min-width: 1024px) {
-    .partner-photo {
-      --hang: 7rem;
-      margin-bottom: calc(-9rem - var(--hang));
-    }
-  }
-}
+   Clinical Launch Strategy: the lead (LeadLight.tsx)
 
-/* ==========================================================================
-   Clinical Launch Strategy: the pinned statement
+   The sentence is set as two line groups, each balanced on its own: the
+   statement, then its closing phrase over the pale pink marker.
 
-   Unpinned (below lg, no JavaScript, reduced motion, print) the section is a
-   plain column or grid laid out by the utilities on the elements, and the
-   lead brightens as it crosses the viewport. Pinned (lg and up) the stage
-   below takes over: chapter line on top, the photograph on the left, and one
-   grid cell on the right where the lead and then the details appear.
+   It brightens word by word as it crosses the screen: --v runs 0 to 1 on the
+   way, --from and --to are where the first word starts and the last one
+   finishes. Without JavaScript, with reduced motion and in print it is
+   simply white, the marker in place.
    ========================================================================== */
-.launch-lead-p {
-  font-size: clamp(2.4rem, 7.6vw, 4.5rem);
-}
-/* The sentence is set as two balanced line groups: the statement in white,
-   then its closing phrase in champagne gold italic (.hl-gold gives the
-   colour). One accent on the black stage: gold, for the phrase and the lines. */
 .launch-line {
   display: block;
-  text-wrap: balance;
 }
-.launch-accent {
-  font-style: italic;
-  --dim: 0.5; /* the gold words before they are lit: 3.5:1 on black, as the white ones */
-}
-/* The words sit one level down from .word-light, so its brightening is
-   repeated here for them (same formula, same variables). */
-html.motion .launch-lead > .launch-line {
-  opacity: 1;
-}
-html.motion .launch-lead .launch-word {
-  opacity: clamp(var(--dim, 0.3), calc((var(--t) * (var(--n) + var(--lead, 5)) - var(--i)) / var(--lead, 5)), 1);
-}
-@media print {
-  .launch-lead .launch-word {
-    opacity: 1 !important;
-  }
-}
-/* Words brighten as the lead crosses the viewport... */
 .launch-lead {
   --drive: var(--v, 1);
   --from: 0.16;
   --to: 0.46;
   --dim: 0.38; /* 3.5:1 on black: large type stays legible before it is lit */
 }
-
-@media screen {
-  /* An anchor jump lands exactly where the stage starts to pin. */
-  .launch[data-pinned] {
-    scroll-margin-top: calc(-1 * (var(--header-height) + 1.25rem));
-  }
-  .launch[data-pinned] .launch-stage {
-    height: 100%;
-    grid-template-rows: auto minmax(0, 1fr) auto;
-    padding-top: calc(var(--header-height) + 1.75rem);
-    padding-bottom: 2.25rem;
-  }
-
-  /* The chapter line: "02 — Clinical Launch Strategy". */
-  .launch[data-pinned] .launch-head {
-    display: flex;
-    grid-area: 1 / 1 / 2 / -1;
-    align-items: center;
-    gap: 1.25rem;
-  }
-  .launch[data-pinned] .launch-title {
-    max-width: none;
-    margin-top: 0;
-    font-size: clamp(1.75rem, 2.3vw, 2.3rem);
-    line-height: 1;
-  }
-
-  /* The photograph holds the left of the stage and drifts as the scene runs. */
-  .launch[data-pinned] .launch-photo {
-    grid-area: 2 / 1 / 3 / 6;
-    align-self: center;
-    justify-self: start;
-    width: auto;
-    max-width: 100%;
-    height: min(100% - 3.5rem, 36rem);
-    margin: 0;
-    aspect-ratio: 4 / 5;
-  }
-  .launch[data-pinned] .launch-photo > .parallax {
-    width: 100%;
-    height: 100%;
-    aspect-ratio: auto;
-  }
-  html.motion .launch[data-pinned] .launch-photo .parallax-inner {
-    transform: translate3d(0, calc((0.5 - var(--p, 0)) * 9%), 0) scale(1.14);
-  }
-  /* It arrives in half light and comes up as the sentence is lit. */
-  html.motion .launch[data-pinned] .launch-photo > .parallax::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: var(--color-ink);
-    opacity: calc(0.42 - clamp(0, var(--p, 0) / 0.4, 1) * 0.42);
-    pointer-events: none;
-  }
-
-  /* The lead, then the details, share one cell. The engine shows one at a
-     time; the scene has three steps and the lead keeps the stage for the
-     first two, so the finished sentence is held before the details arrive. */
-  .launch[data-pinned] .launch-step {
-    grid-area: 2 / 6 / 3 / -1;
-    align-self: center;
-    width: auto;
-    margin: 0;
-  }
-  .launch[data-pinned][data-step="1"] [data-scene-step="0"] {
-    opacity: 1;
-    transform: none;
-    pointer-events: auto;
-  }
-  .launch[data-pinned] .launch-lead-p {
-    max-width: none;
-    font-size: min(clamp(2.6rem, 6vw, 5.5rem), 11svh);
-    line-height: 1;
-  }
-  /* ...and, pinned, with the scene: lit by 42%, held, then the details arrive at two thirds. */
-  .launch[data-pinned] .launch-lead {
-    --drive: var(--p, 1);
-    --from: 0.02;
-    --to: 0.42;
-  }
-  /* The details: a rule, the two paragraphs at a comfortable size, the action. */
-
-  .launch[data-pinned] .launch-details p {
-    max-width: 38rem;
-    font-size: 1.25rem;
-    line-height: 1.6;
-  }
-  /* The two never show at once. The step that leaves goes first, quickly;
-     the step that arrives waits for it (in both directions). */
-  html.motion .launch[data-pinned] .launch-step {
-    transition:
-      opacity 0.2s var(--ease-soft),
-      transform var(--duration-scene) var(--ease-expo);
-  }
-  html.motion .launch[data-pinned] .launch-step[data-active],
-  html.motion .launch[data-pinned][data-step="1"] [data-scene-step="0"],
-  html.motion .launch[data-pinned]:not([data-step]) [data-scene-step="0"] {
-    transition:
-      opacity var(--duration-scene) var(--ease-soft) 0.2s,
-      transform var(--duration-scene) var(--ease-expo) 0.2s;
-  }
-  /* The details follow one another in once the lead has gone, and leave at once. */
-  html.motion .launch[data-pinned] .launch-details .launch-item {
-    opacity: 0;
-    transform: translate3d(0, 1.25rem, 0);
-    transition:
-      opacity 0.18s var(--ease-soft),
-      transform 0.18s var(--ease-soft);
-  }
-  html.motion .launch[data-pinned] .launch-details[data-active] .launch-item {
-    opacity: 1;
-    transform: none;
-    transition:
-      opacity var(--duration-text) var(--ease-soft) calc(0.3s + var(--k, 0) * 90ms),
-      transform var(--duration-image) var(--ease-expo) calc(0.3s + var(--k, 0) * 90ms);
-  }
-
-  /* Keyboard focus brings the step up at once: no waiting on the cascade. */
-  html.motion .launch[data-pinned] .launch-details:focus-within,
-  html.motion .launch[data-pinned] .launch-details:focus-within .launch-item {
-    transition-delay: 0s;
-  }
-
-  .launch[data-pinned] .launch-foot {
-    display: block;
-    grid-area: 3 / 1 / 4 / -1;
-    padding-top: 1.5rem;
-  }
-
-  /* A short window (a laptop with the browser half height): the stage tightens so nothing is clipped. */
-  @media (max-height: 640px) {
-    .launch[data-pinned] .launch-stage {
-      padding-top: calc(var(--header-height) + 0.75rem);
-      padding-bottom: 1.25rem;
-    }
-    .launch[data-pinned] .launch-details-inner {
-      gap: 1rem;
-    }
-    .launch[data-pinned] .launch-details p {
-      font-size: 1.0625rem;
-      line-height: 1.55;
-    }
-    .launch[data-pinned] .launch-details .launch-item:last-child {
-      margin-top: 0.25rem;
-    }
-    .launch[data-pinned] .launch-foot {
-      padding-top: 1rem;
-    }
-  }
+/* The words sit below .word-light's own children (the two line groups), so
+   its brightening is repeated here for them: same formula, same variables. */
+html.motion .launch-lead > .launch-line {
+  opacity: 1;
 }
-
-/* Printed from a wide page that was pinned: the engine still stacks the two
-   steps in one grid cell, so they are put back in their places in the plain
-   layout (below lg the section is a simple column and this does nothing). */
+html.motion .launch-lead .launch-word {
+  opacity: clamp(var(--dim, 0.3), calc((var(--t) * (var(--n) + var(--lead, 5)) - var(--i)) / var(--lead, 5)), 1);
+}
+/* The marker draws behind the closing phrase as its words are lit: --i is the
+   phrase's first word and --len its word count. */
+html.motion .launch-lead .hl-dark {
+  background-size: calc(clamp(0, (var(--t) * (var(--n) + var(--lead, 5)) - var(--i) - 2) / (var(--len) + 2), 1) * 100%) var(--hl-h);
+}
 @media print {
-  .launch[data-pinned] [data-scene-step="0"] {
-    grid-area: auto / 2 / auto / span 11;
+  .launch-lead .launch-word {
+    opacity: 1 !important;
   }
-  .launch[data-pinned] [data-scene-step="2"] {
-    grid-area: auto / 7 / auto / span 5;
+  .launch-lead .hl-dark {
+    background-size: 100% var(--hl-h) !important;
   }
 }

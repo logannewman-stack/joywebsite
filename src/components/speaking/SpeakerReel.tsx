@@ -38,7 +38,7 @@ export function reelEmbedUrl(url: string): string | null {
 const control =
   "sp-reel group inline-flex min-h-12 items-center gap-5 rounded-full pr-2 text-[1rem] font-medium text-white focus-visible:outline-2 focus-visible:outline-offset-[6px] focus-visible:outline-white md:gap-6";
 
-/** The play disc inside a soft ring. The ring opens on hover and focus; nothing pulses on its own (speaking.css, "Room band"). */
+/** The play disc inside a thin white ring. The ring opens on hover and focus; nothing pulses on its own (speaking.css, "Room band"). */
 function Disc() {
   return (
     <span className="sp-reel-disc relative inline-flex size-16 items-center justify-center rounded-full bg-white text-ink md:size-20">

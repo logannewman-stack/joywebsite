@@ -3,16 +3,15 @@ import { Fragment, type CSSProperties } from "react";
 type Vars = CSSProperties & Record<`--${string}`, string | number>;
 
 /**
- * The Clinical Launch lead as the page's statement: its words brighten one
- * after another, driven by the pinned scene on wide screens and by its own
- * path across the viewport elsewhere (see .launch-lead in industry.css). It
- * uses the motion system's .word-light, so the sentence stays real text.
+ * The Clinical Launch lead as the section's statement: its words brighten one
+ * after another as the sentence crosses the screen (the motion system's
+ * .word-light, timed by .launch-lead in industry.css), so it stays real text.
  *
- * `accent` is the phrase that closes the sentence; it is set in champagne
- * gold italic (the motion system's gold highlight, for large display words on
- * black) on its own balanced lines, so it is never split from its first word. The
- * wording is never changed: if the phrase is not the end of the text, nothing
- * is accented.
+ * `accent` is the phrase that closes the sentence. The sentence is set as two
+ * line groups, each balanced on its own, so the phrase is never split from
+ * its first word; it takes the pale pink marker for black sections, which
+ * draws behind the phrase as its words are lit. The wording is never changed:
+ * if the phrase is not the end of the text, nothing is marked.
  */
 export function LeadLight({ text, accent, className = "" }: { text: string; accent?: string; className?: string }) {
   const words = text.split(" ").filter(Boolean);
@@ -28,12 +27,17 @@ export function LeadLight({ text, accent, className = "" }: { text: string; acce
       </Fragment>
     ));
   return (
-    <span data-view className={`word-light launch-lead ${className}`} style={{ "--n": words.length } as Vars}>
+    // The scroll engine writes --v on this element before React hydrates.
+    <span data-view className={`word-light launch-lead ${className}`} style={{ "--n": words.length } as Vars} suppressHydrationWarning>
       <span className="launch-line">{line(words.slice(0, from), 0)}</span>
       {accented > 0 && (
         <>
           {" "}
-          <span className="launch-line launch-accent hl-gold">{line(words.slice(from), from)}</span>
+          <span className="launch-line">
+            <span className="hl-dark" style={{ "--i": from, "--len": accented } as Vars}>
+              {line(words.slice(from), from)}
+            </span>
+          </span>
         </>
       )}
     </span>

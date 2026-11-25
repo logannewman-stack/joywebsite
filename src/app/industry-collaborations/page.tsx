@@ -3,12 +3,11 @@ import type { Metadata } from "next";
 import { industry } from "@/content/industry";
 import { Photo } from "@/components/ui/Photo";
 import { Label } from "@/components/ui/Links";
-import { Reveal } from "@/components/ui/Reveal";
+import { ImageReveal, Reveal } from "@/components/ui/Reveal";
 import { InquiryButton } from "@/components/inquiry/InquiryProvider";
 import { NextPage } from "@/components/layout/NextPage";
 import { InView, Magnetic } from "@/components/motion/InView";
 import { Parallax } from "@/components/motion/Parallax";
-import { Scene, SceneLine, SceneStep } from "@/components/motion/Scene";
 import { Hl, LineRise, WordRise } from "@/components/motion/Text";
 import { PathIndex } from "@/components/industry/PathIndex";
 import { Collaborations } from "@/components/industry/Collaborations";
@@ -22,12 +21,6 @@ export const metadata: Metadata = {
   description: industry.hero.text,
 };
 
-/** Splits a short display heading so its last two words share a line. */
-function lastTwo(heading: string): [string, string] {
-  const words = heading.split(" ");
-  return [words.slice(0, -2).join(" "), words.slice(-2).join(" ")];
-}
-
 /** The section's place in the opening index ("01", "02"). */
 function Index({ n, tone = "light" }: { n: string; tone?: "light" | "dark" }) {
   return (
@@ -39,54 +32,57 @@ function Index({ n, tone = "light" }: { n: string; tone?: "light" | "dark" }) {
 
 export default function IndustryPage() {
   const { hero, partnerships, launch, collaborations, closing } = industry;
-  const [closingA, closingB] = lastTwo(closing.heading);
   return (
     <>
-      {/* Opening: headline first on phones, then the portrait, then the two ways in.
-          On short, wide screens (a maximised 16:9 window) the top padding gives way, the headline is
-          capped by height and so is the portrait's frame (.open-portrait in industry.css), so the
-          portrait and both ways in stay on the first screen. */}
-      <section className="bg-paper pt-[4.75rem]">
-        <div className="mx-auto grid max-w-(--wrap) grid-cols-1 gap-y-12 px-5 pt-12 pb-20 md:px-10 md:pt-20 md:pb-28 lg:grid-cols-12 lg:grid-rows-[auto_1fr] lg:gap-x-6 lg:gap-y-8 lg:pt-[min(5rem,6.5svh)] lg:pb-32">
-          <div className="lg:col-span-7 lg:col-start-6 lg:row-start-1">
-            <Label index="04">Industry Collaborations</Label>
-            {/* Four hand-set lines; from lg the two italic lines share one (.open-title), so the
-                headline fills the right column in three lines at a larger size. */}
-            <h1 className="open-title display mt-8 text-[clamp(2.6rem,13vw,4.4rem)] leading-[0.92] md:text-[clamp(2.6rem,7.4vw,6.4rem)] lg:text-[clamp(2.6rem,min(5.6vw,10.2svh),5.04rem)]">
+      {/*
+        Opening: her portrait on the left, five columns wide; the headline, the
+        offer and the two ways in on the right, all on the first screen. On
+        phones the headline comes first, then the portrait, then the offer.
+        From lg the portrait's frame is as tall as the text beside it, and on
+        short, wide screens the top padding gives way and the frame is capped
+        by the height (.open and .open-portrait in industry.css), so the
+        portrait stays on the first screen.
+      */}
+      <section className="bg-paper pt-(--header-height)">
+        <div className="open mx-auto grid max-w-(--wrap) grid-cols-1 gap-y-10 px-5 pt-12 pb-20 md:px-10 md:pt-16 md:pb-28 lg:grid-cols-12 lg:grid-rows-[auto_1fr] lg:gap-x-6 lg:gap-y-8">
+          <div className="lg:col-span-6 lg:col-start-7 lg:row-start-1">
+            <Reveal immediate>
+              <Label index="04">Industry Collaborations</Label>
+            </Reveal>
+            {/* Four hand-set lines. The longest nearly fills the six columns, so from lg the headline may run into the page margin rather than wrap a line. */}
+            <h1 className="display t-hero mt-6 md:mt-7 lg:-mr-10">
               <LineRise
                 immediate
                 lines={[
                   "Education and",
                   "clinical strategy",
-                  <em key="a">for dental</em>,
-                  // The page's pink emphasis: a pale marker that draws behind the word the page is for.
-                  <em key="b">
-                    <InView as="span">
-                      <Hl tone="light">manufacturers.</Hl>
-                    </InView>
-                  </em>,
+                  "for dental",
+                  // The page's pink marker: it draws behind the word the page is for.
+                  <InView as="span" key="for">
+                    <Hl tone="light">manufacturers.</Hl>
+                  </InView>,
                 ]}
               />
             </h1>
           </div>
           {/* The portrait is there from the first paint (it is the largest thing on the screen): it only settles and drifts. */}
-          <InView className="open-figure md:w-[62%] lg:col-span-5 lg:col-start-1 lg:row-span-2 lg:row-start-1 lg:w-auto">
-            <Parallax className="open-portrait aspect-[4/5] w-full" amount={6}>
+          <InView className="open-figure w-[min(100%,24rem)] lg:col-span-5 lg:col-start-1 lg:row-span-2 lg:row-start-1 lg:w-auto">
+            <Parallax className="open-portrait aspect-[4/5] w-full" amount={5}>
               <Photo
                 slot={hero.photo}
                 priority
                 className="settle h-full w-full"
                 // From lg the photograph can be set larger than its frame (the three-quarter crop on short screens).
-                sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1023px) 62vw, (max-width: 1440px) 50vw, 46vw"
+                sizes="(max-width: 1023px) min(100vw - 40px, 384px), 40vw"
               />
             </Parallax>
           </InView>
-          <div className="md:ml-auto md:w-[62%] lg:col-span-5 lg:col-start-8 lg:row-start-2 lg:ml-0 lg:w-auto">
+          <div className="lg:col-span-6 lg:col-start-7 lg:row-start-2">
             <Reveal immediate delay={0.25}>
-              <p className="text-[1.1875rem] leading-relaxed">{keepCompounds(hero.text)}</p>
+              <p className="t-lead max-w-[33rem]">{keepCompounds(hero.text)}</p>
             </Reveal>
             <PathIndex
-              className="mt-7"
+              className="mt-8"
               items={[
                 { label: partnerships.heading, href: "#partnerships" },
                 { label: launch.heading, href: "#clinical-launch" },
@@ -96,120 +92,93 @@ export default function IndustryPage() {
         </div>
       </section>
 
-      {/* Sponsorships and KOL Partnerships: the stage photograph hangs past the ivory edge into the black chapter */}
-      <section id="partnerships" className="relative z-10 overflow-x-clip bg-paper">
-        <div className="mx-auto grid max-w-(--wrap) grid-cols-1 gap-y-14 px-5 py-24 md:px-10 md:py-28 lg:grid-cols-12 lg:gap-x-6 lg:py-36">
-          {/* Heading at the top of the column, the offer and its button at the foot */}
-          <div className="flex flex-col lg:col-span-5 lg:justify-between lg:pb-2">
-            <div>
-              <Index n="01" />
-              <h2 className="display mt-7 max-w-[12ch] text-[clamp(2.6rem,4.6vw,4.14rem)] leading-[0.95]">
-                <WordRise>{partnerships.heading}</WordRise>
-              </h2>
-            </div>
-            <InView className="mt-7 lg:mt-12">
-              <p className="rise max-w-[34rem] text-[1.09375rem] leading-relaxed text-stone">{keepCompounds(partnerships.text)}</p>
-              <div className="rise mt-10" style={{ "--d": "0.1s" } as Vars}>
+      {/* Sponsorships and KOL Partnerships: the offer and its button on the left, the stage photograph on the right, inside the page column */}
+      <section id="partnerships" className="bg-paper">
+        <div className="mx-auto max-w-(--wrap) px-5 py-20 md:px-10 md:py-28 lg:grid lg:grid-cols-12 lg:items-center lg:gap-x-6">
+          <div className="lg:col-span-6">
+            <Index n="01" />
+            <h2 className="display t-h1 mt-5 md:mt-6">
+              <WordRise>{partnerships.heading}</WordRise>
+            </h2>
+            <InView className="mt-6 md:mt-7">
+              <p className="rise t-lead max-w-[33rem]">{keepCompounds(partnerships.text)}</p>
+              <div className="rise mt-8" style={{ "--d": "0.1s" } as Vars}>
                 <InquiryButton type="partnership">{partnerships.cta}</InquiryButton>
               </div>
             </InView>
           </div>
-          <InView className="partner-photo md:ml-auto md:w-[70%] lg:col-span-6 lg:col-start-7 lg:ml-0 lg:w-auto lg:bleed-right">
-            <Parallax className="aspect-[4/5] w-full" amount={10}>
-              <Photo
-                slot={partnerships.photo}
-                className="settle h-full w-full"
-                // The frame shows the photograph at 1.3x (see .partner-photo), so it asks for a wider file than its box.
-                sizes="(max-width: 767px) 125vw, (max-width: 1023px) 91vw, 65vw"
-              />
+          {/* A square frame on a 4:5 photograph, held to its top edge (the slot's focus): it ends above the lectern's water bottle. */}
+          <ImageReveal className="mt-12 w-[min(100%,24rem)] lg:col-span-5 lg:col-start-8 lg:mt-0 lg:w-auto">
+            <Parallax className="aspect-square w-full" amount={5}>
+              <Photo slot={partnerships.photo} className="h-full w-full" sizes="(max-width: 1023px) min(100vw - 40px, 384px), (max-width: 1440px) 36vw, 32vw" />
             </Parallax>
-          </InView>
+          </ImageReveal>
         </div>
       </section>
 
       {/*
-        Clinical Launch Strategy: the page's cinematic beat. From lg the black
-        stage pins: the lead lights up word by word while the photograph drifts
-        and comes up to full light, holds, then the two paragraphs and the action
-        take its place. The scene runs in thirds (lighting, holding, details):
-        the lead is step 0 and stays for the second third (see industry.css);
-        the details are step 2. Below lg, without JavaScript and with reduced
-        motion it is the plain section, in order.
+        Clinical Launch Strategy: the page's black section. The heading on
+        top; under it the photograph on the left and, on the right, the lead
+        (its words brighten as it crosses the screen, see LeadLight) and the
+        two paragraphs under thin lines, then the action. On phones the lead
+        comes before the photograph.
       */}
-      <Scene id="clinical-launch" from="lg" steps={3} length={2.6} dark className="launch grain grain-light bg-ink text-white">
-        <div className="launch-stage mx-auto max-w-(--wrap) px-5 pt-36 pb-24 md:px-10 md:pt-48 md:pb-28 lg:grid lg:grid-cols-12 lg:gap-x-6 lg:pt-56 lg:pb-36">
-          <header className="launch-head lg:col-span-12">
-            <Index n="02" tone="dark" />
-            <h2 className="launch-title display mt-7 max-w-[12ch] text-[clamp(2.6rem,4.6vw,4.14rem)] leading-[0.95]">
-              <WordRise>{launch.heading}</WordRise>
-            </h2>
-          </header>
+      <section id="clinical-launch" data-header="dark" className="grain grain-light bg-ink text-white">
+        <div className="mx-auto max-w-(--wrap) px-5 py-20 md:px-10 md:py-28">
+          <Index n="02" tone="dark" />
+          <h2 className="display t-h1 mt-5 md:mt-6">
+            <WordRise>{launch.heading}</WordRise>
+          </h2>
 
-          <SceneStep index={0} className="launch-step mt-14 md:mt-20 lg:col-span-11 lg:col-start-2">
-            <p className="launch-lead-p display max-w-[21ch] leading-[1.02]">
+          <div className="mt-10 grid grid-cols-1 gap-y-10 md:mt-14 lg:grid-cols-12 lg:grid-rows-[auto_1fr] lg:gap-x-6 lg:gap-y-10">
+            <p className="display t-h2 lg:col-span-7 lg:col-start-6 lg:row-start-1">
               <LeadLight text={launch.lead} accent="how it fits the care they deliver." />
             </p>
-          </SceneStep>
 
-          <InView className="launch-photo mt-16 w-[78%] md:mt-24 md:w-[48%] lg:col-span-4 lg:w-auto">
-            <Parallax className="aspect-[4/5] w-full" amount={8}>
-              <Photo
-                slot={launch.photo}
-                tone="dark"
-                className="settle h-full w-full"
-                sizes="(max-width: 767px) 78vw, (max-width: 1023px) 48vw, (max-width: 1440px) 34vw, 30.6vw"
-              />
-            </Parallax>
-          </InView>
+            <ImageReveal className="w-[min(100%,24rem)] lg:col-span-4 lg:col-start-1 lg:row-span-2 lg:row-start-1 lg:w-auto">
+              <Parallax className="aspect-[4/5] w-full" amount={5}>
+                <Photo
+                  slot={launch.photo}
+                  tone="dark"
+                  className="h-full w-full"
+                  sizes="(max-width: 1023px) min(100vw - 40px, 384px), (max-width: 1440px) 29vw, 26vw"
+                />
+              </Parallax>
+            </ImageReveal>
 
-          <SceneStep index={2} className="launch-step launch-details mt-12 md:ml-auto md:w-[78%] lg:col-span-5 lg:col-start-7 lg:mt-24 lg:ml-0 lg:w-auto lg:self-end">
-            <InView className="launch-details-inner flex flex-col gap-6">
+            <InView className="lg:col-span-7 lg:col-start-6 lg:row-start-2">
               {launch.paragraphs.map((p, i) => (
-                <p key={i} className="launch-item rise max-w-[34rem] text-[1.09375rem] leading-relaxed text-white/85" style={{ "--k": i + 1, "--d": `${i * 0.06}s` } as Vars}>
-                  {p}
-                </p>
+                <div key={i} className="rise border-t border-line-dark py-6" style={{ "--d": `${i * 0.06}s` } as Vars}>
+                  <p className="t-body max-w-[34rem]">{p}</p>
+                </div>
               ))}
-              <div className="launch-item rise mt-4" style={{ "--k": launch.paragraphs.length + 1, "--d": "0.12s" } as Vars}>
+              <div className="rise border-t border-line-dark pt-8" style={{ "--d": "0.12s" } as Vars}>
                 {/* The longest pill: below 360px it tightens, and wraps only if text spacing is enlarged. */}
                 <InquiryButton type="clinical_launch" tone="dark" className="max-[359px]:gap-2 max-[359px]:px-4 max-[359px]:text-[0.875rem] max-[359px]:whitespace-normal">
                   {launch.cta}
                 </InquiryButton>
               </div>
             </InView>
-          </SceneStep>
-
-          {/* How far through the scene: only while it is pinned */}
-          <div aria-hidden className="launch-foot hidden">
-            <SceneLine className="text-gold" />
           </div>
         </div>
-      </Scene>
+      </section>
 
       <Collaborations heading={collaborations.heading} logos={collaborations.logos} />
 
-      {/* Let's Discuss Your Project: the picker offers only the manufacturer topics */}
+      {/* Let's Discuss Your Project: the heading on the left, the invitation and its button on the right. The picker offers only the manufacturer topics. */}
       <section className="bg-paper">
-        <div className="mx-auto max-w-(--wrap) px-5 py-24 md:px-10 md:py-32 lg:py-40">
-          <h2 className="display text-[clamp(2.75rem,13.4vw,9.5rem)] leading-[0.9] lg:text-[clamp(2.75rem,12.4vw,11.25rem)]">
-            <span className="block">
-              <WordRise>{closingA}</WordRise>{" "}
-            </span>
-            <em className="block md:pl-[16.666%]">
-              <WordRise start={2}>{closingB}</WordRise>
-            </em>
+        <div className="mx-auto max-w-(--wrap) px-5 py-20 md:px-10 md:py-28 lg:grid lg:grid-cols-12 lg:gap-x-6">
+          <h2 className="display t-h1 lg:col-span-6">
+            <WordRise>{closing.heading}</WordRise>
           </h2>
-          <InView className="mt-12 md:mt-16">
-            <div className="mt-8 grid grid-cols-1 gap-y-9 md:mt-10 lg:grid-cols-12 lg:gap-x-6">
-              <p className="rise max-w-[30rem] text-[1.1875rem] leading-relaxed text-stone lg:col-span-5 lg:col-start-3" style={{ "--d": "0.15s" } as Vars}>
-                {closing.text}
-              </p>
-              <div className="rise lg:col-span-4 lg:col-start-9 lg:justify-self-end" style={{ "--d": "0.25s" } as Vars}>
-                <Magnetic strength={0.18}>
-                  <InquiryButton choices={["partnership", "clinical_launch", "general"]} intro={closing.text} className="min-h-14! px-8! text-[1.0625rem]!">
-                    {closing.cta}
-                  </InquiryButton>
-                </Magnetic>
-              </div>
+          <InView className="mt-6 md:mt-8 lg:col-span-5 lg:col-start-8 lg:mt-0">
+            <p className="rise t-lead max-w-[33rem]">{closing.text}</p>
+            <div className="rise mt-8" style={{ "--d": "0.1s" } as Vars}>
+              <Magnetic strength={0.18}>
+                <InquiryButton choices={["partnership", "clinical_launch", "general"]} intro={closing.text}>
+                  {closing.cta}
+                </InquiryButton>
+              </Magnetic>
             </div>
           </InView>
         </div>

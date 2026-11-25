@@ -67,38 +67,42 @@ export default function InsightsPage() {
 
   return (
     <>
-      {/* Opening: the headline's three hand-set lines rise; the portrait is there from the first paint, settles and drifts.
-          On phones the spacing is a step tighter, so her eyes are on the first screen under the three lines of text. */}
-      <section className="overflow-x-clip bg-paper pt-[4.75rem]">
-        <div className="mx-auto grid max-w-(--wrap) grid-cols-1 gap-y-7 px-5 pt-8 pb-20 md:gap-y-12 md:px-10 md:pt-20 md:pb-28 lg:grid-cols-12 lg:gap-x-6 lg:pb-32">
-          <div className="lg:col-span-7 lg:pt-6">
-            <Label index="05">Insights</Label>
-            <h1 className="display mt-6 text-[clamp(2.4rem,12.4vw,4.4rem)] leading-[0.92] md:mt-8 md:text-[clamp(3rem,9vw,6rem)] lg:text-[clamp(3rem,6.6vw,5.94rem)]">
+      {/*
+        Opening: the label, the headline in four hand-set lines and the intro on the left; the portrait
+        on the right, four columns wide, inside the page column. The lines rise on load, the pale pink
+        marker draws behind the closing phrase (the page's one accent), and the portrait is there from
+        the first paint, settles and drifts a little.
+      */}
+      <section className="bg-paper pt-(--header-height)">
+        <div className="mx-auto max-w-(--wrap) px-5 pt-12 pb-20 md:px-10 md:pt-16 md:pb-28 lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-6 lg:pt-20">
+          <div className="lg:col-span-8">
+            <Reveal immediate>
+              <Label index="05">Insights</Label>
+            </Reveal>
+            <h1 className="display t-hero mt-6 md:mt-7">
               <LineRise
                 immediate
                 lines={[
                   "The conversation",
-                  "doesn’t end when the",
-                  // The page's one pink emphasis: a pale marker that draws behind the italic phrase.
-                  <em key="a">
-                    <InView as="span">
-                      <Hl tone="light">presentation does.</Hl>
-                    </InView>
-                  </em>,
+                  "doesn’t end",
+                  "when the",
+                  <InView key="a" as="span">
+                    <Hl tone="light">presentation does.</Hl>
+                  </InView>,
                 ]}
               />
             </h1>
-            <Reveal immediate delay={0.3} className="mt-6 max-w-md md:mt-12">
-              <p className="text-[1.1875rem] leading-relaxed text-stone">{hero.text}</p>
+            <Reveal immediate delay={0.3} className="mt-8 max-w-[30rem] md:mt-10">
+              <p className="t-lead text-stone">{hero.text}</p>
             </Reveal>
           </div>
-          <InView className="md:ml-auto md:w-[62%] lg:col-span-5 lg:col-start-8 lg:ml-0 lg:w-auto lg:bleed-right">
-            <Parallax className="aspect-[4/5] w-full" amount={7}>
+          <InView className="mt-12 w-[min(100%,24rem)] md:mt-16 lg:col-span-4 lg:col-start-9 lg:mt-0 lg:w-auto">
+            <Parallax className="aspect-[4/5] w-full" amount={5}>
               <Photo
                 slot={hero.photo}
                 priority
                 className="settle h-full w-full"
-                sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1023px) 62vw, (max-width: 1440px) 42vw, calc(50vw - 127px)"
+                sizes="(max-width: 1023px) min(100vw - 40px, 384px), (max-width: 1440px) 30vw, 26vw"
               />
             </Parallax>
           </InView>
@@ -106,9 +110,6 @@ export default function InsightsPage() {
       </section>
 
       {feature && <Feature item={feature} cta={original.cta} {...featureSection} />}
-
-      {/* The conversation after a session: a full-bleed photograph that opens and drifts with the scroll */}
-      <Band slot={band} />
 
       {showOriginals && <OriginalArticles heading={original.heading} cta={original.cta} articles={listedOriginals} />}
 
@@ -122,6 +123,9 @@ export default function InsightsPage() {
           books={books}
         />
       )}
+
+      {/* The conversation after a session: a wide photograph the width of the page column, before the black chapter */}
+      <Band slot={band} />
 
       <StayConnected heading={newsletter.heading} name={newsletter.name} text={newsletter.text} cta={newsletter.cta} />
 

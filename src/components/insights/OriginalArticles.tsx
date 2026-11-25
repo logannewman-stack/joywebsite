@@ -8,52 +8,43 @@ import { articleHref } from "./records";
 
 type Vars = CSSProperties & Record<`--${string}`, string>;
 
-/** Two pieces, set asymmetrically: the lead wide on the margin, the second narrower and lower. */
-const geometry = [
-  { box: "lg:col-span-7", title: "text-[clamp(2.4rem,4vw,3.8rem)]", slot: "min-h-56 lg:min-h-[22rem]" },
-  { box: "lg:col-span-4 lg:col-start-9 lg:mt-40", title: "text-[clamp(2rem,2.8vw,2.6rem)]", slot: "min-h-44 lg:min-h-64" },
-];
-
 /**
  * From Dr. Joy: her original writing. Hidden at launch until the articles
- * exist; in review mode the slots hold the real composition. Each piece is
- * one object: its rule draws in, and on hover or focus an ink rule draws over
- * it, the title leans in and the arrow travels. The whole piece is the link.
+ * exist; in review mode two labelled slots hold their place. It is set like
+ * the published index below it: the heading on the left of the page column,
+ * the pieces on the right two thirds, each between thin lines with its date,
+ * title, excerpt and the way in. A piece is one object: on hover or focus a
+ * soft wash rises behind it, the title leans in and the arrow travels. The
+ * whole piece is the link.
  */
 export function OriginalArticles({ heading, cta, articles }: { heading: string; cta: string; articles: OriginalArticle[] }) {
+  const shown = articles.slice(0, 2);
   return (
     <section className="bg-paper">
-      <div className="mx-auto max-w-(--wrap) px-5 py-24 md:px-10 md:py-28 lg:pt-36 lg:pb-32">
-        <h2 className="display text-[clamp(2.6rem,5vw,4.8rem)]">
+      <div className="mx-auto max-w-(--wrap) px-5 py-20 md:px-10 md:py-28 lg:grid lg:grid-cols-12 lg:gap-x-6">
+        <h2 className="display t-h1 lg:col-span-4">
           <WordRise>{heading}</WordRise>
         </h2>
-        <div className="mt-12 grid grid-cols-1 gap-y-14 md:mt-16 lg:grid-cols-12 lg:gap-x-6">
-          {(articles.length > 0 ? articles.slice(0, 2) : geometry).map((entry, i) => {
-            const a = articles.length > 0 ? (entry as OriginalArticle) : null;
-            const g = geometry[i];
-            return (
-              <InView key={i} as={a ? "article" : "div"} className={`relative pt-8 ${a ? "group" : ""} ${g.box}`}>
-                {a && <span aria-hidden className="rule-over" />}
-                <div className="rise" style={{ "--d": "0.12s" } as Vars}>
-                  <p className="label flex items-center gap-4 text-stone tabular-nums">
-                    <span aria-hidden>{String(i + 1).padStart(2, "0")}</span>
-                    {a?.date}
-                  </p>
-                  {a ? (
-                    <>
-                      <h3 className={`lean display mt-6 leading-[1] ${g.title}`}>{typeset(a.title)}</h3>
-                      <p className="mt-5 max-w-[52ch] text-[1.03125rem] leading-relaxed text-stone">{a.excerpt}</p>
-                      <ArrowLink href={articleHref(a)} className="mt-6 after:absolute after:inset-0">
-                        {cta}
-                      </ArrowLink>
-                    </>
-                  ) : (
-                    <ReviewSlot className={`mt-6 ${g.slot}`}>Original article {i + 1}: title, summary or excerpt, and link</ReviewSlot>
-                  )}
-                </div>
-              </InView>
-            );
-          })}
+        <div className="mt-10 md:mt-12 lg:col-span-8 lg:col-start-5 lg:mt-2">
+          {shown.length > 0
+            ? shown.map((a, i) => (
+                <InView key={a.title} as="article" className="group relative border-t border-line py-7 last:border-b md:py-9">
+                  <span aria-hidden className="rule-over" />
+                  <div className="rise" style={{ "--d": `${i * 0.08}s` } as Vars}>
+                    {a.date && <p className="label text-stone tabular-nums">{a.date}</p>}
+                    <h3 className={`lean display t-h2 max-w-[38rem] ${a.date ? "mt-4" : ""}`}>{typeset(a.title)}</h3>
+                    <p className="t-body mt-4 max-w-[38rem] text-stone">{a.excerpt}</p>
+                    <ArrowLink href={articleHref(a)} className="mt-4 after:absolute after:inset-0">
+                      {cta}
+                    </ArrowLink>
+                  </div>
+                </InView>
+              ))
+            : [1, 2].map((n) => (
+                <ReviewSlot key={n} className={n > 1 ? "mt-6 min-h-40" : "min-h-40"}>
+                  Original article {n}: title, summary or excerpt, and link
+                </ReviewSlot>
+              ))}
         </div>
       </div>
     </section>

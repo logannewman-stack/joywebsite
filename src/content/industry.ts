@@ -28,7 +28,8 @@ export const industry = {
       alt: "Dr. Joy presenting at a sponsored education program, mid-sentence, with a headset microphone",
       treatment: "color",
       direction: "Authentic photograph of sponsored education or teaching, in color.",
-      focus: "50% 40%",
+      // Held to the top edge: the page's square frame then ends above the lectern's water bottle.
+      focus: "50% 0%",
       original: "_DSC1299",
     } satisfies PhotoSlot,
   },

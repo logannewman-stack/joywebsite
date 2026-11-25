@@ -3,10 +3,11 @@ import { ArrowDown, ArrowRight, ArrowUpRight } from "lucide-react";
 const icons = { down: ArrowDown, right: ArrowRight, "up-right": ArrowUpRight };
 
 /**
- * An arrow in a circle. When the enclosing `group` is hovered or focused the
- * circle fills and the arrow travels: it leaves through one edge while its
- * twin enters from the other (styles: .arrow-circle in industry.css).
- * Decorative: the link or button around it carries the words.
+ * An arrow in a thin grey ring. When the enclosing `group` is hovered or
+ * focused the circle fills (ink on white, white on black) and the arrow
+ * travels: it leaves through one edge while its twin enters from the other
+ * (styles: .arrow-circle in industry.css). Decorative: the link or button
+ * around it carries the words.
  */
 export function ArrowCircle({
   direction = "right",
