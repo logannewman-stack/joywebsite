@@ -3,10 +3,10 @@ import { Fragment, type CSSProperties, type ReactNode } from "react";
 type Vars = CSSProperties & Record<`--${string}`, string | number>;
 
 /**
- * The opening story. On phones and tablets its words take full ink one after
- * another as the visitor reads down the page, in one continuous sweep across
- * the paragraphs; on a desktop the whole story is on the first screen and is
- * simply in full ink.
+ * The opening story: its words take full ink one after another as the
+ * visitor reads down the page, in one continuous sweep across the paragraphs.
+ * On a desktop the first paragraph is in full ink from the start and the
+ * sweep begins with the second.
  *
  * The scroll engine writes --v on the block; each word carries its place in
  * the whole story (--i of --n), and meet.css turns that into opacity. Words
@@ -30,7 +30,7 @@ export function StoryLight({
 }) {
   const words = paragraphs.map((p) => p.split(" ").filter(Boolean));
   const total = words.reduce((n, w) => n + w.length, 0);
-  const style: Vars = { "--n": total };
+  const style: Vars = { "--n": total, "--n1": words[0]?.length ?? 0 };
   let count = 0;
   return (
     <div data-view="" className={`meet-story ${className}`} style={style}>

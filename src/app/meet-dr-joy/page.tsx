@@ -79,42 +79,33 @@ export default function MeetPage() {
       <Couplet lines={hero.couplet} photo={operatory} />
 
       {/*
-        A wide pause before the credentials: the staircase, the width of the
-        page column, drifting a little in its frame. It runs on from the
-        couplet (no line between them).
+        The staircase: a wide pause before the credentials, the width of the page
+        column. From 1024px it is a held stage: the photograph opens from a
+        slight inset as it arrives, then holds in the middle of the screen while
+        the black chapter slides up over it, pushing in a little and dimming
+        behind (a plain sticky stage; meet.css, "Staircase and credentials"). On
+        smaller screens it drifts in its frame. It runs on from the couplet (no
+        line between them).
       */}
-      <section className="no-rule bg-paper">
-        <div className="mx-auto max-w-(--wrap) px-5 pb-20 md:px-10 md:pb-28">
-          <ImageReveal>
-            <Parallax amount={4} className="aspect-[4/5] w-full sm:aspect-[16/9] lg:aspect-[12/5]">
-              <Photo slot={interlude} className="h-full w-full" sizes="(max-width: 1440px) calc(100vw - 40px), 79vw" />
-            </Parallax>
-          </ImageReveal>
+      <section data-scene="lg" data-view="" className="meet-stairs no-rule bg-paper">
+        <div data-scene-pin>
+          <div className="mx-auto w-full max-w-(--wrap) px-5 pb-20 md:px-10 md:pb-28">
+            <ImageReveal>
+              <div className="meet-stairs-band relative overflow-hidden">
+                <Parallax amount={4} className="aspect-[4/5] w-full sm:aspect-[16/9] lg:aspect-[12/5]">
+                  <Photo slot={interlude} className="meet-stairs-photo h-full w-full" sizes="(max-width: 1440px) calc(100vw - 40px), 79vw" />
+                </Parallax>
+                <div aria-hidden className="meet-stairs-dim pointer-events-none absolute inset-0 bg-ink opacity-0" />
+              </div>
+            </ImageReveal>
+          </div>
         </div>
       </section>
 
       <Credentials heading={credentials.heading} groups={credentials.groups} />
 
-      {/* What Guides My Work: the lead-in, the question and its answer, in one column beside the label */}
-      <section className="bg-paper">
-        <div className="mx-auto max-w-(--wrap) px-5 pt-20 pb-20 md:px-10 md:pt-28 md:pb-28 lg:grid lg:grid-cols-12 lg:gap-x-6">
-          <InView className="lg:col-span-4">
-            <Label as="h2" className="rise text-stone">
-              {guides.heading}
-            </Label>
-          </InView>
-          <div className="mt-8 lg:col-span-8 lg:col-start-5 lg:mt-0">
-            <InView className="stagger flex max-w-[40rem] flex-col gap-5">
-              {guides.before.map((p, i) => (
-                <p key={i} className="t-lead text-ink">
-                  {p}
-                </p>
-              ))}
-            </InView>
-            <Question question={guides.question} answer={guides.answer} />
-          </div>
-        </div>
-      </section>
+      {/* What Guides My Work: the lead-in, then the question and its answer, held on a pinned stage */}
+      <Question label={guides.heading} before={guides.before} question={guides.question} answer={guides.answer} />
 
       {/* The sign-off: the story's last lines, her signature, and the way to reach her */}
       <section className="meet-signoff bg-paper">

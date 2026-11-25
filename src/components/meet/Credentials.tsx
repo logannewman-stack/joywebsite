@@ -15,13 +15,17 @@ function split(item: string, at: "first" | "last"): [string, string] {
 const Comma = () => <span className="sr-only">, </span>;
 
 /**
- * One group of the chapter, under a thin line. On desktop its title holds its
- * place in the left margin (plain position: sticky) while the list scrolls
- * past on the right.
+ * One group of the chapter, under a thin line that draws itself when the
+ * group is first seen. On desktop its title holds its place in the left
+ * margin (plain position: sticky) while the list scrolls past on the right.
  */
 function GroupBlock({ title, children, gap = "gap-6 lg:gap-7" }: { title: string; children: ReactNode; gap?: string }) {
   return (
-    <div className="border-t border-line-dark pt-6 lg:grid lg:grid-cols-12 lg:gap-x-6 lg:pt-8">
+    <div className="relative pt-6 lg:grid lg:grid-cols-12 lg:gap-x-6 lg:pt-8">
+      {/* The thin line over the group draws from the left when the group is first seen. */}
+      <InView className="absolute inset-x-0 top-0">
+        <span aria-hidden className="rule-draw block h-px bg-line-dark" />
+      </InView>
       <div className="lg:col-span-4">
         <InView className="lg:sticky lg:top-[calc(var(--header-height)+2rem)]">
           <h3 className="label rise text-ash">{title}</h3>
@@ -59,11 +63,15 @@ function Titled({ title, detail }: { title: string; detail: string }) {
  * its label in the left margin: degrees and what she has built are set as a
  * name with a quieter line under it; leadership roles read as a ledger, the
  * role in grey and the organization in white.
+ *
+ * From 1024px the chapter slides up over the staircase photograph held above
+ * it (see "Staircase and credentials" in meet.css), so it sits above that
+ * stage in the stacking order.
  */
 export function Credentials({ heading, groups }: { heading: string; groups: Group[] }) {
   const [education, leadership, built] = groups;
   return (
-    <section data-header="dark" className="meet-creds grain grain-light bg-ink text-white">
+    <section data-header="dark" className="meet-creds grain grain-light relative z-10 bg-ink text-white">
       <div className="mx-auto max-w-(--wrap) px-5 py-20 md:px-10 md:py-28">
         <h2 className="display t-h1 max-w-[14em]">
           <WordRise>{heading}</WordRise>

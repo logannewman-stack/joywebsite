@@ -1,16 +1,139 @@
 /* insights: styles owned by the insights work stream. Loaded from globals.css.
    The shared row and card responses (.arrow-circle, .lean, the .rule-over wash) are in
-   industry.css; everything else on the page is set with utilities. */
+   industry.css; the entrances (.rise, .rule-draw, .wipe, .settle) are in motion.css. */
+
+/* ==========================================================================
+   The feature (src/components/insights/Feature.tsx)
+   The headline leans in when the block is hovered or its link is focused,
+   a beat slower than a row's title: it is the page's largest link. The wash
+   behind the block stays inside the frame.
+   ========================================================================== */
+html.motion .cover-title {
+  transition: transform var(--duration-text) var(--ease-expo);
+}
+html.motion .cover:has(:focus-visible) .cover-title {
+  transform: translate3d(0.5rem, 0, 0);
+}
+@media (hover: hover) {
+  html.motion .cover:hover .cover-title {
+    transform: translate3d(0.5rem, 0, 0);
+  }
+}
+.cover > .rule-over {
+  inset: 0;
+}
+
+/* ==========================================================================
+   The conversation band (src/components/insights/Band.tsx)
+
+   --v runs 0 to 1 as the band's section crosses the screen. --k is how far
+   the photograph has opened: it arrives inset and reaches the width of the
+   page column once it is well into view. The picture inside settles from
+   slightly large and drifts a little slower than the page. Compositor-only:
+   a clip, a transform and an opacity.
+   ========================================================================== */
+html.motion .insights-band {
+  --open-from: 0.06;
+  --open-span: 0.34;
+  --k: clamp(0, calc((var(--v, 1) - var(--open-from)) / var(--open-span)), 1);
+  /* How far the next section has covered the photograph (desktop: see below). */
+  --cover: 0;
+  --inset-x: 1.25rem;
+  --inset-y: 1.75rem;
+}
+@media (min-width: 768px) {
+  html.motion .insights-band {
+    --inset-x: 2.5rem;
+    --inset-y: 2.5rem;
+  }
+}
+html.motion .insights-band-photo {
+  clip-path: inset(calc((1 - var(--k)) * var(--inset-y)) calc((1 - var(--k)) * var(--inset-x)));
+}
+html.motion .insights-band-inner {
+  transform: translate3d(0, calc((0.5 - var(--v, 0.5)) * 6%), 0) scale(calc(1.16 - var(--k) * 0.08 + var(--cover) * 0.04));
+  will-change: transform;
+}
+html.motion .insights-band-dim {
+  opacity: calc(var(--cover) * 0.5);
+}
+
+/* Desktop: the photograph has a set height (the column at 12:5, never taller
+   than the screen under the header), so the hold below can be measured from
+   it. The black chapter that follows needs the same measure. */
+@media (min-width: 1024px) {
+  .insights-band,
+  .insights-band + .stay-connected {
+    --band-h: min(calc((min(100vw, var(--wrap)) - 5rem) * 5 / 12), calc(100svh - var(--header-height) - 4rem));
+    --band-gap: 7rem;
+  }
+  .insights-band-photo {
+    height: var(--band-h);
+  }
+
+  /* Animated, the photograph holds in the middle of the screen while the
+     black chapter slides up over it: the section is one photograph taller
+     than its content, the photograph sticks inside it, and the chapter's
+     margin pulls it up by the same height, so the page is no longer than its
+     plain layout. The hold ends as the chapter's edge reaches the top of the
+     photograph. Meanwhile the picture pushes in a little and dims (--cover:
+     with the photograph centred, the chapter meets its foot near --v 0.41
+     and its top near 0.65). */
+  html.motion .insights-band {
+    --open-from: 0.04;
+    --open-span: 0.24;
+    --cover: clamp(0, calc((var(--v, 0) - 0.41) / 0.24), 1);
+    height: calc(var(--band-h) * 2 + var(--band-gap));
+    padding-bottom: 0;
+  }
+  html.motion .insights-band-frame {
+    position: sticky;
+    top: max(calc(var(--header-height) + 1.5rem), calc((100svh - var(--band-h)) / 2));
+  }
+  html.motion .insights-band + .stay-connected {
+    margin-top: calc(var(--band-h) * -1);
+  }
+}
+
+@media print {
+  .insights-band {
+    height: auto !important;
+  }
+  .insights-band-frame {
+    position: static !important;
+  }
+  .insights-band + .stay-connected {
+    margin-top: 0 !important;
+  }
+  .insights-band-photo {
+    clip-path: none !important;
+  }
+  .insights-band-inner {
+    transform: none !important;
+  }
+  .insights-band-dim {
+    opacity: 0 !important;
+  }
+}
 
 /* ==========================================================================
    Stay Connected (src/components/insights/StayConnected.tsx): the JD
    monogram, pressed into the black like the mark on her card. The mark is
    the brand SVG used as a mask over a tone one step above the section's
    black; a faint light edge above-left and a dark edge below-right give it
-   its relief. Black on black, no colour of its own.
+   its relief. Black on black, no colour of its own. It drifts a little
+   slower than the page (--v runs 0 to 1 as it crosses the screen).
+
+   The section sits above the band photograph that holds before it.
    ========================================================================== */
+.stay-connected {
+  z-index: 1;
+}
 .stay-seal {
   filter: drop-shadow(-0.0625rem -0.0625rem 0 rgb(255 255 255 / 0.07)) drop-shadow(0.09375rem 0.125rem 0.0625rem rgb(0 0 0 / 0.95));
+}
+html.motion .stay-seal {
+  transform: translate3d(0, calc((0.5 - var(--v, 0.5)) * 3rem), 0);
 }
 .stay-mark {
   display: block;
@@ -23,5 +146,26 @@
 @media print {
   .stay-seal {
     display: none;
+  }
+}
+
+/* ==========================================================================
+   An article (src/components/insights/Article.tsx): the thin black rule
+   beside a pull quote draws downward when the quote is reached.
+   ========================================================================== */
+html.motion [data-inview] .quote-rule {
+  transform: scaleY(0);
+  transform-origin: center top;
+  transition: transform var(--duration-image) var(--ease-expo);
+}
+html.motion [data-inview][data-in] .quote-rule {
+  transform: none;
+}
+html.restoring [data-inview] .quote-rule {
+  transition: none !important;
+}
+@media print {
+  .quote-rule {
+    transform: none !important;
   }
 }

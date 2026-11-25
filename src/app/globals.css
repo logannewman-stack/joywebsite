@@ -182,6 +182,10 @@ body {
    on the second section, so no markup is needed and nothing is laid out for
    it. A section that should run on from the one above takes `no-rule`.
    Black sections need no line: the change of colour is the edge.
+
+   Where the browser can tie an animation to the scroll, the line draws itself
+   from the left as its section comes up the screen, so one section leads into
+   the next. Elsewhere, with reduced motion and in print it is simply there.
    -------------------------------------------------------------------------- */
 :root {
   --rule-inset: 1.25rem;
@@ -191,11 +195,32 @@ body {
     --rule-inset: 2.5rem;
   }
 }
+/* How much of the line is drawn, from its left end. A registered property, so it can be animated. */
+@property --rule-p {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 100%;
+}
 :is(.bg-paper, .next-page) + :is(.bg-paper, .next-page):not(.no-rule) {
-  background-image: linear-gradient(var(--color-line), var(--color-line));
+  background-image: linear-gradient(to right, var(--color-line) var(--rule-p, 100%), transparent var(--rule-p, 100%));
   background-size: calc(min(100%, var(--wrap)) - 2 * var(--rule-inset)) 1px;
   background-position: top center;
   background-repeat: no-repeat;
+}
+@keyframes rule-in {
+  from {
+    --rule-p: 0%;
+  }
+}
+/* In browsers without scroll-tied animations the timeline below is not
+   understood, the animation has no length, and the line is simply drawn. */
+@media screen {
+  html.motion :is(.bg-paper, .next-page) + :is(.bg-paper, .next-page):not(.no-rule) {
+    animation: rule-in linear both;
+    animation-timeline: view();
+    /* It draws while the section's top edge travels up the lower third of the screen. */
+    animation-range: entry 4% entry 40%;
+  }
 }
 
 /* Headings: Archivo, bold and a little wide. Sizes and line heights come from

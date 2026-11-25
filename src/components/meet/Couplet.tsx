@@ -18,24 +18,28 @@ function Pair({ line }: { line: string }) {
 /**
  * "In lecture halls, I studied." / "In the operatory, I tested and refined."
  *
- * A turn in the story: the clinical close-up on the left, the two lines on
- * the right, each broken after its comma so they read as a pair. The first
- * is set in grey and the second in black: before and after, without a second
- * typeface. As the block
- * comes up the screen each line eases in from the right, the second a beat
- * after the first (one clock, the block's own --v; see "The couplet" in
- * meet.css). Without motion the two lines simply sit one under the other.
+ * A scroll-scrubbed turn in the story: the clinical close-up on the left,
+ * the two lines on the right, each broken after its comma so they read as a
+ * pair. The first is set in grey and the second in black: before and after,
+ * without a second typeface. As the block comes up the screen the first line
+ * glides in from the left and the second answers from the right; they have
+ * met, one under the other, by the time the block reaches the middle of the
+ * screen, and the photograph drifts up a little faster than the page. One
+ * clock drives all three: the block's own --v (meet.css, "The couplet").
+ * Without motion the two lines simply sit one under the other.
  */
 export function Couplet({ lines, photo }: { lines: string[]; photo: PhotoSlot }) {
   return (
     <section className="meet-couplet overflow-x-clip bg-paper">
-      <div className="mx-auto max-w-(--wrap) px-5 py-20 md:px-10 md:py-28 lg:grid lg:grid-cols-12 lg:items-center lg:gap-x-6">
-        <ImageReveal className="w-[min(100%,30rem)] lg:col-span-5 lg:w-auto">
-          <Parallax amount={5} className="aspect-[5/4] w-full">
-            <Photo slot={photo} className="h-full w-full" sizes="(max-width: 1023px) min(100vw - 40px, 480px), (max-width: 1440px) 36vw, 30vw" />
-          </Parallax>
-        </ImageReveal>
-        <div data-view="" className="meet-couplet-stage mt-10 lg:col-span-6 lg:col-start-7 lg:mt-0">
+      <div data-view="" className="meet-couplet-stage mx-auto max-w-(--wrap) px-5 py-20 md:px-10 md:py-28 lg:grid lg:grid-cols-12 lg:items-center lg:gap-x-6">
+        <div className="meet-couplet-photo w-[min(100%,30rem)] lg:col-span-5 lg:w-auto">
+          <ImageReveal>
+            <Parallax amount={5} className="aspect-[5/4] w-full">
+              <Photo slot={photo} className="h-full w-full" sizes="(max-width: 1023px) min(100vw - 40px, 480px), (max-width: 1440px) 36vw, 30vw" />
+            </Parallax>
+          </ImageReveal>
+        </div>
+        <div className="mt-10 lg:col-span-6 lg:col-start-7 lg:mt-0">
           <p className="meet-line meet-line-a display t-h1 text-stone">
             <Pair line={lines[0]} />
           </p>

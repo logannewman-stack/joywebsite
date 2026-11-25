@@ -118,6 +118,16 @@ export const home = {
     name: "Claire Jeong, MS, RDH",
     role: "Founder, StudentRDH & DentalToaster",
     permission: "pending" as "pending" | "granted",
+    /** The room behind the quote: dimmed and in monochrome, drifting slowly, so the words stay first. */
+    backdrop: {
+      src: "/photos/home-quote-room-g.jpg",
+      alt: "A conference audience standing and applauding",
+      treatment: "color",
+      direction: "A full room on its feet, seen from the side. No stage, no signage: a backdrop for the quote.",
+      focus: "50% 82%",
+      focusMobile: "42% 82%",
+      original: "54708276125",
+    } satisfies PhotoSlot,
   },
 
   closing: {

@@ -1,10 +1,12 @@
 /* home: styles owned by the home work stream. Loaded from globals.css.
 
    Home is laid out with utilities in its components (src/app/page.tsx,
-   src/components/home). Nothing on it is pinned: the page scrolls at its own
-   speed, and its entrances are the shared ones (motion.css, globals.css).
-   What is here is the opening's own motion, scoped to html.motion: without
-   JavaScript, with reduced motion and in print the opening is simply there. */
+   src/components/home). This file holds the page's choreography: what the
+   opening, the story, the pathways and the closing do as the page scrolls.
+   Everything reads what the scroll engine writes (--p, --v, data-step,
+   data-pinned; see src/components/motion/engine.ts) and is scoped to
+   html.motion or to attributes only the engine sets. Without JavaScript, with
+   reduced motion and in print the page is its plain, complete layout. */
 
 /* ==========================================================================
    Opening (the black stage)
@@ -33,4 +35,266 @@ html.motion .hero-settle {
 }
 html.motion .hero-mark {
   animation: hero-mark var(--duration-image) var(--ease-expo) var(--d, 0.65s) both;
+}
+
+/* "Scroll": arrives after the headline. */
+@keyframes hero-cue-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 0.5rem, 0);
+  }
+}
+html.motion .hero-cue .label {
+  display: inline-block;
+  animation: hero-cue-in var(--duration-text) var(--ease-soft) 1.2s both;
+}
+
+/* The wrapper is a scene only so the engine reports its progress: it keeps its
+   natural height. --p is written on the two elements that read it (the dim and
+   the cue carry data-scene-vars), not on the wrapper: a variable there would
+   restyle the opening and the whole story on every scroll frame. */
+.hero-hold[data-scene] {
+  height: auto;
+}
+
+/* Landscape from 1024px, where the stage is exactly one screen: it holds while
+   the story slides up over it, dims as it is covered, and the cue fades.
+   --p runs over the whole wrapper, so --p * --hold-n counts screens scrolled:
+   the dim reaches its depth as the first screen of story arrives. */
+@media screen and (min-width: 1024px) and (orientation: landscape) {
+  html.motion .hero-hold .hero-stage {
+    position: sticky;
+    top: 0;
+  }
+  html.motion .hero-hold[data-pinned] .hero-dim {
+    opacity: calc(clamp(0, var(--p, 0) * var(--hold-n, 3), 1) * 0.6);
+  }
+  html.motion .hero-hold[data-pinned] .hero-cue {
+    opacity: calc(1 - clamp(0, var(--p, 0) * var(--hold-n, 3) * 7, 1));
+  }
+}
+
+/* ==========================================================================
+   The story (Perspective.tsx): "A perspective shaped by every side of
+   dentistry."
+
+   Pinned, the stage is one screen: the grid fills it and its rows centre the
+   heading, the statement and the meter on the photograph's height. The
+   statements share one cell (the engine's steps); the cell is as tall as the
+   longest statement, so nothing moves when they change.
+   ========================================================================== */
+.persp[data-pinned] .persp-grid {
+  height: 100%;
+  padding-block: calc(var(--header-height) + 1.5rem) 2.5rem;
+}
+/* The photograph is never taller than the room under the header. */
+.persp[data-pinned] .persp-photo {
+  max-height: calc(100svh - var(--header-height) - 6rem);
+  margin-inline: auto;
+  aspect-ratio: 4 / 5;
+}
+/* One statement at a time, set as a heading. */
+.persp[data-pinned] .persp-steps {
+  max-width: none;
+  margin-top: 2.25rem;
+  gap: 0;
+}
+.persp[data-pinned] .persp-say {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 2.5vw, 2.125rem);
+  font-weight: 700;
+  font-stretch: 112%;
+  line-height: 1.14;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+.persp[data-pinned] .persp-meter {
+  margin-top: 2.5rem;
+}
+
+/* The photograph pushes in very slowly through the whole story. */
+html.motion .persp[data-pinned] .persp-img {
+  transform: scale(calc(1 + var(--p, 0) * 0.07));
+  transform-origin: 50% 40%;
+  will-change: transform;
+}
+
+/* One statement leaves as a whole; the next arrives word by word. */
+html.motion .persp[data-pinned] [data-scene-step] {
+  transform: none;
+  transition: opacity 0.3s var(--ease-soft);
+}
+html.motion .persp[data-pinned] [data-scene-step] .wr-in {
+  transform: translate3d(0, 115%, 0);
+  transition: transform 0s linear 0.32s;
+}
+html.motion .persp[data-pinned] [data-scene-step][data-active] {
+  transition: opacity 0.25s var(--ease-soft) 0.18s;
+}
+html.motion .persp[data-pinned] [data-scene-step][data-active] .wr-in {
+  transform: none;
+  transition: transform var(--duration-image) var(--ease-expo) calc(0.18s + var(--i, 0) * 18ms);
+}
+/* Arriving mid-story (a reload, or coming Back to the page): until the engine
+   has marked the current step, no statement shows and none fades. Otherwise
+   all five would be seen on top of one another for a moment. */
+html.motion .persp[data-pinned]:not([data-step]) [data-scene-step] {
+  opacity: 0;
+  transition: none;
+}
+
+/* ==========================================================================
+   Explore My Work (src/app/page.tsx, Pathways.tsx)
+
+   Pinned, the stage is one screen, set as a column: the heading and counter,
+   the track, the progress line. The track is a row of four wide cards that
+   runs the full width of the screen, padded so the first card starts on the
+   page column's left edge and the last ends on its right edge.
+   ========================================================================== */
+.work[data-pinned] .work-stage {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-block: calc(var(--header-height) + 1rem) 2.5rem;
+}
+.work[data-pinned] .work-run {
+  margin-top: clamp(2rem, 5svh, 3.5rem);
+}
+.work[data-pinned] .work-track {
+  --edge: max(2.5rem, calc((100vw - var(--wrap)) / 2 + 2.5rem));
+  max-width: none;
+  margin: 0;
+  padding-inline: var(--edge);
+  gap: 0 5rem;
+  /* The row settles for a moment, travels, and the last card holds before the
+     stage lets go. */
+  transform: translate3d(calc(clamp(0, (var(--p, 0) - 0.05) / 0.83, 1) * (100vw - 100%)), 0, 0);
+}
+/* A card on the track: the photograph on the left, as tall as the stage
+   allows, and its words beside it. */
+.work[data-pinned] .work-panel {
+  flex: none;
+  width: min(46rem, 64vw);
+}
+.work[data-pinned] .work-card {
+  --photo-h: clamp(16rem, calc(100svh - var(--header-height) - 19rem), 27rem);
+  display: grid;
+  grid-template-columns: calc(var(--photo-h) * 0.8) minmax(0, 1fr);
+  grid-template-rows: auto auto 1fr;
+  align-items: start;
+  gap: 0 2.5rem;
+  height: var(--photo-h);
+}
+.work[data-pinned] .work-photo {
+  grid-row: 1 / -1;
+  height: 100%;
+}
+.work[data-pinned] .work-words {
+  margin-top: 0;
+}
+.work[data-pinned] .work-body {
+  grid-column: 2;
+  margin-top: 1rem;
+}
+.work[data-pinned] .work-link {
+  grid-column: 2;
+  align-self: end;
+  margin-top: 0;
+  padding-top: 0;
+}
+/* On the track the cards are simply there: they arrive with the stage. */
+html.motion .work[data-pinned] .work-track.stagger > * {
+  opacity: 1;
+  transform: none;
+  transition: none;
+}
+.work[data-pinned] .work-meter {
+  margin-top: clamp(2rem, 5svh, 3.5rem);
+}
+
+/* ==========================================================================
+   Closing (Finale.tsx): "Let's start a conversation."
+   ========================================================================== */
+/* The JD monogram, pressed into the white in the palest grey and lit from the
+   upper left. The sheen crosses it as the section scrolls past.
+
+   Two copies of the mark are stacked. The lower one never changes and carries
+   the embossing (the highlight and the shadow around the edge); the upper one
+   holds the moving sheen and has no filter. A filter over the moving copy
+   would be worked out again on every scroll frame.
+   (The mask is written out on both copies, not held in a variable: a url() in a
+   variable is resolved again each time the scroll restyles the mark, and the
+   embossing would be repainted every frame.) */
+.finale .finale-mark {
+  --foil: #f0f0f0;
+  --foil-rest: #f4f4f4;
+  --foil-lit: #f9f9f9;
+  --foil-peak: #ffffff;
+  position: relative;
+  width: min(34rem, 86vw, 78svh);
+  aspect-ratio: 771.4 / 702.9;
+}
+.finale .finale-mark-emboss,
+.finale .finale-mark-shape {
+  position: absolute;
+  inset: 0;
+}
+/* The filter sits on the frame and the mask on the fill inside it: a mask on the same box would cut the shadow off. */
+.finale .finale-mark-emboss {
+  filter: drop-shadow(-0.0625rem -0.0625rem 0.03125rem rgb(255 255 255 / 0.95)) drop-shadow(0.09375rem 0.125rem 0.15625rem rgb(11 11 11 / 0.09));
+}
+.finale .finale-mark-emboss::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--foil-rest);
+  -webkit-mask: url("/brand/dr-joy-monogram-charcoal.svg") center / contain no-repeat;
+  mask: url("/brand/dr-joy-monogram-charcoal.svg") center / contain no-repeat;
+}
+.finale .finale-mark-shape {
+  overflow: hidden;
+  background: var(--foil-rest);
+  -webkit-mask: url("/brand/dr-joy-monogram-charcoal.svg") center / contain no-repeat;
+  mask: url("/brand/dr-joy-monogram-charcoal.svg") center / contain no-repeat;
+}
+/* The sheen: a wide band of lighter grey inside the mark. */
+.finale .finale-mark-shape::before {
+  content: "";
+  position: absolute;
+  inset: 0 -70%;
+  background: linear-gradient(112deg, var(--foil) 0%, var(--foil-lit) 30%, var(--foil-peak) 50%, var(--foil-lit) 70%, var(--foil) 100%);
+}
+html.motion .finale .finale-mark-shape::before {
+  transform: translate3d(calc((var(--v, 0.5) - 0.5) * 56%), 0, 0);
+  will-change: transform;
+}
+/* It drifts a little slower than the page and arrives with the heading. */
+html.motion .finale .finale-mark-frame {
+  transform: translate3d(0, calc((0.5 - var(--v, 0.5)) * 7rem), 0);
+  will-change: transform;
+}
+html.motion .finale .finale-mark[data-inview] {
+  opacity: 0;
+  transform: scale(1.06);
+  transition:
+    opacity 1.4s var(--ease-soft),
+    transform 2s var(--ease-expo);
+}
+html.motion .finale .finale-mark[data-inview][data-in] {
+  opacity: 1;
+  transform: none;
+}
+
+@media print {
+  .hero-dim,
+  .hero-cue {
+    display: none !important;
+  }
+  .persp-img {
+    transform: none !important;
+  }
+  .finale .finale-mark {
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }
