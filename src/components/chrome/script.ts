@@ -33,10 +33,11 @@
  *     { --foot-h }                    offset and the header's stand-in. On
  *                                     those two elements only, for the same
  *                                     reason.
- *   .site-footer[data-near]           within three screens of the end of the
- *                                     page: the footer is held under the page
- *                                     (sticky). Before that it is an ordinary
- *                                     block below the fold.
+ *   .site-footer[data-near]           within a screen and a half of the
+ *                                     footer's first appearance: the footer
+ *                                     is held under the page (sticky). Before
+ *                                     that it is an ordinary block below the
+ *                                     fold.
  *   .site-footer { --foot-p }         0 to 1 while the page's last section
  *                                     scrolls away and uncovers the footer.
  *   .foot-sign[data-foot-in]          set once the footer's wordmark is in
@@ -184,7 +185,7 @@ function measure(){
 function update(){
   if(!foot||!foot.isConnected){find();if(!foot)return}
   if(!d.classList.contains('motion'))return;
-  var dist=max-w.scrollY,p=0,near=dist<H+3*vh;
+  var dist=max-w.scrollY,p=0,near=dist<H+1.5*vh;
   if(foot.__n!==near){foot.__n=near;foot.toggleAttribute('data-near',near)}
   if(dist<H+vh){
     var main=document.getElementById('main'),mb=main?main.getBoundingClientRect().bottom:vh;

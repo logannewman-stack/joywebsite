@@ -249,12 +249,13 @@ html.motion .panel-settle-list {
    the same way, then scrolls on normally (--foot-h is measured by the chrome
    script). Without motion it is an ordinary footer.
 
-   It is only held from three screens before the end of the page
+   It is only held from a screen and a half before it first shows
    ([data-near], set by the chrome script); until then it is an ordinary block
    below the fold. A sticky element is always inside the viewport, even while
-   the page covers it: the browser would composite it on every frame and count
+   the page covers it: the browser would composite it on every frame, count
    it as a layout shift whenever the page above changes height (web fonts
-   arriving late), a shift nobody sees.
+   arriving late), a shift nobody sees, and on a short page take its large
+   wordmark for the page's largest paint.
    -------------------------------------------------------------------------- */
 .page-shell {
   position: relative;
@@ -666,6 +667,10 @@ html.intro-hold main [data-inview] .wr-in {
 }
 html.intro-hold main [data-reveal=""] {
   transition-delay: calc(var(--reveal-delay, 0s) + var(--intro-wait, var(--intro-at, 0.8s)));
+}
+/* The marker behind a phrase (motion.css) draws once the page is in the open, not under the curtain. */
+html.intro-hold main [data-inview] .hl-light {
+  transition-delay: calc(var(--rise-delay, 0s) + 0.35s + var(--intro-wait, var(--intro-at, 0.8s)));
 }
 
 /* --------------------------------------------------------------------------
