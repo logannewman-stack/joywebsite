@@ -14,12 +14,16 @@ type Vars = CSSProperties & Record<`--${string}`, string>;
  *
  * The label and the nameplate rise word by word, and the note and the form
  * settle in after them. Beside them, on desktop, the JD monogram is pressed
- * into the black, as on her card: black on black, with no colour of its own
- * (decorative; styles: .stay-seal in insights.css).
+ * into the black, as on her card: black on black, with no colour of its own.
+ * It drifts a little with the page (decorative; styles: .stay-seal in
+ * insights.css).
+ *
+ * On the Insights page the chapter follows the band photograph and slides up
+ * over it while the photograph holds (styles: .insights-band in insights.css).
  */
 export function StayConnected({ heading, name, text, cta }: { heading: string; name: string; text: string; cta: string }) {
   return (
-    <section data-header="dark" className="grain grain-light bg-ink text-white">
+    <section data-header="dark" className="stay-connected grain grain-light bg-ink text-white">
       <div className="mx-auto max-w-(--wrap) px-5 py-20 md:px-10 md:py-28 lg:grid lg:grid-cols-12 lg:items-center lg:gap-x-6">
         <div className="lg:col-span-6">
           <InView>
@@ -40,8 +44,8 @@ export function StayConnected({ heading, name, text, cta }: { heading: string; n
             </div>
           </InView>
         </div>
-        {/* The monogram, pressed into the black like the mark on her card */}
-        <div aria-hidden className="stay-seal pointer-events-none hidden lg:col-span-3 lg:col-start-10 lg:block">
+        {/* The monogram, pressed into the black like the mark on her card. The scroll engine writes --v on it before React hydrates. */}
+        <div aria-hidden data-view className="stay-seal pointer-events-none hidden lg:col-span-3 lg:col-start-10 lg:block" suppressHydrationWarning>
           <span className="stay-mark" />
         </div>
       </div>

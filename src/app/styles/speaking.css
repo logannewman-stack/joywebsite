@@ -6,13 +6,20 @@
    shared scale in the markup; this file holds only what utilities cannot
    say. Everything that moves is scoped to <html class="motion"> (JavaScript
    on, reduced motion off) or to hover and focus, so without it the page is
-   its plain, complete layout. Nothing here animates in JavaScript, and
-   nothing on the page is pinned.
+   its plain, complete layout. Scroll effects read the engine's variables
+   (--v on [data-view]); nothing here animates in JavaScript and nothing is a
+   pinned scene: two photographs hold with position: sticky while the text
+   beside or after them moves on. One refinement, the fade of the chapter's
+   name in the rail, uses a CSS scroll timeline where the browser has one.
 
      Opening        the stage photo settling
-     Chapter bar    the fixed indicator at the top of the screen
-     Course index   the row pointed at
-     Room band      the reel control
+     Chapter rail   the fixed indicator in the left margin (desktop)
+     Chapter bar    its counterpart at the top of the screen (phones, tablets)
+     Course index   rows that answer as one object
+     Room band      the photo opening, drifting and holding; the reel control
+     Keynotes       the photo growing with the chapter
+     Wall of names  Where I've Spoken
+     Closing        Planning an Event?
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
@@ -30,13 +37,163 @@ html.motion .sp-hero-settle {
 }
 
 /* --------------------------------------------------------------------------
-   Chapter bar (ChapterBar.tsx): a slim bar at the top of the screen that
-   names the chapter being read and counts it (02 / 04). Each chapter section
-   holds its own copy, fixed to the viewport inside a layer clipped to the
-   section, so the bar stays still while the section edges pass over it and
-   changes exactly where one chapter ends. The layer starts a little way
-   down, so the bar arrives once the chapter's heading has left the top of
-   the screen, and it ends with the chapter. No JavaScript is involved.
+   Chapter rail (ChapterRail.tsx): four dots and the current chapter's name,
+   fixed in the left margin on a desktop, just outside the page column (at
+   the screen's edge where the margin is no wider than the rail). Each chapter
+   section holds its own copy inside a layer clipped to the section, so the
+   rail stays still while the section edges pass over it.
+   -------------------------------------------------------------------------- */
+.sp-page {
+  /* The rail's left edge: of the section for the clipping layer, of the screen for the rail itself (the two are equally wide). */
+  --sp-rail-x: max(0px, calc(50% - var(--wrap) / 2 - 1.5rem));
+}
+.sp-rail-clip {
+  display: none;
+}
+@media screen and (min-width: 1024px) and (min-height: 480px) {
+  .sp-rail-clip {
+    display: block;
+    position: absolute;
+    top: 0;
+    /* A chapter that runs on under the next one (--sp-held, see "Room band") ends for the rail where the next begins. */
+    bottom: var(--sp-held, 0px);
+    left: var(--sp-rail-x);
+    width: 2.5rem;
+    z-index: 10;
+    clip-path: inset(0);
+    pointer-events: none;
+    /* Progress through the chapter, for its name: 0 when the middle of the screen meets the top of the layer, 1 at its end. */
+    view-timeline: --sp-chapter block;
+    view-timeline-inset: 50%;
+  }
+  .sp-rail {
+    position: fixed;
+    top: calc(50% - 12.25rem);
+    left: var(--sp-rail-x);
+    width: 2.5rem;
+    color: var(--color-ink);
+    pointer-events: auto;
+  }
+  .sp-rail-dark {
+    color: #fff;
+  }
+  .sp-rail-item {
+    display: block;
+    height: 1.875rem;
+  }
+  /* Each chapter is a small dot: faint ahead, solid once read, larger for the chapter on screen. */
+  .sp-rail-dot {
+    display: block;
+    width: 0.375rem;
+    height: 0.375rem;
+    margin: calc((1.875rem - 0.375rem) / 2) auto;
+    border-radius: 9999px;
+    background: currentColor;
+    opacity: 0.24;
+    transition:
+      opacity var(--duration-ui) ease-out,
+      transform var(--duration-ui) var(--ease-expo);
+  }
+  .sp-rail-item[data-state="past"] .sp-rail-dot {
+    opacity: 1;
+  }
+  .sp-rail-item[data-state="current"] .sp-rail-dot {
+    opacity: 1;
+    transform: scale(1.67);
+  }
+  .sp-rail-item:not([data-state="current"]):hover .sp-rail-dot {
+    opacity: 1;
+    transform: scale(1.25);
+  }
+  /* The chapter's name, in grey, set along the margin below the dots. Pointing at another dot shows its name. */
+  .sp-rail-name {
+    position: absolute;
+    top: calc(4 * 1.875rem + 0.875rem);
+    left: 50%;
+    writing-mode: vertical-rl;
+    /* Every character turned the same way (an upright apostrophe would read as a dash). */
+    text-orientation: sideways;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    color: var(--color-stone);
+    opacity: 0;
+    transition: opacity var(--duration-ui) var(--ease-soft);
+  }
+  .sp-rail-dark .sp-rail-name {
+    color: var(--color-ash);
+  }
+  .sp-rail-item:hover .sp-rail-name {
+    opacity: 1;
+  }
+  /* The chapter's own name: a second layer over the dots, with the name in the same place. It steps aside while another dot's name is shown. */
+  .sp-rail-clip-name .sp-rail {
+    pointer-events: none;
+  }
+  .sp-rail-clip-name .sp-rail-name {
+    opacity: 1;
+  }
+  .sp-rail-clip:has(.sp-rail-item:not([data-state="current"]):hover) + .sp-rail-clip-name .sp-rail-name {
+    opacity: 0;
+  }
+}
+/* The name runs from 3.875rem above the middle of the screen to (the longest)
+   12.25rem below it. It must never be cut by a chapter's edge, or two names
+   would show at once, half each. Without scroll-driven animations its layer
+   ends 16.25rem before the chapter does: the name has left through the
+   layer's end by the time the next chapter's edge, and with it the next name,
+   arrives. */
+@supports not (animation-timeline: view()) {
+  @media screen and (min-width: 1024px) and (min-height: 480px) {
+    .sp-rail-clip-name {
+      bottom: calc(var(--sp-held, 0px) + 16.25rem);
+    }
+  }
+}
+/* Short screens: the dots alone, in the middle of the screen. */
+@media screen and (min-width: 1024px) and (min-height: 480px) and (max-height: 620px) {
+  .sp-rail {
+    top: calc(50% - 3.75rem);
+  }
+  .sp-rail-name {
+    display: none;
+  }
+}
+/* With them, the name fades instead: in once the chapter's top edge has
+   passed above it (4rem after that edge crosses the middle of the screen), and
+   out before the chapter's end reaches its foot (13rem before the end crosses
+   the middle). Not tied to html.motion: this is a correction, not an effect. */
+@supports (animation-timeline: view()) {
+  @media screen and (min-width: 1024px) and (min-height: 480px) {
+    .sp-rail-name-in {
+      animation: sp-name-in linear both;
+      animation-timeline: --sp-chapter;
+      animation-range: cover 4rem cover 5.75rem;
+    }
+    .sp-rail-name-out {
+      animation: sp-name-out linear both;
+      animation-timeline: --sp-chapter;
+      animation-range: cover calc(100% - 15rem) cover calc(100% - 13rem);
+    }
+  }
+}
+@keyframes sp-name-in {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes sp-name-out {
+  to {
+    opacity: 0;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Chapter bar (ChapterRail.tsx): the rail's counterpart on phones and
+   tablets. A slim bar at the top of the screen that names the chapter being
+   read and counts it (02 / 04), built like the rail: each chapter holds its
+   own copy, fixed to the viewport inside a layer clipped to the chapter. The
+   layer starts a little way down, so the bar arrives once the chapter's
+   heading has left the top of the screen, and it ends with the chapter.
 
    The bar lies under the site header (a lower layer, the same place): it
    shows while the header is away, and the header covers it on its return.
@@ -46,47 +203,53 @@ html.motion .sp-hero-settle {
    page column.
    -------------------------------------------------------------------------- */
 .sp-bar-clip {
-  position: absolute;
-  inset: 13rem 0 0;
-  z-index: 10;
-  clip-path: inset(0);
-  pointer-events: none;
+  display: none;
 }
-.sp-bar {
-  position: fixed;
-  inset: 0 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
-  height: 2.25rem;
-  /* 2px at the top for the page's progress line. */
-  padding: 2px 1.25rem 0;
-  border-bottom: 1px solid var(--color-line);
-  background: var(--color-paper);
-  color: var(--color-ink);
-}
-.sp-bar-dark {
-  border-color: var(--color-line-dark);
-  background: var(--color-ink);
-  color: #fff;
-}
-.sp-bar-name,
-.sp-bar-count {
-  white-space: nowrap;
-}
-.sp-bar-name {
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.sp-bar-count {
-  flex: none;
-  color: var(--color-stone);
-  font-variant-numeric: tabular-nums;
-}
-.sp-bar-dark .sp-bar-count {
-  color: var(--color-ash);
+@media screen and (max-width: 1023px), screen and (max-height: 479px) {
+  .sp-bar-clip {
+    display: block;
+    position: absolute;
+    inset: 13rem 0 0;
+    z-index: 10;
+    clip-path: inset(0);
+    pointer-events: none;
+  }
+  .sp-bar {
+    position: fixed;
+    inset: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    height: 2.25rem;
+    /* 2px at the top for the page's progress line. */
+    padding: 2px 1.25rem 0;
+    border-bottom: 1px solid var(--color-line);
+    background: var(--color-paper);
+    color: var(--color-ink);
+  }
+  .sp-bar-dark {
+    border-color: var(--color-line-dark);
+    background: var(--color-ink);
+    color: #fff;
+  }
+  .sp-bar-name,
+  .sp-bar-count {
+    white-space: nowrap;
+  }
+  .sp-bar-name {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .sp-bar-count {
+    flex: none;
+    color: var(--color-stone);
+    font-variant-numeric: tabular-nums;
+  }
+  .sp-bar-dark .sp-bar-count {
+    color: var(--color-ash);
+  }
 }
 /* The narrowest phones: the longest heading takes the whole bar, so the count steps aside. */
 @media screen and (max-width: 389px) {
@@ -101,23 +264,127 @@ html.motion .sp-hero-settle {
 }
 
 /* --------------------------------------------------------------------------
-   Course index (CourseIndex.tsx): thin lines set the courses apart. With a
-   mouse, the titles of the other rows step back to grey while one row is
-   pointed at (still well above contrast minimums), so the eye can follow that
-   row across to its links.
+   Course index (CourseIndex.tsx): thin lines set the courses apart, and the
+   row's answer is a soft grey band between its two lines, feathered where it
+   passes the edges of the page column.
    -------------------------------------------------------------------------- */
-.sp-course-title {
+.sp-course-band {
+  position: absolute;
+  inset: 0 -0.75rem;
+  background: linear-gradient(90deg, transparent, var(--color-mist) 0.75rem, var(--color-mist) calc(100% - 0.75rem), transparent);
+  transform: scaleX(0);
+  transform-origin: right center;
+  transition: transform var(--duration-text) var(--ease-expo);
+  pointer-events: none;
+}
+.sp-course-mark {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+}
+.sp-course-digits {
+  display: block;
+  transition: transform var(--duration-ui) var(--ease-expo);
+}
+.sp-course-arrow {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 0.9375rem;
+  height: 0.9375rem;
+  color: var(--color-ink);
+  transform: translate(-130%, -50%);
+  transition: transform var(--duration-ui) var(--ease-expo);
+}
+.sp-course-lean {
+  transition: transform var(--duration-ui) var(--ease-expo);
+}
+.sp-course-title,
+.sp-course-actions {
   transition: color var(--duration-ui) ease-out;
 }
+/* With a mouse (or the keyboard on such a device) the actions rest in grey and the row answers as one. */
 @media (hover: hover) and (pointer: fine) {
+  .sp-course-actions {
+    color: var(--color-stone);
+  }
+  /* The band sweeps in from the left and leaves to the right. */
+  .sp-course:is(:hover, :has(:focus-visible)) .sp-course-band {
+    transform: none;
+    transform-origin: left center;
+  }
+  .sp-course:is(:hover, :has(:focus-visible)) .sp-course-digits {
+    transform: translateX(130%);
+  }
+  .sp-course:is(:hover, :has(:focus-visible)) .sp-course-arrow {
+    transform: translate(0, -50%);
+  }
+  .sp-course:is(:hover, :has(:focus-visible)) .sp-course-lean {
+    transform: translateX(0.625rem);
+  }
+  .sp-course:is(:hover, :has(:focus-visible)) .sp-course-actions {
+    color: var(--color-ink);
+  }
+  /* The other rows step back a little (still well above contrast minimums). */
   .sp-courses:hover .sp-course:not(:hover) .sp-course-title {
     color: var(--color-stone);
   }
 }
 
 /* --------------------------------------------------------------------------
-   Room band (RoomBand.tsx, SpeakerReel.tsx)
+   Room band (RoomBand.tsx, SpeakerReel.tsx). --v is the band's own progress
+   up the screen (0 as its top edge enters at the foot).
    -------------------------------------------------------------------------- */
+.sp-room-frame {
+  position: relative;
+  overflow: clip;
+}
+/* The band opens from a narrower frame to the full width of the page column
+   as it arrives: it is fully open by the time most of it is on screen. */
+html.motion .sp-room-frame {
+  --open: clamp(0, calc(var(--v, 1) / 0.2), 1);
+  clip-path: inset(0 calc((1 - var(--open)) * 8%));
+  will-change: clip-path;
+}
+/* The photo drifts slower than the page and grows slightly as the band passes. */
+html.motion .sp-room-photo {
+  transform: translate3d(0, calc((var(--v, 0.5) - 0.5) * 6%), 0) scale(calc(1.07 + var(--v, 0.5) * 0.05));
+  will-change: transform;
+}
+/* On a desktop the band then holds under the header while the next chapter
+   slides up over it. The chapter that ends with the band (.sp-held, in
+   page.tsx) runs on under the next one by the band's height (--sp-held; the
+   next section lies above it). The band's block gains that height and the
+   space that was below the band, as room for the frame to stay put in: it is
+   let go as the next chapter's edge reaches its top, wholly covered.
+   --sp-held is worked out from the screen's width, which a classic scrollbar
+   makes a few pixels larger than the page: the hold then lasts those few
+   pixels longer, under cover. Not on a short screen, where the band and the
+   next chapter's heading would not both fit. */
+@media screen and (min-width: 1024px) and (min-height: 40rem) {
+  html.motion .sp-held {
+    --sp-held: calc((min(100vw, var(--wrap)) - 5rem) * 5 / 12);
+    margin-bottom: calc(var(--sp-held) * -1);
+  }
+  html.motion .sp-room {
+    padding-bottom: 0;
+  }
+  html.motion .sp-room::after {
+    content: "";
+    display: block;
+    height: calc(var(--sp-held) + 7rem);
+  }
+  html.motion .sp-room-frame {
+    position: sticky;
+    top: calc(var(--header-height) + 1.5rem);
+  }
+  /* Keyboard focus inside the band (the reel control) lets go of the hold, so the focused control is never under the next chapter. */
+  html.motion .sp-room-frame:has(:focus-visible) {
+    position: relative;
+    top: auto;
+  }
+}
 /* The reel control: a white disc inside a thin white ring that opens on hover and focus. */
 .sp-reel-disc {
   transition: transform var(--duration-ui) var(--ease-expo);
@@ -128,7 +395,7 @@ html.motion .sp-hero-settle {
   border: 1px solid rgb(255 255 255 / 0.55);
   border-radius: 9999px;
   transition:
-    transform 0.6s var(--ease-expo),
+    transform var(--duration-text) var(--ease-expo),
     border-color var(--duration-ui) ease-out;
 }
 .sp-reel:hover .sp-reel-disc,
@@ -142,6 +409,103 @@ html.motion .sp-hero-settle {
 }
 
 /* --------------------------------------------------------------------------
+   Keynotes: the photo holds beside the keynotes (position: sticky, set in
+   page.tsx) and grows slowly with the chapter's progress (on desktop the
+   photo's column is as tall as the chapter, so --v is the chapter's progress).
+   -------------------------------------------------------------------------- */
+html.motion .sp-keynote-zoom {
+  transform: scale(calc(1 + var(--v, 0) * 0.1));
+  transform-origin: 45% 32%;
+  will-change: transform;
+}
+
+/* --------------------------------------------------------------------------
+   Wall of names (SpokenAt.tsx).
+
+   The list: the names in two quiet columns beside the label. It is what
+   phones, tablets, touch screens, print, reduced motion and no JavaScript
+   show.
+
+   The wall: with motion on, from laptop width, on a device with a mouse or
+   trackpad, the list is left to assistive technology and the names are set
+   as rows of heading type across the page column, alternately ink and grey,
+   that drift sideways with the scroll. (Not on touch screens: a row that
+   runs past the column looks swipeable, and these are not.)
+   -------------------------------------------------------------------------- */
+.sp-wall {
+  display: none;
+}
+@media screen and (min-width: 1024px) and (hover: hover) and (pointer: fine) {
+  html.motion .sp-wall {
+    display: block;
+  }
+  /* The list stays for assistive technology only. */
+  html.motion .sp-venues {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
+/* The wall reaches 2.5rem past the page column on each side (the column's own
+   padding), and the rows are inset by as much, so a name that sits at the
+   column's edge is at full strength and a name that runs past it fades out
+   in that strip. */
+.sp-wall {
+  margin: 2.5rem -2.5rem 0;
+  overflow-x: clip;
+  container-type: inline-size;
+  mask-image: linear-gradient(90deg, transparent, #000 2rem, #000 calc(100% - 2rem), transparent);
+}
+/* --w: 0 to 1 while the row crosses the middle of the screen (its own --v from
+   0.26 to 0.66). It holds its first position through the lower quarter of the
+   screen and its last through the upper third, so the names at either end of
+   a row can be read whole, at rest. Every other row runs the other way, and
+   is set in grey. */
+.sp-wall-row {
+  --w: clamp(0, calc((var(--v, 0) - 0.26) / 0.4), 1);
+  padding-block: 0.1em;
+}
+.sp-wall-row:nth-child(even) {
+  --w: clamp(0, calc((0.66 - var(--v, 0)) / 0.4), 1);
+  color: var(--color-stone);
+}
+/* --free is the column's width less the row's own (100% is the row, page
+   margins included). An odd row always travels left: a row wider than the
+   column starts with its first name at the column's left edge and ends with
+   its last name at the right edge; a narrower one starts against the right
+   edge and ends against the left. Halfway, every row is centred. */
+.sp-wall-line {
+  --free: calc(100cqw - 100%);
+  display: flex;
+  align-items: baseline;
+  gap: 1.6em;
+  width: max-content;
+  padding-inline: 2.5rem;
+  white-space: nowrap;
+  translate: calc(max(0px, var(--free)) + var(--w) * (min(0px, var(--free)) - max(0px, var(--free)))) 0;
+  will-change: translate;
+}
+
+/* --------------------------------------------------------------------------
+   Closing: the line grows to its full size as it arrives.
+   -------------------------------------------------------------------------- */
+html.motion .sp-finale-line {
+  transform: scale(clamp(0.86, calc(0.8 + var(--v, 1) * 0.5), 1));
+  transform-origin: 0% 100%;
+  will-change: transform;
+}
+/* A wider field for the magnetic action. */
+.sp-finale-cta {
+  margin: -1rem;
+  padding: 1rem;
+}
+
+/* --------------------------------------------------------------------------
    A control focused at the foot of the screen keeps some air (and its row's
    line) below it.
    -------------------------------------------------------------------------- */
@@ -150,8 +514,14 @@ html.motion .sp-hero-settle {
 }
 
 @media print {
-  .sp-hero-settle {
+  .sp-hero-settle,
+  .sp-room-photo,
+  .sp-keynote-zoom,
+  .sp-finale-line {
     transform: none !important;
     animation: none !important;
+  }
+  .sp-room-frame {
+    clip-path: none !important;
   }
 }

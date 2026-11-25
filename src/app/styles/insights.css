@@ -6,7 +6,7 @@
    The feature (src/components/insights/Feature.tsx)
    The headline leans in when the block is hovered or its link is focused,
    a beat slower than a row's title: it is the page's largest link. The wash
-   behind the block stays inside the frame.
+   behind the block fills the frame evenly (a row's wash fades out at its ends).
    ========================================================================== */
 html.motion .cover-title {
   transition: transform var(--duration-text) var(--ease-expo);
@@ -21,6 +21,7 @@ html.motion .cover:has(:focus-visible) .cover-title {
 }
 .cover > .rule-over {
   inset: 0;
+  background: color-mix(in srgb, currentColor 5%, transparent);
 }
 
 /* ==========================================================================

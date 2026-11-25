@@ -1,6 +1,6 @@
 import { useId, type CSSProperties } from "react";
 import Link from "next/link";
-import { InView } from "@/components/motion/InView";
+import { InView, Magnetic } from "@/components/motion/InView";
 import { WordRise } from "@/components/motion/Text";
 import { ArrowCircle } from "@/components/industry/ArrowCircle";
 import { ConfirmTag } from "./records";
@@ -23,11 +23,17 @@ export type FeatureItem = {
  * The single strongest article, set apart as the page's feature: one block in
  * a thin frame, the width of the page column. The publication and the date
  * head it, the headline is set as a section heading, and the rest of the
- * headline and the way in stand beside it. The whole block is the link (its
- * hit area is stretched over the frame) and answers as one object on hover
- * and focus: the frame darkens, the headline leans in and the arrow circle
- * fills and sends its arrow out. Type only: no cover art is invented for the
- * publisher.
+ * headline and the way in stand beside it. Type only: no cover art is
+ * invented for the publisher.
+ *
+ * It arrives in one sequence the first time it is seen: the frame draws in
+ * from the left, the publication and the date rise, the headline rises word
+ * by word, then the rest of the headline and the way in.
+ *
+ * The whole block is the link (its hit area is stretched over the frame) and
+ * answers as one object on hover and focus: the frame darkens, a soft wash
+ * rises inside it, the headline leans in, the link's underline draws, and
+ * the arrow circle fills, leans toward the pointer and sends its arrow out.
  *
  * The block runs on from the opening (no line between them): the frame is
  * its own edge.
@@ -44,11 +50,15 @@ export type FeatureItem = {
 export function Feature({ item, cta, heading, intro }: { item: FeatureItem; cta: string; heading?: string; intro?: string }) {
   const id = useId();
   const Title = heading ? "h3" : "h2";
-  const linkClass = "mt-8 inline-flex items-center gap-4 text-[0.9375rem] font-medium after:absolute after:inset-0 focus-visible:outline-none";
+  const linkClass = "rise mt-8 inline-flex items-center gap-4 text-[0.9375rem] font-medium after:absolute after:inset-0 focus-visible:outline-none";
+  const linkStyle = { "--d": "0.46s" } as Vars;
   const linkInner = (
     <>
       <span className="link-draw pb-0.5">{cta}</span>
-      <ArrowCircle direction={item.external ? "up-right" : "right"} className="size-11" iconClassName="size-4" />
+      {/* Above the link's stretched hit area, so the circle itself feels the pointer. */}
+      <Magnetic strength={0.28} className="relative z-10">
+        <ArrowCircle direction={item.external ? "up-right" : "right"} className="size-11" iconClassName="size-4" />
+      </Magnetic>
     </>
   );
   return (
@@ -68,41 +78,68 @@ export function Feature({ item, cta, heading, intro }: { item: FeatureItem; cta:
             )}
           </div>
         )}
-        <InView className="rise">
-          <article className="group relative border border-line py-8 transition-colors duration-(--duration-ui) hover:border-ink has-[a:focus-visible]:border-ink has-[a:focus-visible]:outline-2 has-[a:focus-visible]:outline-offset-4 has-[a:focus-visible]:outline-ink md:py-10 lg:py-12">
-            {/* The publication, the issue date, and in review the confirm tag */}
-            <div className="flex flex-wrap items-center gap-x-4 gap-y-2 px-6 md:px-10 lg:px-12">
-              {/* One of her own pieces has no publication: its date stands alone. */}
-              {item.publication && <p className="text-[0.9375rem] font-medium">{item.publication}</p>}
-              {item.date && <p className="label text-stone tabular-nums">{item.date}</p>}
-              {!item.verified && <ConfirmTag className="ml-auto" />}
-            </div>
+        <InView
+          as="article"
+          className="cover group relative py-8 has-[a:focus-visible]:outline-2 has-[a:focus-visible]:outline-offset-4 has-[a:focus-visible]:outline-ink md:py-10 lg:py-12"
+        >
+          {/* The frame: the outer span draws it in, the inner one is the line and darkens with the block. */}
+          <span aria-hidden className="wipe pointer-events-none absolute inset-0">
+            <span className="absolute inset-0 border border-line transition-colors duration-(--duration-ui) group-hover:border-ink group-has-[a:focus-visible]:border-ink" />
+          </span>
+          <span aria-hidden className="rule-over" />
 
-            {/* The headline; from lg the rest of the headline and the way in stand beside it */}
-            <div className="mt-6 md:mt-8 lg:grid lg:grid-cols-12 lg:gap-x-6">
-              <Title id={`${id}-title`} className={`lean display px-6 md:px-10 lg:col-span-8 lg:pr-0 lg:pl-12 ${heading ? "t-h2" : "t-h1"}`}>
-                <WordRise>{item.title}</WordRise>
-              </Title>
+          {/* The publication, the issue date, and in review the confirm tag */}
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 px-6 md:px-10 lg:px-12">
+            {/* One of her own pieces has no publication: its date stands alone. */}
+            {item.publication && <p className="rise text-[0.9375rem] font-medium">{item.publication}</p>}
+            {item.date && (
+              <p className="rise label text-stone tabular-nums" style={{ "--d": "0.08s" } as Vars}>
+                {item.date}
+              </p>
+            )}
+            {!item.verified && <ConfirmTag className="ml-auto" />}
+          </div>
 
-              <div className="mt-5 px-6 md:px-10 lg:col-span-4 lg:col-start-9 lg:mt-1 lg:pr-12 lg:pl-0">
-                <div className="flex flex-col gap-3 text-stone">
-                  {item.subtitle && <p className="t-lead max-w-[24rem]">{item.subtitle}</p>}
-                  {item.excerpt && <p className="t-body max-w-[32rem]">{item.excerpt}</p>}
-                </div>
-                {/* The link is named by the headline and its own label: "… Read Article". */}
-                {item.external ? (
-                  <a id={`${id}-link`} aria-labelledby={`${id}-title ${id}-link`} href={item.href} target="_blank" rel="noopener noreferrer" className={linkClass}>
-                    {linkInner}
-                    <span className="sr-only"> (opens in a new tab)</span>
-                  </a>
-                ) : (
-                  <Link id={`${id}-link`} aria-labelledby={`${id}-title ${id}-link`} href={item.href} className={linkClass}>
-                    {linkInner}
-                  </Link>
+          {/* The headline; from lg the rest of the headline and the way in stand beside it */}
+          <div className="mt-6 md:mt-8 lg:grid lg:grid-cols-12 lg:gap-x-6">
+            <Title id={`${id}-title`} className={`cover-title display px-6 md:px-10 lg:col-span-8 lg:pr-0 lg:pl-12 ${heading ? "t-h2" : "t-h1"}`}>
+              <WordRise delay={0.14}>{item.title}</WordRise>
+            </Title>
+
+            <div className="mt-5 px-6 md:px-10 lg:col-span-4 lg:col-start-9 lg:mt-1 lg:pr-12 lg:pl-0">
+              <div className="flex flex-col gap-3 text-stone">
+                {item.subtitle && (
+                  <p className="rise t-lead max-w-[24rem]" style={{ "--d": "0.3s" } as Vars}>
+                    {item.subtitle}
+                  </p>
+                )}
+                {item.excerpt && (
+                  <p className="rise t-body max-w-[32rem]" style={{ "--d": "0.38s" } as Vars}>
+                    {item.excerpt}
+                  </p>
                 )}
               </div>
+              {/* The link is named by the headline and its own label: "… Read Article". */}
+              {item.external ? (
+                <a
+                  id={`${id}-link`}
+                  aria-labelledby={`${id}-title ${id}-link`}
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={linkClass}
+                  style={linkStyle}
+                >
+                  {linkInner}
+                  <span className="sr-only"> (opens in a new tab)</span>
+                </a>
+              ) : (
+                <Link id={`${id}-link`} aria-labelledby={`${id}-title ${id}-link`} href={item.href} className={linkClass} style={linkStyle}>
+                  {linkInner}
+                </Link>
+              )}
             </div>
-          </article>
+          </div>
         </InView>
       </div>
     </section>

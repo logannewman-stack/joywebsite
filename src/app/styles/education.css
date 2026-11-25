@@ -5,34 +5,70 @@
 
    Everything that moves is scoped to <html class="motion"> (JavaScript on,
    reduced motion off) or to attributes only a script sets. Without them the
-   page is its plain layout with every word and photograph visible. Nothing
-   on this page is pinned.
+   page is its plain layout with every word and photograph visible.
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
-   Opening: the photograph is in place from the first paint and settles from
-   slightly large inside its frame. It is never hidden: it is the page's
-   largest paint.
+   Opening: two photographs at two depths.
+   The room photo drifts inside its frame (Parallax). The small print over its
+   corner rides a little faster than the page, so it floats over the room
+   photo. [data-view] sits on the untransformed wrapper, so measuring never
+   chases its own movement.
    -------------------------------------------------------------------------- */
+html.motion .edu-float > * {
+  transform: translate3d(0, calc((0.5 - var(--v, 0.5)) * var(--float, 4rem)), 0);
+  will-change: transform;
+}
+/* Both settle on load: the room photo eases down from slightly large (it is
+   never hidden: it is the page's largest paint), the print arrives a beat
+   later. */
 @keyframes edu-settle {
   from {
-    transform: scale(1.04);
+    transform: scale(1.08);
+  }
+}
+@keyframes edu-arrive {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 3rem, 0);
   }
 }
 html.motion .edu-settle {
-  animation: edu-settle 1.8s var(--ease-expo) both;
+  animation: edu-settle calc(var(--duration-image) * 2) var(--ease-expo) both;
+}
+html.motion .edu-arrive {
+  animation: edu-arrive var(--duration-image) var(--ease-expo) 0.3s both;
 }
 
 /* --------------------------------------------------------------------------
-   Row of prints (Filmstrip.tsx): small photographs, all one size.
-
-   Below 1024px it is a row to swipe, or to scroll with the arrow keys once
-   focused. It starts on the page column and runs off the right edge of the
-   screen, so the cut print shows there is more. From 1024px every print is in
-   view: the row is the page column, one print in each of --prints equal
-   columns (six prints: two of the twelve columns each).
+   Filmstrip (Filmstrip.tsx): a strip of prints.
+   --u is the strip's unit. Every print size and offset is a multiple of it,
+   so the strip fits its stage on any screen: most of a hundredth of the
+   screen height from 1024px (capped by the width for tall, narrow windows),
+   and about a hundredth of the screen width where the strip is swiped.
    -------------------------------------------------------------------------- */
 .edu-strip {
+  --u: 1.2vw;
+  /* No print wider than this many units (keeps the widest inside a phone screen). */
+  --wmax: 70;
+}
+@media (min-width: 768px) {
+  .edu-strip {
+    --u: 0.82vw;
+    --wmax: 999;
+  }
+}
+@media (min-width: 1024px) {
+  .edu-strip {
+    --u: min(0.8svh, 0.62vw);
+  }
+}
+
+/* Swiped: a strip to swipe, or to scroll with the arrow keys once focused.
+   Below 1024px it starts on the page column and runs off the right edge of
+   the screen, so the cut print shows there is more. From 1024px it stays
+   inside the page column. */
+.edu-strip-scroll {
   overflow-x: auto;
   overscroll-behavior-x: contain;
   scroll-snap-type: x proximity;
@@ -42,93 +78,282 @@ html.motion .edu-settle {
   padding-block: 0.5rem;
   margin-block: -0.5rem;
 }
-.edu-strip::-webkit-scrollbar {
+.edu-strip-scroll::-webkit-scrollbar {
   display: none;
 }
-.edu-strip:focus-visible {
+.edu-strip-scroll:focus-visible {
   outline: 2px solid var(--color-ink);
   outline-offset: -2px;
 }
-.edu-strip-row {
+/* A print's white border does not show on the white page, so the strip
+   starts and ends a unit outside its place: the first and last photographs,
+   not their borders, stand on the edges of the page column. */
+.edu-strip-track {
   display: flex;
-  gap: 1rem;
+  align-items: flex-start;
   width: max-content;
-  padding-inline: 1.25rem;
+  padding-inline: calc(1.25rem - var(--u));
+  /* The width of the strip's window from 1024px: the page column. */
+  --win: calc(min(100vw, var(--wrap)) - 5rem);
+}
+@supports (width: 1cqw) {
+  .edu-strip-track {
+    --win: 100cqw;
+  }
+}
+@media (min-width: 768px) {
+  .edu-strip-scroll {
+    scroll-padding-inline: 2.5rem;
+  }
+  .edu-strip-track {
+    padding-inline: calc(2.5rem - var(--u));
+  }
+}
+/* From 1024px a strip that still scrolls (an upright screen) shows its
+   scrollbar, since a mouse cannot swipe. */
+@media (min-width: 1024px) {
+  .edu-strip-scroll {
+    container-type: inline-size;
+    scroll-padding-inline: 0;
+    scrollbar-width: thin;
+    scrollbar-color: rgb(11 11 11 / 0.35) transparent;
+  }
+  .edu-strip-track {
+    padding-inline: 0;
+    margin-inline: calc(var(--u) * -1);
+  }
 }
 .edu-print {
   flex: none;
-  width: min(58vw, 15rem);
   scroll-snap-align: start;
 }
-@media (min-width: 768px) {
-  .edu-strip {
-    scroll-padding-inline: 2.5rem;
-  }
-  .edu-strip-row {
-    gap: 1.5rem;
-    padding-inline: 2.5rem;
-  }
+/* Where a print sits: below the top of the strip (--y), after or over the
+   print before it (--gap), above or under its neighbours (z-index, set inline). */
+.edu-print-body {
+  position: relative;
+  margin-top: calc(var(--y, 0) * var(--u));
+  margin-left: calc(var(--gap, 0) * var(--u));
 }
+/* The print: a photograph on white paper, which keeps two overlapping
+   photographs apart, with its frame number in the bottom margin. */
+.edu-print-paper {
+  --foot: max(calc(3.4 * var(--u)), 1.375rem);
+  position: relative;
+  padding: var(--u) var(--u) var(--foot);
+  background: var(--color-paper);
+}
+.edu-print-photo {
+  height: calc(min(var(--h, 40), var(--wmax) / (var(--ar, 1))) * var(--u));
+  aspect-ratio: var(--ar, 1);
+}
+.edu-print-no {
+  position: absolute;
+  left: var(--u);
+  bottom: 0;
+  height: var(--foot);
+  display: flex;
+  align-items: center;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-stone);
+}
+.edu-print-no-end {
+  left: auto;
+  right: var(--u);
+}
+
+/* Swiped (with motion): the strip drifts a little as the page scrolls past,
+   which shows that it moves sideways. */
+html.motion .edu-strip:not([data-pinned]) .edu-strip-track {
+  transform: translate3d(calc((0.5 - var(--v, 0.5)) * 14vw), 0, 0);
+  will-change: transform;
+}
+
+/* A wide window without the scroll engine (no JavaScript, reduced motion):
+   nothing travels, and prints left outside the window would have no cue. So
+   the whole strip is fitted to the page column: every print in view at once,
+   in the same arrangement, smaller. --row is the strip's width in units
+   (Filmstrip.tsx), less the two outer borders that stand outside the column. */
 @media (min-width: 1024px) {
-  .edu-strip {
+  .edu-strip:not([data-pinned]) .edu-strip-scroll {
     overflow: visible;
     padding-block: 0;
     margin-block: 0;
   }
-  .edu-strip-row {
-    display: grid;
-    grid-template-columns: repeat(var(--prints, 6), minmax(0, 1fr));
-    width: auto;
-    max-width: var(--wrap);
-    margin-inline: auto;
-  }
-  .edu-print {
-    width: auto;
+  .edu-strip:not([data-pinned]) .edu-strip-track {
+    --u: calc((var(--win) - 1px) / (var(--row) - 2));
   }
 }
 
-/* The line under a swiped row (StripMeter.tsx): short, thin and grey, at the
-   start of the page column, with the part of the row in view marked on it in
-   ink. Its script sets data-live once it has measured a row that scrolls, and
-   writes --w (how much of the row is in view) and --p (how far it has
-   travelled). */
+/* The meter (StripMeter.tsx): the frame in place and a thin ink line for how
+   far the strip has travelled. It reads --i and --q: from the scroll engine
+   while the strip is pinned (below), from its own script while the strip is
+   swiped, which sets data-live once it has measured a strip that scrolls. */
 .edu-strip-meter {
   display: none;
-  position: relative;
-  width: 5rem;
-  height: 2px;
-  margin: 1.5rem 0 0 1.25rem;
-  background: var(--color-line);
+  margin: 1.5rem 1.25rem 0;
 }
 .edu-strip-meter[data-live] {
-  display: block;
-}
-.edu-strip-meter > span {
-  position: absolute;
-  inset: 0 auto 0 0;
-  width: calc(var(--w, 1) * 100%);
-  background: var(--color-ink);
-  /* Travels the rest of the line: a share of its own width. */
-  transform: translate3d(calc(var(--p, 0) * (1 - var(--w, 1)) / var(--w, 1) * 100%), 0, 0);
+  display: flex;
 }
 @media (min-width: 768px) {
   .edu-strip-meter {
-    margin-left: 2.5rem;
+    margin-inline: 2.5rem;
+  }
+}
+@media (min-width: 1024px) {
+  .edu-strip-meter {
+    margin-inline: 0;
+  }
+}
+/* "01": the frame numbers in a column, one showing; it rolls to the frame in place. */
+.edu-strip-roll {
+  display: inline-block;
+  height: 1em;
+  overflow: hidden;
+  line-height: 1;
+}
+.edu-strip-roll > span {
+  display: flex;
+  flex-direction: column;
+  transform: translate3d(0, calc(var(--i, 0) * -1em), 0);
+}
+html.motion .edu-strip-roll > span {
+  transition: transform var(--duration-scene) var(--ease-expo);
+}
+.edu-strip-roll > span > span {
+  height: 1em;
+  line-height: 1;
+}
+/* The line fills with the strip's progress (SceneLine reads --p). */
+.edu-strip-rule {
+  --p: var(--q, 0);
+}
+/* The dot at the line's head. It stands at the right end of a box as wide as
+   the line, and the box slides in from the left: a transform, so no layout,
+   and nothing ever reaches past the line's right end. */
+.edu-strip-head {
+  position: absolute;
+  inset: 0;
+  transform: translate3d(calc((var(--q, 0) - 1) * 100%), 0, 0);
+}
+.edu-strip-head::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 0;
+  width: 0.4375rem;
+  height: 0.4375rem;
+  margin: -0.21875rem -0.21875rem 0 0;
+  border-radius: 9999px;
+  background: currentColor;
+}
+
+/* Pinned (from 1024px, on screens wider than they are tall; see "Upright"
+   below): the stage is one screen, the strip's window is the page column, and
+   the strip travels through it as the visitor scrolls. */
+@media not all and (max-aspect-ratio: 1 / 1) {
+  /* The scene is as long as the strip's travel and one screen more, in which
+     the strip rests. It gives that screen back (the bottom margin), so the
+     section that follows slides up over the resting strip: the scene lies
+     under the page's other sections, each of which has a background of its
+     own. It also starts under the foot of the section before it, which keeps
+     the white above the strip to the page's usual measure. */
+  .edu-strip[data-pinned] {
+    z-index: -1;
+    margin-block: -6rem -100svh;
+  }
+  /* The strip and its meter stand in the middle of what the header leaves. */
+  [data-pinned] > .edu-strip-stage {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-block: var(--header-height) 0;
+  }
+  /* --q is the strip's progress: 0 to 1 over its travel, then 1 while it
+     rests (--k: Filmstrip.tsx). */
+  [data-pinned] .edu-strip-col {
+    --q: min(1, calc(var(--p, 0) * var(--k, 1)));
+  }
+  [data-pinned] .edu-strip-scroll {
+    overflow-x: clip;
+    overflow-y: visible;
+    scroll-snap-type: none;
+    padding-block: 0;
+    margin-block: 0;
+  }
+  /* From the first photograph on the window's left edge to the last on its right. */
+  .edu-strip[data-scene][data-pinned] .edu-strip-track {
+    transform: translate3d(calc(var(--q, 0) * min(0px, var(--win) - 100% + 2 * var(--u))), 0, 0);
+  }
+  /* Each print keeps its own depth: nearer prints travel a little faster than the strip. */
+  [data-pinned] .edu-print-body {
+    transform: translate3d(calc((var(--q, 0) - 0.5) * var(--drift, 0) * var(--u)), 0, 0);
+    will-change: transform;
+  }
+  [data-pinned] .edu-strip-meter {
+    display: flex;
+    margin-top: calc(4.5 * var(--u));
+  }
+  /* The frame in place steps with the strip: one frame for each equal share of its travel. */
+  [data-pinned] .edu-strip-roll > span {
+    --i: min(var(--n, 1) - 1, round(down, var(--q, 0) * var(--n, 1), 1));
+  }
+  /* Browsers that cannot round let the numbers roll with the scroll instead. */
+  @supports not (width: round(down, 1.5px, 1px)) {
+    html.motion [data-pinned] .edu-strip-roll > span {
+      --i: calc(var(--q, 0) * (var(--n, 1) - 1));
+      transition: none;
+    }
+  }
+}
+
+/* Upright large screens (a 12.9-inch tablet held upright, a rotated monitor).
+   The scroll engine pins every "lg" scene from 1024px whatever the shape of
+   the screen, but this strip is shallow: on a screen taller than it is wide
+   the pinned stage would be mostly empty white above and below the prints. So
+   the pinned styles above stop at square, and here the engine's own pin
+   (motion.css) is released: the strip is swiped inside the page column, with
+   its meter, as on smaller tablets. The section is then shorter than the
+   screen, so the engine's --p stays at 0. */
+@media (max-aspect-ratio: 1 / 1) {
+  .edu-strip[data-scene][data-pinned] {
+    height: auto;
+  }
+  .edu-strip[data-scene][data-pinned] > [data-scene-pin] {
+    position: static;
+    height: auto;
+    overflow: visible;
+  }
+  html.motion .edu-strip[data-scene][data-pinned] .edu-strip-track {
+    transform: translate3d(calc((0.5 - var(--v, 0.5)) * 14vw), 0, 0);
   }
 }
 
 /* --------------------------------------------------------------------------
    Routes: each row is one object. The link covers the whole row; hover and
-   keyboard focus lean the heading and bring the row's text to full ink.
+   keyboard focus bring up a soft wash behind it, lean the heading and bring
+   the row's text to full ink.
    -------------------------------------------------------------------------- */
 .edu-route {
   position: relative;
+  isolation: isolate;
 }
 /* The whole row is the link's hit area. */
 .edu-route-link::after {
   content: "";
   position: absolute;
   inset: 0;
+}
+.edu-route-ink {
+  position: absolute;
+  inset: 0 -1rem;
+  z-index: -1;
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, currentColor 5%, transparent) 14%, color-mix(in srgb, currentColor 5%, transparent) 86%, transparent);
+  opacity: 0;
+  transition: opacity var(--duration-text) var(--ease-expo);
 }
 .edu-route-lean {
   display: inline-block;
@@ -138,12 +363,18 @@ html.motion .edu-settle {
   transition: color var(--duration-ui) ease-out;
 }
 @media (hover: hover) {
+  .edu-route:hover .edu-route-ink {
+    opacity: 1;
+  }
   .edu-route:hover .edu-route-lean {
     transform: translate3d(0.5rem, 0, 0);
   }
   .edu-route:hover .edu-route-text {
     color: var(--color-ink);
   }
+}
+.edu-route:has(:focus-visible) .edu-route-ink {
+  opacity: 1;
 }
 .edu-route:has(:focus-visible) .edu-route-lean {
   transform: translate3d(0.5rem, 0, 0);
@@ -168,26 +399,58 @@ html.motion .edu-settle {
 }
 
 @media print {
-  .edu-settle {
+  .edu-float > *,
+  .edu-settle,
+  .edu-arrive,
+  .edu-strip-track,
+  .edu-print-body {
     transform: none !important;
+    opacity: 1 !important;
     animation: none !important;
   }
 
-  /* The row of prints wraps across the page, every print in view, with no line under it. */
+  /* The filmstrip prints as a contact sheet: every photograph at one height
+     on its paper, with its frame number, wrapping across the page. No counter
+     and no progress line. None of this reads the scroll engine's attributes,
+     so it prints the same whether or not the scene was pinned on screen. */
   .edu-strip {
-    overflow: visible !important;
+    margin-block: 0 !important;
   }
-  .edu-strip-row {
-    display: flex !important;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-    width: auto !important;
-  }
-  .edu-print {
-    width: 7.5rem !important;
+  .edu-strip .edu-strip-stage {
+    display: block !important;
+    height: auto !important;
+    padding-block: 0 2rem !important;
+    /* The sheet stays on one page. */
     break-inside: avoid;
   }
-  .edu-strip-meter {
+  .edu-strip .edu-strip-scroll {
+    overflow: visible !important;
+    padding-block: 0 !important;
+    margin-block: 0 !important;
+  }
+  .edu-strip .edu-strip-scroll .edu-strip-track {
+    --u: 0.3rem;
+    display: flex !important;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 0.75rem;
+    width: auto !important;
+    margin-inline: 0;
+    padding-inline: 0;
+  }
+  .edu-strip .edu-print {
+    break-inside: avoid;
+  }
+  .edu-strip .edu-print-body {
+    margin: 0 !important;
+  }
+  .edu-strip .edu-print-paper {
+    outline: 1px solid var(--color-line);
+  }
+  .edu-strip .edu-print-photo {
+    height: 9.5rem;
+  }
+  .edu-strip .edu-strip-meter {
     display: none !important;
   }
 }

@@ -8,14 +8,20 @@ import { articleHref } from "./records";
 
 type Vars = CSSProperties & Record<`--${string}`, string>;
 
+/** Two pieces side by side from lg, four columns each: the second stands lower, so it arrives after the first. */
+const offset = ["", "lg:mt-24"];
+
 /**
  * From Dr. Joy: her original writing. Hidden at launch until the articles
- * exist; in review mode two labelled slots hold their place. It is set like
- * the published index below it: the heading on the left of the page column,
- * the pieces on the right two thirds, each between thin lines with its date,
- * title, excerpt and the way in. A piece is one object: on hover or focus a
- * soft wash rises behind it, the title leans in and the arrow travels. The
- * whole piece is the link.
+ * exist; in review mode two labelled slots hold their place. The heading
+ * holds the left of the page column, as in the published index below it; the
+ * two pieces share the right two thirds, each under a thin line with its
+ * date, title, excerpt and the way in (one under the other below lg).
+ *
+ * Each piece arrives on its own as it is reached: its line draws from the
+ * left and the piece rises. A piece is one object: on hover or focus a soft
+ * wash rises behind it, the title leans in and the arrow travels. The whole
+ * piece is the link.
  */
 export function OriginalArticles({ heading, cta, articles }: { heading: string; cta: string; articles: OriginalArticle[] }) {
   const shown = articles.slice(0, 2);
@@ -25,25 +31,26 @@ export function OriginalArticles({ heading, cta, articles }: { heading: string; 
         <h2 className="display t-h1 lg:col-span-4">
           <WordRise>{heading}</WordRise>
         </h2>
-        <div className="mt-10 md:mt-12 lg:col-span-8 lg:col-start-5 lg:mt-2">
+        <div className="mt-10 grid max-w-[38rem] grid-cols-1 gap-y-8 md:mt-12 lg:col-span-8 lg:col-start-5 lg:mt-2 lg:max-w-none lg:grid-cols-2 lg:items-start lg:gap-x-6">
           {shown.length > 0
             ? shown.map((a, i) => (
-                <InView key={a.title} as="article" className="group relative border-t border-line py-7 last:border-b md:py-9">
+                <InView key={a.title} as="article" className={`group relative py-7 ${offset[i]}`}>
+                  <span aria-hidden className="rule-draw absolute inset-x-0 top-0 block h-px bg-line" />
                   <span aria-hidden className="rule-over" />
-                  <div className="rise" style={{ "--d": `${i * 0.08}s` } as Vars}>
+                  <div className="rise" style={{ "--d": "0.12s" } as Vars}>
                     {a.date && <p className="label text-stone tabular-nums">{a.date}</p>}
-                    <h3 className={`lean display t-h2 max-w-[38rem] ${a.date ? "mt-4" : ""}`}>{typeset(a.title)}</h3>
-                    <p className="t-body mt-4 max-w-[38rem] text-stone">{a.excerpt}</p>
+                    <h3 className={`lean display t-h2 ${a.date ? "mt-4" : ""}`}>{typeset(a.title)}</h3>
+                    <p className="t-body mt-4 text-stone">{a.excerpt}</p>
                     <ArrowLink href={articleHref(a)} className="mt-4 after:absolute after:inset-0">
                       {cta}
                     </ArrowLink>
                   </div>
                 </InView>
               ))
-            : [1, 2].map((n) => (
-                <ReviewSlot key={n} className={n > 1 ? "mt-6 min-h-40" : "min-h-40"}>
-                  Original article {n}: title, summary or excerpt, and link
-                </ReviewSlot>
+            : offset.map((drop, i) => (
+                <InView key={i} className={`rise ${drop}`}>
+                  <ReviewSlot className="min-h-40">Original article {i + 1}: title, summary or excerpt, and link</ReviewSlot>
+                </InView>
               ))}
         </div>
       </div>

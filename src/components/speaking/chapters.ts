@@ -2,7 +2,7 @@ import { speaking } from "@/content/speaking";
 
 /**
  * The page's four chapters: the approved headings, in page order. Used by the
- * "On this page" list in the opening and by the chapter bar.
+ * "On this page" list in the opening and by the chapter rail and bar.
  */
 export const chapters = [
   { href: "#topics", label: speaking.clinical.heading },

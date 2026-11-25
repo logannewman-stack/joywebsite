@@ -9,18 +9,34 @@ import { VideoFacade } from "./VideoFacade";
 
 const heading = "From a P3 participant";
 
+/** What the section will show, decided in one place (the page also asks whether it shows anything). */
+function plan() {
+  const a = education.attendee;
+  const cleared = !!a && (a.permission === "granted" || site.showPlaceholders);
+  const hasQuote = cleared && !!a?.quote;
+  const videoUrl = cleared ? a?.videoUrl : undefined;
+  return { a, hasQuote, videoUrl };
+}
+
+/** Whether AttendeeVoice renders a section: a quote, a video, or (in review mode) their labelled slots. */
+export function attendeeVoiceShown(): boolean {
+  const { hasQuote, videoUrl } = plan();
+  return hasQuote || !!videoUrl || notes;
+}
+
 /**
  * The featured attendee testimonial and/or approved short video. Both follow
  * the testimonial's permission: shown with a "pending" tag in review mode,
  * and only once granted at launch.
  *
  * The testimonial is the site's shared Quote on white: its opening sentence
- * as a heading, the rest at reading size, the name under it. An approved
- * video follows in the quote's own columns, at reading width, with no line
- * between the two.
+ * as a heading, whose words brighten one after another as it is scrolled
+ * into view, the rest at reading size, the name under it. An approved video
+ * follows in the quote's own columns, at reading width, with no line between
+ * the two; it lifts in when it is seen.
  */
 export function AttendeeVoice() {
-  const a = education.attendee;
+  const { a, hasQuote, videoUrl } = plan();
 
   if (!a) {
     return notes ? (
@@ -32,9 +48,6 @@ export function AttendeeVoice() {
     ) : null;
   }
 
-  const cleared = a.permission === "granted" || site.showPlaceholders;
-  const hasQuote = cleared && !!a.quote;
-  const videoUrl = cleared ? a.videoUrl : undefined;
   const pending = a.permission !== "granted";
   const video: ReactNode = videoUrl ? (
     <VideoFacade

@@ -124,7 +124,10 @@ export default function InsightsPage() {
         />
       )}
 
-      {/* The conversation after a session: a wide photograph the width of the page column, before the black chapter */}
+      {/*
+        The conversation after a session: a wide photograph that opens to the width of the page column as it
+        arrives. On desktop it holds while the black chapter slides up over it, so the two must stay neighbours.
+      */}
       <Band slot={band} />
 
       <StayConnected heading={newsletter.heading} name={newsletter.name} text={newsletter.text} cta={newsletter.cta} />

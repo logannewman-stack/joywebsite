@@ -8,6 +8,15 @@ import { ConfirmTag } from "./records";
 
 type Vars = CSSProperties & Record<`--${string}`, string>;
 
+/** Seconds between one row's entrance and the next. */
+const STEP = 0.07;
+const after = (n: number) => ({ "--d": `${(n * STEP).toFixed(2)}s` }) as Vars;
+
+/** A thin line across the top (or the foot) of a row. It draws from the left when the list is seen. */
+function Rule({ n, foot = false }: { n: number; foot?: boolean }) {
+  return <span aria-hidden className={`rule-draw absolute inset-x-0 block h-px bg-line ${foot ? "bottom-0" : "top-0"}`} style={after(n)} />;
+}
+
 /**
  * Published Articles: an index of work in dental publications, each linking
  * to the original. Book contributions sit apart under Published Work.
@@ -15,10 +24,12 @@ type Vars = CSSProperties & Record<`--${string}`, string>;
  * The heading holds the left of the page column (it stays in view on desktop
  * while the index scrolls past); the index is the right two thirds. Each row
  * is set between thin lines: its number, the title, the rest of the headline,
- * then the publication and the date in grey. The rows rise one after another.
- * A row with a link answers as one on hover and focus: a soft wash rises
- * behind it, the title leans in, the number darkens and the arrow circle
- * fills.
+ * then the publication and the date in grey.
+ *
+ * The first time the index is seen its lines draw from the left and its rows
+ * rise, each a little after the one above. A row with a link answers as one
+ * on hover and focus: a soft wash rises behind it, the title leans in, the
+ * number darkens and the arrow circle fills and sends its arrow out.
  */
 export function PublishedList({
   heading,
@@ -58,10 +69,14 @@ export function PublishedList({
         <div className="mt-10 md:mt-12 lg:col-span-8 lg:col-start-5 lg:mt-2">
           {articles.length > 0 && (
             <InView>
-              <ol className="stagger">
+              <ol>
                 {articles.map((a, i) => (
-                  <li key={a.title} className="relative border-t border-line last:border-b">
-                    <Row item={a} index={i} cta={cta} />
+                  <li key={a.title} className="relative">
+                    <Rule n={i} />
+                    <div className="rise" style={after(i)}>
+                      <Row item={a} index={i} cta={cta} />
+                    </div>
+                    {i === articles.length - 1 && <Rule n={i + 1} foot />}
                   </li>
                 ))}
               </ol>
@@ -71,10 +86,14 @@ export function PublishedList({
           {books.length > 0 && (
             <InView className={articles.length > 0 ? "mt-14 md:mt-16" : ""}>
               <h3 className="rise label text-stone">{booksHeading}</h3>
-              <ul className="stagger mt-5">
-                {books.map((b) => (
-                  <li key={b.title} className="relative border-t border-line last:border-b">
-                    <BookRow item={b} />
+              <ul className="mt-5">
+                {books.map((b, i) => (
+                  <li key={b.title} className="relative">
+                    <Rule n={i + 1} />
+                    <div className="rise" style={after(i + 1)}>
+                      <BookRow item={b} />
+                    </div>
+                    {i === books.length - 1 && <Rule n={i + 2} foot />}
                   </li>
                 ))}
               </ul>

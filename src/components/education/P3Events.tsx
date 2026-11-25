@@ -18,12 +18,17 @@ import { hasEnded } from "./eventStatus";
  * button while its landing page is live, otherwise the interest list. Both
  * share one layout, so the page looks the same either way and only the data
  * changes.
+ *
+ * `lift`: from md the photograph is upright and starts above the section, so
+ * it carries across the edge from the section before into the black. Pass it
+ * only when a plain white section with its usual bottom padding comes before
+ * this one.
  */
-export async function P3Events() {
+export async function P3Events({ lift = false }: { lift?: boolean }) {
   const { events } = education;
   const ev = events.featured;
   const interest = (
-    <Panel photo={events.photo}>
+    <Panel photo={events.photo} lift={lift}>
       <InterestList />
     </Panel>
   );
@@ -37,7 +42,7 @@ export async function P3Events() {
         <EventWindow
           endsAt={eventEndsAt(ev)}
           live={
-            <Panel photo={ev.photo?.src ? ev.photo : events.photo}>
+            <Panel photo={ev.photo?.src ? ev.photo : events.photo} lift={lift}>
               <EventDetails ev={ev} />
             </Panel>
           }
@@ -61,10 +66,11 @@ export async function P3Events() {
  * under a thin line. The photograph on the right, five of the twelve
  * columns; on phones it follows the words. The section heading sits with the
  * words, so each version carries it; only one version is ever displayed.
- * Motion: the heading's words rise, the words under the line follow one
- * after another, and the photograph uncovers and drifts a little in its frame.
+ * Motion: the heading's words rise, the line under it draws from the left,
+ * the words under the line follow one after another, and the photograph
+ * uncovers, settles from slightly large and drifts a little in its frame.
  */
-function Panel({ photo, children }: { photo: PhotoSlot; children: ReactNode }) {
+function Panel({ photo, lift, children }: { photo: PhotoSlot; lift: boolean; children: ReactNode }) {
   return (
     <div className="md:grid md:grid-cols-12 md:items-center md:gap-x-6">
       <div className="md:col-span-6">
@@ -73,15 +79,19 @@ function Panel({ photo, children }: { photo: PhotoSlot; children: ReactNode }) {
             <WordRise>{education.events.heading}</WordRise>
           </h2>
         </InView>
-        <InView delay={0.12} className="stagger mt-8 border-t border-line-dark pt-8 md:mt-10 md:pt-10">
-          {children}
+        <InView delay={0.12} className="relative mt-8 pt-8 md:mt-10 md:pt-10">
+          <span aria-hidden className="rule-draw absolute inset-x-0 top-0 block h-px bg-line-dark" />
+          <div className="stagger">{children}</div>
         </InView>
       </div>
-      <ImageReveal className="mt-12 w-[min(100%,24rem)] md:col-span-5 md:col-start-8 md:mt-0 md:w-auto">
-        <Parallax amount={5} className="aspect-[5/4] w-full">
-          <Photo slot={photo} tone="dark" className="h-full w-full" sizes="(max-width: 767px) min(100vw - 40px, 384px), (max-width: 1440px) 37vw, 32vw" />
-        </Parallax>
-      </ImageReveal>
+      {/* Lifted, the photograph starts 5rem above the section: its top margin takes back the section's top padding and that much more. */}
+      <InView className={`mt-12 w-[min(100%,24rem)] md:col-span-5 md:col-start-8 md:w-auto ${lift ? "md:-mt-48 md:self-start" : "md:mt-0"}`}>
+        <ImageReveal>
+          <Parallax amount={5} className={`aspect-[5/4] w-full ${lift ? "md:aspect-[4/5]" : ""}`}>
+            <Photo slot={photo} tone="dark" className="settle h-full w-full" sizes="(max-width: 767px) min(100vw - 40px, 384px), (max-width: 1440px) 37vw, 32vw" />
+          </Parallax>
+        </ImageReveal>
+      </InView>
     </div>
   );
 }

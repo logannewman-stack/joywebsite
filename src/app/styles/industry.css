@@ -140,7 +140,47 @@ html.motion .group:has(:focus-visible) .lean {
 }
 html.motion .open-settle {
   transform-origin: 50% 100%;
-  animation: open-settle 1.8s var(--ease-expo) both;
+  animation: open-settle calc(2 * var(--duration-image)) var(--ease-expo) both;
+}
+
+/* ==========================================================================
+   Sponsorships and KOL Partnerships: the handover to the black chapter
+
+   The stage photograph stays in the page column and hangs past the white
+   section's bottom edge into the black chapter below (--hang), so the eye is
+   carried across the change of colour. The section's bottom padding is 5rem,
+   and 7rem from 768px; the black chapter's top padding leaves room for the
+   overhang. On paper the photograph stays inside its own section.
+
+   The frame shows the photograph at 1.3x, enlarged from its top edge: it ends
+   above the foreground clutter at the foot of the picture (the lectern's
+   water bottle, whose cap starts 82% of the way down) and holds on the
+   speaker. With at most 4% of drift the frame never shows more than the top
+   80%.
+   ========================================================================== */
+.partner-photo .parallax-inner {
+  transform: translate3d(0, -2%, 0) scale(1.3);
+  transform-origin: 60% 0;
+}
+html.motion .partner-photo .parallax-inner {
+  transform: translate3d(0, calc(var(--v, 0.5) * -4%), 0) scale(1.3);
+}
+@media screen {
+  .partner-photo {
+    --hang: 3.5rem;
+    margin-bottom: calc(-5rem - var(--hang));
+  }
+  @media (min-width: 768px) {
+    .partner-photo {
+      --hang: 5rem;
+      margin-bottom: calc(-7rem - var(--hang));
+    }
+  }
+  @media (min-width: 1024px) {
+    .partner-photo {
+      --hang: 6rem;
+    }
+  }
 }
 
 /* ==========================================================================
@@ -149,10 +189,11 @@ html.motion .open-settle {
    The sentence is set as two line groups, each balanced on its own: the
    statement, then its closing phrase over the pale pink marker.
 
-   It brightens word by word as it crosses the screen: --v runs 0 to 1 on the
-   way, --from and --to are where the first word starts and the last one
-   finishes. Without JavaScript, with reduced motion and in print it is
-   simply white, the marker in place.
+   It brightens word by word: --drive runs 0 to 1, --from and --to are where
+   the first word starts and the last one finishes. Unpinned, the drive is the
+   sentence's own path across the screen (--v); pinned, it is the scene (--p,
+   see the stage below). Without JavaScript, with reduced motion and in print
+   it is simply white, the marker in place.
    ========================================================================== */
 .launch-line {
   display: block;
@@ -176,11 +217,226 @@ html.motion .launch-lead .launch-word {
 html.motion .launch-lead .hl-dark {
   background-size: calc(clamp(0, (var(--t) * (var(--n) + var(--lead, 5)) - var(--i) - 2) / (var(--len) + 2), 1) * 100%) var(--hl-h);
 }
+
+/* ==========================================================================
+   Clinical Launch Strategy: the pinned stage (1024px and up)
+
+   Unpinned, the section is the plain column or grid laid out by the
+   utilities on its elements. Pinned, the stage below takes over, one screen
+   high:
+
+     row 1   the chapter line: "02  Clinical Launch Strategy", set like a row
+             of the opening's index
+     row 2   the photograph in the first five columns; from the seventh, one
+             cell where the lead and then the details appear
+     row 3   a thin line that fills as the scene runs
+
+   The scene has three steps and runs in thirds. First the lead is lit word
+   by word while the photograph comes up from half light; then the finished
+   sentence is held (the lead keeps the stage for step 1); then the lead
+   leaves and the paragraphs and the action arrive under their lines.
+
+   Row 2 is never smaller than its words. On a window too short for them the
+   stage grows past the screen instead of overlapping, and the engine then
+   returns the section to its plain layout (engine.ts, "Fit").
+   ========================================================================== */
+@media screen {
+  /* An anchor jump lands exactly where the stage starts to pin. */
+  .launch[data-pinned] {
+    scroll-margin-top: calc(-1 * (var(--header-height) + 1.25rem));
+  }
+  .launch[data-pinned] .launch-stage {
+    height: 100%;
+    grid-template-rows: auto minmax(min-content, 1fr) auto;
+    row-gap: 1.5rem;
+    padding-top: calc(var(--header-height) + 1.75rem);
+    padding-bottom: 2.25rem;
+  }
+
+  .launch[data-pinned] .launch-head {
+    display: flex;
+    grid-area: 1 / 1 / 2 / -1;
+    align-items: baseline;
+    gap: 1.25rem;
+  }
+
+  /* The photograph: as tall as the row allows, and its width follows. */
+  .launch[data-pinned] .launch-photo {
+    grid-area: 2 / 1 / 3 / 6;
+    align-self: center;
+    justify-self: start;
+    width: auto;
+    max-width: 100%;
+    height: min(100% - 3.5rem, 36rem);
+    margin: 0;
+    aspect-ratio: 4 / 5;
+  }
+  .launch[data-pinned] .launch-photo > [data-reveal-image],
+  .launch[data-pinned] .launch-photo .parallax {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: auto;
+  }
+  /* It drifts with the scene instead of with the page... */
+  html.motion .launch[data-pinned] .launch-photo .parallax-inner {
+    transform: translate3d(0, calc((0.5 - var(--p, 0)) * var(--parallax)), 0) scale(var(--parallax-scale));
+  }
+  /* ...and arrives in half light, coming up as the sentence is lit. */
+  html.motion .launch[data-pinned] .launch-photo .parallax::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--color-ink);
+    opacity: calc(0.4 - clamp(0, var(--p, 0) / 0.4, 1) * 0.4);
+    pointer-events: none;
+  }
+
+  /* The lead, then the details, share one cell; the engine shows one at a time. */
+  .launch[data-pinned] .launch-step {
+    grid-area: 2 / 7 / 3 / -1;
+    align-self: center;
+    margin: 0;
+  }
+  .launch[data-pinned][data-step="1"] [data-scene-step="0"] {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+  }
+  /* Lit by 42% of the scene, held, and the details arrive at two thirds. */
+  .launch[data-pinned] .launch-lead {
+    --drive: var(--p, 1);
+    --from: 0.02;
+    --to: 0.42;
+  }
+
+  /* The two never show at once. The step that leaves goes first, quickly;
+     the step that arrives waits for it (in both directions). */
+  html.motion .launch[data-pinned] .launch-step {
+    transition:
+      opacity var(--duration-hover) var(--ease-soft),
+      transform var(--duration-scene) var(--ease-expo);
+  }
+  html.motion .launch[data-pinned] .launch-step[data-active],
+  html.motion .launch[data-pinned][data-step="1"] [data-scene-step="0"],
+  html.motion .launch[data-pinned]:not([data-step]) [data-scene-step="0"] {
+    transition:
+      opacity var(--duration-scene) var(--ease-soft) var(--duration-hover),
+      transform var(--duration-scene) var(--ease-expo) var(--duration-hover);
+  }
+  /* The details follow one another in once the lead has gone, each under its
+     line as the line draws (--k is the item's place), and leave at once. */
+  html.motion .launch[data-pinned] .launch-details .launch-item {
+    opacity: 0;
+    transform: translate3d(0, 1.25rem, 0);
+    transition:
+      opacity var(--duration-hover) var(--ease-soft),
+      transform var(--duration-hover) var(--ease-soft);
+  }
+  html.motion .launch[data-pinned] .launch-details .rule-draw {
+    transform: scaleX(0);
+    transition: transform var(--duration-hover) var(--ease-soft);
+  }
+  html.motion .launch[data-pinned] .launch-details[data-active] .launch-item {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity var(--duration-text) var(--ease-soft) calc(0.3s + var(--k, 0) * 90ms),
+      transform var(--duration-image) var(--ease-expo) calc(0.3s + var(--k, 0) * 90ms);
+  }
+  html.motion .launch[data-pinned] .launch-details[data-active] .rule-draw {
+    transform: none;
+    transition: transform var(--duration-image) var(--ease-expo) calc(0.3s + var(--k, 0) * 90ms);
+  }
+  /* Keyboard focus brings the step up at once: no waiting on the cascade. */
+  html.motion .launch[data-pinned] .launch-details:focus-within,
+  html.motion .launch[data-pinned] .launch-details:focus-within .launch-item,
+  html.motion .launch[data-pinned] .launch-details:focus-within .rule-draw {
+    transition-delay: 0s;
+  }
+
+  .launch[data-pinned] .launch-foot {
+    grid-area: 3 / 1 / 4 / -1;
+  }
+
+  /* A short window (a laptop, a browser at half height): the stage tightens. */
+  @media (max-height: 700px) {
+    .launch[data-pinned] .launch-stage {
+      row-gap: 1rem;
+      padding-top: calc(var(--header-height) + 0.75rem);
+      padding-bottom: 1.25rem;
+    }
+    .launch[data-pinned] .launch-photo {
+      height: min(100% - 1.5rem, 36rem);
+    }
+    .launch[data-pinned] .launch-item {
+      padding-block: 1rem;
+    }
+    .launch[data-pinned] .launch-item:last-child {
+      padding-bottom: 0;
+    }
+  }
+}
+
+/* ==========================================================================
+   Let's Discuss Your Project: the closing line
+
+   Its two lines close in from opposite sides as the heading comes up the
+   screen: the first from the left, the second from the right. One clock for
+   both, the heading's own --v (0 as it enters at the bottom of the screen,
+   0.5 when it is centred): they are in place a little before the heading
+   reaches the middle, and slow as they arrive (--rest is the distance left,
+   squared). The first line starts no further out than the page margin, so it
+   is never cut by the edge of the screen; the second has the column to cross.
+   ========================================================================== */
+html.motion .closing-title {
+  --from-left: 1.25rem;
+  --from-right: 2.5rem;
+  --rest: calc((1 - clamp(0, (var(--v, 1) - 0.03) / 0.33, 1)) * (1 - clamp(0, (var(--v, 1) - 0.03) / 0.33, 1)));
+}
+@media (min-width: 768px) {
+  html.motion .closing-title {
+    --from-left: 2.5rem;
+    --from-right: 6rem;
+  }
+}
+html.motion .closing-line-a {
+  transform: translate3d(calc(var(--rest) * -1 * var(--from-left)), 0, 0);
+}
+html.motion .closing-line-b {
+  transform: translate3d(calc(var(--rest) * var(--from-right)), 0, 0);
+}
+
+/* ==========================================================================
+   Paper
+
+   The engine prints the plain layout (it takes html.motion and data-pinned
+   away for the print). These cover a browser where it could not step in:
+   everything is lit, in place and in order, and the stage's two steps go
+   back to their own rows.
+   ========================================================================== */
 @media print {
-  .launch-lead .launch-word {
+  .launch-lead .launch-word,
+  .launch-item {
     opacity: 1 !important;
+    transform: none !important;
   }
   .launch-lead .hl-dark {
     background-size: 100% var(--hl-h) !important;
+  }
+  .launch-photo .parallax::after {
+    content: none !important;
+  }
+  .launch-foot {
+    display: none !important;
+  }
+  .launch[data-pinned] [data-scene-step="0"] {
+    grid-area: 2 / 6 / auto / span 7;
+  }
+  .launch[data-pinned] [data-scene-step="2"] {
+    grid-area: 3 / 6 / auto / span 7;
+  }
+  .closing-line-a,
+  .closing-line-b {
+    transform: none !important;
   }
 }

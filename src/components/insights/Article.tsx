@@ -13,9 +13,10 @@ import { WordLight, WordRise } from "@/components/motion/Text";
  * Subheadings and pull quotes stay in that column; a pull quote is a heading
  * line behind a thin black rule.
  *
- * Motion stays out of the way of reading: the title rises once on load,
- * subheadings rise as they are reached, and a pull quote takes ink as it is
- * read. Paragraphs never move.
+ * Motion stays out of the way of reading: the title rises once on load, the
+ * line above the text draws, subheadings rise as they are reached, and a pull
+ * quote takes ink word by word as it is read while the rule beside it draws
+ * downward. Paragraphs never move.
  */
 export function Article({ article, section }: { article: OriginalArticle; section: string }) {
   // A long title steps down one size, so it holds to three or four lines.
@@ -29,7 +30,9 @@ export function Article({ article, section }: { article: OriginalArticle; sectio
         </Link>
         <div className="mt-8 md:mt-10 lg:grid lg:grid-cols-12 lg:gap-x-6">
           <div className="lg:col-span-9 lg:col-start-4">
-            <Label>{section}</Label>
+            <Reveal immediate>
+              <Label>{section}</Label>
+            </Reveal>
             <h1 className={`display mt-6 max-w-[16em] md:mt-7 ${long ? "t-h1" : "t-hero"}`}>
               <WordRise immediate>{article.title}</WordRise>
             </h1>
@@ -42,26 +45,32 @@ export function Article({ article, section }: { article: OriginalArticle; sectio
       </header>
 
       <div className="mx-auto max-w-(--wrap) px-5 pt-10 pb-20 md:px-10 md:pt-12 md:pb-28 lg:grid lg:grid-cols-12 lg:gap-x-6">
-        <div className="max-w-[38rem] border-t border-line pt-10 md:pt-12 lg:col-span-9 lg:col-start-4">
-          {(article.body ?? []).map((block, i) =>
-            typeof block === "string" ? (
-              <p key={i} className="t-body mt-5 first:mt-0">
-                {block}
-              </p>
-            ) : "heading" in block ? (
-              <h2 key={i} className="display t-h2 mt-12 md:mt-14">
-                <WordRise>{block.heading}</WordRise>
-              </h2>
-            ) : (
-              <InView key={i} as="blockquote" className="my-10 border-l border-ink pl-6 md:my-12 md:pl-8">
-                <p className="display t-h2">
-                  <WordLight from={0.16} to={0.46} dim={0.5}>
-                    {block.quote}
-                  </WordLight>
+        <div className="max-w-[38rem] lg:col-span-9 lg:col-start-4">
+          <InView>
+            <span aria-hidden className="rule-draw block h-px bg-line" />
+          </InView>
+          <div className="pt-10 md:pt-12">
+            {(article.body ?? []).map((block, i) =>
+              typeof block === "string" ? (
+                <p key={i} className="t-body mt-5 first:mt-0">
+                  {block}
                 </p>
-              </InView>
-            ),
-          )}
+              ) : "heading" in block ? (
+                <h2 key={i} className="display t-h2 mt-12 md:mt-14">
+                  <WordRise>{block.heading}</WordRise>
+                </h2>
+              ) : (
+                <InView key={i} as="blockquote" className="relative my-10 pl-6 md:my-12 md:pl-8">
+                  <span aria-hidden className="quote-rule absolute inset-y-0 left-0 block w-px bg-ink" />
+                  <p className="display t-h2">
+                    <WordLight from={0.16} to={0.46} dim={0.5}>
+                      {block.quote}
+                    </WordLight>
+                  </p>
+                </InView>
+              ),
+            )}
+          </div>
         </div>
       </div>
     </article>
