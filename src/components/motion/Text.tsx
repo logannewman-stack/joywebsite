@@ -115,24 +115,21 @@ export function WordLight({
   );
 }
 
-export type HlTone = "dark" | "light";
-
 /**
- * A highlighted phrase: the pale pink marker behind its lower half. It is the
- * site's one accent, for a phrase that matters; a page carries one or two at
- * most. "light" is for white sections, "dark" for black ones (the same pink
- * at lower strength, so white letters stay crisp). Inside an [data-inview]
- * element the marker draws itself in.
+ * A highlighted phrase: the pale pink marker behind its lower half, on a
+ * white section. It is the site's one accent, for a phrase that matters; a
+ * page carries one or two at most, and black sections carry none. Inside an
+ * [data-inview] element the marker draws itself in.
  */
-export function Hl({ children, tone = "dark", className = "" }: { children: ReactNode; tone?: HlTone; className?: string }) {
-  return <span className={`${tone === "dark" ? "hl-dark" : "hl-light"} ${className}`}>{children}</span>;
+export function Hl({ children, className = "" }: { children: ReactNode; className?: string }) {
+  return <span className={`hl-light ${className}`}>{children}</span>;
 }
 
 /**
  * Splits a sentence around the phrases to highlight, keeping the wording
  * untouched: highlight("clinical excellence and business", ["business"]).
  */
-export function highlight(text: string, phrases: string[], tone: HlTone = "dark"): ReactNode {
+export function highlight(text: string, phrases: string[]): ReactNode {
   let parts: (string | ReactElement)[] = [text];
   phrases.forEach((phrase, pi) => {
     const next: (string | ReactElement)[] = [];
@@ -144,7 +141,7 @@ export function highlight(text: string, phrases: string[], tone: HlTone = "dark"
       const [before, ...rest] = part.split(phrase);
       next.push(
         before,
-        <Hl key={`${pi}-${i}`} tone={tone}>
+        <Hl key={`${pi}-${i}`}>
           {phrase}
         </Hl>,
         rest.join(phrase),

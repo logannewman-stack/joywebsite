@@ -94,7 +94,7 @@ export function Quote({
       {dark && backdrop?.src && (
         <div aria-hidden className="absolute inset-0">
           <Parallax className="h-full w-full" amount={6}>
-            <Photo slot={{ ...backdrop, alt: "" }} tone="dark" className="h-full w-full grayscale" sizes="100vw" />
+            <Photo slot={{ ...backdrop, alt: "" }} tone="dark" className="h-full w-full" sizes="100vw" />
           </Parallax>
           <div className="absolute inset-0 bg-ink/80" />
         </div>

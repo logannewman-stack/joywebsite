@@ -120,7 +120,7 @@ export default function MeetPage() {
           <InView className={hasLifePhoto ? "mt-10 max-w-[38rem] lg:col-span-7 lg:col-start-6 lg:mt-0" : "max-w-[38rem] lg:col-span-7 lg:col-start-6"}>
             <p className="rise t-lead text-ink">{guides.after[0]}</p>
             <p className="rise display t-h2 mt-8" style={{ "--d": "0.08s" } as Vars}>
-              {highlight(guides.after[1], ["more than 20 years later."], "light")}
+              {highlight(guides.after[1], ["more than 20 years later."])}
             </p>
             {site.wordmark.onLight && (
               <Image

@@ -187,13 +187,13 @@ html.motion .partner-photo .parallax-inner {
    Clinical Launch Strategy: the lead (LeadLight.tsx)
 
    The sentence is set as two line groups, each balanced on its own: the
-   statement, then its closing phrase over the pale pink marker.
+   statement, then its closing phrase.
 
    It brightens word by word: --drive runs 0 to 1, --from and --to are where
    the first word starts and the last one finishes. Unpinned, the drive is the
    sentence's own path across the screen (--v); pinned, it is the scene (--p,
    see the stage below). Without JavaScript, with reduced motion and in print
-   it is simply white, the marker in place.
+   it is simply white.
    ========================================================================== */
 .launch-line {
   display: block;
@@ -212,12 +212,6 @@ html.motion .launch-lead > .launch-line {
 html.motion .launch-lead .launch-word {
   opacity: clamp(var(--dim, 0.3), calc((var(--t) * (var(--n) + var(--lead, 5)) - var(--i)) / var(--lead, 5)), 1);
 }
-/* The marker draws behind the closing phrase as its words are lit: --i is the
-   phrase's first word and --len its word count. */
-html.motion .launch-lead .hl-dark {
-  background-size: calc(clamp(0, (var(--t) * (var(--n) + var(--lead, 5)) - var(--i) - 2) / (var(--len) + 2), 1) * 100%) var(--hl-h);
-}
-
 /* ==========================================================================
    Clinical Launch Strategy: the pinned stage (1024px and up)
 
@@ -419,9 +413,6 @@ html.motion .closing-line-b {
   .launch-item {
     opacity: 1 !important;
     transform: none !important;
-  }
-  .launch-lead .hl-dark {
-    background-size: 100% var(--hl-h) !important;
   }
   .launch-photo .parallax::after {
     content: none !important;

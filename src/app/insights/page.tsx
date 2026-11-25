@@ -87,7 +87,7 @@ export default function InsightsPage() {
                   "doesn’t end",
                   "when the",
                   <InView key="a" as="span">
-                    <Hl tone="light">presentation does.</Hl>
+                    <Hl>presentation does.</Hl>
                   </InView>,
                 ]}
               />

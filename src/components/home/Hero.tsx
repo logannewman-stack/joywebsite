@@ -1,22 +1,12 @@
-import type { CSSProperties, ReactNode } from "react";
 import { home } from "@/content/home";
 import { Photo } from "../ui/Photo";
 import { ButtonLink, ArrowLink } from "../ui/Links";
 import { LineReveal, Reveal } from "../ui/Reveal";
 
-type Vars = CSSProperties & Record<`--${string}`, string | number>;
-
 const { hero } = home;
 
 /** The approved headline, hand-set on four lines. */
 const lines = ["The work has", "always been", "bigger than", "the chair."];
-
-/** One line of the page's key phrase, with the pale pink marker (.hl-dark). The marker draws from the left once the lines have risen (home.css, "Opening"). */
-const mark = (text: string, delay: number): ReactNode => (
-  <span className="hero-mark hl-dark" style={{ "--d": `${delay}s` } as Vars}>
-    {text}
-  </span>
-);
 
 /**
  * Home's opening: the black stage. Her portrait, in full colour with its
@@ -48,7 +38,7 @@ export function Hero() {
       <div className="relative mx-auto max-w-(--wrap) px-5 pt-(--header-height) md:grid md:grid-cols-12 md:items-center md:gap-x-6 md:px-10 lg:min-h-[min(100svh,56rem)] lg:landscape:min-h-[100svh]">
         <div className="pt-10 md:col-span-7 md:py-16">
           <h1 id="hero-heading" className="display t-hero">
-            <LineReveal lines={[lines[0], lines[1], mark(lines[2], 0.65), mark(lines[3], 0.8)]} delay={0.05} />
+            <LineReveal lines={lines} delay={0.05} />
           </h1>
           <Reveal immediate delay={0.25} className="mt-7 md:mt-8">
             <p className="t-lead max-w-[27rem] text-white/85">{hero.sub}</p>

@@ -25,18 +25,6 @@ html.motion .hero-settle {
   animation: hero-settle 2.2s var(--ease-expo) both;
 }
 
-/* The marker on "bigger than the chair." (.hl-dark, motion.css) draws from
-   the left once the headline's lines have risen, one line after the other
-   (--d, set in Hero.tsx). */
-@keyframes hero-mark {
-  from {
-    background-size: 0% var(--hl-h);
-  }
-}
-html.motion .hero-mark {
-  animation: hero-mark var(--duration-image) var(--ease-expo) var(--d, 0.65s) both;
-}
-
 /* "Scroll": arrives after the headline. */
 @keyframes hero-cue-in {
   from {

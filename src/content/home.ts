@@ -118,7 +118,7 @@ export const home = {
     name: "Claire Jeong, MS, RDH",
     role: "Founder, StudentRDH & DentalToaster",
     permission: "pending" as "pending" | "granted",
-    /** The room behind the quote: dimmed and in monochrome, drifting slowly, so the words stay first. */
+    /** The room behind the quote: in colour, dimmed and drifting slowly, so the words stay first. */
     backdrop: {
       src: "/photos/home-quote-room-g.jpg",
       alt: "A conference audience standing and applauding",

@@ -8,7 +8,7 @@ import { ImageReveal, LineReveal, Reveal } from "@/components/ui/Reveal";
 import { Quote } from "@/components/ui/Quote";
 import { InView, Magnetic } from "@/components/motion/InView";
 import { Parallax } from "@/components/motion/Parallax";
-import { Hl, LineRise, WordRise } from "@/components/motion/Text";
+import { LineRise, WordRise } from "@/components/motion/Text";
 import { InquiryButton } from "@/components/inquiry/InquiryProvider";
 import { NextPage } from "@/components/layout/NextPage";
 import { ChapterRail } from "@/components/speaking/ChapterRail";
@@ -299,9 +299,7 @@ export default function SpeakingPage() {
           <div data-view className="lg:col-span-6" suppressHydrationWarning>
             <InView as="h2" className="sp-finale-line display t-h1">
               <WordRise>{planningLead}</WordRise>{" "}
-              <Hl tone="dark">
-                <WordRise start={planningWords.length - 1}>{planningLast}</WordRise>
-              </Hl>
+              <WordRise start={planningWords.length - 1}>{planningLast}</WordRise>
             </InView>
           </div>
           <InView className="mt-6 lg:col-span-5 lg:col-start-8 lg:mt-0">

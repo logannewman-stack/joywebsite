@@ -240,7 +240,7 @@ body {
     overflow-wrap: anywhere;
   }
   /* Emphasis in a heading is never italic and never a second typeface: it is
-     either plain, or the pale pink marker (.hl-light / .hl-dark, motion.css). */
+     either plain, or the pale pink marker (.hl-light, motion.css). */
   .display em,
   .display i {
     font-style: normal;

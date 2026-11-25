@@ -2,7 +2,7 @@
 
 A six-page, photo-led personal website for Dr. Joy RDH. It has separate pathways for speaking, hands-on education, industry collaborations and consulting (which links out to Instrumental).
 
-Built with Next.js 16 and Tailwind CSS 4. The look is black and white: white pages, black sections, neutral greys for secondary text and thin divider lines. The photographs, in full color under one shared grade, bring the warmth. The one accent is a pale pink marker behind a phrase that matters, used once or twice a page. Type is two families beside the script logo: Archivo (bold, a little wide) for headings and DM Sans for everything else.
+Built with Next.js 16 and Tailwind CSS 4. The look is black and white: white pages, black sections, neutral greys for secondary text and thin divider lines. The photographs, in full color under one shared grade, bring the warmth. The one accent is a pale pink marker behind a phrase that matters, used once or twice a page and only on white. Type is two families beside the script logo: Archivo (bold, a little wide) for headings and DM Sans for everything else.
 
 ## Run it
 
@@ -74,7 +74,7 @@ One page column and one type scale serve every page (`src/app/globals.css`):
 
 - **Column.** `--wrap` is 76rem, used as `max-w-(--wrap)`. On a desktop it leaves about a tenth of the screen clear on each side. Sections are padded about 5rem top and bottom on phones and 7rem on desktop.
 - **Headings.** A heading takes `display` and one size: `t-hero` (a page's opening line, 64px on a desktop and 36px on a phone), `t-h1` (a section heading, 48px), `t-h2` (34px) or `t-h3` (22px). Nothing is set larger than `t-hero`. Running text takes `t-lead` or `t-body`; small capital labels take `label`.
-- **Emphasis.** Never italic and never a second typeface. A heading is plain, or one phrase carries the pale pink marker: `<Hl tone="light">` on white, `tone="dark"` on black (`src/components/motion/Text.tsx`).
+- **Emphasis.** Never italic and never a second typeface. A heading is plain, or one phrase carries the pale pink marker behind it (`<Hl>`, `src/components/motion/Text.tsx`). The marker is for white sections only: black sections carry no pink.
 - **Photographs.** Beside text a photograph takes four or five of the twelve columns, about a third of the screen. A wide photograph may run the width of the column as a band; none bleeds to the edge of the screen or fills it. A portrait with its background removed (`treatment: "cutout"`) stands on the bottom edge of its section, straight on white or black.
 - **Lines.** Where one white section follows another, a thin grey line the width of the column is drawn between them automatically; a section that should run on from the one above takes the class `no-rule`. Lists and ledgers use thin lines between groups (`border-line` on white, `border-line-dark` on black). Black sections need no line: the change of color is the edge.
 

@@ -43,7 +43,7 @@ export default function MotionLab() {
             <li>Staggered item three</li>
           </ul>
           <p className="rise mt-10 text-[1.1875rem] leading-relaxed" style={{ "--d": "0.2s" } as React.CSSProperties}>
-            A paragraph that rises, with a <Hl tone="light">marker highlight</Hl> that draws itself in.
+            A paragraph that rises, with a <Hl>marker highlight</Hl> that draws itself in.
           </p>
           <p className="display t-h2 mt-10">
             <LineRise lines={["Hand-set line one", "and hand-set line two"]} />

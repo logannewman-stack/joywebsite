@@ -162,7 +162,7 @@ export const speaking = {
     name: "Anne Duffy",
     role: "Founder & CEO, Dental Entrepreneur Woman (DeW)",
     permission: "pending" as "pending" | "granted",
-    // Behind the quote, dimmed and in grayscale, drifting slowly: the audience on
+    // Behind the quote, in colour, dimmed and drifting slowly: the audience on
     // its feet, seen from behind. The conference's sign on the podium is
     // retouched to plain wood (third-party branding needs clearance).
     backdrop: {

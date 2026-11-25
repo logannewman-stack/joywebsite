@@ -67,7 +67,7 @@ export default function IndustryPage() {
                   "for dental",
                   // The page's pink marker: it draws behind the word the page is for.
                   <InView as="span" key="for">
-                    <Hl tone="light">manufacturers.</Hl>
+                    <Hl>manufacturers.</Hl>
                   </InView>,
                 ]}
               />
@@ -156,7 +156,7 @@ export default function IndustryPage() {
 
           <SceneStep index={0} className="launch-step mt-10 md:mt-14 lg:col-span-7 lg:col-start-6 lg:row-start-2">
             <p className="display t-h2 pinned:t-h1">
-              <LeadLight text={launch.lead} accent="how it fits the care they deliver." />
+              <LeadLight text={launch.lead} close="how it fits the care they deliver." />
             </p>
           </SceneStep>
 

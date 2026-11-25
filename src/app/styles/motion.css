@@ -148,40 +148,28 @@ html.motion .word-light > span {
   opacity: clamp(var(--dim, 0.3), calc((var(--t) * (var(--n) + var(--lead, 5)) - var(--i)) / var(--lead, 5)), 1);
 }
 
-/* The highlight: the pale pink marker. It is the site's one accent, used for
-   a phrase that matters and nowhere else.
-   On white (.hl-light) it sits behind the lower half of the letters, from the
-   middle of the lower-case letters to just under the baseline. On black
-   (.hl-dark) pink behind white letters would wash them out, so the same pink
-   is drawn as a thin line under the phrase instead.
-   --hl-h is the marker's height and --hl-y where it sits in the line. */
+/* The highlight: the pale pink marker behind a phrase. It is the site's one
+   accent, used on white sections for a phrase that matters and nowhere else.
+   It sits behind the lower half of the letters, from the middle of the
+   lower-case letters to just under the baseline: --hl-h is its height and
+   --hl-y where it sits in the line. */
 :root {
   --hl-h: 0.4em;
   --hl-y: 76%;
 }
-.hl-light,
-.hl-dark {
-  background-image: linear-gradient(var(--hl-color), var(--hl-color));
+.hl-light {
+  background-image: linear-gradient(var(--color-blush), var(--color-blush));
   background-repeat: no-repeat;
   background-position: 0 var(--hl-y);
   background-size: 100% var(--hl-h);
   box-decoration-break: clone;
   -webkit-box-decoration-break: clone;
 }
-.hl-light {
-  --hl-color: var(--color-blush);
-}
-.hl-dark {
-  --hl-color: var(--color-blush);
-  --hl-h: 0.09em;
-  --hl-y: 98%;
-  padding-bottom: 0.08em;
-}
-html.motion [data-inview] :is(.hl-light, .hl-dark) {
+html.motion [data-inview] .hl-light {
   background-size: 0% var(--hl-h);
   transition: background-size var(--duration-image) var(--ease-expo) calc(var(--rise-delay, 0s) + 0.35s);
 }
-html.motion [data-inview][data-in] :is(.hl-light, .hl-dark) {
+html.motion [data-inview][data-in] .hl-light {
   background-size: 100% var(--hl-h);
 }
 
@@ -237,7 +225,6 @@ html.restoring [data-inview] .rule-draw,
 html.restoring [data-inview] .wipe,
 html.restoring [data-inview] .settle,
 html.restoring [data-inview] .hl-light,
-html.restoring [data-inview] .hl-dark,
 html.restoring [data-reveal],
 html.restoring [data-reveal-image],
 html.restoring [data-scene-step] {
@@ -411,8 +398,7 @@ html.printing.restoring *::after {
   .wipe {
     clip-path: none !important;
   }
-  .hl-light,
-  .hl-dark {
+  .hl-light {
     background-size: 100% var(--hl-h) !important;
   }
   /* A marquee prints as a wrapped line, once. */
