@@ -18,10 +18,11 @@ const lines = ["The work has", "always been", "bigger than", "the chair."];
  * portrait follows, centred.
  *
  * On landscape screens from 1024px the stage is exactly one screen and it
- * holds: it stays where it is while the story slides up over it, dimming as
- * it is covered, and a small "Scroll" cue at its foot fades as the page
- * moves (home.css, "Opening"). The page wraps the stage and the story in
- * .hero-hold for that.
+ * holds: it stays where it is while the story slides up over it. As the page
+ * moves the words lift away and fade, she comes a little closer, the stage
+ * dims, and the "Scroll" cue at its foot (a label and a thin line that a
+ * light runs along) fades (home.css, "Opening"). The page wraps the stage
+ * and the story in .hero-hold for that.
  *
  * The header's colour: while the stage scrolls normally, the marker inside
  * it keeps the header dark. Where the stage holds, the page's own marker in
@@ -33,10 +34,13 @@ const lines = ["The work has", "always been", "bigger than", "the chair."];
  */
 export function Hero() {
   return (
-    <section className="hero-stage relative bg-ink text-white" aria-labelledby="hero-heading">
+    <section className="hero-stage relative overflow-clip bg-ink text-white" aria-labelledby="hero-heading">
       <div aria-hidden data-header="dark" className="pointer-events-none absolute inset-0 lg:landscape:hidden" />
+      {/* A soft pool of light on the black behind her: neutral grey, no colour (home.css, "Opening"). */}
+      <div aria-hidden className="hero-light pointer-events-none absolute inset-0" />
       <div className="relative mx-auto max-w-(--wrap) px-5 pt-(--header-height) md:grid md:grid-cols-12 md:items-center md:gap-x-6 md:px-10 lg:min-h-[min(100svh,56rem)] lg:landscape:min-h-[100svh]">
-        <div className="pt-10 md:col-span-7 md:py-16">
+        {/* data-scene-vars: on the held stage the engine writes the hold's progress here, so the words lift away as the page moves. */}
+        <div data-scene-vars="" suppressHydrationWarning className="hero-copy pt-10 md:col-span-7 md:py-16">
           <h1 id="hero-heading" className="display t-hero">
             <LineReveal lines={lines} delay={0.05} />
           </h1>
@@ -53,7 +57,7 @@ export function Hero() {
           </Reveal>
         </div>
 
-        <div className="mx-auto mt-12 w-[min(100%,21rem)] md:col-span-5 md:mx-0 md:mt-0 md:w-auto md:self-end md:pt-6 lg:col-start-8">
+        <div data-scene-vars="" suppressHydrationWarning className="hero-figure mx-auto mt-12 w-[min(100%,21rem)] md:col-span-5 md:mx-0 md:mt-0 md:w-auto md:self-end md:pt-6 lg:col-start-8">
           {/* 1155 x 1647: the frame has the cut-out's own proportions, so nothing is cropped and its foot meets the section edge. */}
           <Photo slot={hero.photo} tone="dark" priority className="hero-settle aspect-[1155/1647] w-full" sizes="(max-width: 767px) min(100vw - 40px, 336px), (max-width: 1440px) 36vw, 30vw" />
         </div>
@@ -63,7 +67,10 @@ export function Hero() {
           progress (--p) here and on the dim below, nowhere else. */}
       <div aria-hidden data-scene-vars="" suppressHydrationWarning className="hero-cue pointer-events-none absolute inset-x-0 bottom-10 hidden lg:landscape:block">
         <div className="mx-auto max-w-(--wrap) px-10">
-          <span className="label text-white/70">Scroll</span>
+          <span className="label inline-flex items-center gap-4 text-white/70">
+            Scroll
+            <span className="hero-cue-line" />
+          </span>
         </div>
       </div>
       {/* The stage dims as the story slides up over it. */}

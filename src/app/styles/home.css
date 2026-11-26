@@ -33,8 +33,52 @@ html.motion .hero-settle {
   }
 }
 html.motion .hero-cue .label {
-  display: inline-block;
   animation: hero-cue-in var(--duration-text) var(--ease-soft) 1.2s both;
+}
+/* The cue's line: a short hairline, and a light that runs along it again and
+   again while the stage waits. */
+.hero-cue-line {
+  position: relative;
+  display: block;
+  width: 3rem;
+  height: 1px;
+  overflow: hidden;
+  background: rgb(255 255 255 / 0.28);
+}
+@keyframes hero-cue-run {
+  0% {
+    transform: translate3d(-101%, 0, 0);
+  }
+  55%,
+  100% {
+    transform: translate3d(101%, 0, 0);
+  }
+}
+html.motion .hero-cue-line::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: #fff;
+  animation: hero-cue-run 2.6s cubic-bezier(0.6, 0, 0.2, 1) 2s infinite both;
+}
+
+/* A soft pool of light on the stage behind her, so she stands in a place and
+   not on a flat colour. Neutral grey only. It comes up with the portrait. */
+.hero-light {
+  background: radial-gradient(58% 62% at 74% 58%, rgb(255 255 255 / 0.075) 0%, rgb(255 255 255 / 0.03) 42%, rgb(255 255 255 / 0) 72%);
+}
+@media (max-width: 767px) {
+  .hero-light {
+    background: radial-gradient(90% 46% at 50% 78%, rgb(255 255 255 / 0.075) 0%, rgb(255 255 255 / 0.03) 45%, rgb(255 255 255 / 0) 75%);
+  }
+}
+@keyframes hero-light-in {
+  from {
+    opacity: 0;
+  }
+}
+html.motion .hero-light {
+  animation: hero-light-in 2.4s var(--ease-soft) 0.2s both;
 }
 
 /* The wrapper is a scene only so the engine reports its progress: it keeps its
@@ -60,75 +104,345 @@ html.motion .hero-cue .label {
   html.motion .hero-hold[data-pinned] .hero-cue {
     opacity: calc(1 - clamp(0, var(--p, 0) * var(--hold-n, 3) * 7, 1));
   }
+  /* Depth while the stage is held: --s is how much of the first screen has
+     been scrolled. The words lift away and fade ahead of the sheet that covers
+     them; she comes a little closer, growing from her foot so she never leaves
+     the edge she stands on. */
+  html.motion .hero-hold[data-pinned] .hero-copy,
+  html.motion .hero-hold[data-pinned] .hero-figure {
+    --s: clamp(0, var(--p, 0) * var(--hold-n, 3), 1);
+    will-change: transform;
+  }
+  html.motion .hero-hold[data-pinned] .hero-copy {
+    transform: translate3d(0, calc(var(--s) * -7rem), 0);
+    opacity: calc(1 - var(--s) * 1.5);
+  }
+  html.motion .hero-hold[data-pinned] .hero-figure {
+    transform: scale(calc(1 + var(--s) * 0.05));
+    transform-origin: 50% 100%;
+  }
 }
 
 /* ==========================================================================
    The story (Perspective.tsx): "A perspective shaped by every side of
    dentistry."
 
-   Pinned, the stage is one screen: the grid fills it and its rows centre the
-   heading, the statement and the meter on the photograph's height. The
-   statements share one cell (the engine's steps); the cell is as tall as the
-   longest statement, so nothing moves when they change.
+   Plain first (the layout without motion is in the component's utilities),
+   then the pinned story. Pinned, the stage is one screen and its three parts
+   are layers of it: the title spread (the heading on white), the photograph
+   (a window that opens until the whole picture fills the screen) and, over
+   the photograph, the statements with their counter and progress line.
    ========================================================================== */
-.persp[data-pinned] .persp-grid {
-  height: 100%;
-  padding-block: calc(var(--header-height) + 1.5rem) 2.5rem;
-}
-/* The photograph is never taller than the room under the header. */
-.persp[data-pinned] .persp-photo {
-  max-height: calc(100svh - var(--header-height) - 6rem);
-  margin-inline: auto;
-  aspect-ratio: 4 / 5;
-}
-/* One statement at a time, set as a heading. */
-.persp[data-pinned] .persp-steps {
-  max-width: none;
-  margin-top: 2.25rem;
-  gap: 0;
-}
-.persp[data-pinned] .persp-say {
-  font-family: var(--font-display);
-  font-size: clamp(1.5rem, 2.5vw, 2.125rem);
-  font-weight: 700;
-  font-stretch: 112%;
-  line-height: 1.14;
-  letter-spacing: -0.02em;
-  text-wrap: balance;
-}
-.persp[data-pinned] .persp-meter {
-  margin-top: 2.5rem;
+.persp .persp-mark-pinned,
+.persp .persp-meter {
+  display: none;
 }
 
-/* The photograph pushes in very slowly through the whole story. */
-html.motion .persp[data-pinned] .persp-img {
-  transform: scale(calc(1 + var(--p, 0) * 0.07));
-  transform-origin: 50% 40%;
-  will-change: transform;
+/* The story's length in screens (both set in Perspective.tsx): the longer one
+   where a thumb scrolls it, the shorter on wide landscape screens, where a
+   wheel or trackpad does and every notch should bring something. */
+.persp[data-scene] {
+  --scene-length: var(--story-tall, 6.2);
+}
+@media (min-width: 1024px) and (orientation: landscape) {
+  .persp[data-scene] {
+    --scene-length: var(--story-wide, 4.8);
+  }
 }
 
-/* One statement leaves as a whole; the next arrives word by word. */
-html.motion .persp[data-pinned] [data-scene-step] {
-  transform: none;
-  transition: opacity 0.3s var(--ease-soft);
-}
-html.motion .persp[data-pinned] [data-scene-step] .wr-in {
-  transform: translate3d(0, 115%, 0);
-  transition: transform 0s linear 0.32s;
-}
-html.motion .persp[data-pinned] [data-scene-step][data-active] {
-  transition: opacity 0.25s var(--ease-soft) 0.18s;
-}
-html.motion .persp[data-pinned] [data-scene-step][data-active] .wr-in {
-  transform: none;
-  transition: transform var(--duration-image) var(--ease-expo) calc(0.18s + var(--i, 0) * 18ms);
-}
-/* Arriving mid-story (a reload, or coming Back to the page): until the engine
-   has marked the current step, no statement shows and none fades. Otherwise
-   all five would be seen on top of one another for a moment. */
-html.motion .persp[data-pinned]:not([data-step]) [data-scene-step] {
-  opacity: 0;
-  transition: none;
+@media screen {
+  /* The scene has --n steps (set in Perspective.tsx): step 0 is the opening,
+     then one step per statement (--m of them), then two that hold the final
+     statement while the next section slides up over the stage.
+     --edge is the page column's edge, so the window and the words line up
+     with the rest of the page. */
+  .persp[data-pinned] .persp-set {
+    --edge: max(1.25rem, calc((100vw - var(--wrap)) / 2 + 1.25rem));
+    --win-top: max(45svh, 13.25rem);
+    --win-shift: 25svh;
+    display: block;
+    max-width: none;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  @media (min-width: 768px) {
+    .persp[data-pinned] .persp-set {
+      --edge: max(2.5rem, calc((100vw - var(--wrap)) / 2 + 2.5rem));
+    }
+  }
+  /* The engine writes --p only on the parts that move with it (they carry
+     data-scene-vars in Perspective.tsx: the photograph, the meter and the
+     header's marker), so a scroll frame restyles those and not every word of
+     the story. The timings are worked out on each of them:
+     --at:   progress counted in steps (0 to n).
+     --open: the photograph's window opening to the full screen (0 to 1).
+     --dark: the light going down for the white type (0 to 1).
+     The statements themselves follow the engine's step attributes. */
+  .persp[data-pinned] [data-scene-vars] {
+    --at: calc(var(--p, 0) * var(--n));
+    --open: clamp(0, var(--at) / 0.62, 1);
+    --shut: calc(1 - var(--open));
+    --dark: clamp(0, (var(--at) - 0.46) / 0.44, 1);
+  }
+
+  /* Title spread: the heading sits on the page, above the framed photograph. */
+  .persp[data-pinned] .persp-title {
+    position: absolute;
+    inset: 0 0 auto;
+    z-index: 0;
+    padding: clamp(6.25rem, 13svh, 8rem) var(--edge) 0;
+  }
+  .persp[data-pinned] .persp-heading {
+    max-width: 24ch;
+    /* Not seen: the heading's box is carried down by the height of the
+       photograph's window, so it ends at the foot of the stage when the words
+       end where the window begins. If the words ever run under the window (the
+       visitor's own text spacing or font size), the box leaves the stage, and
+       the engine then un-pins the story (engine.ts, "Fit"): it becomes the
+       plain layout, where the photograph stands beside the heading. */
+    padding-bottom: calc(100svh - var(--win-top));
+  }
+
+  /* The photograph: a window that opens to the full screen, then a slow push-in. */
+  .persp[data-pinned] .persp-photo {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    width: auto;
+    max-width: none;
+    height: auto;
+    margin: 0;
+    aspect-ratio: auto;
+    clip-path: inset(calc(var(--shut) * var(--win-top)) calc(var(--shut) * var(--edge)) 0 calc(var(--shut) * var(--edge)));
+  }
+  /* Phones: when the browser's toolbar slides away the screen grows past the
+     pinned stage. The photograph runs to the taller height, so no strip of the
+     page shows under it. */
+  @supports (height: 100lvh) {
+    .persp[data-pinned] > .persp-stage {
+      overflow: visible;
+    }
+    .persp[data-pinned] .persp-photo {
+      inset: 0 0 auto;
+      height: 100lvh;
+    }
+  }
+  /* Scaled from the right edge, so the push-in carries her a little further to
+     the left and the dark side keeps its room for the words. */
+  .persp[data-pinned] .persp-img {
+    transform: translate3d(0, calc(var(--shut) * var(--win-shift)), 0) scale(calc(1.08 + var(--p, 0) * 0.1));
+    transform-origin: 100% 36%;
+    will-change: transform;
+  }
+  /* The light goes down on the side away from her, where the words are set,
+     along the foot for the meter and under the header. She keeps the light. */
+  .persp[data-pinned] .persp-shade {
+    opacity: var(--dark);
+    background:
+      linear-gradient(180deg, rgb(11 11 11 / 0.5) 0%, rgb(11 11 11 / 0) 20%),
+      linear-gradient(0deg, rgb(11 11 11 / 0.55) 0%, rgb(11 11 11 / 0) 30%),
+      linear-gradient(
+        90deg,
+        rgb(11 11 11 / 0.16) 0%,
+        rgb(11 11 11 / 0.2) 24%,
+        rgb(11 11 11 / 0.44) 39%,
+        rgb(11 11 11 / 0.74) 53%,
+        rgb(11 11 11 / 0.88) 67%,
+        rgb(11 11 11 / 0.92) 100%
+      );
+  }
+
+  /* The statements: one at a time, over the photograph. */
+  .persp[data-pinned] .persp-copy {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: grid;
+    grid-template-rows: minmax(0, 1fr) auto;
+    margin: 0;
+    padding: calc(var(--header-height) + 1rem) var(--edge) 2.25rem;
+    color: #fff;
+  }
+  /* The column starts past her outstretched arm, on the dark side, and ends on
+     the page column's edge. */
+  .persp[data-pinned] .persp-steps {
+    align-items: center;
+    align-self: center;
+    justify-self: end;
+    width: min(37rem, 39vw);
+    max-width: none;
+    gap: 0;
+  }
+  /* Set as a heading, never larger than a section heading. */
+  .persp[data-pinned] .persp-say {
+    font-family: var(--font-display);
+    font-size: clamp(1.625rem, min(2.9vw, 5.6svh), 2.625rem);
+    font-weight: 700;
+    font-stretch: 112%;
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  /* One statement leaves as a whole; the next arrives word by word. */
+  html.motion .persp[data-pinned] [data-scene-step] {
+    transform: none;
+    transition: opacity 0.3s var(--ease-soft);
+  }
+  html.motion .persp[data-pinned] [data-scene-step] .wr-in {
+    transform: translate3d(0, 115%, 0);
+    transition: transform 0s linear 0.32s;
+  }
+  /* The last statement stays while the next section covers the stage: it is
+     "past" only during the scene's closing steps, and is shown then exactly as
+     when it is the current one. */
+  html.motion .persp[data-pinned] .persp-step-last[data-past] {
+    opacity: 1;
+  }
+  html.motion .persp[data-pinned] [data-scene-step][data-active],
+  html.motion .persp[data-pinned] .persp-step-last[data-past] {
+    transition: opacity 0.25s var(--ease-soft) 0.18s;
+  }
+  html.motion .persp[data-pinned] [data-scene-step][data-active] .wr-in,
+  html.motion .persp[data-pinned] .persp-step-last[data-past] .wr-in {
+    transform: none;
+    transition: transform var(--duration-image) var(--ease-expo) calc(0.18s + var(--i, 0) * 18ms);
+  }
+  /* Arriving mid-story (a reload, or coming Back to the page): until the engine
+     has marked the current step, no statement shows and none fades. Otherwise
+     all five would be seen on top of one another for a moment. */
+  html.motion .persp[data-pinned]:not([data-step]) [data-scene-step] {
+    opacity: 0;
+    transition: none;
+  }
+
+  /* "01 / 05" and the progress line, across the foot of the stage. */
+  .persp[data-pinned] .persp-meter {
+    display: flex;
+    align-items: center;
+    color: rgb(255 255 255 / 0.8);
+    opacity: var(--dark);
+  }
+  .persp .persp-count {
+    display: inline-block;
+    height: 1em;
+    overflow: hidden;
+    line-height: 1;
+  }
+  .persp .persp-roll {
+    display: flex;
+    flex-direction: column;
+    transition: transform var(--duration-scene) var(--ease-expo);
+  }
+  .persp .persp-roll > span {
+    height: 1em;
+    line-height: 1;
+  }
+  /* Written out for five statements; browsers with round() follow --n instead. */
+  .persp[data-step="2"] .persp-roll {
+    transform: translate3d(0, -1em, 0);
+  }
+  .persp[data-step="3"] .persp-roll {
+    transform: translate3d(0, -2em, 0);
+  }
+  .persp[data-step="4"] .persp-roll {
+    transform: translate3d(0, -3em, 0);
+  }
+  .persp[data-step="5"] .persp-roll,
+  .persp[data-step="6"] .persp-roll,
+  .persp[data-step="7"] .persp-roll {
+    transform: translate3d(0, -4em, 0);
+  }
+  @supports (transform: translateY(calc(round(down, 1.4) * 1em))) {
+    .persp[data-pinned] .persp-roll {
+      transform: translate3d(0, calc(clamp(0, round(down, var(--at)) - 1, var(--m) - 1) * -1em), 0);
+    }
+  }
+  .persp .persp-rule {
+    position: relative;
+    flex: 1;
+    height: 1px;
+    margin-left: 1.5rem;
+    overflow: hidden;
+    background: rgb(255 255 255 / 0.22);
+  }
+  /* Fills across the statements (steps 1 to m). */
+  .persp .persp-rule > span {
+    position: absolute;
+    inset: 0;
+    background: #fff;
+    transform: scaleX(clamp(0, (var(--at, 0) - 1) / var(--m, 5), 1));
+    transform-origin: left center;
+  }
+
+  /* The header's dark marker: in place once the photograph has reached the top
+     of the screen. The next section carries a light marker of its own, so the
+     header turns back as that section passes under it. */
+  .persp[data-pinned] .persp-mark-pinned {
+    --lit: clamp(0, (var(--open) - 0.8) * 1000, 1);
+    display: block;
+    position: absolute;
+    inset: 0 0 auto;
+    height: var(--header-height);
+    transform: translate3d(0, calc((1 - var(--lit)) * -200%), 0);
+  }
+
+  /* Upright screens (phones, a tablet held upright): she fills the screen and
+     the words sit low, on a deep shade. */
+  @media (max-aspect-ratio: 1/1) {
+    .persp[data-pinned] .persp-set {
+      --win-top: max(38svh, 14.5rem);
+      --win-shift: 17svh;
+    }
+    .persp[data-pinned] .persp-img {
+      transform-origin: 38% 30%;
+    }
+    .persp[data-pinned] .persp-shade {
+      background: linear-gradient(
+        0deg,
+        rgb(11 11 11 / 0.95) 0%,
+        rgb(11 11 11 / 0.9) 34%,
+        rgb(11 11 11 / 0.62) 50%,
+        rgb(11 11 11 / 0.26) 66%,
+        rgb(11 11 11 / 0.14) 80%,
+        rgb(11 11 11 / 0.4) 100%
+      );
+    }
+    .persp[data-pinned] .persp-copy {
+      padding-bottom: 1.5rem;
+    }
+    .persp[data-pinned] .persp-steps {
+      align-items: end;
+      align-self: end;
+      justify-self: stretch;
+      width: auto;
+      max-width: 46rem;
+      padding-bottom: 1.75rem;
+    }
+    .persp[data-pinned] .persp-say {
+      font-size: clamp(1.5rem, min(6.6vw, 4.2svh), 2.5rem);
+    }
+  }
+
+  /* The next section slides up over the held stage, as the story did over the
+     opening: the scene gives up its last screen to whatever follows it, and a
+     soft shadow travels just ahead of that section's top edge. Both hang on
+     the scene itself, so there is none of this when the story is its plain
+     layout. (Done here, not with :has() from the section that follows: the
+     browser would re-check that selector on every change inside the story.) */
+  html.motion .persp[data-pinned] {
+    margin-bottom: -100svh;
+  }
+  html.motion .persp[data-pinned]::after {
+    content: "";
+    position: absolute;
+    inset: auto 0 100svh;
+    z-index: 3;
+    height: 5rem;
+    background: linear-gradient(0deg, rgb(11 11 11 / 0.3), rgb(11 11 11 / 0));
+    pointer-events: none;
+  }
 }
 
 /* ==========================================================================
@@ -189,6 +503,28 @@ html.motion .persp[data-pinned]:not([data-step]) [data-scene-step] {
   align-self: end;
   margin-top: 0;
   padding-top: 0;
+}
+/* Focus and depth on the track. --t is the row's travel (0 to 1) and --k a
+   card's place in the row, so --away is how far the card is from the middle of
+   the journey's current stop: the card being read is in full light and the
+   ones before and after it stand back a little. Inside each frame the
+   photograph is set a touch large and drifts against the travel, so the
+   pictures move behind their frames instead of sliding past like stickers. */
+html.motion .work[data-pinned] .work-panel {
+  --t: clamp(0, (var(--p, 0) - 0.05) / 0.83, 1);
+  --pos: calc(var(--t) * 3 - var(--k, 0));
+  --away: max(var(--pos), calc(var(--pos) * -1));
+}
+html.motion .work[data-pinned] .work-card {
+  opacity: clamp(0.42, calc(1.65 - var(--away)), 1);
+}
+html.motion .work[data-pinned] .work-photo img {
+  transform: translate3d(clamp(-4.5%, calc(var(--pos) * 3.5%), 4.5%), 0, 0) scale(1.1);
+  will-change: transform;
+}
+/* A card with keyboard focus inside is always in full light. */
+html.motion .work[data-pinned] .work-panel:focus-within .work-card {
+  opacity: 1;
 }
 /* On the track the cards are simply there: they arrive with the stage. */
 html.motion .work[data-pinned] .work-track.stagger > * {
@@ -280,6 +616,9 @@ html.motion .finale .finale-mark[data-inview][data-in] {
   }
   .persp-img {
     transform: none !important;
+  }
+  .persp-shade {
+    display: none !important;
   }
   .finale .finale-mark {
     opacity: 1 !important;

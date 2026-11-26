@@ -35,13 +35,28 @@ export const home = {
      * pink marker. It must appear in the heading exactly as written.
      */
     headingMark: "every side",
-    /** The photograph beside the story: a 4:5 crop of JVH-123. */
+    /**
+     * The story's photograph. On landscape screens the whole frame: she stands
+     * in the left half and the warm wall runs away to the right, which is
+     * where the statements are set once the picture fills the screen.
+     */
     photo: {
+      src: "/photos/home-perspective-band-g.jpg",
+      srcBw: "/photos/home-perspective-band-bw.jpg",
+      alt: "Dr. Joy in a white blazer, looking away and smiling",
+      treatment: "color",
+      direction: "Candid, full frame: white blazer against a warm wall, looking out of the frame. A pause in the story, not another headshot.",
+      // In a narrow frame (the plain layout) the crop holds on her, not on the wall.
+      focus: "36% 40%",
+      original: "JVH-123",
+    } satisfies PhotoSlot,
+    /** The same photograph on upright screens: a 4:5 crop. */
+    photoTall: {
       src: "/photos/home-perspective-band-tall-g.jpg",
       srcBw: "/photos/home-perspective-band-tall-bw.jpg",
       alt: "Dr. Joy in a white blazer, looking away and smiling",
       treatment: "color",
-      direction: "Candid: white blazer against a warm wall, looking out of the frame. A pause in the story, not another headshot.",
+      direction: "4:5 crop of the story's photograph for phones.",
       focus: "50% 40%",
       original: "JVH-123 (crop)",
     } satisfies PhotoSlot,

@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import { home } from "@/content/home";
 import { Photo } from "../ui/Photo";
 import { ArrowLink } from "../ui/Links";
@@ -37,8 +38,8 @@ export function Pathways() {
       suppressHydrationWarning
       className="work-track stagger mx-auto grid max-w-(--wrap) gap-y-12 px-5 sm:grid-cols-2 sm:gap-x-6 md:px-10 lg:grid-cols-4"
     >
-      {home.pathways.map((p) => (
-        <li key={p.kicker} data-scene-panel className="work-panel">
+      {home.pathways.map((p, i) => (
+        <li key={p.kicker} data-scene-panel className="work-panel" style={{ "--k": i } as CSSProperties}>
           <div className="work-card group relative grid grid-cols-[minmax(0,2fr)_minmax(0,3fr)] items-center gap-x-5 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-[0.75rem] has-[:focus-visible]:outline-ink sm:flex sm:h-full sm:flex-col sm:items-stretch">
             <div className="work-photo overflow-hidden bg-mist">
               <Photo

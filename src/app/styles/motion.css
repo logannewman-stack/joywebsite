@@ -134,6 +134,16 @@ html.motion [data-rise-now] .wr-in {
   animation: line-rise var(--duration-image) var(--ease-expo) calc(var(--rise-delay, 0s) + var(--i, 0) * var(--rise-stagger, 40ms)) both;
 }
 
+/* --------------------------------------------------------------------------
+   The room behind a quote (Quote.tsx): the photograph under a dark quote is
+   dimmed so the words stay first. With motion the room is a little lighter as
+   the section arrives and its light goes down while the words light up, like
+   the house lights before a talk. Without motion it is simply dim.
+   -------------------------------------------------------------------------- */
+html.motion .quote-dim[data-view] {
+  opacity: calc(0.78 + clamp(0, (var(--v, 1) - 0.1) / 0.3, 1) * 0.22);
+}
+
 /* WordLight: words brighten one after another as --t runs 0 to 1. */
 .word-light {
   --t: calc((var(--drive, 1) - var(--from, 0.2)) / (var(--to, 0.55) - var(--from, 0.2)));

@@ -76,12 +76,18 @@ One page column and one type scale serve every page (`src/app/globals.css`):
 - **Headings.** A heading takes `display` and one size: `t-hero` (a page's opening line, 64px on a desktop and 36px on a phone), `t-h1` (a section heading, 48px), `t-h2` (34px) or `t-h3` (22px). Nothing is set larger than `t-hero`. Running text takes `t-lead` or `t-body`; small capital labels take `label`.
 - **Typefaces.** Two, beside the script logo: Archivo for headings and DM Sans for everything else (`src/app/layout.tsx`). Headings use one cut of Archivo, bold and 112% wide, kept as a small file in `src/app/fonts` (its README says how it was made); a heading at another weight or width needs a new cut. DM Sans is loaded upright only.
 - **Emphasis.** Never italic and never a second typeface. A heading is plain, or one phrase carries the pale pink marker behind it (`<Hl>`, `src/components/motion/Text.tsx`). The marker is for white sections only: black sections carry no pink.
-- **Photographs.** Beside text a photograph takes four or five of the twelve columns, about a third of the screen. A wide photograph may run the width of the column as a band; none bleeds to the edge of the screen or fills it. A portrait with its background removed (`treatment: "cutout"`) stands on the bottom edge of its section, straight on white or black.
+- **Photographs.** Beside text a photograph takes four or five of the twelve columns, about a third of the screen. A wide photograph may run the width of the column as a band. One photograph fills the screen: the story on Home (below). A portrait with its background removed (`treatment: "cutout"`) stands on the bottom edge of its section, straight on white or black.
 - **Lines.** Where one white section follows another, a thin grey line the width of the column is drawn between them automatically; a section that should run on from the one above takes the class `no-rule`. Lists and ledgers use thin lines between groups (`border-line` on white, `border-line-dark` on black). Black sections need no line: the change of color is the edge.
 
 ### Opening screen
 
 Home opens on a black stage: the headline on the left and Dr. Joy's portrait in the white blazer on the right, in color with its background removed, standing on the bottom edge of the section. It is one screen tall on a desktop. The component is `src/components/home/Hero.tsx` and the portrait is `home.hero.photo`.
+
+### Home's story
+
+After the opening, "A perspective shaped by every side of dentistry." is the one full-screen picture on the site. It arrives as a title spread (the heading on white above the framed photograph); the frame opens until the whole photograph fills the screen, the light goes down on the side away from her, and the five approved statements appear there one at a time in white, with a counter and a thin progress line. The next section then slides up over it. On landscape screens she stands on the left and the words are set on the right (`home.perspective.photo`, the wide frame); on phones and upright tablets she fills the screen and the words sit low (`photoTall`, a 4:5 crop of the same photograph).
+
+The component is `src/components/home/Perspective.tsx` and the choreography is in `src/app/styles/home.css` ("The story"). The type stays inside the site's scale: the statements are never larger than a section heading. Without JavaScript, with reduced motion, in print, and on screens too small for the words, it is a plain section: the photograph, the heading and the statements as reading text.
 
 ## Brand assets
 

@@ -46,7 +46,7 @@ export default function Home() {
         {/* Where the stage holds, this marker scrolls in its place and keeps the header's dark variant in step. */}
         <div aria-hidden data-header="dark" className="pointer-events-none absolute inset-x-0 top-0 hidden h-[100svh] lg:landscape:block" />
         <Hero />
-        {/* A perspective shaped by every side of dentistry: the story, one statement at a time beside one photograph. */}
+        {/* A perspective shaped by every side of dentistry: the photograph opens to the whole screen and the story plays over it, one statement at a time. */}
         <Perspective />
       </div>
 
@@ -56,6 +56,8 @@ export default function Home() {
         line at the foot. Counted in four steps (the counter). Below 1024px: cards in a grid.
       */}
       <section id="work" className="relative z-10 bg-paper" aria-labelledby="work-heading">
+        {/* It slides up over the story's dark stage (home.css, "The story"): this keeps the header light as it passes under. */}
+        <div aria-hidden data-header="light" className="pointer-events-none absolute inset-0" />
         <Scene as="div" from="lg" length={3} steps={pathways.length} className="work" pinClassName="work-stage py-20 md:py-28">
           <div className="mx-auto flex w-full max-w-(--wrap) items-end justify-between gap-6 px-5 md:px-10">
             <InView>
