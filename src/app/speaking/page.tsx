@@ -74,8 +74,8 @@ export default function SpeakingPage() {
         own, and the line that starts the next section).
       */}
       <section className="bg-paper pt-(--header-height)">
-        <div className="mx-auto max-w-(--wrap) px-5 pt-12 md:px-10 md:pt-16 lg:grid lg:grid-cols-12 lg:grid-rows-[auto_1fr_auto] lg:gap-x-6 lg:pt-20">
-          <div className="lg:col-span-7 lg:row-start-1">
+        <div className="mx-auto max-w-(--wrap) px-5 pt-12 md:grid md:grid-cols-12 md:grid-rows-[auto_1fr_auto] md:gap-x-6 md:px-10 md:pt-16 lg:pt-20">
+          <div className="md:col-span-7 md:row-start-1">
             <Reveal immediate>
               <Label index="02">Speaking</Label>
             </Reveal>
@@ -86,18 +86,18 @@ export default function SpeakingPage() {
           </div>
 
           {/* The stage photo: visible from first paint (it is the largest paint); it settles from slightly large, then drifts a little slower than the page. */}
-          <div className="mt-10 w-[min(100%,24rem)] md:mt-12 lg:col-span-5 lg:col-start-8 lg:row-span-2 lg:row-start-1 lg:mt-0 lg:w-auto">
+          <div className="mt-10 w-[min(100%,24rem)] md:col-span-5 md:col-start-8 md:row-span-2 md:row-start-1 md:mt-0 md:w-auto">
             <Parallax amount={4} className="aspect-[4/5] w-full lg:aspect-auto lg:h-full lg:max-h-[42rem] lg:min-h-[30rem]">
               <Photo
                 slot={hero.photo}
                 priority
                 className="sp-hero-settle h-full w-full"
-                sizes="(max-width: 1023px) min(100vw - 40px, 384px), (max-width: 1440px) 36vw, 32vw"
+                sizes="(max-width: 767px) min(100vw - 40px, 384px), (max-width: 1440px) 36vw, 32vw"
               />
             </Parallax>
           </div>
 
-          <Reveal immediate delay={0.25} className="mt-10 md:mt-12 lg:col-span-7 lg:row-start-2 lg:mt-10">
+          <Reveal immediate delay={0.25} className="mt-10 md:col-span-7 md:row-start-2">
             <div className="flex max-w-[33rem] flex-col gap-5">
               {hero.paragraphs.map((p, i) => (
                 <p key={p} className={i === 0 ? "t-lead text-ink" : "t-body text-ink"}>
@@ -114,7 +114,7 @@ export default function SpeakingPage() {
           </Reveal>
 
           {/* The chapter list: the page's four chapters, under a line that draws itself. */}
-          <Reveal immediate delay={0.35} className="mt-12 md:mt-14 lg:col-span-12 lg:row-start-3">
+          <Reveal immediate delay={0.35} className="mt-12 md:col-span-12 md:row-start-3 md:mt-14">
             <InView className="relative">
               <Rule />
               <nav aria-label="On this page" className="py-3">
@@ -206,8 +206,8 @@ export default function SpeakingPage() {
       */}
       <section data-header="dark" className="grain grain-light relative bg-ink text-white">
         <ChapterRail current={2} tone="dark" />
-        <div className="mx-auto max-w-(--wrap) px-5 py-20 md:px-10 md:py-28 lg:grid lg:grid-cols-12 lg:gap-x-6">
-          <div id="keynotes" className="lg:col-span-6 lg:row-start-1">
+        <div className="mx-auto max-w-(--wrap) px-5 py-20 md:grid md:grid-cols-12 md:gap-x-6 md:px-10 md:py-28">
+          <div id="keynotes" className="md:col-span-6 md:row-start-1">
             <h2 className="display t-h1">
               <WordRise>{keynotes.heading}</WordRise>
             </h2>
@@ -215,10 +215,10 @@ export default function SpeakingPage() {
           {/* Above the section's grain (z-1), so the part of the photo that rises into the white matches the rest. The scroll engine writes --v here before React hydrates. */}
           <div
             data-view
-            className="relative z-[1] mt-10 w-[min(100%,24rem)] md:mt-12 lg:col-span-5 lg:col-start-8 lg:row-span-2 lg:row-start-1 lg:-mt-48 lg:w-auto"
+            className="relative z-[1] mt-10 w-[min(100%,24rem)] md:col-span-5 md:col-start-8 md:row-span-2 md:row-start-1 md:mt-0 md:w-auto lg:-mt-48"
             suppressHydrationWarning
           >
-            <ImageReveal className="lg:motion:sticky lg:top-28">
+            <ImageReveal className="md:motion:sticky md:top-28">
               {/* Short desktop screens: the held photo never runs past the fold (7rem above it, 1.5rem below). */}
               <div className="aspect-[4/5] w-full overflow-clip lg:max-h-[calc(100svh-8.5rem)]">
                 <div className="sp-keynote-zoom h-full w-full">
@@ -226,13 +226,13 @@ export default function SpeakingPage() {
                     slot={keynotes.photo}
                     tone="dark"
                     className="h-full w-full"
-                    sizes="(max-width: 1023px) min(100vw - 40px, 384px), (max-width: 1440px) 36vw, 32vw"
+                    sizes="(max-width: 767px) min(100vw - 40px, 384px), (max-width: 1440px) 36vw, 32vw"
                   />
                 </div>
               </div>
             </ImageReveal>
           </div>
-          <div className="mt-10 lg:col-span-6 lg:row-start-2 lg:mt-16">
+          <div className="mt-10 md:col-span-6 md:row-start-2 lg:mt-16">
             {keynotes.items.map((k) => (
               <InView as="article" key={k.title} className="relative pt-7 pb-10 last:pb-0 lg:pt-9 lg:pb-14">
                 <Rule tone="dark" />

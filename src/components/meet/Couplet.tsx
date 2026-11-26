@@ -31,15 +31,15 @@ function Pair({ line }: { line: string }) {
 export function Couplet({ lines, photo }: { lines: string[]; photo: PhotoSlot }) {
   return (
     <section className="meet-couplet overflow-x-clip bg-paper">
-      <div data-view="" className="meet-couplet-stage mx-auto max-w-(--wrap) px-5 py-20 md:px-10 md:py-28 lg:grid lg:grid-cols-12 lg:items-center lg:gap-x-6">
-        <div className="meet-couplet-photo w-[min(100%,30rem)] lg:col-span-5 lg:w-auto">
+      <div data-view="" className="meet-couplet-stage mx-auto max-w-(--wrap) px-5 py-20 md:grid md:grid-cols-12 md:items-center md:gap-x-6 md:px-10 md:py-28">
+        <div className="meet-couplet-photo w-[min(100%,30rem)] md:col-span-5 md:w-auto">
           <ImageReveal>
             <Parallax amount={5} className="aspect-[5/4] w-full">
-              <Photo slot={photo} className="h-full w-full" sizes="(max-width: 1023px) min(100vw - 40px, 480px), (max-width: 1440px) 36vw, 30vw" />
+              <Photo slot={photo} className="h-full w-full" sizes="(max-width: 767px) min(100vw - 40px, 480px), (max-width: 1440px) 36vw, 30vw" />
             </Parallax>
           </ImageReveal>
         </div>
-        <div className="mt-10 lg:col-span-6 lg:col-start-7 lg:mt-0">
+        <div className="mt-10 md:col-span-6 md:col-start-7 md:mt-0">
           <p className="meet-line meet-line-a display t-h1 text-stone">
             <Pair line={lines[0]} />
           </p>

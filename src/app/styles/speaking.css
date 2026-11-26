@@ -262,6 +262,35 @@ html.motion .sp-hero-settle {
     padding-inline: max(2.5rem, calc((100vw - var(--wrap)) / 2 + 2.5rem));
   }
 }
+/* The bar has no room of its own in the page: it lies over whatever is at the
+   top of the screen. Left to the clip alone it would be uncovered a slice at a
+   time as its layer's edge crossed the top of the screen, half its label
+   against half a line of the chapter's introduction. So it waits above the
+   screen until the layer has reached the top, then slides down into place
+   over the next short scroll, its own height, covering the text beneath
+   cleanly the way a header does (the layer's own view timeline; exit-crossing
+   begins when its top edge meets the top of the screen). The timeline's inset is set to none: left to
+   itself it would follow the page's scroll padding, which keeps anchors clear
+   of the header, and the slide would be over before the bar arrived. Browsers
+   without scroll-driven animations keep the plain clip. */
+@media screen and (max-width: 1023px), screen and (max-height: 479px) {
+  @supports (animation-timeline: view()) {
+    .sp-bar-clip {
+      view-timeline: --sp-bar block;
+      view-timeline-inset: 0px;
+    }
+    .sp-bar {
+      animation: sp-bar-in linear both;
+      animation-timeline: --sp-bar;
+      animation-range: exit-crossing 0px exit-crossing 2.25rem;
+    }
+  }
+}
+@keyframes sp-bar-in {
+  from {
+    transform: translate3d(0, -100%, 0);
+  }
+}
 
 /* --------------------------------------------------------------------------
    Course index (CourseIndex.tsx): thin lines set the courses apart, and the

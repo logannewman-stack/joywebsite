@@ -54,28 +54,29 @@ function Heading() {
  * slowly the whole way. The choreography is in home.css ("The story").
  *
  * Below 1024px, without JavaScript, with reduced motion and in print it is a
- * plain section: the heading, the photograph, then the statements as reading
- * text, one under another.
+ * plain section. From 768px the photograph keeps its place on the left with
+ * the heading and the statements, as reading text, beside it; on phones they
+ * follow one under another: the heading, the photograph, the statements.
  */
 export function Perspective() {
   return (
     <section aria-labelledby="perspective-heading" className="relative z-10 bg-paper">
       <Scene as="div" from="lg" steps={statements.length} length={STORY_LENGTH} className="persp" pinClassName="persp-stage">
-        <div className="persp-grid mx-auto max-w-(--wrap) px-5 py-20 md:px-10 md:py-28 lg:grid lg:grid-cols-12 lg:grid-rows-[1fr_auto_auto_auto_1fr] lg:gap-x-6">
-          <InView className="lg:col-span-6 lg:col-start-7 lg:row-start-2">
+        <div className="persp-grid mx-auto max-w-(--wrap) px-5 py-20 md:grid md:grid-cols-12 md:gap-x-6 md:px-10 md:py-28 lg:grid-rows-[1fr_auto_auto_auto_1fr]">
+          <InView className="md:col-span-6 md:col-start-7 md:row-start-1 lg:row-start-2">
             <h2 id="perspective-heading" className="display t-h1">
               <Heading />
             </h2>
           </InView>
 
           {/* data-scene-vars: the engine writes the scene's progress (--p) on the photograph and the meter only, so the words are not restyled on every scroll frame. */}
-          <ImageReveal className="mt-10 w-[min(100%,24rem)] lg:col-span-5 lg:col-start-1 lg:row-span-5 lg:row-start-1 lg:mt-0 lg:w-auto lg:self-center">
+          <ImageReveal className="mt-10 w-[min(100%,24rem)] md:col-span-5 md:col-start-1 md:row-span-2 md:row-start-1 md:mt-0 md:w-auto md:self-start lg:row-span-5 lg:self-center">
             <div data-scene-vars="" suppressHydrationWarning className="persp-photo aspect-[4/5] w-full overflow-hidden">
-              <Photo slot={perspective.photo} className="persp-img h-full w-full" sizes="(max-width: 1023px) min(100vw - 40px, 384px), 33vw" />
+              <Photo slot={perspective.photo} className="persp-img h-full w-full" sizes="(max-width: 767px) min(100vw - 40px, 384px), (max-width: 1023px) 38vw, 33vw" />
             </div>
           </ImageReveal>
 
-          <SceneSteps className="persp-steps mt-10 flex max-w-[34rem] flex-col gap-5 lg:col-span-6 lg:col-start-7 lg:row-start-3 lg:mt-8">
+          <SceneSteps className="persp-steps mt-10 flex max-w-[34rem] flex-col gap-5 md:col-span-6 md:col-start-7 md:row-start-2 md:mt-8 lg:row-start-3">
             {statements.map((text, i) => (
               <SceneStep key={i} index={i}>
                 <p className={`persp-say ${i === 0 ? "t-lead" : "t-body"} text-ink`}>

@@ -38,8 +38,8 @@ export default function MeetPage() {
         is read.
       */}
       <section className="bg-paper pt-(--header-height)">
-        <div className="mx-auto max-w-(--wrap) px-5 md:px-10 lg:grid lg:grid-cols-12 lg:items-end lg:gap-x-6">
-          <div className="pt-12 md:pt-16 lg:col-span-7 lg:pt-20 lg:pb-24">
+        <div className="mx-auto max-w-(--wrap) px-5 md:grid md:grid-cols-12 md:items-end md:gap-x-6 md:px-10">
+          <div className="pt-12 md:col-span-7 md:pt-16 md:pb-20 lg:pt-20 lg:pb-24">
             <Reveal immediate>
               <Label index="01">Meet Dr. Joy</Label>
             </Reveal>
@@ -63,13 +63,13 @@ export default function MeetPage() {
             />
           </div>
 
-          <div className="mx-auto mt-12 w-[min(100%,24rem)] md:mt-16 lg:col-span-5 lg:col-start-8 lg:mx-0 lg:mt-0 lg:w-auto">
+          <div className="mx-auto mt-12 w-[min(100%,24rem)] md:col-span-5 md:col-start-8 md:mx-0 md:mt-0 md:w-auto">
             {/* 1122 x 1402: the frame has the cut-out's own proportions, so nothing is cropped and its foot meets the section edge. */}
             <Photo
               slot={hero.portrait}
               priority
               className="meet-settle aspect-[1122/1402] w-full"
-              sizes="(max-width: 1023px) min(100vw - 40px, 384px), (max-width: 1440px) 36vw, 30vw"
+              sizes="(max-width: 767px) min(100vw - 40px, 384px), (max-width: 1440px) 36vw, 30vw"
             />
           </div>
         </div>
@@ -109,15 +109,15 @@ export default function MeetPage() {
 
       {/* The sign-off: the story's last lines, her signature, and the way to reach her */}
       <section className="meet-signoff bg-paper">
-        <div className="mx-auto max-w-(--wrap) px-5 pt-20 pb-24 md:px-10 md:pt-28 md:pb-32 lg:grid lg:grid-cols-12 lg:items-center lg:gap-x-6">
+        <div className="mx-auto max-w-(--wrap) px-5 pt-20 pb-24 md:grid md:grid-cols-12 md:items-center md:gap-x-6 md:px-10 md:pt-28 md:pb-32">
           {hasLifePhoto && (
-            <ImageReveal className="w-[min(100%,22rem)] lg:col-span-4 lg:w-auto">
+            <ImageReveal className="w-[min(100%,22rem)] md:col-span-5 md:w-auto lg:col-span-4">
               <Parallax amount={5} className="aspect-[4/5] w-full">
-                <Photo slot={guides.photo} className="h-full w-full" sizes="(max-width: 1023px) min(100vw - 40px, 352px), (max-width: 1440px) 30vw, 25vw" />
+                <Photo slot={guides.photo} className="h-full w-full" sizes="(max-width: 767px) min(100vw - 40px, 352px), (max-width: 1023px) 38vw, (max-width: 1440px) 30vw, 25vw" />
               </Parallax>
             </ImageReveal>
           )}
-          <InView className={hasLifePhoto ? "mt-10 max-w-[38rem] lg:col-span-7 lg:col-start-6 lg:mt-0" : "max-w-[38rem] lg:col-span-7 lg:col-start-6"}>
+          <InView className={hasLifePhoto ? "mt-10 max-w-[38rem] md:col-span-6 md:col-start-7 md:mt-0 lg:col-span-7 lg:col-start-6" : "max-w-[38rem] md:col-span-6 md:col-start-7 lg:col-span-7 lg:col-start-6"}>
             <p className="rise t-lead text-ink">{guides.after[0]}</p>
             <p className="rise display t-h2 mt-8" style={{ "--d": "0.08s" } as Vars}>
               {highlight(guides.after[1], ["more than 20 years later."])}

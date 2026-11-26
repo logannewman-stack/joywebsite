@@ -52,8 +52,8 @@ export default function IndustryPage() {
         words come first and the portrait follows, centred.
       */}
       <section className="bg-paper pt-(--header-height)">
-        <div className="mx-auto max-w-(--wrap) px-5 md:px-10 lg:grid lg:grid-cols-12 lg:items-end lg:gap-x-6">
-          <div className="pt-12 md:pt-16 lg:col-span-6 lg:col-start-7 lg:row-start-1 lg:pt-20 lg:pb-24">
+        <div className="mx-auto max-w-(--wrap) px-5 md:grid md:grid-cols-12 md:items-end md:gap-x-6 md:px-10">
+          <div className="pt-12 md:col-span-6 md:col-start-7 md:row-start-1 md:pt-16 md:pb-20 lg:pt-20 lg:pb-24">
             <Reveal immediate>
               <Label index="04">Industry Collaborations</Label>
             </Reveal>
@@ -83,13 +83,13 @@ export default function IndustryPage() {
               ]}
             />
           </div>
-          <div className="mx-auto mt-12 w-[min(100%,22rem)] md:mt-16 lg:col-span-5 lg:col-start-1 lg:row-start-1 lg:mx-0 lg:mt-0 lg:w-auto">
+          <div className="mx-auto mt-12 w-[min(100%,22rem)] md:col-span-5 md:col-start-1 md:row-start-1 md:mx-0 md:mt-0 md:w-auto">
             {/* 1303 x 1809: the frame has the cut-out's own proportions, so nothing is cropped and its foot meets the section edge. */}
             <Photo
               slot={hero.photo}
               priority
               className="open-settle aspect-[1303/1809] w-full"
-              sizes="(max-width: 1023px) min(100vw - 40px, 352px), (max-width: 1440px) 36vw, 30vw"
+              sizes="(max-width: 767px) min(100vw - 40px, 352px), (max-width: 1440px) 36vw, 30vw"
             />
           </div>
         </div>
@@ -103,8 +103,8 @@ export default function IndustryPage() {
         chapter, so the photograph crosses the change of colour.
       */}
       <section id="partnerships" className="relative z-10 bg-paper">
-        <div className="mx-auto max-w-(--wrap) px-5 py-20 md:px-10 md:py-28 lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-6">
-          <div className="lg:col-span-6">
+        <div className="mx-auto max-w-(--wrap) px-5 py-20 md:grid md:grid-cols-12 md:items-start md:gap-x-6 md:px-10 md:py-28">
+          <div className="md:col-span-6">
             <Index n="01" />
             <h2 className="display t-h1 mt-5 md:mt-6">
               <WordRise>{partnerships.heading}</WordRise>
@@ -116,13 +116,13 @@ export default function IndustryPage() {
               </div>
             </InView>
           </div>
-          <ImageReveal className="partner-photo mt-12 w-[min(100%,24rem)] lg:col-span-5 lg:col-start-8 lg:mt-0 lg:w-auto">
+          <ImageReveal className="partner-photo mt-12 w-[min(100%,24rem)] md:col-span-5 md:col-start-8 md:mt-0 md:w-auto">
             <Parallax className="aspect-[4/5] w-full" amount={4}>
               <Photo
                 slot={partnerships.photo}
                 className="h-full w-full"
                 // The frame shows the photograph at 1.3x (see .partner-photo), so it asks for a wider file than its box.
-                sizes="(max-width: 1023px) min(130vw - 52px, 500px), 42vw"
+                sizes="(max-width: 767px) min(130vw - 52px, 500px), 46vw"
               />
             </Parallax>
           </ImageReveal>
@@ -146,15 +146,15 @@ export default function IndustryPage() {
         under thin lines, the action.
       */}
       <Scene id="clinical-launch" from="lg" steps={3} length={2.5} dark className="launch grain grain-light bg-ink text-white">
-        <div className="launch-stage mx-auto max-w-(--wrap) px-5 pt-34 pb-20 md:px-10 md:pt-40 md:pb-28 lg:grid lg:grid-cols-12 lg:grid-rows-[auto_auto_1fr] lg:gap-x-6 lg:pt-44">
-          <header className="launch-head lg:col-span-12">
+        <div className="launch-stage mx-auto max-w-(--wrap) px-5 pt-34 pb-20 md:grid md:grid-cols-12 md:grid-rows-[auto_auto_1fr] md:gap-x-6 md:px-10 md:pt-40 md:pb-28 lg:pt-44">
+          <header className="launch-head md:col-span-12">
             <Index n="02" tone="dark" />
             <h2 className="display t-h1 mt-5 md:mt-6 pinned:mt-0 pinned:t-h3">
               <WordRise>{launch.heading}</WordRise>
             </h2>
           </header>
 
-          <SceneStep index={0} className="launch-step mt-10 md:mt-14 lg:col-span-7 lg:col-start-6 lg:row-start-2">
+          <SceneStep index={0} className="launch-step mt-10 md:col-span-7 md:col-start-6 md:row-start-2 md:mt-14">
             <p className="display t-h2 pinned:t-h1">
               <LeadLight text={launch.lead} close="how it fits the care they deliver." />
             </p>
@@ -164,7 +164,7 @@ export default function IndustryPage() {
           <div
             data-scene-vars=""
             suppressHydrationWarning
-            className="launch-photo mt-10 w-[min(100%,24rem)] md:mt-14 lg:col-span-4 lg:col-start-1 lg:row-span-2 lg:row-start-2 lg:w-auto"
+            className="launch-photo mt-10 w-[min(100%,24rem)] md:col-span-4 md:col-start-1 md:row-span-2 md:row-start-2 md:mt-14 md:w-auto"
           >
             <ImageReveal>
               <Parallax className="aspect-[4/5] w-full" amount={5}>
@@ -172,14 +172,14 @@ export default function IndustryPage() {
                   slot={launch.photo}
                   tone="dark"
                   className="h-full w-full"
-                  sizes="(max-width: 1023px) min(100vw - 40px, 384px), (max-width: 1440px) 34vw, 30vw"
+                  sizes="(max-width: 767px) min(100vw - 40px, 384px), (max-width: 1440px) 34vw, 30vw"
                 />
               </Parallax>
             </ImageReveal>
           </div>
 
           {/* The action is inside the last step: keyboard focus brings that step up (engine.ts), and the stage only pins while its paragraphs, this one included, fit one screen. */}
-          <SceneStep index={2} className="launch-step launch-details mt-10 lg:col-span-7 lg:col-start-6 lg:row-start-3">
+          <SceneStep index={2} className="launch-step launch-details mt-10 md:col-span-7 md:col-start-6 md:row-start-3">
             <InView>
               {launch.paragraphs.map((p, i) => (
                 <div key={i} className="launch-item rise relative py-6" style={{ "--k": i, "--d": `${i * 0.06}s` } as Vars}>
