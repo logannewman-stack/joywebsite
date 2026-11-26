@@ -5,6 +5,8 @@ import { Check, LoaderCircle } from "lucide-react";
 import { links } from "@/content/site";
 import { SwapArrow } from "@/components/ui/Links";
 import { EMAIL_MESSAGE, emailInputProps, flagField, FormAlert, Honeypot, mailtoFrom, sendInquiry, type Status } from "./feedback";
+import { FieldError } from "./fields";
+import { useInlineValidation } from "./validation";
 
 /** Single-field signup for the From Dr. Joy newsletter. Light enough for the footer of every page. */
 export function NewsletterForm({ tone = "light", cta = "Subscribe" }: { tone?: "light" | "dark"; cta?: string }) {
@@ -14,6 +16,7 @@ export function NewsletterForm({ tone = "light", cta = "Subscribe" }: { tone?: "
   const [mailto, setMailto] = useState("");
   const alertRef = useRef<HTMLDivElement>(null);
   const doneRef = useRef<HTMLParagraphElement>(null);
+  const formRef = useInlineValidation();
   const dark = tone === "dark";
   const sending = status === "sending";
 
@@ -55,44 +58,48 @@ export function NewsletterForm({ tone = "light", cta = "Subscribe" }: { tone?: "
   }
 
   return (
-    <form onSubmit={onSubmit} className="relative">
+    <form ref={formRef} onSubmit={onSubmit} className="relative">
       <Honeypot />
       <label htmlFor={`${id}-email`} className={`block text-[0.875rem] font-medium ${dark ? "text-ash" : "text-stone"}`}>
         Email address
       </label>
-      <div
-        data-field="email"
-        data-label="Email"
-        // A soft filled pill holding the field and its button (no underline). Focus rings it.
-        className={`mt-2 flex items-center gap-3 rounded-full pl-5 pr-1 transition-[background-color,box-shadow] duration-[var(--duration-hover,180ms)] ${
-          dark
-            ? "bg-white/[0.08] hover:bg-white/[0.11] focus-within:bg-white/[0.11] focus-within:shadow-[inset_0_0_0_1.5px_#fff]"
-            : "bg-ink/[0.05] hover:bg-ink/[0.07] focus-within:bg-ink/[0.07] focus-within:shadow-[inset_0_0_0_1.5px_var(--color-ink)]"
-        }`}
-      >
-        <input
-          id={`${id}-email`}
-          type="email"
-          name="email"
-          required
-          autoComplete="email"
-          {...emailInputProps}
-          // w-full keeps the field from widening narrow layouts (a percentage width gives it no minimum).
-          className={`w-full min-w-0 flex-1 bg-transparent py-3 text-[1.0625rem] outline-none ${dark ? "text-white" : "text-ink"}`}
-        />
-        <button
-          type="submit"
-          aria-disabled={sending || undefined}
-          className={`press group my-1 inline-flex min-h-11 shrink-0 items-center gap-2 rounded-full px-5 text-[0.90625rem] font-medium whitespace-nowrap focus-visible:outline-2 focus-visible:outline-offset-[3px] aria-disabled:cursor-progress ${
+      {/* The wrapper names the field for the email fallback and holds its validation message (validation.ts). */}
+      <div data-field="email" data-label="Email">
+        <div
+          // A soft filled pill holding the field and its button (no underline). Focus rings it.
+          className={`mt-2 flex items-center gap-3 rounded-full pl-5 pr-1 transition-[background-color,box-shadow] duration-[var(--duration-hover,180ms)] ${
             dark
-              ? "bg-white text-ink hover:bg-mist focus-visible:outline-white"
-              : "bg-ink text-white hover:bg-charcoal focus-visible:outline-ink"
+              ? "bg-white/[0.08] hover:bg-white/[0.11] focus-within:bg-white/[0.11] focus-within:shadow-[inset_0_0_0_1.5px_#fff]"
+              : "bg-ink/[0.05] hover:bg-ink/[0.07] focus-within:bg-ink/[0.07] focus-within:shadow-[inset_0_0_0_1.5px_var(--color-ink)]"
           }`}
         >
-          {sending ? <LoaderCircle className="size-4 animate-spin motion-reduce:animate-none" aria-hidden /> : null}
-          {sending ? "Sending" : cta}
-          {!sending && <SwapArrow />}
-        </button>
+          <input
+            id={`${id}-email`}
+            type="email"
+            name="email"
+            required
+            autoComplete="email"
+            {...emailInputProps}
+            // w-full keeps the field from widening narrow layouts (a percentage width gives it no minimum).
+            className={`w-full min-w-0 flex-1 bg-transparent py-3 text-[1.0625rem] outline-none ${dark ? "text-white" : "text-ink"}`}
+          />
+          <button
+            type="submit"
+            aria-disabled={sending || undefined}
+            className={`press group my-1 inline-flex min-h-11 shrink-0 items-center gap-2 rounded-full px-5 text-[0.90625rem] font-medium whitespace-nowrap focus-visible:outline-2 focus-visible:outline-offset-[3px] aria-disabled:cursor-progress ${
+              dark
+                ? "bg-white text-ink hover:bg-mist focus-visible:outline-white"
+                : "bg-ink text-white hover:bg-charcoal focus-visible:outline-ink"
+            }`}
+          >
+            {sending ? <LoaderCircle className="size-4 animate-spin motion-reduce:animate-none" aria-hidden /> : null}
+            {sending ? "Sending" : cta}
+            {!sending && <SwapArrow />}
+          </button>
+        </div>
+        <span className="block pl-5">
+          <FieldError tone={tone} />
+        </span>
       </div>
       {links.privacy && (
         <p className={`mt-1 text-[0.84375rem] ${dark ? "text-ash" : "text-stone"}`}>

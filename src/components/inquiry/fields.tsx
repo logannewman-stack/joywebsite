@@ -1,7 +1,7 @@
 "use client";
 
-import type { ChangeEventHandler, InputHTMLAttributes, ReactNode } from "react";
-import { ChevronDown } from "lucide-react";
+import { useId, type ChangeEventHandler, type InputHTMLAttributes, type ReactNode } from "react";
+import { ChevronDown, CircleAlert } from "lucide-react";
 
 export { Honeypot } from "./feedback";
 
@@ -9,12 +9,35 @@ export { Honeypot } from "./feedback";
  * Form fields for the inquiry panel. Labels are sentence case at 14px so they
  * read easily on a phone; optional fields say so on the right, required ones
  * carry no mark. Each wrapper has data-field / data-label, which the email
- * fallback uses to label what the visitor typed.
+ * fallback uses to label what the visitor typed. A field is a wrapper holding
+ * its <label>, its control and the place for its validation message: the
+ * message sits outside the label so it is read as the field's description,
+ * not as part of its name.
  */
 
 /* A soft filled field, not an underline: the site draws no lines. Focus rings it in ink. */
 const control =
-  "block w-full rounded-[0.5rem] border-0 bg-ink/[0.045] px-4 py-3 text-[1rem] leading-normal text-ink outline-none transition-[background-color,box-shadow] duration-[var(--duration-hover,180ms)] placeholder:text-stone hover:bg-ink/[0.065] focus:bg-ink/[0.06] focus:shadow-[inset_0_0_0_1.5px_var(--color-ink)]";
+  "block w-full rounded-[0.5rem] border-0 bg-ink/[0.045] px-4 py-3 text-[1rem] leading-normal text-ink outline-none transition-[background-color,box-shadow] duration-[var(--duration-hover,180ms)] placeholder:text-stone hover:bg-ink/[0.065] focus:bg-ink/[0.06] focus:shadow-[inset_0_0_0_1.5px_var(--color-ink)] aria-[invalid=true]:shadow-[inset_0_0_0_1.5px_var(--color-ink)]";
+
+/**
+ * Where a field's validation message appears, inside its [data-field] wrapper. It is empty and hidden
+ * until a check fails; useInlineValidation (validation.ts) fills it in and shows it. Ink on white,
+ * white on black: the site has no warning colour.
+ */
+export function FieldError({ tone = "light" }: { tone?: "light" | "dark" }) {
+  const id = useId();
+  return (
+    <span
+      id={`${id}-error`}
+      data-error
+      hidden
+      className={`mt-2 flex items-start gap-1.5 text-[0.8125rem] leading-snug font-medium ${tone === "dark" ? "text-white" : "text-ink"}`}
+    >
+      <CircleAlert className="mt-px size-3.5 shrink-0" aria-hidden />
+      <span data-error-text />
+    </span>
+  );
+}
 
 function FieldLabel({ label, required, hint }: { label: string; required?: boolean; hint?: string }) {
   const note = hint ?? (required ? null : "Optional");
@@ -50,11 +73,15 @@ export function Field({
   defaultValue?: string;
   inputProps?: InputHTMLAttributes<HTMLInputElement>;
 }) {
+  const id = useId();
   return (
-    <label className={`block ${className}`} data-field={name} data-label={label}>
-      <FieldLabel label={label} required={required} hint={hint} />
+    <div className={className} data-field={name} data-label={label}>
+      <label htmlFor={id} className="block">
+        <FieldLabel label={label} required={required} hint={hint} />
+      </label>
       <input
         {...inputProps}
+        id={id}
         name={name}
         type={type}
         required={required}
@@ -63,7 +90,8 @@ export function Field({
         defaultValue={defaultValue}
         className={control}
       />
-    </label>
+      <FieldError />
+    </div>
   );
 }
 
@@ -80,17 +108,22 @@ export function TextArea({
   rows?: number;
   defaultValue?: string;
 }) {
+  const id = useId();
   return (
-    <label className="block" data-field={name} data-label={label}>
-      <FieldLabel label={label} required={required} />
+    <div data-field={name} data-label={label}>
+      <label htmlFor={id} className="block">
+        <FieldLabel label={label} required={required} />
+      </label>
       <textarea
+        id={id}
         name={name}
         required={required}
         rows={rows}
         defaultValue={defaultValue}
         className={`${control} min-h-28 resize-none [field-sizing:content]`}
       />
-    </label>
+      <FieldError />
+    </div>
   );
 }
 
@@ -112,11 +145,15 @@ export function Select({
   defaultValue?: string;
   hint?: string;
 }) {
+  const id = useId();
   return (
-    <label className="block" data-field={name} data-label={label}>
-      <FieldLabel label={label} required={required} hint={hint} />
+    <div data-field={name} data-label={label}>
+      <label htmlFor={id} className="block">
+        <FieldLabel label={label} required={required} hint={hint} />
+      </label>
       <span className="relative block">
         <select
+          id={id}
           name={name}
           required={required}
           defaultValue={defaultValue}
@@ -143,7 +180,8 @@ export function Select({
         </select>
         <ChevronDown className="pointer-events-none absolute top-1/2 right-4 size-4 -translate-y-1/2 text-ink" aria-hidden />
       </span>
-    </label>
+      <FieldError />
+    </div>
   );
 }
 

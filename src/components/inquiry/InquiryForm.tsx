@@ -6,6 +6,7 @@ import { inquiryTypes, optIns, programChoices, type InquiryType } from "@/conten
 import { links } from "@/content/site";
 import { SwapArrow } from "@/components/ui/Links";
 import { CheckGroup, Consent, Field, Select, TextArea } from "./fields";
+import { useInlineValidation } from "./validation";
 import {
   collect,
   EMAIL_MESSAGE,
@@ -160,6 +161,7 @@ export function InquiryForm({
   const [sms, setSms] = useState(draft.sms_opt_in === "on");
   const alertRef = useRef<HTMLDivElement>(null);
   const doneRef = useRef<HTMLDivElement>(null);
+  const formRef = useInlineValidation();
   const meta = inquiryTypes[type];
   const isInterest = type === "p3_interest";
 
@@ -204,6 +206,7 @@ export function InquiryForm({
 
   return (
     <form
+      ref={formRef}
       onSubmit={onSubmit}
       onInput={(e) => drafts.set(type, collect(e.currentTarget))}
       onChange={(e) => drafts.set(type, collect(e.currentTarget))}
