@@ -283,7 +283,14 @@ html.motion .site-footer[data-near] {
   overflow: clip;
 }
 /* Depth while it is uncovered: the content rises a little slower than the
-   page and comes up out of the dark (--foot-p: 0 covered, 1 in the open). */
+   page and comes up out of the dark (--foot-p: 0 covered, 1 in the open).
+   Not inherited: only .foot-inner reads it, and everything in the footer is
+   inside .foot-inner. */
+@property --foot-p {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 0;
+}
 html.motion .site-footer[data-near] .foot-inner {
   transform: translate3d(0, calc((1 - var(--foot-p, 0)) * 4.5rem), 0);
   opacity: calc(0.3 + 0.7 * var(--foot-p, 0));

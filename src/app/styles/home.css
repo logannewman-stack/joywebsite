@@ -82,9 +82,11 @@ html.motion .hero-light {
 }
 
 /* The wrapper is a scene only so the engine reports its progress: it keeps its
-   natural height. --p is written on the two elements that read it (the dim and
-   the cue carry data-scene-vars), not on the wrapper: a variable there would
-   restyle the opening and the whole story on every scroll frame. */
+   natural height. The progress is written on the four parts that read it (the
+   words, the portrait, the dim and the cue carry data-scene-vars and
+   data-own), as --po, which is not inherited: a variable on the wrapper would
+   restyle the opening and the whole story on every scroll frame, and an
+   inherited one would restyle every word of the headline. */
 .hero-hold[data-scene] {
   height: auto;
 }
@@ -99,27 +101,27 @@ html.motion .hero-light {
     top: 0;
   }
   html.motion .hero-hold[data-pinned] .hero-dim {
-    opacity: calc(clamp(0, var(--p, 0) * var(--hold-n, 3), 1) * 0.6);
+    opacity: calc(clamp(0, var(--po, 0) * var(--hold-n, 3), 1) * 0.6);
   }
   html.motion .hero-hold[data-pinned] .hero-cue {
-    opacity: calc(1 - clamp(0, var(--p, 0) * var(--hold-n, 3) * 7, 1));
+    opacity: calc(1 - clamp(0, var(--po, 0) * var(--hold-n, 3) * 7, 1));
   }
-  /* Depth while the stage is held: --s is how much of the first screen has
-     been scrolled. The words lift away and fade ahead of the sheet that covers
-     them; she comes a little closer, growing from her foot so she never leaves
-     the edge she stands on. */
-  html.motion .hero-hold[data-pinned] .hero-copy,
-  html.motion .hero-hold[data-pinned] .hero-figure {
-    --s: clamp(0, var(--p, 0) * var(--hold-n, 3), 1);
+  /* Depth while the stage is held. clamp(0, --po * --hold-n, 1) is how much of
+     the first screen has been scrolled. The words lift away and fade ahead of
+     the sheet that covers them; she comes a little closer, growing from her
+     foot so she never leaves the edge she stands on. (The sum is written out
+     in each property, not kept in a variable of its own: a variable that
+     changes every frame is handed down to everything inside the element, and
+     every word of the headline would be restyled with it.) */
+  html.motion .hero-hold[data-pinned] .hero-copy {
+    transform: translate3d(0, calc(clamp(0, var(--po, 0) * var(--hold-n, 3), 1) * -7rem), 0);
+    opacity: calc(1 - clamp(0, var(--po, 0) * var(--hold-n, 3), 1) * 1.5);
     will-change: transform;
   }
-  html.motion .hero-hold[data-pinned] .hero-copy {
-    transform: translate3d(0, calc(var(--s) * -7rem), 0);
-    opacity: calc(1 - var(--s) * 1.5);
-  }
   html.motion .hero-hold[data-pinned] .hero-figure {
-    transform: scale(calc(1 + var(--s) * 0.05));
+    transform: scale(calc(1 + clamp(0, var(--po, 0) * var(--hold-n, 3), 1) * 0.05));
     transform-origin: 50% 100%;
+    will-change: transform;
   }
 }
 
@@ -181,7 +183,10 @@ html.motion .hero-light {
      The statements themselves follow the engine's step attributes. */
   .persp[data-pinned] [data-scene-vars] {
     --at: calc(var(--p, 0) * var(--n));
-    --open: clamp(0, var(--at) / 0.62, 1);
+    --open-t: clamp(0, var(--at) / 0.62, 1);
+    /* Eased: the window starts to open gently and settles into the full screen
+       instead of moving at one speed and stopping dead. */
+    --open: calc(var(--open-t) * var(--open-t) * (3 - 2 * var(--open-t)));
     --shut: calc(1 - var(--open));
     --dark: clamp(0, (var(--at) - 0.46) / 0.44, 1);
   }
@@ -469,8 +474,11 @@ html.motion .hero-light {
   padding-inline: var(--edge);
   gap: 0 5rem;
   /* The row settles for a moment, travels, and the last card holds before the
-     stage lets go. */
-  transform: translate3d(calc(clamp(0, (var(--p, 0) - 0.05) / 0.83, 1) * (100vw - 100%)), 0, 0);
+     stage lets go. --po: the engine writes the scene's progress on the row, on
+     each card's list item and on each photograph's frame (they carry
+     data-scene-vars and data-own in Pathways.tsx), and nowhere else, so a
+     scroll frame restyles those nine elements and not every word on the cards. */
+  transform: translate3d(calc(clamp(0, (var(--po, 0) - 0.05) / 0.83, 1) * (100vw - 100%)), 0, 0);
 }
 /* A card on the track: the photograph on the left, as tall as the stage
    allows, and its words beside it. */
@@ -504,31 +512,32 @@ html.motion .hero-light {
   margin-top: 0;
   padding-top: 0;
 }
-/* Focus and depth on the track. --t is the row's travel (0 to 1) and --k a
-   card's place in the row, so --away is how far the card is from the middle of
-   the journey's current stop: the card being read is in full light and the
-   ones before and after it stand back a little. Inside each frame the
+/* Focus and depth on the track. clamp(0, (--po - 0.05) / 0.83, 1) is the row's
+   travel (0 to 1) and --k a card's place in the row, so travel * 3 - --k is
+   where the card stands against the journey's current stop: 0 when it is the
+   one being read, 1 when it is the next. The card being read is in full light
+   and the ones before and after it stand back a little. Inside each frame the
    photograph is set a touch large and drifts against the travel, so the
-   pictures move behind their frames instead of sliding past like stickers. */
-html.motion .work[data-pinned] .work-panel {
-  --t: clamp(0, (var(--p, 0) - 0.05) / 0.83, 1);
-  --pos: calc(var(--t) * 3 - var(--k, 0));
-  --away: max(var(--pos), calc(var(--pos) * -1));
+   pictures move behind their frames instead of sliding past like stickers.
+   (Written out in each property, with no variables of their own: see the
+   opening.) */
+html.motion .work[data-pinned] .work-track.stagger > .work-panel {
+  opacity: clamp(
+    0.42,
+    1.65 - max(clamp(0, (var(--po, 0) - 0.05) / 0.83, 1) * 3 - var(--k, 0), var(--k, 0) - clamp(0, (var(--po, 0) - 0.05) / 0.83, 1) * 3),
+    1
+  );
 }
-html.motion .work[data-pinned] .work-card {
-  opacity: clamp(0.42, calc(1.65 - var(--away)), 1);
-}
-html.motion .work[data-pinned] .work-photo img {
-  transform: translate3d(clamp(-4.5%, calc(var(--pos) * 3.5%), 4.5%), 0, 0) scale(1.1);
+html.motion .work[data-pinned] .work-drift {
+  transform: translate3d(clamp(-4.5%, calc((clamp(0, (var(--po, 0) - 0.05) / 0.83, 1) * 3 - var(--k, 0)) * 3.5%), 4.5%), 0, 0) scale(1.1);
   will-change: transform;
 }
 /* A card with keyboard focus inside is always in full light. */
-html.motion .work[data-pinned] .work-panel:focus-within .work-card {
+html.motion .work[data-pinned] .work-track.stagger > .work-panel:focus-within {
   opacity: 1;
 }
-/* On the track the cards are simply there: they arrive with the stage. */
+/* On the track the cards are simply there: they arrive with the stage, without the entrance they have in the plain layout. */
 html.motion .work[data-pinned] .work-track.stagger > * {
-  opacity: 1;
   transform: none;
   transition: none;
 }

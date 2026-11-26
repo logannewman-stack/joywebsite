@@ -2,8 +2,18 @@ import { home } from "@/content/home";
 import { Photo } from "../ui/Photo";
 import { ButtonLink, ArrowLink } from "../ui/Links";
 import { LineReveal, Reveal } from "../ui/Reveal";
+import { STORY_LENGTH } from "./Perspective";
 
 const { hero } = home;
+
+/**
+ * The held stage's parts finish their moves within the first screen of
+ * scrolling, which is this share of the whole hold (the opening and the story,
+ * less the screen the story gives up to the section after it). The engine
+ * stops writing their progress there (data-scene-vars), so they are not
+ * restyled all the way through the story.
+ */
+const HELD = (1 / (STORY_LENGTH - 1) + 0.01).toFixed(3);
 
 /** The approved headline, hand-set on four lines. */
 const lines = ["The work has", "always been", "bigger than", "the chair."];
@@ -40,7 +50,7 @@ export function Hero() {
       <div aria-hidden className="hero-light pointer-events-none absolute inset-0" />
       <div className="relative mx-auto max-w-(--wrap) px-5 pt-(--header-height) md:grid md:grid-cols-12 md:items-center md:gap-x-6 md:px-10 lg:min-h-[min(100svh,56rem)] lg:landscape:min-h-[100svh]">
         {/* data-scene-vars: on the held stage the engine writes the hold's progress here, so the words lift away as the page moves. */}
-        <div data-scene-vars="" suppressHydrationWarning className="hero-copy pt-10 md:col-span-7 md:py-16">
+        <div data-scene-vars={HELD} data-own="" suppressHydrationWarning className="hero-copy pt-10 md:col-span-7 md:py-16">
           <h1 id="hero-heading" className="display t-hero">
             <LineReveal lines={lines} delay={0.05} />
           </h1>
@@ -57,7 +67,7 @@ export function Hero() {
           </Reveal>
         </div>
 
-        <div data-scene-vars="" suppressHydrationWarning className="hero-figure mx-auto mt-12 w-[min(100%,21rem)] md:col-span-5 md:mx-0 md:mt-0 md:w-auto md:self-end md:pt-6 lg:col-start-8">
+        <div data-scene-vars={HELD} data-own="" suppressHydrationWarning className="hero-figure mx-auto mt-12 w-[min(100%,21rem)] md:col-span-5 md:mx-0 md:mt-0 md:w-auto md:self-end md:pt-6 lg:col-start-8">
           {/* 1155 x 1647: the frame has the cut-out's own proportions, so nothing is cropped and its foot meets the section edge. */}
           <Photo slot={hero.photo} tone="dark" priority className="hero-settle aspect-[1155/1647] w-full" sizes="(max-width: 767px) min(100vw - 40px, 336px), (max-width: 1440px) 36vw, 30vw" />
         </div>
@@ -65,7 +75,7 @@ export function Hero() {
 
       {/* "Scroll": a quiet cue at the foot of the held stage. data-scene-vars: the engine writes the hold's
           progress (--p) here and on the dim below, nowhere else. */}
-      <div aria-hidden data-scene-vars="" suppressHydrationWarning className="hero-cue pointer-events-none absolute inset-x-0 bottom-10 hidden lg:landscape:block">
+      <div aria-hidden data-scene-vars={HELD} data-own="" suppressHydrationWarning className="hero-cue pointer-events-none absolute inset-x-0 bottom-10 hidden lg:landscape:block">
         <div className="mx-auto max-w-(--wrap) px-10">
           <span className="label inline-flex items-center gap-4 text-white/70">
             Scroll
@@ -74,7 +84,7 @@ export function Hero() {
         </div>
       </div>
       {/* The stage dims as the story slides up over it. */}
-      <div aria-hidden data-scene-vars="" suppressHydrationWarning className="hero-dim pointer-events-none absolute inset-0 bg-ink opacity-0" />
+      <div aria-hidden data-scene-vars={HELD} data-own="" suppressHydrationWarning className="hero-dim pointer-events-none absolute inset-0 bg-ink opacity-0" />
     </section>
   );
 }

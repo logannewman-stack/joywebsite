@@ -34,19 +34,24 @@ export function Pathways() {
   return (
     <ol
       data-scene-track
+      data-scene-vars=""
+      data-own=""
       data-inview=""
       suppressHydrationWarning
       className="work-track stagger mx-auto grid max-w-(--wrap) gap-y-12 px-5 sm:grid-cols-2 sm:gap-x-6 md:px-10 lg:grid-cols-4"
     >
       {home.pathways.map((p, i) => (
-        <li key={p.kicker} data-scene-panel className="work-panel" style={{ "--k": i } as CSSProperties}>
+        <li key={p.kicker} data-scene-panel data-scene-vars="" data-own="" suppressHydrationWarning className="work-panel" style={{ "--k": i } as CSSProperties}>
           <div className="work-card group relative grid grid-cols-[minmax(0,2fr)_minmax(0,3fr)] items-center gap-x-5 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-[0.75rem] has-[:focus-visible]:outline-ink sm:flex sm:h-full sm:flex-col sm:items-stretch">
             <div className="work-photo overflow-hidden bg-mist">
-              <Photo
-                slot={p.photo}
-                sizes={sizes}
-                className="aspect-[4/5] w-full transition-transform duration-(--duration-image) ease-expo group-hover:scale-[1.04] group-has-[:focus-visible]:scale-[1.04] motion-reduce:transition-none"
-              />
+              {/* On the track the photograph drifts inside its frame (home.css); the engine writes the scene's progress here. */}
+              <div data-scene-vars="" data-own="" suppressHydrationWarning className="work-drift h-full">
+                <Photo
+                  slot={p.photo}
+                  sizes={sizes}
+                  className="aspect-[4/5] w-full transition-transform duration-(--duration-image) ease-expo group-hover:scale-[1.04] group-has-[:focus-visible]:scale-[1.04] motion-reduce:transition-none"
+                />
+              </div>
             </div>
             <div className="work-words sm:mt-5">
               <p className="label text-stone">{p.kicker}</p>

@@ -38,8 +38,12 @@
  *                                     is held under the page (sticky). Before
  *                                     that it is an ordinary block below the
  *                                     fold.
- *   .site-footer { --foot-p }         0 to 1 while the page's last section
+ *   .foot-inner { --foot-p }          0 to 1 while the page's last section
  *                                     scrolls away and uncovers the footer.
+ *                                     Written on the element that moves, and
+ *                                     registered as not inherited (chrome.css),
+ *                                     so the footer's contents are not restyled
+ *                                     on every scroll frame.
  *   .foot-sign[data-foot-in]          set once the footer's wordmark is in
  *                                     the open, so it can write itself in.
  *
@@ -165,13 +169,13 @@ requestAnimationFrame(function(){t=setTimeout(rest,11000)});
 
 /** Inline script for the end of <body>: the footer finale's measurements, focus and "Back to top". */
 export const CHROME_BODY_SCRIPT = `(function(){
-var d=document.documentElement,w=window,foot=null,ghost=null,sign=null,H=0,set=-1,max=0,vh=w.innerHeight;
+var d=document.documentElement,w=window,foot=null,ghost=null,inner=null,sign=null,H=0,set=-1,max=0,vh=w.innerHeight;
 var ro='ResizeObserver' in w?new ResizeObserver(function(){measure()}):null;
 function find(){
   var f=document.querySelector('.site-footer');
   if(f===foot)return;
   if(ro&&foot)ro.unobserve(foot);
-  foot=f;sign=f&&f.querySelector('.foot-sign');ghost=document.querySelector('.foot-ghost');set=-1;
+  foot=f;sign=f&&f.querySelector('.foot-sign');inner=f&&f.querySelector('.foot-inner');ghost=document.querySelector('.foot-ghost');set=-1;
   if(ro&&f)ro.observe(f);
 }
 function measure(){
@@ -195,7 +199,7 @@ function update(){
       if(!r||(r.top+r.height*0.5<vh&&mb<r.top+r.height*0.35)||dist<2)sign.setAttribute('data-foot-in','');
     }
   }
-  if(foot.__p!==p){foot.__p=p;foot.style.setProperty('--foot-p',p.toFixed(3))}
+  if(foot.__p!==p){foot.__p=p;(inner||foot).style.setProperty('--foot-p',p.toFixed(3))}
 }
 measure();
 if(ro)ro.observe(document.body);

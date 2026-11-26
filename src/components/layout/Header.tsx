@@ -172,14 +172,16 @@ export function Header() {
   }, [open, closeMenu]);
 
   const dark = overDark && !open;
+  // Solid once the page has moved: a see-through, blurred bar has to be blurred again on every
+  // scroll frame, which costs smoothness on phones for an effect nobody sees at this opacity.
   const surface = open
     ? "bg-paper"
     : dark
       ? scrolled
-        ? "bg-ink/85 backdrop-blur-md shadow-[0_0.75rem_1.75rem_-1.25rem_rgba(0,0,0,0.6)]"
+        ? "bg-ink shadow-[0_0.75rem_1.75rem_-1.25rem_rgba(0,0,0,0.6)]"
         : "bg-transparent"
       : scrolled
-        ? "bg-paper/90 backdrop-blur-md shadow-[0_0.75rem_1.75rem_-1.25rem_rgba(11,11,11,0.22)]"
+        ? "bg-paper shadow-[0_0.75rem_1.75rem_-1.25rem_rgba(11,11,11,0.22)]"
         : "bg-paper";
   const tone = dark ? "dark" : "light";
   // On paper the bar sits once at the top of the first page, so it takes the tone that page opens with,

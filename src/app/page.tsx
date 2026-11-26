@@ -39,10 +39,11 @@ export default function Home() {
         The opening and the story, joined. From 1024px (landscape) the opening holds, one screen
         tall, while the story slides up over it. The wrapper is a scene only for its progress:
         the engine writes --p on the stage's dim and cue (data-scene-vars in Hero.tsx), and
-        home.css ("Opening") uses it. --hold-n is the story's length in screens, so the dim can
+        home.css ("Opening") uses it. --hold-n is how many screens of scrolling the wrapper lasts
+        (the story's length, less the screen it gives up to the section after it), so the dim can
         be timed to the first screen of scrolling.
       */}
-      <div data-scene="lg" className="hero-hold relative" style={{ "--hold-n": STORY_LENGTH } as Vars}>
+      <div data-scene="lg" className="hero-hold relative" style={{ "--hold-n": STORY_LENGTH - 1 } as Vars}>
         {/* Where the stage holds, this marker scrolls in its place and keeps the header's dark variant in step. */}
         <div aria-hidden data-header="dark" className="pointer-events-none absolute inset-x-0 top-0 hidden h-[100svh] lg:landscape:block" />
         <Hero />
@@ -69,8 +70,8 @@ export default function Home() {
               <SceneCount total={pathways.length} />
             </p>
           </div>
-          {/* data-scene-vars: the engine writes the scene's progress on the track's frame and the meter only. */}
-          <div data-scene-vars="" suppressHydrationWarning className="work-run mt-10 md:mt-14">
+          {/* The engine writes the scene's progress on the row, its cards and their photographs (Pathways.tsx) and on the meter only. */}
+          <div className="work-run mt-10 md:mt-14">
             <Pathways />
           </div>
           <div aria-hidden data-scene-vars="" suppressHydrationWarning className="work-meter mx-auto hidden w-full max-w-(--wrap) px-5 md:px-10 pinned:block">

@@ -33,6 +33,22 @@
   position: relative;
   height: calc(var(--scene-length, 3) * 100svh);
 }
+
+/* --po and --vo: a scene's progress and an element's passage across the screen,
+   for elements marked data-own (engine.ts). Registered as not inherited, so
+   the browser restyles only the element they are written on, not everything
+   inside it. Where @property is not supported they are ordinary variables and
+   everything still works; it only costs what --p and --v cost. */
+@property --po {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 0;
+}
+@property --vo {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 0;
+}
 [data-scene][data-pinned] > [data-scene-pin] {
   position: sticky;
   top: 0;
