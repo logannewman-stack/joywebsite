@@ -18,6 +18,7 @@ import { PlannerResources } from "@/components/speaking/PlannerResources";
 import { RoomBand } from "@/components/speaking/RoomBand";
 import { SpokenAt } from "@/components/speaking/SpokenAt";
 import { chapters } from "@/components/speaking/chapters";
+import { keepCompounds } from "@/components/ui/keepCompounds";
 
 export const metadata: Metadata = {
   title: "Speaking",
@@ -101,7 +102,7 @@ export default function SpeakingPage() {
             <div className="flex max-w-[33rem] flex-col gap-5">
               {hero.paragraphs.map((p, i) => (
                 <p key={p} className={i === 0 ? "t-lead text-ink" : "t-body text-ink"}>
-                  {p}
+                  {keepCompounds(p)}
                 </p>
               ))}
             </div>

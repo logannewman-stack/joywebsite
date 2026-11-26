@@ -2,6 +2,7 @@ import { home } from "@/content/home";
 import { Photo } from "../ui/Photo";
 import { ArrowLink } from "../ui/Links";
 import { typeset } from "../ui/Typeset";
+import { keepCompounds } from "@/components/ui/keepCompounds";
 
 /*
  * The four pathways. Each is a card: a 4:5 photograph, the pathway's name as
@@ -50,7 +51,7 @@ export function Pathways() {
               <p className="label text-stone">{p.kicker}</p>
               <h3 className="display t-h3 mt-2.5 pinned:t-h2 pinned:mt-4">{typeset(p.heading)}</h3>
             </div>
-            <p className="work-body col-span-2 mt-5 text-[0.9375rem] leading-relaxed text-stone sm:mt-3 pinned:t-body">{p.body}</p>
+            <p className="work-body col-span-2 mt-5 text-[0.9375rem] leading-relaxed text-stone sm:mt-3 pinned:t-body">{keepCompounds(p.body)}</p>
             {/* The link's ::after covers the card, so the photograph and the words are part of one target. */}
             <ArrowLink href={p.link.href} className="work-link col-span-2 mt-2 self-start focus-visible:outline-none after:absolute after:inset-0 after:content-[''] sm:mt-auto sm:pt-2">
               {p.link.label}

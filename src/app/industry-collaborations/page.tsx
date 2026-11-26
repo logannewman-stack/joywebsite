@@ -13,7 +13,7 @@ import { Hl, LineRise, WordRise } from "@/components/motion/Text";
 import { PathIndex } from "@/components/industry/PathIndex";
 import { Collaborations } from "@/components/industry/Collaborations";
 import { LeadLight } from "@/components/industry/LeadLight";
-import { keepCompounds } from "@/components/industry/keepCompounds";
+import { keepCompounds } from "@/components/ui/keepCompounds";
 
 type Vars = CSSProperties & Record<`--${string}`, string | number>;
 
