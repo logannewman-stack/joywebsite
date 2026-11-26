@@ -40,11 +40,14 @@ const lines = ["The work has", "always been", "bigger than", "the chair."];
  * the white story has covered it.
  *
  * Opening motion, one move each and in sequence: the portrait first, then
- * the headline lines, then the sub-line and buttons.
+ * the headline lines, then the sub-line and buttons. With a mouse the stage
+ * also answers the pointer: she leans a few pixels away from it and the light
+ * behind her follows it a little further, so the opening has depth while the
+ * visitor is still (data-magnetic; home.css, "Opening").
  */
 export function Hero() {
   return (
-    <section className="hero-stage relative overflow-clip bg-ink text-white" aria-labelledby="hero-heading">
+    <section className="hero-stage relative overflow-clip bg-ink text-white" aria-labelledby="hero-heading" data-magnetic="0.012">
       <div aria-hidden data-header="dark" className="pointer-events-none absolute inset-0 lg:landscape:hidden" />
       {/* A soft pool of light on the black behind her: neutral grey, no colour (home.css, "Opening"). */}
       <div aria-hidden className="hero-light pointer-events-none absolute inset-0" />

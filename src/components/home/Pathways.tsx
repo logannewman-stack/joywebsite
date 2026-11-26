@@ -45,7 +45,7 @@ export function Pathways() {
           <div className="work-card group relative grid grid-cols-[minmax(0,2fr)_minmax(0,3fr)] items-center gap-x-5 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-[0.75rem] has-[:focus-visible]:outline-ink sm:flex sm:h-full sm:flex-col sm:items-stretch">
             <div className="work-photo overflow-hidden bg-mist">
               {/* On the track the photograph drifts inside its frame (home.css); the engine writes the scene's progress here. */}
-              <div data-scene-vars="" data-own="" suppressHydrationWarning className="work-drift h-full">
+              <div data-scene-vars="" data-view="" data-own="" suppressHydrationWarning className="work-drift h-full">
                 <Photo
                   slot={p.photo}
                   sizes={sizes}

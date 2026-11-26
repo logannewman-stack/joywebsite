@@ -63,7 +63,8 @@ export default function MeetPage() {
             />
           </div>
 
-          <div className="mx-auto mt-12 w-[min(100%,24rem)] md:col-span-5 md:col-start-8 md:mx-0 md:mt-0 md:w-auto">
+          {/* The scroll engine writes --vo here before React hydrates (motion.css, "A portrait on its foot"). */}
+          <div data-view="" data-own="" suppressHydrationWarning className="foot-grow mx-auto mt-12 w-[min(100%,24rem)] md:col-span-5 md:col-start-8 md:mx-0 md:mt-0 md:w-auto">
             {/* 1122 x 1402: the frame has the cut-out's own proportions, so nothing is cropped and its foot meets the section edge. */}
             <Photo
               slot={hero.portrait}

@@ -151,6 +151,19 @@ html.motion [data-rise-now] .wr-in {
 }
 
 /* --------------------------------------------------------------------------
+   A portrait on its foot (the cut-out portraits that open Meet Dr. Joy and
+   Industry Collaborations): as the page moves on she comes a little closer,
+   growing from her foot so she never leaves the edge she stands on. The same
+   move as on Home's held opening. --vo is 0.5 while the section fills the
+   screen at the top of the page, and 1 when it has left.
+   -------------------------------------------------------------------------- */
+html.motion .foot-grow[data-view] {
+  transform: scale(calc(1 + clamp(0, (var(--vo, 0) - 0.5) * 2, 1) * 0.05));
+  transform-origin: 50% 100%;
+  will-change: transform;
+}
+
+/* --------------------------------------------------------------------------
    The room behind a quote (Quote.tsx): the photograph under a dark quote is
    dimmed so the words stay first. With motion the room is a little lighter as
    the section arrives and its light goes down while the words light up, like

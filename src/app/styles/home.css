@@ -81,6 +81,27 @@ html.motion .hero-light {
   animation: hero-light-in 2.4s var(--ease-soft) 0.2s both;
 }
 
+/* With a mouse the stage has depth while the visitor is still: the engine's
+   magnet writes the pointer's offset from the middle of the stage (--mx, --my,
+   a few pixels). She leans away from it sideways only, so her foot stays on
+   its edge, and the light follows it further. Set with the translate
+   property, so the scroll-driven transforms above and below are left alone. */
+@media (hover: hover) and (pointer: fine) {
+  html.motion .hero-stage .hero-figure {
+    translate: calc(var(--mx, 0px) * -1) 0;
+    transition: translate 0.9s var(--ease-expo);
+  }
+  html.motion .hero-stage .hero-light {
+    translate: calc(var(--mx, 0px) * 2.4) calc(var(--my, 0px) * 2.4);
+    transition: translate 1.3s var(--ease-expo);
+  }
+  /* Anything magnetic placed on the stage keeps to its own pointer, not the stage's. */
+  .hero-stage .magnetic {
+    --mx: 0px;
+    --my: 0px;
+  }
+}
+
 /* The wrapper is a scene only so the engine reports its progress: it keeps its
    natural height. The progress is written on the four parts that read it (the
    words, the portrait, the dim and the cue carry data-scene-vars and
@@ -530,6 +551,13 @@ html.motion .work[data-pinned] .work-track.stagger > .work-panel {
 }
 html.motion .work[data-pinned] .work-drift {
   transform: translate3d(clamp(-4.5%, calc((clamp(0, (var(--po, 0) - 0.05) / 0.83, 1) * 3 - var(--k, 0)) * 3.5%), 4.5%), 0, 0) scale(1.1);
+  will-change: transform;
+}
+/* Off the track (phones and tablets, where the cards are a plain grid) each
+   photograph drifts a little in its frame as its card crosses the screen. On
+   the track the rule above takes over. */
+html.motion .work-drift[data-view] {
+  transform: translate3d(0, calc((0.5 - var(--vo, 0.5)) * 7%), 0) scale(1.1);
   will-change: transform;
 }
 /* A card with keyboard focus inside is always in full light. */
