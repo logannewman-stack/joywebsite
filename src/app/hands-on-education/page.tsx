@@ -11,6 +11,7 @@ import { LineRise, WordRise, highlight } from "@/components/motion/Text";
 import { AttendeeVoice, attendeeVoiceShown } from "@/components/education/AttendeeVoice";
 import { Filmstrip } from "@/components/education/Filmstrip";
 import { P3Events } from "@/components/education/P3Events";
+import { keepCompounds } from "@/components/ui/keepCompounds";
 
 export const metadata: Metadata = {
   title: "Hands-On Education",
@@ -100,7 +101,7 @@ export default function EducationPage() {
                 <h3 className="display t-h3">
                   <WordRise delay={0.1 + i * 0.14}>{item.title}</WordRise>
                 </h3>
-                <p className="rise t-body mt-2 max-w-[33rem] text-stone">{item.text}</p>
+                <p className="rise t-body mt-2 max-w-[33rem] text-stone">{keepCompounds(item.text)}</p>
               </article>
             ))}
           </InView>
@@ -130,7 +131,7 @@ export default function EducationPage() {
                     <WordRise delay={i * 0.1}>{r.heading}</WordRise>
                   </span>
                 </h2>
-                <p className="edu-route-text rise t-body text-balance text-stone md:col-span-6 lg:col-span-4">{r.text}</p>
+                <p className="edu-route-text rise t-body text-balance text-stone md:col-span-6 lg:col-span-4">{keepCompounds(r.text)}</p>
                 <div className="rise md:col-span-6 md:col-start-7 lg:col-span-2 lg:col-start-auto lg:justify-self-end">
                   <ArrowLink href={r.cta.href} className="edu-route-link whitespace-nowrap">
                     {r.cta.label}

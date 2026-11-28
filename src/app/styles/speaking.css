@@ -77,8 +77,9 @@ html.motion .sp-hero-settle {
   .sp-rail-dark {
     color: #fff;
   }
+  /* flow-root: the dot's margins stay inside its row (collapsing through it, they set the rows 42px apart and the fourth dot ran into the chapter's name). */
   .sp-rail-item {
-    display: block;
+    display: flow-root;
     height: 1.875rem;
   }
   /* Each chapter is a small dot: faint ahead, solid once read, larger for the chapter on screen. */
@@ -279,15 +280,27 @@ html.motion .sp-hero-settle {
       view-timeline: --sp-bar block;
       view-timeline-inset: 0px;
     }
+    /* And it leaves the same way: over the last bar-height of the chapter it slides
+       back up, so the chapter's end never slices it either. Forwards only, so it
+       does not override the arrival before its own range. */
     .sp-bar {
-      animation: sp-bar-in linear both;
-      animation-timeline: --sp-bar;
-      animation-range: exit-crossing 0px exit-crossing 2.25rem;
+      animation:
+        sp-bar-in linear both,
+        sp-bar-out linear forwards;
+      animation-timeline: --sp-bar, --sp-bar;
+      animation-range:
+        exit-crossing 0px exit-crossing 2.25rem,
+        exit-crossing calc(100% - 2.25rem) exit-crossing 100%;
     }
   }
 }
 @keyframes sp-bar-in {
   from {
+    transform: translate3d(0, -100%, 0);
+  }
+}
+@keyframes sp-bar-out {
+  to {
     transform: translate3d(0, -100%, 0);
   }
 }

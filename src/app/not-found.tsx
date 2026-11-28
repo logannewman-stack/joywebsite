@@ -2,7 +2,7 @@ import type { CSSProperties } from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { home } from "@/content/home";
-import { nav, site } from "@/content/site";
+import { nav, notes, site } from "@/content/site";
 import { ArrowLink, ButtonLink, Label, PendingLink, PendingTag, SwapArrow, resolveHref } from "@/components/ui/Links";
 import { Reveal } from "@/components/ui/Reveal";
 import { WordRise } from "@/components/motion/Text";
@@ -71,7 +71,7 @@ export default function NotFound() {
               return (
                 <li key={p.kicker}>
                   {r.pending ? (
-                    <PendingLink className={row} title="Instrumental website link to come">
+                    <PendingLink className={row} title={notes ? "Instrumental website link to come" : undefined}>
                       {inner}
                     </PendingLink>
                   ) : r.external ? (

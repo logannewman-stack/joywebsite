@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { InView } from "@/components/motion/InView";
 import { WordRise } from "@/components/motion/Text";
 import { typeset } from "@/components/ui/Typeset";
+import { keepCompounds } from "@/components/ui/keepCompounds";
 
 type Group = { title: string; items: string[] };
 
@@ -52,7 +53,7 @@ function Titled({ title, detail }: { title: string; detail: string }) {
       <span className="display t-h3 block text-white">{typeset(title)}</span>
       <Comma />
       {/* The approved text is lower case where it follows a comma ("Jell-Ed, co-founder"); on its own line it takes a capital, in style only. */}
-      <span className="mt-1.5 block text-[0.9375rem] leading-snug text-ash first-letter:uppercase">{detail}</span>
+      <span className="mt-1.5 block text-[0.9375rem] leading-snug text-ash first-letter:uppercase">{keepCompounds(detail)}</span>
     </>
   );
 }

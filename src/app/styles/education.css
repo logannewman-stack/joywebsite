@@ -265,6 +265,13 @@ html.motion .edu-strip-roll > span {
     z-index: -1;
     margin-block: -6rem -100svh;
   }
+  /* White over white, the edge of that section is invisible and the prints look
+     cut through as it passes. A soft shadow along its top edge makes it read as
+     a sheet sliding over them. */
+  html.motion .edu-strip[data-pinned] + section {
+    position: relative;
+    box-shadow: 0 -1.25rem 2.5rem -1.5rem rgb(11 11 11 / 0.18);
+  }
   /* The strip and its meter stand in the middle of what the header leaves. */
   [data-pinned] > .edu-strip-stage {
     display: flex;

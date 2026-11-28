@@ -40,10 +40,10 @@ export default function Home() {
         tall, while the story slides up over it. The wrapper is a scene only for its progress:
         the engine writes --p on the stage's dim and cue (data-scene-vars in Hero.tsx), and
         home.css ("Opening") uses it. --hold-n is how many screens of scrolling the wrapper lasts
-        (the story's length, less the screen it gives up to the section after it), so the dim can
-        be timed to the first screen of scrolling.
+        (one screen of opening and the story, less the screen in view: the story's length), so the
+        dim and the lift can be timed to the first screen of scrolling.
       */}
-      <div data-scene="lg" className="hero-hold relative" style={{ "--hold-n": STORY_LENGTH - 1 } as Vars}>
+      <div data-scene="lg" className="hero-hold relative" style={{ "--hold-n": STORY_LENGTH } as Vars}>
         {/* Where the stage holds, this marker scrolls in its place and keeps the header's dark variant in step. */}
         <div aria-hidden data-header="dark" className="pointer-events-none absolute inset-x-0 top-0 hidden h-[100svh] lg:landscape:block" />
         <Hero />

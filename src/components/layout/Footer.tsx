@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { links, nav, site } from "@/content/site";
+import { links, nav, notes, site } from "@/content/site";
 import { insights } from "@/content/insights";
 import { Wordmark } from "../ui/Brand";
 import { instrumentalLink, PendingTag, SwapArrow } from "../ui/Links";
@@ -101,7 +101,7 @@ export function Footer() {
                         role="link"
                         aria-disabled="true"
                         tabIndex={0}
-                        title="Instrumental website link to come"
+                        title={notes ? "Instrumental website link to come" : undefined}
                         className={`${row} ${ring} cursor-not-allowed flex-wrap gap-x-2 gap-y-1 py-2`}
                       >
                         <span className="inline-flex items-center gap-2 whitespace-nowrap">

@@ -58,7 +58,7 @@ export function InstrumentalLink({ children, className = "", pendingTagClassName
   const i = instrumentalLink();
   if (i.pending) {
     return (
-      <PendingLink className={className} title="Instrumental website link to come">
+      <PendingLink className={className} title={notes ? "Instrumental website link to come" : undefined}>
         {children}
         <Pending className={pendingTagClassName} />
       </PendingLink>
@@ -144,7 +144,7 @@ export function ButtonLink({
   );
   if (r.pending) {
     return (
-      <PendingLink className={cls} title="Instrumental website link to come">
+      <PendingLink className={cls} title={notes ? "Instrumental website link to come" : undefined}>
         {inner}
         <Pending />
       </PendingLink>
@@ -185,7 +185,7 @@ export function ArrowLink({
   );
   if (r.pending) {
     return (
-      <PendingLink className={cls} title="Instrumental website link to come">
+      <PendingLink className={cls} title={notes ? "Instrumental website link to come" : undefined}>
         {inner}
         <Pending />
       </PendingLink>

@@ -5,6 +5,7 @@ import { InView } from "@/components/motion/InView";
 import { typeset } from "@/components/ui/Typeset";
 import { InquiryButton } from "@/components/inquiry/InquiryProvider";
 import { DetailsLink } from "./DetailsLink";
+import { keepCompounds } from "@/components/ui/keepCompounds";
 
 type Course = { title: string; text: string; pdf: string | null };
 
@@ -50,7 +51,7 @@ export function CourseIndex({ courses, className = "" }: { courses: Course[]; cl
                 <div className="rise lg:col-span-7" style={d(base + 0.05)}>
                   <div className="sp-course-lean">
                     <h3 className="sp-course-title display t-h3">{typeset(c.title)}</h3>
-                    <p className="t-body mt-2 max-w-[36rem] text-stone">{c.text}</p>
+                    <p className="t-body mt-2 max-w-[36rem] text-stone">{keepCompounds(c.text)}</p>
                   </div>
                 </div>
                 {/* Two cells: the PDF link starts the first, the inquiry link ends the second. On desktop the links' text sits on the title's line. */}

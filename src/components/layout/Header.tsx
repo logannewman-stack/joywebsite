@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState, type CSSProperties } from "react";
-import { nav, site } from "@/content/site";
+import { nav, notes, site } from "@/content/site";
 import { Wordmark } from "../ui/Brand";
 import { instrumentalLink, PendingTag, SwapArrow } from "../ui/Links";
 import { typeset } from "../ui/Typeset";
@@ -384,7 +384,7 @@ function ConsultingLink({
   const icon = <SwapArrow direction="up-right" />;
   if (link.pending) {
     return (
-      <span role="link" aria-disabled="true" tabIndex={0} title="Instrumental website link to come" className={`${cls} cursor-not-allowed`}>
+      <span role="link" aria-disabled="true" tabIndex={0} title={notes ? "Instrumental website link to come" : undefined} className={`${cls} cursor-not-allowed`}>
         {label}
         {srLabel && <span className="sr-only">{srLabel}</span>}
         {icon}

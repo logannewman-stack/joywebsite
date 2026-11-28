@@ -125,6 +125,9 @@ if(d.__pin)d.__pin.disconnect();
 if(!d.classList.contains('motion')||!('IntersectionObserver' in window)){d.classList.remove('motion');return}
 var near=new Set(),ticking=false,bars=[],lastPP='',W=0,onPaper=false,fonts=!document.fonts,fitting=false,py=0,pt=0,lt=0;
 var soft=!!window.matchMedia&&matchMedia('(hover: hover) and (pointer: fine)').matches;
+// The glide follows the input in use: a wheel or trackpad glides, a finger never does (touchscreen laptops have both).
+window.addEventListener('wheel',function(){soft=true},{passive:true});
+window.addEventListener('touchstart',function(){soft=false},{passive:true});
 function clamp(x){return x<0?0:x>1?1:x}
 function ease(el,key,to,k){
   var from=el[key];
@@ -168,7 +171,8 @@ function update(now){
   if(more)req();else lt=0;
 }
 function req(){if(!ticking){ticking=true;requestAnimationFrame(update)}}
-var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)near.add(e.target);else near.delete(e.target)});req()},{rootMargin:'30% 0px 30% 0px'});
+// A part that leaves the screen mid-glide forgets where it was, so on its return it is written straight at the scroll position instead of gliding there in view.
+var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)near.add(e.target);else{near.delete(e.target);e.target.__q=undefined;e.target.__w=undefined}});req()},{rootMargin:'30% 0px 30% 0px'});
 var once=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){if(d.__wait)d.__wait(e.target);e.target.setAttribute('data-in','');once.unobserve(e.target)}})},{rootMargin:'0px 0px -8% 0px'});
 var fine=window.matchMedia&&matchMedia('(pointer: fine)').matches;
 function magnet(el){

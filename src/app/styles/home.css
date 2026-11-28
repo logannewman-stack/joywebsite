@@ -35,8 +35,8 @@ html.motion .hero-settle {
 html.motion .hero-cue .label {
   animation: hero-cue-in var(--duration-text) var(--ease-soft) 1.2s both;
 }
-/* The cue's line: a short hairline, and a light that runs along it again and
-   again while the stage waits. */
+/* The cue's line: a short hairline, and a light that runs along it five times
+   while the stage waits, then rests (no animation left running for good). */
 .hero-cue-line {
   position: relative;
   display: block;
@@ -59,7 +59,7 @@ html.motion .hero-cue-line::after {
   position: absolute;
   inset: 0;
   background: #fff;
-  animation: hero-cue-run 2.6s cubic-bezier(0.6, 0, 0.2, 1) 2s infinite both;
+  animation: hero-cue-run 2.6s cubic-bezier(0.6, 0, 0.2, 1) 2s 5 both;
 }
 
 /* A soft pool of light on the stage behind her, so she stands in a place and

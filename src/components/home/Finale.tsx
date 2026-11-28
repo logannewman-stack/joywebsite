@@ -3,6 +3,7 @@ import { home } from "@/content/home";
 import { InView, Magnetic } from "@/components/motion/InView";
 import { WordRise } from "@/components/motion/Text";
 import { InquiryButton } from "@/components/inquiry/InquiryProvider";
+import { keepCompounds } from "@/components/ui/keepCompounds";
 
 type Vars = CSSProperties & Record<`--${string}`, string | number>;
 
@@ -33,7 +34,7 @@ export function Finale() {
         </h2>
         <InView className="mt-6 max-w-[34rem] md:mt-8 lg:col-span-6 lg:col-start-7 lg:mt-0">
           <p className="rise t-lead text-ink" style={{ "--d": "0.15s" } as Vars}>
-            {closing.body}
+            {keepCompounds(closing.body)}
           </p>
           <div className="rise mt-8" style={{ "--d": "0.25s" } as Vars}>
             <Magnetic strength={0.2}>

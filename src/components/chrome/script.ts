@@ -128,7 +128,10 @@ function done(){
   d.setAttribute('data-tone',k?'dark':'light');
   document.querySelectorAll('meta[name="theme-color"]').forEach(function(m){m.setAttribute('content',k?'#0b0b0b':'#ffffff')});
 }
+// While the curtain is up, the keys that scroll do not: a Space or Page Down that skips it would also carry the page a screen past its opening.
+function keys(e){if(L.contains('intro')&&/^( |Spacebar|PageDown|PageUp|ArrowDown|ArrowUp|End|Home)$/.test(e.key))e.preventDefault()}
 function rest(){
+  window.removeEventListener('keydown',keys,true);
   done();clearTimeout(t);L.remove('intro-lift','intro-late');
   E.forEach(function(k){document.removeEventListener(k,on)});K.forEach(function(k){window.removeEventListener(k,skip,o)});
 }
@@ -164,6 +167,7 @@ d.__wait=function(el){
 if(performance.now()>${LATE})L.add('intro-late');
 E.forEach(function(k){document.addEventListener(k,on)});
 K.forEach(function(k){window.addEventListener(k,skip,o)});
+window.addEventListener('keydown',keys,true);
 requestAnimationFrame(function(){t=setTimeout(rest,11000)});
 })();`;
 
@@ -215,7 +219,10 @@ document.addEventListener('focusin',function(e){
   if(!foot.__n){foot.__n=true;foot.setAttribute('data-near','')}
   var main=document.getElementById('main');if(!main)return;
   var mb=main.getBoundingClientRect().bottom,r=t.getBoundingClientRect();
-  var over=mb-r.top+24,low=r.bottom+24-w.innerHeight;
+  // Uncover the focused item's group (the newsletter with its heading and label, a column of links with its title), not the item alone, as long as the group fits on the screen.
+  var g=t;try{g=t.closest('section,nav,div:has(> h2)')||t}catch(_){}
+  var gr=g.getBoundingClientRect(),top=r.bottom-gr.top<w.innerHeight*0.8?gr.top:r.top;
+  var over=mb-top+24,low=r.bottom+24-w.innerHeight;
   if(low>0)over=Math.max(over,mb-foot.getBoundingClientRect().top+low);
   if(over>0)w.scrollBy({top:over,behavior:'instant'});
 });

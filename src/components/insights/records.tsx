@@ -3,11 +3,13 @@ import type { OriginalArticle, Publication } from "@/content/insights";
 
 /**
  * Whether a publication record appears on the page. Review mode shows every
- * record (tagged). At launch a record needs Dr. Joy's confirmation, its real
- * headline and, for articles, a link to the original.
+ * record found, so Dr. Joy can confirm it; one that only stands in for a record
+ * not yet found (no real headline) shows only with review notes on. At launch a
+ * record needs Dr. Joy's confirmation, its real headline and, for articles, a
+ * link to the original.
  */
 export function isShown(p: Publication) {
-  if (site.showPlaceholders) return true;
+  if (site.showPlaceholders) return notes || p.titleConfirmed !== false;
   return p.verified && p.titleConfirmed !== false && (p.kind === "book" || Boolean(p.url));
 }
 

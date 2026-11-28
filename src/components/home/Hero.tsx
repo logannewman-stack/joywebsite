@@ -9,11 +9,11 @@ const { hero } = home;
 /**
  * The held stage's parts finish their moves within the first screen of
  * scrolling, which is this share of the whole hold (the opening and the story,
- * less the screen the story gives up to the section after it). The engine
+ * less the screen in view: the story's length). The engine
  * stops writing their progress there (data-scene-vars), so they are not
  * restyled all the way through the story.
  */
-const HELD = (1 / (STORY_LENGTH - 1) + 0.01).toFixed(3);
+const HELD = (1 / STORY_LENGTH + 0.01).toFixed(3);
 
 /** The approved headline, hand-set on four lines. */
 const lines = ["The work has", "always been", "bigger than", "the chair."];

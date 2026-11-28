@@ -43,7 +43,7 @@ function ChapterHead({ id, heading, intro }: { id: string; heading: string; intr
       </h2>
       <InView className="mt-5 lg:col-span-5 lg:col-start-8 lg:mt-0">
         <p className="rise t-lead max-w-[33rem]" style={d(0.15)}>
-          {intro}
+          {keepCompounds(intro)}
         </p>
       </InView>
     </div>
@@ -184,7 +184,7 @@ export default function SpeakingPage() {
                     {p.subtitle}
                   </p>
                   <p className="rise t-body mt-3 max-w-[30rem] text-stone" style={d(base + 0.28)}>
-                    {p.text}
+                    {keepCompounds(p.text)}
                   </p>
                   <div className="rise mt-3 flex flex-wrap items-center gap-x-7" style={d(base + 0.36)}>
                     <DetailsLink pdf={p.pdf} title={p.title} />
@@ -244,7 +244,7 @@ export default function SpeakingPage() {
                   {k.subtitle}
                 </p>
                 <p className="rise t-body mt-3 max-w-[30rem] text-ash" style={d(0.28)}>
-                  {k.text}
+                  {keepCompounds(k.text)}
                 </p>
                 <div className="rise mt-3 flex flex-wrap items-center gap-x-7" style={d(0.36)}>
                   <DetailsLink pdf={k.pdf} title={k.title} label="Keynote Details" tone="dark" />

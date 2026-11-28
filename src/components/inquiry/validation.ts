@@ -10,8 +10,9 @@ type Control = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
  * browser and like none of the site).
  *
  * The checks stay the browser's own: `required`, `type="email"`, and the
- * messages the forms set with setCustomValidity (feedback.tsx). Only where
- * the message appears changes. Use the returned function as the form's `ref`;
+ * messages the forms set with setCustomValidity (feedback.tsx). Where the
+ * message appears changes, and an empty required field gets the site's own
+ * wording (messageFor) rather than the browser's, in the browser's language. Use the returned function as the form's `ref`;
  * a field shows its message in the [data-error] element inside its
  * [data-field] wrapper (FieldError in fields.tsx). A control without one
  * keeps the browser's bubble.
@@ -21,6 +22,19 @@ type Control = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
  * is edited or no longer applies. The field is marked aria-invalid and
  * described by its message.
  */
+/**
+ * The message for a field: the form's own wording where it set one, the site's
+ * wording for an empty required field (from the field's label, "Enter your
+ * first name."), and otherwise the browser's.
+ */
+function messageFor(el: Control) {
+  if (!el.validity.valueMissing || el.validity.customError) return el.validationMessage;
+  if (el instanceof HTMLInputElement && (el.type === "checkbox" || el.type === "radio")) return "Tick this box to continue.";
+  const label = el.closest<HTMLElement>("[data-field]")?.dataset.label?.trim().replace(/[?:]$/, "");
+  if (!label) return "Fill this in to continue.";
+  return el instanceof HTMLSelectElement ? `Choose your ${label.toLowerCase()}.` : `Enter your ${label.toLowerCase()}.`;
+}
+
 export function useInlineValidation() {
   return useCallback((form: HTMLFormElement | null) => {
     if (!form) return;
@@ -41,7 +55,7 @@ export function useInlineValidation() {
         const s = slot(el);
         if (!s) continue;
         const text = s.querySelector("[data-error-text]");
-        if (text) text.textContent = el.validationMessage;
+        if (text) text.textContent = messageFor(el);
         s.hidden = false;
         el.setAttribute("aria-invalid", "true");
         if (s.id) el.setAttribute("aria-describedby", s.id);

@@ -8,6 +8,7 @@ import { instrumentalLink, PendingTag, SwapArrow } from "@/components/ui/Links";
 import { InquiryForm, successMessage } from "./InquiryForm";
 import { inertOutside, trapTab } from "./modal";
 import type { Choice, PanelProps } from "./InquiryProvider";
+import { notes } from "@/content/site";
 
 /*
  * The inquiry slide-over: a modal dialog with the topic picker, the routes
@@ -216,7 +217,7 @@ function ConsultingRoute() {
         role="link"
         aria-disabled="true"
         tabIndex={0}
-        title="Instrumental website link to come"
+        title={notes ? "Instrumental website link to come" : undefined}
         className={`${pill} cursor-not-allowed bg-ink/80 text-white ${ring}`}
       >
         Visit Instrumental
