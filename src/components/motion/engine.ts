@@ -208,7 +208,7 @@ function scan(){
     if(el.__b&&ro)el.__b.forEach(function(b){if(!b.__f){b.__f=1;ro.observe(b)}});
   });
   document.querySelectorAll('[data-scene],[data-view]').forEach(function(el){if(!el.__m){el.__m=1;el.__o=el.hasAttribute('data-view')&&el.hasAttribute('data-own');io.observe(el)}});
-  document.querySelectorAll('[data-inview]:not([data-in])').forEach(function(el){if(!el.__o){el.__o=1;once.observe(el)}});
+  document.querySelectorAll('[data-inview]:not([data-in])').forEach(function(el){if(!el.__seen){el.__seen=1;once.observe(el)}});
   if(fine)document.querySelectorAll('[data-magnetic]').forEach(function(el){if(!el.__g){el.__g=1;magnet(el)}});
 }
 scan();
